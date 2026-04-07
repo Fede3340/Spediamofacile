@@ -152,7 +152,7 @@ const {
 			v-if="message"
 			:class="[
 				'mt-[14px] flex items-center gap-[8px] rounded-[14px] px-[12px] py-[11px] text-[0.8125rem] font-medium',
-				messageType === 'success' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600',
+				messageType === 'success' ? 'bg-[#f0fdf4] text-[#166534]' : 'bg-[#FFF5F2] text-[#E44203]',
 			]">
 			<svg v-if="messageType === 'success'" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
 				<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
