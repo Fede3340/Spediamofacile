@@ -71,8 +71,8 @@ watch(isOpen, (open) => {
 
 // --- Design tokens ---
 const modalUi = {
-  overlay: 'bg-black/45 backdrop-blur-[10px]',
-  content: 'w-[calc(100vw-1rem)] max-w-[420px] max-h-[90vh] overflow-hidden rounded-[20px] border-0 shadow-[0_24px_80px_rgba(0,0,0,0.2),0_0_0_1px_rgba(9,88,102,0.06)]',
+  overlay: 'fixed inset-0 bg-black/45 backdrop-blur-[10px] grid place-items-center p-4 sm:py-8',
+  content: 'relative w-[calc(100vw-1rem)] max-w-[420px] max-h-[90vh] overflow-hidden rounded-[20px] ring-0 border-0 p-0 bg-transparent shadow-[0_24px_80px_rgba(0,0,0,0.2),0_0_0_1px_rgba(9,88,102,0.06)]',
   body: 'p-0 overflow-y-auto overscroll-contain [scrollbar-width:none] [-webkit-overflow-scrolling:touch]',
 }
 
@@ -89,10 +89,12 @@ const PILL_INACTIVE = 'text-[#777] font-medium hover:text-[#1d2738] hover:bg-whi
     v-model:open="isOpen"
     :dismissible="!isBusy"
     :close="false"
+    :fullscreen="false"
+    :overlay="true"
     :ui="modalUi"
   >
     <template #body>
-      <div class="relative flex flex-col">
+      <div class="relative flex flex-col" @click.stop @pointerdown.stop>
         <!-- SR-only title for accessibility -->
         <div class="sr-only">
           <DialogTitle>Accedi o registrati</DialogTitle>
