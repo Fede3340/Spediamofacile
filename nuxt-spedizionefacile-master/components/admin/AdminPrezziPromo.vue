@@ -135,7 +135,7 @@ const props = defineProps({
 						<span class="inline-flex items-center justify-center px-[14px] py-[6px] bg-[#E44203] text-white font-extrabold text-[1.25rem] rounded-[40px]">8,90 &euro;</span>
 					</div>
 					<div v-if="promo.show_badges" class="flex items-center gap-[8px] mt-[6px]">
-						<span class="inline-flex items-center gap-[4px] px-[8px] py-[3px] rounded-[12px] bg-emerald-500 text-white text-[0.75rem] font-bold">-20%</span>
+						<span class="inline-flex items-center gap-[4px] px-[8px] py-[3px] rounded-[12px] bg-[#095866] text-white text-[0.75rem] font-bold">-20%</span>
 					</div>
 					<div v-if="promo.label_text" class="mt-[6px]">
 						<span

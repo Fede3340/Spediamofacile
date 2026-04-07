@@ -325,9 +325,9 @@ const togglePaymentForm = async () => {
 				:class="[
 					'mb-[16px] px-[14px] py-[10px] rounded-[12px] text-[0.8125rem] font-medium transition-all',
 					textMessageType === 'success'
-						? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+						? 'bg-[#f0fdf4] text-[#166534] ring-[1px] ring-[#166534]/10'
 						: textMessageType === 'error'
-							? 'bg-red-50 text-red-700 border border-red-200'
+							? 'bg-[#FFF5F2] text-[#E44203] ring-[1px] ring-[#E44203]/10'
 							: 'bg-[#eef7f8] text-[#095866] border border-[#B8DDE3]',
 				]">
 				{{ textMessage }}
