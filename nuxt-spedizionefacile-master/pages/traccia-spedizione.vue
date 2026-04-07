@@ -1,22 +1,13 @@
 <!--
   FILE: pages/traccia-spedizione.vue
   SCOPO: Tracking spedizione — ricerca per codice BRT/ordine/riferimento, timeline stato.
+  Design allineato al Prototipo: icon badge header, accent bar card, grey block per input.
 
-  API: GET /api/tracking/search?code=XXX (ricerca unificata: ordine interno o codice BRT).
-  COMPONENTI: nessuno (pagina standalone).
+  API: GET /api/tracking/search?code=XXX
   ROUTE: /traccia-spedizione (pubblica).
-
   DATI IN INGRESSO: ?code=XXX (query param per precompilare e cercare automaticamente).
-  DATI IN USCITA: risultato tracking con timeline e link a BRT esterno.
-
-  VINCOLI: la ricerca usa $fetch diretto (non sanctumClient) perche' e' pubblica.
-           Se la spedizione non e' nel DB, offre link diretto al tracking BRT.
-  ERRORI TIPICI: confondere raw_status (chiave interna) con status (etichetta tradotta).
-  PUNTI DI MODIFICA SICURI: timeline stati (statusTimeline), colori stato, testi UI.
-  COLLEGAMENTI: pages/account/spedizioni/, controllers/TrackingController.php.
 -->
 <script setup>
-// Meta tag SEO per la pagina di tracking
 useSeoMeta({
 	title: 'Traccia Spedizione | SpediamoFacile',
 	ogTitle: 'Traccia Spedizione | SpediamoFacile',
@@ -25,17 +16,13 @@ useSeoMeta({
 });
 
 const config = useRuntimeConfig();
-
-// Legge il codice di tracking dall'URL (query string ?code=...)
 const route = useRoute();
 const trackingCode = ref(route.query.code || '');
 
-// Stato della ricerca
 const trackingResult = ref(null);
 const trackingError = ref(null);
 const isLoading = ref(false);
 
-// Timeline degli stati della spedizione (in ordine cronologico)
 const statusTimeline = [
 	{ key: 'processing', label: 'Pagamento ricevuto', icon: 'card' },
 	{ key: 'completed', label: 'Pronto per la spedizione', icon: 'check' },
@@ -43,23 +30,11 @@ const statusTimeline = [
 	{ key: 'delivered', label: 'Consegnato', icon: 'flag' },
 ];
 
-// Determina il progresso nella timeline in base allo stato corrente
 const currentStepIndex = computed(() => {
 	if (!trackingResult.value) return -1;
-	const raw = trackingResult.value.raw_status;
-	const idx = statusTimeline.findIndex(s => s.key === raw);
-	return idx;
+	return statusTimeline.findIndex(s => s.key === trackingResult.value.raw_status);
 });
 
-// Colore del pallino per la timeline verticale
-const dotColor = (idx) => {
-	if (!trackingResult.value) return 'bg-[var(--color-brand-border)]';
-	if (idx < currentStepIndex.value) return 'bg-[var(--color-brand-primary)]';
-	if (idx === currentStepIndex.value) return 'bg-[var(--color-brand-primary)] ring-[4px] ring-[rgba(9,88,102,0.15)]';
-	return 'bg-[var(--color-brand-border)]';
-};
-
-// Colori per lo stato badge
 const statusColorClass = computed(() => {
 	if (!trackingResult.value) return '';
 	const map = {
@@ -75,24 +50,20 @@ const statusColorClass = computed(() => {
 	return map[trackingResult.value.raw_status] || 'bg-gray-50 text-[var(--color-brand-text-secondary)] border border-gray-200';
 });
 
-// Funzione che esegue il tracking della spedizione
 const trackShipment = async () => {
 	if (!trackingCode.value.trim()) return;
 	trackingError.value = null;
 	trackingResult.value = null;
 	isLoading.value = true;
-
 	try {
 		const apiBase = config.public?.apiBase || config.public?.sanctum?.baseUrl || '';
 		const response = await $fetch(`${apiBase}/api/tracking/search`, {
 			params: { code: trackingCode.value.trim() },
 			credentials: 'include',
 		});
-
 		if (response.found) {
 			trackingResult.value = response;
 		} else {
-			// Spedizione non trovata nel database, offri link diretto a BRT
 			trackingResult.value = {
 				found: false,
 				brt_tracking_url: response.brt_tracking_url,
@@ -106,354 +77,225 @@ const trackShipment = async () => {
 	}
 };
 
-// Se il codice viene passato via URL, cerca automaticamente
 onMounted(() => {
-	if (trackingCode.value) {
-		trackShipment();
-	}
+	if (trackingCode.value) trackShipment();
 });
 </script>
 
 <template>
-	<section class="tracking-page min-h-screen py-[40px] desktop:py-[60px]">
-		<div class="my-container" style="max-width: 720px;">
+	<div class="py-[32px] sm:py-[48px]" style="background: linear-gradient(180deg, #F8F9FB 0%, #EEF0F3 100%); min-height: 100vh">
+		<div class="my-container" style="max-width: 680px">
 
-			<!-- Titolo e descrizione -->
-			<div class="sf-page-intro sf-page-intro--center mb-[32px] tablet:mb-[40px]">
-				<h1 class="font-montserrat text-[2rem] font-[800] tracking-[-0.04em] text-[var(--color-brand-text)] desktop:text-[2.5rem]">Traccia la tua spedizione</h1>
-				<p class="sf-section-description mx-auto">Inserisci il codice di tracking BRT, il numero d'ordine o il riferimento mittente per seguire la tua spedizione in tempo reale.</p>
+			<!-- Header centrato -->
+			<div class="text-center mb-[28px]">
+				<div class="w-[48px] h-[48px] rounded-full flex items-center justify-center mx-auto mb-[14px]"
+					style="background: linear-gradient(135deg, #095866, #0a7489); box-shadow: 0 4px 14px rgba(9,88,102,0.2)">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="white">
+						<path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+					</svg>
+				</div>
+				<h1 class="text-[#1d2738] text-[28px] sm:text-[36px] tracking-[-0.8px] font-montserrat" style="font-weight:800">
+					Traccia spedizione
+				</h1>
+				<p class="text-[#777] text-[15px] mt-[6px]">
+					Inserisci il codice di tracciamento per seguire il tuo pacco in tempo reale.
+				</p>
 			</div>
 
-			<!-- Card di ricerca -->
-			<div class="tracking-search-card rounded-[14px] ring-[1px] ring-[#DFE2E7] bg-white p-[24px_20px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:p-[32px] mb-[24px]">
-				<label for="tracking_code" class="form-label mb-[8px]">Codice di tracking</label>
-				<div class="tracking-search-row">
-					<div class="tracking-search-input-wrap">
-						<!-- Search icon dentro l'input -->
-						<svg class="tracking-search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-						<input
-							id="tracking_code"
-							v-model="trackingCode"
-							type="text"
-							placeholder="es. 058802401600012345, SF-000042, 42..."
-							class="tracking-search-input"
-							@keyup.enter="trackShipment"
-						>
+			<!-- Card di ricerca con accent bar -->
+			<div class="rounded-[22px] overflow-hidden mb-[20px]"
+				style="box-shadow: 0 0 0 1px rgba(9,88,102,0.05), 0 4px 20px rgba(9,88,102,0.06), 0 16px 48px rgba(9,88,102,0.04)">
+				<!-- Accent bar teal -->
+				<div class="h-[4px]" style="background: linear-gradient(90deg, #095866 0%, #0b9ab3 50%, #095866 100%)" />
+				<div class="p-[20px] sm:p-[24px]" style="background: linear-gradient(180deg, #F8F9FB 0%, #EEF0F3 100%)">
+					<label class="text-[#777] text-[11px] uppercase tracking-[0.4px] mb-[8px] block" style="font-weight:700">
+						Codice tracking
+					</label>
+					<!-- Grey block per l'input -->
+					<div class="rounded-[14px] p-[12px]"
+						style="background: #E6E9EE; box-shadow: inset 0 1px 2px rgba(0,0,0,0.04)">
+						<div class="flex gap-[10px]">
+							<div class="relative flex-1">
+								<svg class="absolute left-[14px] top-1/2 -translate-y-1/2 text-[#C0C5CC] pointer-events-none"
+									xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+									<path d="M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L6.04,7.5L12,10.85L17.96,7.5L12,4.15M5,15.91L11,19.29V12.58L5,9.21V15.91M19,15.91V9.21L13,12.58V19.29L19,15.91Z" />
+								</svg>
+								<input
+									v-model="trackingCode"
+									type="text"
+									placeholder="es. BRT-2026032801234, SF-000042..."
+									class="w-full h-[48px] sm:h-[50px] rounded-[12px] pl-[42px] pr-[14px] text-[15px] text-[#1d2738] bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[3px] focus:ring-[#095866]/60 placeholder:text-[#999] outline-none transition-all duration-200"
+									style="font-weight:600"
+									@keyup.enter="trackShipment"
+								/>
+							</div>
+							<button
+								type="button"
+								:disabled="isLoading || !trackingCode.trim()"
+								class="h-[48px] sm:h-[50px] px-[22px] rounded-full text-white text-[14px] flex items-center gap-[6px] cursor-pointer shrink-0 transition-all duration-[350ms] hover:shadow-[0_8px_24px_rgba(228,66,3,0.3)] hover:-translate-y-[1px] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+								style="font-weight:700; background: linear-gradient(135deg, #E44203, #c73600); box-shadow: 0 4px 14px rgba(228,66,3,0.22)"
+								@click="trackShipment"
+							>
+								<svg v-if="isLoading" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+								<svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white">
+									<path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+								</svg>
+								{{ isLoading ? 'Ricerca...' : 'Cerca' }}
+							</button>
+						</div>
 					</div>
-					<button
-						:disabled="isLoading || !trackingCode.trim()"
-						type="button"
-						class="btn-cta tracking-search-btn"
-						@click="trackShipment">
-						<!-- Loading spinner SVG -->
-						<svg v-if="isLoading" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-						{{ isLoading ? 'Ricerca...' : 'Cerca' }}
-					</button>
+					<p v-if="trackingError" class="text-[#E44203] text-[0.8125rem] mt-[10px]">{{ trackingError }}</p>
 				</div>
-				<p v-if="trackingError" class="text-[var(--color-brand-error)] text-[0.8125rem] mt-[10px]">{{ trackingError }}</p>
 			</div>
 
 			<!-- Risultato: spedizione trovata -->
-			<div v-if="trackingResult && trackingResult.found" class="rounded-[14px] ring-[1px] ring-[#DFE2E7] bg-white p-[24px_20px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:p-[32px]">
-				<!-- Header risultato -->
-				<div class="flex items-center justify-between mb-[24px] flex-wrap gap-[10px]">
-					<h2 class="font-montserrat text-[1.125rem] font-[800] text-[var(--color-brand-text)]">Spedizione trovata</h2>
-					<span :class="statusColorClass" class="px-[14px] py-[5px] rounded-full text-[0.8125rem] font-semibold">
-						{{ trackingResult.status }}
-					</span>
-				</div>
+			<div v-if="trackingResult && trackingResult.found"
+				class="rounded-[22px] overflow-hidden"
+				style="box-shadow: 0 0 0 1px rgba(9,88,102,0.05), 0 4px 20px rgba(9,88,102,0.06), 0 16px 48px rgba(9,88,102,0.04)">
+				<!-- Accent bar -->
+				<div class="h-[4px]" style="background: linear-gradient(90deg, #095866 0%, #0b9ab3 50%, #095866 100%)" />
+				<div class="p-[22px] sm:p-[28px]" style="background: linear-gradient(180deg, #F8F9FB 0%, #EEF0F3 100%)">
+					<!-- Header risultato -->
+					<div class="flex items-center justify-between mb-[20px] pb-[16px] border-b border-[#DFE2E7] flex-wrap gap-[10px]">
+						<div>
+							<span class="text-[#999] text-[11px] uppercase tracking-[0.4px] block" style="font-weight:600">Spedizione trovata</span>
+							<span class="text-[#1d2738] text-[16px]" style="font-weight:700">#{{ trackingResult.order_id }}</span>
+						</div>
+						<span :class="statusColorClass" class="px-[12px] py-[4px] rounded-full text-[0.8125rem]" style="font-weight:700">
+							{{ trackingResult.status }}
+						</span>
+					</div>
 
-				<!-- Informazioni ordine -->
-				<div class="grid grid-cols-1 tablet:grid-cols-2 gap-[12px] mb-[28px]">
-					<div class="tracking-info-cell">
-						<p class="tracking-info-label">Numero Ordine</p>
-						<p class="tracking-info-value">#{{ trackingResult.order_id }}</p>
-					</div>
-					<div class="tracking-info-cell">
-						<p class="tracking-info-label">Data Ordine</p>
-						<p class="tracking-info-value">{{ trackingResult.created_at || '\u2014' }}</p>
-					</div>
-					<div v-if="trackingResult.brt_parcel_id" class="tracking-info-cell">
-						<p class="tracking-info-label">Codice BRT</p>
-						<p class="tracking-info-value font-mono">{{ trackingResult.brt_parcel_id }}</p>
-					</div>
-					<div class="tracking-info-cell">
-						<p class="tracking-info-label">Stato Attuale</p>
-						<p class="tracking-info-value">{{ trackingResult.status_description }}</p>
-					</div>
-				</div>
-
-				<!-- Timeline verticale -->
-				<div v-if="currentStepIndex >= 0" class="mb-[28px]">
-					<h3 class="font-montserrat text-[0.8125rem] font-[800] text-[var(--color-brand-text)] uppercase tracking-[0.06em] mb-[20px]">Avanzamento spedizione</h3>
-					<div class="tracking-timeline">
-						<div
-							v-for="(step, idx) in statusTimeline"
-							:key="step.key"
-							class="tracking-timeline-event"
-							:class="{ 'tracking-timeline-event--last': idx === statusTimeline.length - 1 }">
-							<!-- Pallino colorato -->
-							<div class="tracking-timeline-dot-col">
-								<div
-									class="tracking-timeline-dot"
-									:class="dotColor(idx)">
-									<!-- Check animato per step completati -->
-									<svg v-if="idx <= currentStepIndex" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-								</div>
-								<!-- Linea verticale -->
-								<div
-									v-if="idx < statusTimeline.length - 1"
-									class="tracking-timeline-line"
-									:class="idx < currentStepIndex ? 'bg-[var(--color-brand-primary)]' : 'bg-[var(--color-brand-border)]'"
-								/>
+					<!-- Info ordine — grey block -->
+					<div class="rounded-[14px] p-[14px] sm:p-[16px] mb-[18px]"
+						style="background: #E6E9EE; box-shadow: inset 0 1px 2px rgba(0,0,0,0.04)">
+						<div class="grid grid-cols-1 tablet:grid-cols-2 gap-[10px]">
+							<div>
+								<p class="text-[11px] uppercase tracking-[0.06em] text-[#777] mb-[2px]" style="font-weight:700">Numero Ordine</p>
+								<p class="text-[0.9375rem] text-[#1d2738]" style="font-weight:600">#{{ trackingResult.order_id }}</p>
 							</div>
-							<!-- Contenuto evento -->
-							<div class="tracking-timeline-content" :class="idx <= currentStepIndex ? 'opacity-100' : 'opacity-50'">
-								<p class="tracking-timeline-label" :class="idx === currentStepIndex ? 'text-[var(--color-brand-primary)] font-bold' : 'text-[var(--color-brand-text)]'">
-									{{ step.label }}
-								</p>
-								<p v-if="idx === currentStepIndex" class="tracking-timeline-detail">
-									Stato attuale
-								</p>
-								<p v-else-if="idx < currentStepIndex" class="tracking-timeline-detail">
-									Completato
-								</p>
+							<div>
+								<p class="text-[11px] uppercase tracking-[0.06em] text-[#777] mb-[2px]" style="font-weight:700">Data Ordine</p>
+								<p class="text-[0.9375rem] text-[#1d2738]" style="font-weight:600">{{ trackingResult.created_at || '—' }}</p>
+							</div>
+							<div v-if="trackingResult.brt_parcel_id">
+								<p class="text-[11px] uppercase tracking-[0.06em] text-[#777] mb-[2px]" style="font-weight:700">Codice BRT</p>
+								<p class="text-[0.9375rem] text-[#1d2738] font-mono" style="font-weight:600">{{ trackingResult.brt_parcel_id }}</p>
+							</div>
+							<div>
+								<p class="text-[11px] uppercase tracking-[0.06em] text-[#777] mb-[2px]" style="font-weight:700">Stato</p>
+								<p class="text-[0.9375rem] text-[#1d2738]" style="font-weight:600">{{ trackingResult.status_description }}</p>
 							</div>
 						</div>
 					</div>
-				</div>
 
-				<!-- Link tracking BRT -->
-				<div v-if="trackingResult.brt_tracking_url" class="border-t border-[var(--color-brand-border)] pt-[20px]">
+					<!-- Timeline in grey block -->
+					<div v-if="currentStepIndex >= 0" class="mb-[18px]">
+						<h3 class="font-montserrat text-[0.8125rem] text-[#1d2738] uppercase tracking-[0.06em] mb-[14px]" style="font-weight:800">
+							Avanzamento spedizione
+						</h3>
+						<div class="rounded-[16px] p-[16px] sm:p-[20px]"
+							style="background: #E6E9EE; box-shadow: inset 0 1px 2px rgba(0,0,0,0.04)">
+							<div class="flex flex-col gap-0">
+								<div
+									v-for="(step, idx) in statusTimeline"
+									:key="step.key"
+									class="flex gap-[14px]"
+								>
+									<div class="flex flex-col items-center">
+										<div
+											class="w-[32px] h-[32px] rounded-full flex items-center justify-center shrink-0"
+											:class="idx <= currentStepIndex ? 'bg-[#095866]' : 'bg-white ring-[1.5px] ring-[#DFE2E7]'"
+										>
+											<svg v-if="idx <= currentStepIndex" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+												<polyline points="20 6 9 17 4 12" />
+											</svg>
+											<svg v-else xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+												<circle cx="12" cy="12" r="4" />
+											</svg>
+										</div>
+										<div v-if="idx < statusTimeline.length - 1"
+											class="w-[2px] flex-1 min-h-[28px] rounded-[1px]"
+											:class="idx < currentStepIndex ? 'bg-[#095866]/30' : 'bg-[#D5D9E0]'"
+										/>
+									</div>
+									<div class="pb-[16px]" :class="{ 'pb-0': idx === statusTimeline.length - 1 }">
+										<span
+											class="text-[14px] block"
+											:class="idx <= currentStepIndex ? 'text-[#1d2738]' : 'text-[#999]'"
+											style="font-weight:600">
+											{{ step.label }}
+										</span>
+										<span v-if="idx === currentStepIndex" class="text-[#095866] text-[12px]" style="font-weight:600">
+											Stato attuale
+										</span>
+										<span v-else-if="idx < currentStepIndex" class="text-[#999] text-[12px]">
+											Completato
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Link BRT -->
+					<div v-if="trackingResult.brt_tracking_url" class="border-t border-[#DFE2E7] pt-[18px]">
+						<a
+							:href="trackingResult.brt_tracking_url"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="btn-secondary inline-flex items-center gap-[8px] px-[20px] py-[11px] text-[0.875rem]">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+							Dettaglio su BRT
+						</a>
+						<p class="text-[0.8125rem] text-[#777] mt-[8px]">Aggiornamenti in tempo reale sul sito ufficiale BRT.</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Risultato: non trovato -->
+			<div v-else-if="trackingResult && !trackingResult.found"
+				class="rounded-[22px] overflow-hidden text-center"
+				style="box-shadow: 0 0 0 1px rgba(9,88,102,0.05), 0 4px 20px rgba(9,88,102,0.06), 0 16px 48px rgba(9,88,102,0.04)">
+				<div class="h-[4px]" style="background: linear-gradient(90deg, #095866 0%, #0b9ab3 50%, #095866 100%)" />
+				<div class="p-[32px] sm:p-[40px]" style="background: linear-gradient(180deg, #F8F9FB 0%, #EEF0F3 100%)">
+					<div class="w-[64px] h-[64px] rounded-full flex items-center justify-center mx-auto mb-[16px]"
+						style="background: #E6E9EE">
+						<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#C0C5CC">
+							<path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+						</svg>
+					</div>
+					<p class="text-[1rem] text-[#1d2738] mb-[6px]" style="font-weight:700">Spedizione non trovata</p>
+					<p class="text-[0.875rem] text-[#777] mb-[20px] max-w-[44ch] mx-auto">
+						Il codice inserito non corrisponde a nessuna spedizione nel nostro archivio. Se hai un codice BRT, prova direttamente sul sito del corriere.
+					</p>
 					<a
+						v-if="trackingResult.brt_tracking_url"
 						:href="trackingResult.brt_tracking_url"
 						target="_blank"
 						rel="noopener noreferrer"
 						class="btn-secondary inline-flex items-center gap-[8px] px-[20px] py-[11px] text-[0.875rem]">
-						<!-- External link icon SVG -->
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-						Dettaglio tracking su BRT
+						Cerca su BRT
 					</a>
-					<p class="text-[0.8125rem] text-[var(--color-brand-text-secondary)] mt-[10px]">Clicca per vedere tutti i dettagli e gli aggiornamenti in tempo reale sul sito ufficiale BRT.</p>
 				</div>
 			</div>
 
-			<!-- Risultato: non trovato nel database — empty state con illustrazione -->
-			<div v-else-if="trackingResult && !trackingResult.found" class="rounded-[14px] ring-[1px] ring-[#DFE2E7] bg-white p-[32px_20px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:p-[40px] text-center">
-				<!-- Illustrazione empty state: pacco con lente d'ingrandimento -->
-				<div class="tracking-empty-illustration">
-					<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" fill="none">
-						<!-- Pacco -->
-						<rect x="16" y="28" width="36" height="30" rx="4" fill="var(--color-brand-secondary-soft-bg)" stroke="var(--color-brand-secondary-soft-border)" stroke-width="2"/>
-						<line x1="16" y1="40" x2="52" y2="40" stroke="var(--color-brand-secondary-soft-border)" stroke-width="2"/>
-						<line x1="34" y1="28" x2="34" y2="58" stroke="var(--color-brand-secondary-soft-border)" stroke-width="2"/>
-						<path d="M16 32C16 29.8 17.8 28 20 28H48C50.2 28 52 29.8 52 32V40H16V32Z" fill="var(--color-brand-secondary-selected-bg)"/>
-						<!-- Lente d'ingrandimento -->
-						<circle cx="56" cy="24" r="12" fill="white" stroke="var(--color-brand-primary)" stroke-width="2.5"/>
-						<circle cx="56" cy="24" r="7" fill="none" stroke="var(--color-brand-primary)" stroke-width="1.5" stroke-dasharray="3 2"/>
-						<line x1="64.5" y1="33" x2="70" y2="38.5" stroke="var(--color-brand-primary)" stroke-width="2.5" stroke-linecap="round"/>
-						<!-- Punto interrogativo nella lente -->
-						<text x="56" y="28" text-anchor="middle" fill="var(--color-brand-primary)" font-size="14" font-weight="700" font-family="Inter, sans-serif">?</text>
-					</svg>
-				</div>
-				<p class="text-[1rem] font-bold text-[var(--color-brand-text)] mb-[6px]">Spedizione non trovata</p>
-				<p class="text-[0.875rem] text-[var(--color-brand-text-secondary)] mb-[20px] max-w-[44ch] mx-auto">Il codice inserito non corrisponde a nessuna spedizione nel nostro archivio. Se hai un codice BRT, prova direttamente sul sito del corriere.</p>
-				<a
-					v-if="trackingResult.brt_tracking_url"
-					:href="trackingResult.brt_tracking_url"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="btn-secondary inline-flex items-center gap-[8px] px-[20px] py-[11px] text-[0.875rem]">
-					<!-- External link icon SVG -->
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-					Cerca su BRT
-				</a>
-			</div>
-
-			<!-- Empty state iniziale (nessuna ricerca ancora) -->
-			<div v-else-if="!trackingResult && !trackingError && !isLoading" class="tracking-idle-hint">
-				<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-secondary-soft-border)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-					<circle cx="11" cy="11" r="8"/>
-					<line x1="21" y1="21" x2="16.65" y2="16.65"/>
+			<!-- Idle hint (prima della ricerca) -->
+			<div v-else-if="!trackingResult && !trackingError && !isLoading"
+				class="flex flex-col items-center py-[32px] opacity-60">
+				<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C0C5CC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
 				</svg>
-				<p class="text-[0.875rem] text-[var(--color-brand-text-secondary)] mt-[8px]">Inserisci un codice per avviare la ricerca</p>
+				<p class="text-[0.875rem] text-[#777] mt-[8px]">Inserisci un codice per avviare la ricerca</p>
 			</div>
 
-			<!-- Link all'area personale -->
-			<p class="text-[var(--color-brand-text-secondary)] text-[0.8125rem] text-center mt-[24px]">
-				Puoi anche tracciare le tue spedizioni dall'area <NuxtLink to="/account/spedizioni" class="text-[var(--color-brand-primary)] font-semibold hover:underline">Le tue spedizioni</NuxtLink>.
+			<!-- Link area personale -->
+			<p class="text-[#777] text-[0.8125rem] text-center mt-[24px]">
+				Puoi anche tracciare le tue spedizioni dall'area
+				<NuxtLink to="/account/spedizioni" class="text-[#095866] font-semibold hover:underline">Le tue spedizioni</NuxtLink>.
 			</p>
+
 		</div>
-	</section>
+	</div>
 </template>
-
-<style scoped>
-/* ============================================================
-   TRACKING PAGE — layout e componenti specifici
-   ============================================================ */
-
-.tracking-page {
-	background: linear-gradient(180deg, #F8F9FB 0%, #EEF0F3 100%);
-}
-
-/* --- Barra di ricerca --- */
-.tracking-search-row {
-	display: flex;
-	gap: 12px;
-	align-items: stretch;
-}
-
-.tracking-search-input-wrap {
-	position: relative;
-	flex: 1;
-}
-
-.tracking-search-icon {
-	position: absolute;
-	left: 16px;
-	top: 50%;
-	transform: translateY(-50%);
-	color: var(--color-brand-text-secondary);
-	pointer-events: none;
-}
-
-.tracking-search-input {
-	width: 100%;
-	background: var(--color-brand-secondary-soft-bg);
-	padding: 14px 16px 14px 46px;
-	border: none;
-	border-radius: 12px;
-	font-size: 0.9375rem;
-	color: var(--color-brand-text);
-	box-shadow: inset 0 0 0 1.5px var(--color-brand-border);
-	transition: box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
-	height: 50px;
-}
-.tracking-search-input::placeholder {
-	color: var(--color-brand-text-secondary);
-	opacity: 0.6;
-}
-.tracking-search-input:focus {
-	outline: none;
-	box-shadow: inset 0 0 0 1.5px var(--color-brand-primary), 0 0 0 3px rgba(9, 88, 102, 0.1);
-}
-
-.tracking-search-btn {
-	white-space: nowrap;
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	padding: 0 28px;
-	font-size: 0.9375rem;
-	border-radius: 999px;
-}
-
-/* Mobile: stack verticale */
-@media (max-width: 519px) {
-	.tracking-search-row {
-		flex-direction: column;
-	}
-	.tracking-search-btn {
-		justify-content: center;
-		padding: 13px 24px;
-	}
-}
-
-/* --- Celle info ordine --- */
-.tracking-info-cell {
-	background: var(--color-brand-secondary-soft-bg);
-	border-radius: 14px;
-	padding: 14px 16px;
-	box-shadow: inset 0 0 0 1px var(--color-brand-border);
-}
-.tracking-info-label {
-	font-size: 0.6875rem;
-	font-weight: 700;
-	text-transform: uppercase;
-	letter-spacing: 0.06em;
-	color: var(--color-brand-text-secondary);
-	margin-bottom: 3px;
-}
-.tracking-info-value {
-	font-size: 0.9375rem;
-	font-weight: 600;
-	color: var(--color-brand-text);
-}
-
-/* --- Timeline verticale --- */
-.tracking-timeline {
-	display: flex;
-	flex-direction: column;
-}
-
-.tracking-timeline-event {
-	display: flex;
-	align-items: flex-start;
-	gap: 14px;
-	min-height: 56px;
-}
-.tracking-timeline-event--last {
-	min-height: auto;
-}
-
-.tracking-timeline-dot-col {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	flex-shrink: 0;
-	width: 20px;
-}
-
-.tracking-timeline-dot {
-	width: 20px;
-	height: 20px;
-	border-radius: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-shrink: 0;
-	transition: background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.tracking-timeline-line {
-	width: 2px;
-	flex: 1;
-	min-height: 24px;
-	border-radius: 1px;
-	transition: background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.tracking-timeline-content {
-	padding-bottom: 16px;
-	transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.tracking-timeline-event--last .tracking-timeline-content {
-	padding-bottom: 0;
-}
-
-.tracking-timeline-label {
-	font-size: 0.9375rem;
-	font-weight: 600;
-	line-height: 1.3;
-}
-
-.tracking-timeline-detail {
-	font-size: 0.75rem;
-	color: var(--color-brand-text-secondary);
-	margin-top: 2px;
-}
-
-/* --- Empty state illustrazione --- */
-.tracking-empty-illustration {
-	margin-bottom: 16px;
-}
-
-/* --- Idle hint (prima della ricerca) --- */
-.tracking-idle-hint {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 32px 20px;
-	opacity: 0.7;
-}
-</style>

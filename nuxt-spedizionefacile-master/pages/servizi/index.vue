@@ -1,7 +1,8 @@
 <!--
   PAGINA: Servizi (servizi/index.vue)
-  Landing pubblica dei servizi SpediamoFacile.
-  Mobile-first: hero compatto, card leggibili e CTA immediate verso dettaglio e preventivo.
+  Design allineato al Prototipo: Zap badge hero, stats strip 4 col,
+  article cards con icon+category+time badge, teal gradient bottom CTA.
+  API: GET /api/public/services — con fallback hardcoded.
 -->
 <script setup>
 useSeoMeta({
@@ -11,38 +12,58 @@ useSeoMeta({
 	ogDescription: 'Servizi chiari, attivabili in pochi secondi e pensati per spedire meglio senza complicazioni.',
 });
 
+// Mappa completa slug → metadati visuali (icon SVG path, accent color, category, readTime)
+// Copre tutti i slug noti dall'API + fallback Prototipo
+const serviceMeta = {
+	'ritiro-a-domicilio': { accent: '#E44203', category: 'Servizio principale', readTime: '3 min', icon: 'M18,18.5A1.5,1.5 0 0,1 16.5,17A1.5,1.5 0 0,1 18,15.5A1.5,1.5 0 0,1 19.5,17A1.5,1.5 0 0,1 18,18.5M19.5,9.5L21.46,12H17V9.5M6,18.5A1.5,1.5 0 0,1 4.5,17A1.5,1.5 0 0,1 6,15.5A1.5,1.5 0 0,1 7.5,17A1.5,1.5 0 0,1 6,18.5M20,8H17V4H3C1.89,4 1,4.89 1,6V17H3A3,3 0 0,0 6,20A3,3 0 0,0 9,17H15A3,3 0 0,0 18,20A3,3 0 0,0 21,17H23V12L20,8Z' },
+	'spedizione-senza-etichetta': { accent: '#095866', category: 'Servizio opzionale', readTime: '2 min', icon: 'M5.5,7A1.5,1.5 0 0,1 4,5.5A1.5,1.5 0 0,1 5.5,4A1.5,1.5 0 0,1 7,5.5A1.5,1.5 0 0,1 5.5,7M21.41,11.58L12.41,2.58C12.05,2.22 11.55,2 11,2H4C2.89,2 2,2.89 2,4V11C2,11.55 2.22,12.05 2.59,12.41L11.58,21.41C11.95,21.77 12.45,22 13,22C13.55,22 14.05,21.77 14.41,21.41L21.41,14.41C21.78,14.05 22,13.55 22,13C22,12.44 21.77,11.94 21.41,11.58Z' },
+	'tracking-live': { accent: '#095866', category: 'Incluso', readTime: '2 min', icon: 'M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z' },
+	'pagamento-alla-consegna': { accent: '#E44203', category: 'Servizio opzionale', readTime: '4 min', icon: 'M20,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4M20,11H4V8H20Z' },
+	'assicurazione': { accent: '#095866', category: 'Servizio opzionale', readTime: '3 min', icon: 'M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z' },
+	'assicurazione-spedizione': { accent: '#095866', category: 'Servizio opzionale', readTime: '3 min', icon: 'M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z' },
+	'assistenza': { accent: '#095866', category: 'Incluso', readTime: '2 min', icon: 'M12,1C7,1 3,5 3,10V17A3,3 0 0,0 6,20H9V12H5V10A7,7 0 0,1 12,3A7,7 0 0,1 19,10V12H15V20H18A3,3 0 0,0 21,17V10C21,5 16.97,1 12,1Z' },
+	'assistenza-rapida': { accent: '#095866', category: 'Incluso', readTime: '2 min', icon: 'M12,1C7,1 3,5 3,10V17A3,3 0 0,0 6,20H9V12H5V10A7,7 0 0,1 12,3A7,7 0 0,1 19,10V12H15V20H18A3,3 0 0,0 21,17V10C21,5 16.97,1 12,1Z' },
+	'sponda-idraulica': { accent: '#095866', category: 'Servizio opzionale', readTime: '3 min', icon: 'M4,18V14H8V16H10V14H14V18H4M13,13V11H15V9H17V11H19V13H13M4,8V4H14V8H4M6,6V10H12V6H6Z' },
+	'spedizione-programmata': { accent: '#095866', category: 'Servizio opzionale', readTime: '3 min', icon: 'M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.9 20.1,3 19,3H18V1M17,13H12V18H17V13Z' },
+	'chiamata-pre-consegna': { accent: '#095866', category: 'Servizio opzionale', readTime: '2 min', icon: 'M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z' },
+	'punti-fedelta': { accent: '#E44203', category: 'Vantaggio', readTime: '2 min', icon: 'M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z' },
+};
+
+// Icona/accent/categoria di default se il slug non è mappato
+const defaultMeta = { accent: '#095866', category: 'Servizio', readTime: '3 min', icon: 'M18,18.5A1.5,1.5 0 0,1 16.5,17A1.5,1.5 0 0,1 18,15.5A1.5,1.5 0 0,1 19.5,17A1.5,1.5 0 0,1 18,18.5M19.5,9.5L21.46,12H17V9.5M6,18.5A1.5,1.5 0 0,1 4.5,17A1.5,1.5 0 0,1 6,15.5A1.5,1.5 0 0,1 7.5,17A1.5,1.5 0 0,1 6,18.5M20,8H17V4H3C1.89,4 1,4.89 1,6V17H3A3,3 0 0,0 6,20A3,3 0 0,0 9,17H15A3,3 0 0,0 18,20A3,3 0 0,0 21,17H23V12L20,8Z' };
+
 const fallbackServices = [
-	{ title: 'Pagamento alla consegna', description: "Il corriere incassa per tuo conto e ti permette di gestire il contrassegno con opzioni chiare e riepilogo completo.", icon: 'mdi:cash-register', slug: 'pagamento-alla-consegna' },
-	{ title: 'Spedizione senza etichetta', description: "Se non hai stampante, il corriere si occupa dell'etichetta al ritiro e tu mantieni il flusso rapido anche da smartphone.", icon: 'mdi:qrcode', slug: 'spedizione-senza-etichetta' },
-	{ title: 'Ritiro a domicilio', description: 'Prenoti online, scegli data e indirizzo e lasci che il corriere passi direttamente da te.', icon: 'mdi:home-clock-outline', slug: 'ritiro-a-domicilio' },
-	{ title: 'Assicurazione sulla spedizione', description: 'Proteggi il valore della merce con una copertura semplice da attivare e facile da capire.', icon: 'mdi:shield-check-outline', slug: 'assicurazione-spedizione' },
-	{ title: 'Sponda idraulica', description: 'Per colli pesanti o voluminosi, con supporto dedicato quando il carico non è gestibile manualmente.', icon: 'mdi:forklift', slug: 'sponda-idraulica' },
-	{ title: 'Spedizione programmata', description: 'Pianifica il ritiro in anticipo e organizza meglio spedizioni ricorrenti o operative.', icon: 'mdi:calendar-clock-outline', slug: 'spedizione-programmata' },
-	{ title: 'Chiamata pre-consegna', description: 'Il destinatario viene avvisato prima della consegna per ridurre i tentativi a vuoto.', icon: 'mdi:phone-ring-outline', slug: 'chiamata-pre-consegna' },
-	{ title: 'Assistenza rapida', description: 'Supporto veloce dal preventivo alla consegna, con risposte tracciabili e meno attrito operativo.', icon: 'mdi:headset', slug: 'assistenza-rapida' },
-	{ title: 'Punti fedeltà', description: 'Ogni spedizione accumula vantaggi e ti aiuta a risparmiare sui flussi successivi.', icon: 'mdi:star-circle-outline', slug: 'punti-fedelta' },
+	{ slug: 'ritiro-a-domicilio', title: 'Ritiro a domicilio', description: 'Prenoti online, scegli data e indirizzo e lasci che il corriere passi direttamente da te.' },
+	{ slug: 'spedizione-senza-etichetta', title: 'Spedizione senza etichetta', description: 'Non hai una stampante? Il corriere porta e applica l\'etichetta al momento del ritiro.' },
+	{ slug: 'tracking-live', title: 'Tracking in tempo reale', description: 'Segui la tua spedizione passo dopo passo con aggiornamenti in tempo reale fino alla consegna.' },
+	{ slug: 'pagamento-alla-consegna', title: 'Contrassegno', description: 'Fai pagare il destinatario alla consegna. Incasso in contanti o assegno con rimborso automatico.' },
+	{ slug: 'assicurazione', title: 'Assicurazione spedizione', description: 'Proteggi il valore della tua spedizione con la copertura completa contro danni e smarrimento.' },
+	{ slug: 'assistenza', title: 'Assistenza dedicata', description: 'Supporto rapido e personalizzato dal preventivo alla consegna. Siamo sempre a disposizione.' },
 ];
 
-const serviceIcons = {
-	'mdi:cash-register': '<path d="M2,17H22V21H2V17M6.25,7H9V6H6V3H18V6H15V7H17.75C19,7 20,8 20,9.25V14.75C20,16 19,17 17.75,17H6.25C5,17 4,16 4,14.75V9.25C4,8 5,7 6.25,7M10,8V11H14V8H10M6,9.25V14.75C6,14.89 6.11,15 6.25,15H17.75C17.89,15 18,14.89 18,14.75V9.25C18,9.11 17.89,9 17.75,9H15V12H9V9H6.25C6.11,9 6,9.11 6,9.25Z"/>',
-	'mdi:qrcode': '<path d="M3,11H5V13H3V11M11,5H13V9H11V5M9,11H13V15H11V13H9V11M15,11H17V13H19V11H21V13H19V15H21V19H19V21H17V19H13V21H11V17H15V15H17V13H15V11M19,19V15H17V19H19M15,3H21V9H15V3M17,5V7H19V5H17M3,3H9V9H3V3M5,5V7H7V5H5M3,15H9V21H3V15M5,17V19H7V17H5Z"/>',
-	'mdi:home-clock-outline': '<path d="M10,2V4.26L12,5.59V4H21V16H17V13.97L15,14.56V16H14.5A6.5,6.5 0 0,1 8,22.5C8,22.67 8,22.84 8.03,23H2V20H4V12L10,2M7.5,10L4.18,16H9V14.5A6.5,6.5 0 0,1 7.5,10M14,18A4,4 0 0,0 10,22A4,4 0 0,0 14,26A4,4 0 0,0 18,22A4,4 0 0,0 14,18M14,20.5A1.5,1.5 0 0,1 15.5,22A1.5,1.5 0 0,1 14,23.5A1.5,1.5 0 0,1 12.5,22A1.5,1.5 0 0,1 14,20.5Z"/>',
-	'mdi:shield-check-outline': '<path d="M21,11C21,16.55 17.16,21.74 12,23C6.84,21.74 3,16.55 3,11V5L12,1L21,5V11M12,21C15.75,20 19,15.54 19,11.22V6.3L12,3.18L5,6.3V11.22C5,15.54 8.25,20 12,21M10,14.17L7.83,12L6.41,13.41L10,17L17.59,9.41L16.17,8L10,14.17Z"/>',
-	'mdi:forklift': '<path d="M6,4V11H4C2.89,11 2,11.89 2,13V17A3,3 0 0,0 5,20A3,3 0 0,0 8,17H10A3,3 0 0,0 13,20A3,3 0 0,0 16,17V13L13,4H6M13,8A1,1 0 0,1 14,9A1,1 0 0,1 13,10A1,1 0 0,1 12,9A1,1 0 0,1 13,8M17,5H22V7H19V17H17V5M5,15.5A1.5,1.5 0 0,1 6.5,17A1.5,1.5 0 0,1 5,18.5A1.5,1.5 0 0,1 3.5,17A1.5,1.5 0 0,1 5,15.5M13,15.5A1.5,1.5 0 0,1 14.5,17A1.5,1.5 0 0,1 13,18.5A1.5,1.5 0 0,1 11.5,17A1.5,1.5 0 0,1 13,15.5Z"/>',
-	'mdi:calendar-clock-outline': '<path d="M6,1V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H11.1C12.36,22.24 14.09,23 16,23A7,7 0 0,0 23,16C23,14.21 22.32,12.58 21.18,11.36L21,5C21,3.89 20.1,3 19,3H18V1H16V3H8V1H6M5,5H19V7H5V5M5,9H19V10.1C18.24,9.42 17.17,9 16,9A7,7 0 0,0 9,16C9,17.17 9.42,18.24 10.1,19H5V9M16,11A5,5 0 0,1 21,16A5,5 0 0,1 16,21A5,5 0 0,1 11,16A5,5 0 0,1 16,11M15,13V17L18,18.5L18.75,17.25L16.5,16.15V13H15Z"/>',
-	'mdi:phone-ring-outline': '<path d="M4,7C2.89,7 2,7.89 2,9V15A2,2 0 0,0 4,17H6L8,19V17H20A2,2 0 0,0 22,15V9C22,7.89 21.1,7 20,7H4M4,9H20V15H7.17L6,16.17V15H4V9M16.75,11.69L15.34,10.28L12,13.62L10.66,12.28L9.25,13.69L12,16.44L16.75,11.69Z"/>',
-	'mdi:headset': '<path d="M12,1C7,1 3,5 3,10V17A3,3 0 0,0 6,20H9V12H5V10A7,7 0 0,1 12,3A7,7 0 0,1 19,10V12H15V20H18A3,3 0 0,0 21,17V10C21,5 16.97,1 12,1Z"/>',
-	'mdi:star-circle-outline': '<path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6L9.14,11.14L4,12L7.86,15.14L7.14,20L12,17.77L16.86,20L16.14,15.14L20,12L14.86,11.14L12,6Z"/>',
-};
-
-const serviceMeta = {
-	'pagamento-alla-consegna': { badge: 'Più richiesto', chips: ['Incasso gestito', 'Riepilogo chiaro'] },
-	'spedizione-senza-etichetta': { badge: 'Zero stampante', chips: ['QR o ritiro diretto', 'Attivazione rapida'] },
-	'ritiro-a-domicilio': { badge: 'Incluso nel flusso', chips: ['Data programmabile', 'Meno movimenti'] },
-	'assicurazione-spedizione': { badge: 'Protezione extra', chips: ['Fino al valore dichiarato', 'Attiva in pochi click'] },
-	'sponda-idraulica': { badge: 'Colli pesanti', chips: ['Supporto al carico', 'Riduce attrito operativo'] },
-	'assistenza-rapida': { badge: 'Supporto', chips: ['Risposte veloci', 'Canali tracciabili'] },
-};
+// Stats strip data
+const statsData = [
+	{
+		label: 'Corriere BRT',
+		sub: 'Partner ufficiale',
+		icon: 'M18,18.5A1.5,1.5 0 0,1 16.5,17A1.5,1.5 0 0,1 18,15.5A1.5,1.5 0 0,1 19.5,17A1.5,1.5 0 0,1 18,18.5M19.5,9.5L21.46,12H17V9.5M6,18.5A1.5,1.5 0 0,1 4.5,17A1.5,1.5 0 0,1 6,15.5A1.5,1.5 0 0,1 7.5,17A1.5,1.5 0 0,1 6,18.5M20,8H17V4H3C1.89,4 1,4.89 1,6V17H3A3,3 0 0,0 6,20A3,3 0 0,0 9,17H15A3,3 0 0,0 18,20A3,3 0 0,0 21,17H23V12L20,8Z',
+	},
+	{
+		label: '15 Paesi',
+		sub: 'Copertura europea',
+		icon: 'M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z',
+	},
+	{
+		label: 'Ritiro 24h',
+		sub: 'Dal giorno dopo',
+		icon: 'M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z',
+	},
+	{
+		label: '4.8/5',
+		sub: 'Valutazione clienti',
+		icon: 'M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z',
+	},
+];
 
 const sanctum = useSanctumClient();
 const services = ref(fallbackServices);
@@ -51,106 +72,144 @@ onMounted(async () => {
 	try {
 		const res = await sanctum('/api/public/services');
 		const data = res?.data || res;
-		if (Array.isArray(data) && data.length > 0) {
-			services.value = data;
-		}
-	} catch {
-		// Fallback locale: il layout resta stabile anche se l'API non è disponibile.
-	}
+		if (Array.isArray(data) && data.length > 0) services.value = data;
+	} catch {}
 });
 
-const getServiceLink = (service) => `/servizi/${service.slug}`;
-const getServiceSvg = (service) => serviceIcons[service.icon || ''] || serviceIcons['mdi:headset'];
-const getServiceMeta = (service) => serviceMeta[service.slug] || { badge: 'Servizio', chips: ['Flusso guidato', 'Configurazione chiara'] };
+// Restituisce i metadati visuali per un servizio dato lo slug
+const getServiceMeta = (service) => serviceMeta[service.slug] || defaultMeta;
 const getServiceDescription = (service) => service.description || service.meta_description || service.intro || '';
 </script>
 
 <template>
-	<div class="services-page-shell">
-		<!-- Hero -->
-		<section class="services-section services-section--white">
-			<div class="my-container">
-				<div class="services-intro-panel">
-					<div class="services-intro-panel__copy">
-						<p class="services-intro-panel__eyebrow">I nostri servizi</p>
-						<h1 class="services-intro-panel__title">Ogni opzione è chiara, leggibile e pronta a rientrare nel tuo flusso di spedizione.</h1>
-						<p class="services-intro-panel__text">Dalla stampa etichetta al contrassegno, fino al ritiro a domicilio e alla copertura assicurativa: qui trovi un catalogo semplice da orientare anche da smartphone.</p>
-					</div>
+	<div style="background: linear-gradient(180deg, #F8F9FB 0%, #EEF0F3 100%); min-height: 100vh">
+		<div class="my-container pt-[24px] sm:pt-[40px] pb-[80px]">
 
-					<div class="services-intro-panel__actions">
-						<NuxtLink to="/preventivo" class="btn-cta btn-compact">
-							Vai al preventivo
-						</NuxtLink>
-						<NuxtLink to="/contatti" class="btn-secondary btn-compact">
-							Parla con noi
-						</NuxtLink>
-					</div>
+			<!-- Hero -->
+			<div class="text-center mb-[40px] sm:mb-[56px]">
+				<div class="inline-flex items-center gap-[6px] h-[32px] px-[14px] rounded-full bg-[#095866]/[0.08] text-[#095866] text-[12px] mb-[16px]" style="font-weight:700">
+					<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+						<path d="M7,2V13H10V22L17,10H13L17,2H7Z" />
+					</svg>
+					I nostri servizi
 				</div>
+				<h1 class="text-[#1d2738] text-[28px] sm:text-[40px] tracking-[-0.8px] max-w-[600px] mx-auto font-montserrat" style="font-weight:800">
+					Tutto quello che ti serve per spedire al meglio
+				</h1>
+				<p class="text-[#777] text-[15px] sm:text-[16px] mt-[10px] max-w-[480px] mx-auto leading-[1.6]">
+					Servizi semplici e trasparenti. Attivabili in pochi secondi durante il preventivo.
+				</p>
+			</div>
 
-				<div class="services-quick-pills">
-					<span class="services-quick-pill">Ritiro a domicilio</span>
-					<span class="services-quick-pill">Attivazione in pochi click</span>
-					<span class="services-quick-pill">Supporto rapido</span>
+			<!-- Stats strip -->
+			<div class="grid grid-cols-2 sm:grid-cols-4 gap-[10px] mb-[36px]">
+				<div
+					v-for="stat in statsData"
+					:key="stat.label"
+					class="flex items-center gap-[10px] rounded-[16px] p-[14px] transition-all duration-[350ms] hover:ring-[2px] hover:ring-[#095866]/50 hover:shadow-[0_4px_16px_rgba(9,88,102,0.06)]"
+					style="background: linear-gradient(180deg, #F8F9FB 0%, #EEF0F3 100%); ring: 1.5px solid #DFE2E7; box-shadow: 0 0 0 1.5px #DFE2E7"
+				>
+					<div class="w-[36px] h-[36px] rounded-[10px] bg-[#095866]/[0.08] flex items-center justify-center shrink-0">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#095866">
+							<path :d="stat.icon" />
+						</svg>
+					</div>
+					<div>
+						<span class="text-[#1d2738] text-[13px] block" style="font-weight:700">{{ stat.label }}</span>
+						<span class="text-[#999] text-[11px]" style="font-weight:500">{{ stat.sub }}</span>
+					</div>
 				</div>
 			</div>
-		</section>
 
-		<!-- Grid servizi -->
-		<section class="services-section services-section--alt">
-			<div class="my-container">
-				<div class="services-grid">
-					<NuxtLink
-						v-for="service in services"
-						:key="service.slug"
-						:to="getServiceLink(service)"
-						class="service-spotlight-card"
+			<!-- Griglia servizi -->
+			<div class="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 gap-[16px]">
+				<NuxtLink
+					v-for="service in services"
+					:key="service.slug"
+					:to="`/servizi/${service.slug}`"
+					class="group flex flex-col rounded-[22px] overflow-hidden min-h-[220px] transition-all duration-[350ms] hover:ring-[2px] hover:ring-[#095866]/50 hover:shadow-[0_4px_16px_rgba(9,88,102,0.06)] no-underline"
+					style="box-shadow: 0 0 0 1px rgba(9,88,102,0.05), 0 4px 20px rgba(9,88,102,0.06), 0 16px 48px rgba(9,88,102,0.04)"
+				>
+					<div
+						class="flex flex-col flex-1 p-[20px] sm:p-[24px]"
+						style="background: linear-gradient(180deg, #F8F9FB 0%, #EEF0F3 100%)"
 					>
-						<div class="service-spotlight-card__top">
-							<span class="service-spotlight-card__icon-shell">
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="service-spotlight-card__icon" fill="currentColor" v-html="getServiceSvg(service)"></svg>
+						<!-- Icon + Category -->
+						<div class="flex items-center gap-[12px] mb-[12px]">
+							<div
+								class="w-[44px] h-[44px] rounded-[12px] flex items-center justify-center shrink-0 transition-transform duration-[400ms] group-hover:scale-[1.06]"
+								:style="{ background: getServiceMeta(service).accent + '1a' }"
+							>
+								<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+									:fill="getServiceMeta(service).accent">
+									<path :d="getServiceMeta(service).icon" />
+								</svg>
+							</div>
+							<div>
+								<span
+									class="text-[10px] uppercase tracking-[0.4px] px-[7px] py-[1px] rounded-full"
+									:style="{ fontWeight: 700, color: getServiceMeta(service).accent, background: getServiceMeta(service).accent + '1a' }"
+								>
+									{{ service.type || getServiceMeta(service).category }}
+								</span>
+							</div>
+						</div>
+
+						<!-- Titolo -->
+						<h3
+							class="text-[#1d2738] text-[16px] sm:text-[17px] tracking-[-0.2px] mb-[6px] group-hover:text-[#095866] transition-colors duration-[350ms]"
+							style="font-weight:700"
+						>
+							{{ service.title }}
+						</h3>
+						<!-- Descrizione -->
+						<p class="text-[#777] text-[13px] leading-[1.55] flex-1">
+							{{ getServiceDescription(service) }}
+						</p>
+
+						<!-- Footer card -->
+						<div class="flex items-center justify-between mt-[16px] pt-[12px] border-t border-[#DFE2E7]">
+							<span class="text-[12px] text-[#999] flex items-center gap-[3px]" style="font-weight:500">
+								<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+									<path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z" />
+								</svg>
+								{{ getServiceMeta(service).readTime }}
 							</span>
-							<span class="service-spotlight-card__badge">{{ getServiceMeta(service).badge }}</span>
+							<span
+								class="text-[#095866] text-[13px] flex items-center gap-[4px] group-hover:gap-[8px] transition-all duration-[350ms]"
+								style="font-weight:600"
+							>
+								Leggi
+								<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+								</svg>
+							</span>
 						</div>
-
-						<div class="service-spotlight-card__body">
-							<h3 class="service-spotlight-card__title">{{ service.title }}</h3>
-							<p class="service-spotlight-card__text">{{ getServiceDescription(service) }}</p>
-						</div>
-
-						<div class="service-spotlight-card__chips">
-							<span v-for="chip in getServiceMeta(service).chips" :key="chip" class="service-spotlight-card__chip">{{ chip }}</span>
-						</div>
-
-						<div class="service-spotlight-card__footer">
-							<span>Scopri il servizio</span>
-							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-						</div>
-					</NuxtLink>
-				</div>
-			</div>
-		</section>
-
-		<!-- CTA finale -->
-		<section class="services-section services-section--white">
-			<div class="my-container">
-				<div class="services-bottom-cta">
-					<div class="services-bottom-cta__copy">
-						<p class="services-intro-panel__eyebrow">Prossimo passo</p>
-						<h2 class="services-bottom-cta__title">Non trovi quello che cerchi?</h2>
-						<p class="services-bottom-cta__text">Calcola un preventivo per scoprire tutti i servizi disponibili per la tua spedizione, oppure contattaci per un caso operativo specifico.</p>
 					</div>
-					<div class="services-bottom-cta__actions">
-						<NuxtLink to="/preventivo" class="btn-cta btn-compact">
-							Calcola il preventivo
-						</NuxtLink>
-						<NuxtLink to="/contatti" class="btn-secondary btn-compact">
-							Parla con noi
-						</NuxtLink>
-					</div>
-				</div>
+				</NuxtLink>
 			</div>
-		</section>
+
+			<!-- Bottom CTA teal gradient -->
+			<div class="mt-[48px] rounded-[22px] p-[28px] sm:p-[40px] text-center"
+				style="background: linear-gradient(135deg, #095866, #0a7489)">
+				<h2 class="text-white text-[22px] sm:text-[28px] tracking-[-0.5px] font-montserrat" style="font-weight:800">
+					Inizia subito a spedire
+				</h2>
+				<p class="text-white/60 text-[14px] sm:text-[15px] mt-[8px] max-w-[440px] mx-auto">
+					Calcola il preventivo in 30 secondi. Tutti i servizi sono attivabili durante il processo.
+				</p>
+				<NuxtLink
+					to="/preventivo"
+					class="inline-flex items-center gap-[8px] h-[52px] px-[28px] rounded-full text-white text-[15px] mt-[20px] transition-all duration-[350ms] hover:shadow-[0_8px_28px_rgba(228,66,3,0.35)] hover:-translate-y-[1px]"
+					style="font-weight:700; background: #E44203; box-shadow: 0 6px 24px rgba(228,66,3,0.35)"
+				>
+					Calcola preventivo
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+					</svg>
+				</NuxtLink>
+			</div>
+
+		</div>
 	</div>
 </template>
-
-<!-- CSS in assets/css/servizi.css -->
