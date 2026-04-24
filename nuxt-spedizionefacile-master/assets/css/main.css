@@ -149,8 +149,6 @@ input[type="number"] {
 		--sf-motion-fast: 180ms;
 		--sf-motion-base: 260ms;
 		--sf-motion-slow: 420ms;
-		--sf-motion-loop: 4.8s;
-		--sf-motion-loop-slow: 8.5s;
 		--sf-ease-soft: var(--sf-ease);
 		/* Sprint UX Polish — easing press SENZA overshoot (1.56 causava
 		 * lo "spring-back" su spam-click di bottoni/toggle/CTA).
@@ -302,7 +300,6 @@ input[type="number"] {
 		--color-accent-500: #E44203;          /* = brand accent */
 		--color-accent-600: #C93800;          /* = brand accent-hover */
 		--color-accent-700: #A82E00;
-		--color-accent-800: #7C2D12;
 
 		/* Semantic success (teal-green, non verde acido) */
 		--color-success-bg: #E8F5F2;
@@ -326,7 +323,6 @@ input[type="number"] {
 		--color-success-surface-soft: #F0FDF4;   /* superficie verde molto chiara */
 		--color-success-surface-tint: #D1FAE5;   /* superficie verde tinta */
 		--color-success-emerald: #047857;        /* verde sistema (Stripe-like) */
-		--color-success-forest: #166534;         /* verde scuro forte */
 
 		/* ============================================================ */
 		/* HOVER: delicato ~4% — indica "cliccabile", NON stato attivo */
@@ -335,7 +331,6 @@ input[type="number"] {
 		--interaction-hover-teal-strong: rgba(9, 88, 102, 0.07);
 		--interaction-hover-accent: rgba(228, 66, 3, 0.04);
 		--interaction-hover-accent-strong: rgba(228, 66, 3, 0.07);
-		--interaction-hover-neutral: rgba(15, 23, 42, 0.035);
 		/* ACTIVE/SELECTED: intenso ~20% + bordo marcato — inequivocabilmente diverso dall'hover */
 		--interaction-active-teal: rgba(9, 88, 102, 0.20);
 		--interaction-active-teal-strong: rgba(9, 88, 102, 0.26);
@@ -353,12 +348,8 @@ input[type="number"] {
 		--color-text-slate-alt: #7A8392;         /* slate più tenue */
 		--color-border-faint: #E5EAF0;           /* bordo molto tenue */
 		--color-border-neutral: #C8CCD0;         /* bordo neutro medio */
-		--color-border-neutral-alt: #C0C5CC;     /* bordo neutro alt */
 		--surface-neutral-50: #FAFBFC;           /* superficie neutra top */
 		--surface-neutral-100: #F5F8FA;          /* superficie neutra */
-		--surface-teal-wash-alt: #F8FAFB;        /* teal wash alt */
-		--surface-teal-mist: #EDF7F8;            /* teal mist */
-		--surface-teal-haze: #EEF2F4;            /* teal haze */
 		--surface-teal-glow: #D8E9F0;            /* teal luminoso */
 
 		/* === MOTION 4 DURATE + 3 EASING === */
@@ -369,9 +360,6 @@ input[type="number"] {
 
 		--ease-out: var(--sf-ease);
 		--ease-in: var(--sf-ease);
-		/* Sprint UX Polish — rimosso overshoot (1.56). Il "bounce" è ora un
-		 * out-expo controllato, nessuno spring-back su spam-click. */
-		--ease-bounce: var(--sf-ease);
 
 		/* === GRADIENT CTA UNIFICATO (arancione brand) === */
 		--gradient-cta: linear-gradient(135deg, #E44203 0%, #c73600 100%);
