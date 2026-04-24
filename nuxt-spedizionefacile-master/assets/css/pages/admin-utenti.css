@@ -30,8 +30,8 @@
 .admin-utenti-stat {
 	display: flex;
 	align-items: center;
-	gap: 12px;
-	padding: 14px;
+	gap: 10px;
+	padding: 10px 14px;
 	background: var(--admin-surface);
 	border: 1px solid var(--admin-border);
 	border-radius: var(--admin-radius);
@@ -42,8 +42,8 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 38px;
-	height: 38px;
+	width: 32px;
+	height: 32px;
 	border-radius: var(--admin-radius-sm);
 	flex-shrink: 0;
 }
@@ -56,15 +56,15 @@
 .admin-utenti-stat__copy { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .admin-utenti-stat__label {
 	margin: 0;
-	font-size: 0.6875rem;
+	font-size: 0.75rem;
 	font-weight: 700;
-	letter-spacing: 0.1em;
+	letter-spacing: 0.05em;
 	text-transform: uppercase;
 	color: var(--admin-text-muted);
 }
 .admin-utenti-stat__value {
 	margin: 0;
-	font-size: 1.5rem;
+	font-size: 1.25rem;
 	font-weight: 800;
 	line-height: 1.1;
 	letter-spacing: -0.02em;

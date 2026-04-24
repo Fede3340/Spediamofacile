@@ -304,38 +304,16 @@ const togglePaymentForm = async () => {
 				</template>
 			</AccountPageHeader>
 
+			<!-- Banner duplicato "Pagamenti pronti" rimosso (P13): ripeteva cardsStats già nei chip header.
+			     Tenuto solo "Metodo predefinito" come info utile distinta. -->
 			<div
 				v-if="!showFormPayments"
-				class="mb-[20px] grid gap-[14px] desktop:grid-cols-[minmax(0,1.35fr)_minmax(260px,0.65fr)]">
-				<div class="rounded-[16px] bg-white px-[16px] py-[14px]" style="box-shadow: 0 2px 8px rgba(9,88,102,0.06), 0 0 0 1px rgba(9,88,102,0.04);">
-					<p class="text-[0.7rem] font-semibold uppercase tracking-[1px] text-[var(--color-brand-primary)]">Pagamenti pronti</p>
-					<h2 class="mt-[4px] font-montserrat text-[1rem] font-[800] text-[var(--color-brand-text)]">Carte salvate e wallet nello stesso punto</h2>
-					<p class="mt-[4px] text-[0.8125rem] leading-[1.5] text-[var(--color-brand-text-secondary)]">
-						Conserva i metodi usati piu spesso per checkout e ricariche, con il predefinito sempre leggibile e accesso rapido al portafoglio.
-					</p>
-					<div class="mt-[10px] flex flex-wrap gap-[6px]">
-						<span class="inline-flex items-center gap-[5px] rounded-full bg-[#F0F6F7] px-[10px] py-[4px] text-[0.6875rem] font-semibold text-[var(--color-brand-primary)]">
-							{{ cardsStats.total }} carte salvate
-						</span>
-						<span class="inline-flex items-center gap-[5px] rounded-full bg-[rgba(9,88,102,0.06)] px-[10px] py-[4px] text-[0.6875rem] font-semibold text-[var(--color-brand-primary)]">
-							{{ cardsStats.defaults }} predefinita
-						</span>
-					</div>
-					<div class="mt-[12px]">
-						<NuxtLink
-							to="/account/portafoglio"
-							class="btn-secondary btn-compact inline-flex min-h-[38px] items-center justify-center gap-[6px] px-[12px] py-[6px] text-[12px] font-semibold">
-							Apri portafoglio
-						</NuxtLink>
-					</div>
-				</div>
-				<div class="rounded-[16px] bg-[#F8FCFD] px-[16px] py-[14px]" style="box-shadow: 0 1px 3px rgba(9,88,102,0.06);">
-					<p class="text-[0.7rem] font-semibold uppercase tracking-[1px] text-[var(--color-brand-primary)]">Metodo predefinito</p>
-					<p class="mt-[6px] text-[0.9375rem] font-bold text-[var(--color-brand-text)]">{{ defaultPaymentLabel }}</p>
-					<p class="mt-[4px] text-[0.8125rem] leading-[1.5] text-[var(--color-brand-text-secondary)]">
-						{{ cardsStats.defaults ? 'La carta principale resta in evidenza e puoi cambiarla in un tocco.' : 'Appena scegli una carta predefinita la vedrai qui, sempre pronta per checkout e wallet.' }}
-					</p>
-				</div>
+				class="mb-[20px] rounded-[16px] bg-[#F8FCFD] px-[16px] py-[14px]" style="box-shadow: 0 1px 3px rgba(9,88,102,0.06);">
+				<p class="text-[0.75rem] font-semibold uppercase tracking-[1px] text-[var(--color-brand-primary)]">Metodo predefinito</p>
+				<p class="mt-[6px] text-[1rem] font-bold text-[var(--color-brand-text)]">{{ defaultPaymentLabel }}</p>
+				<p class="mt-[4px] text-[0.875rem] leading-[1.5] text-[var(--color-brand-text-secondary)]">
+					{{ cardsStats.defaults ? 'La carta principale resta in evidenza e puoi cambiarla in un tocco.' : 'Appena scegli una carta predefinita la vedrai qui, sempre pronta per checkout e wallet.' }}
+				</p>
 			</div>
 
 			<!-- Feedback -->

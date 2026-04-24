@@ -245,17 +245,10 @@ onMounted(() => {
 				</template>
 			</AccountPageHeader>
 
-			<!-- Wallet hero card: palette brand (teal) coerente sitewide, bordo delicato. -->
-			<div class="rounded-[20px] px-[20px] py-[20px] relative overflow-hidden mb-[20px] sf-animate-in sf-animate-in-1 tablet:px-[24px] tablet:py-[22px]"
-				style="background: linear-gradient(135deg, #F3FAFB 0%, #E6F2F4 55%, #DDEBEE 100%); border: 1px solid rgba(9, 88, 102, 0.12); box-shadow: 0 2px 8px rgba(9, 88, 102, 0.06);">
-				<!-- Subtle dot pattern texture -->
-				<div class="absolute inset-0 sf-wallet-dot-pattern pointer-events-none"></div>
-				<div class="absolute top-0 right-0 w-[180px] h-[180px] rounded-full opacity-[0.06]"
-					style="background: radial-gradient(circle, #095866 0%, transparent 70%);"></div>
-				<!-- Decorative corner accent -->
-				<div class="absolute bottom-[-40px] left-[-40px] w-[120px] h-[120px] rounded-full opacity-[0.04]"
-					style="background: radial-gradient(circle, #E44203 0%, transparent 70%);"></div>
-				<div class="relative z-10 flex flex-col gap-[18px]">
+			<!-- Wallet hero card compatto (P13: rimosso dot-pattern + 2 radial-gradient = rumore visivo). -->
+			<div class="rounded-[16px] px-[20px] py-[18px] mb-[20px] sf-animate-in sf-animate-in-1 tablet:px-[24px] tablet:py-[20px]"
+				style="background: linear-gradient(135deg, #F3FAFB 0%, #E6F2F4 100%); border: 1px solid rgba(9, 88, 102, 0.12);">
+				<div class="flex flex-col gap-[18px]">
 					<div class="flex flex-col gap-[14px] desktop:flex-row desktop:items-end desktop:justify-between">
 						<div class="max-w-[560px]">
 							<span class="text-[var(--color-brand-text-muted)] text-[11px] uppercase tracking-[0.12em] block mb-[6px] font-[700]">Wallet personale</span>

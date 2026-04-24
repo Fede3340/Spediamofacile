@@ -772,21 +772,27 @@
 
 .sf-admin-stats-grid {
 	display: grid;
-	gap: 14px;
-	grid-template-columns: repeat(1, minmax(0, 1fr));
+	gap: 10px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 720px) {
+	.sf-admin-stats-grid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
 }
 
 .sf-admin-stat-card {
 	position: relative;
 	overflow: hidden;
-	border-radius: 16px;
+	border-radius: 12px;
 	border: 1px solid rgba(9, 88, 102, 0.12);
-	background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(247, 250, 251, 0.995) 100%);
-	box-shadow: var(--sf-shell-shadow);
-	padding: 14px;
+	background: #ffffff;
+	box-shadow: 0 1px 3px rgba(9, 88, 102, 0.05);
+	padding: 10px 12px;
 	display: flex;
 	flex-direction: column;
-	gap: 6px;
+	gap: 4px;
 }
 
 .sf-admin-stat-card::before {

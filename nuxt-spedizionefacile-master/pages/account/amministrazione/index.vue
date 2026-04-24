@@ -170,26 +170,9 @@ const statusBadgeStyle = (status) => useStatusBadgeStyle(status);
 
 			<template v-if="dashboardData || isLoading">
 				<div v-if="dashboardData || isLoading" class="space-y-[16px]">
-					<section class="sf-admin-console-surface sf-admin-console-surface--hub">
-						<div class="sf-admin-console-surface__intro">
-							<div class="min-w-0">
-								<p class="sf-admin-console-surface__eyebrow">Andamento operativo</p>
-								<h2
-									class="text-[1.2rem] font-[800] leading-[1.08] text-[var(--color-brand-text)]"
-									style="font-family: var(--font-montserrat)">
-									Ordini, ricavi e attivita recente
-								</h2>
-								<p class="mt-[6px] text-[0.9rem] leading-[1.5] text-[var(--color-brand-text-secondary)]">
-									Una sola superficie per leggere urgenze, volumi e ultimi aggiornamenti senza pannelli ridondanti.
-								</p>
-							</div>
-							<div class="sf-admin-console-surface__intro-badges">
-								<span class="sf-admin-console-surface__badge">Aggiornamento live</span>
-								<span class="sf-admin-console-surface__badge sf-admin-console-surface__badge--accent">KPI essenziali</span>
-							</div>
-						</div>
-
-						<section class="sf-admin-console-notice" :class="primaryUrgentAction ? 'sf-admin-console-notice--alert' : 'sf-admin-console-notice--calm'">
+					<!-- Hub wrapper rimosso (P13: era contenitore semantico vuoto + intro duplicato del page header).
+					     Le 3 sezioni interne ora sono dirette figlie della console, riducendo annidamento e altezza pagina. -->
+					<section class="sf-admin-console-notice" :class="primaryUrgentAction ? 'sf-admin-console-notice--alert' : 'sf-admin-console-notice--calm'">
 							<div class="sf-admin-console-notice__body">
 								<div class="sf-admin-console-notice__copy">
 									<p class="sf-admin-console-notice__eyebrow">Notifiche</p>
@@ -250,7 +233,7 @@ const statusBadgeStyle = (status) => useStatusBadgeStyle(status);
 
 							<div v-else class="sf-admin-console-feed">
 								<NuxtLink
-									v-for="item in activityItems.slice(0, 8)"
+									v-for="item in activityItems.slice(0, 5)"
 									:key="item.id"
 									to="/account/amministrazione/ordini"
 									class="sf-admin-console-feed__item"
@@ -277,7 +260,6 @@ const statusBadgeStyle = (status) => useStatusBadgeStyle(status);
 									</NuxtLink>
 							</div>
 						</section>
-					</section>
 				</div>
 
 				<div v-else class="py-[32px]">

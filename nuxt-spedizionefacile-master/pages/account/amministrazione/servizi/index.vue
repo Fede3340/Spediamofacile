@@ -118,58 +118,58 @@ onMounted(() => {
 			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
 
 			<div class="grid grid-cols-2 tablet:grid-cols-4 gap-[14px]">
-				<div class="rounded-[18px] bg-white p-[18px] ring-[1px] ring-[#DFE2E7]" style="box-shadow: 0 2px 12px rgba(9,88,102,0.08)">
-					<div class="flex items-start gap-[12px]">
-						<div class="w-[36px] h-[36px] rounded-[10px] bg-[#F0F7F8] flex items-center justify-center">
+				<div class="rounded-[16px] bg-white px-[14px] py-[10px] ring-[1px] ring-[#DFE2E7]" style="box-shadow: 0 2px 8px rgba(9,88,102,0.06)">
+					<div class="flex items-center gap-[10px]">
+						<div class="w-[32px] h-[32px] rounded-[8px] bg-[#F0F7F8] flex items-center justify-center">
 							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-[var(--color-brand-primary)]" fill="currentColor">
 								<path d="M12,2L2,7L12,12L22,7L12,2M4,9.5V16.5L12,21L20,16.5V9.5L12,14L4,9.5Z" />
 							</svg>
 						</div>
 						<div>
 							<p class="text-[0.6875rem] font-semibold uppercase tracking-[0.5px] text-[#7A8392] mb-[2px]">Servizi</p>
-							<p class="text-[1.5rem] font-bold text-[#1d2738] leading-tight">{{ articles.length }}</p>
+							<p class="text-[1.25rem] font-bold text-[#1d2738] leading-tight">{{ articles.length }}</p>
 						</div>
 					</div>
 				</div>
 
-				<div class="rounded-[18px] bg-white p-[18px] ring-[1px] ring-[#DFE2E7]" style="box-shadow: 0 2px 12px rgba(9,88,102,0.08)">
-					<div class="flex items-start gap-[12px]">
-						<div class="w-[36px] h-[36px] rounded-[10px] bg-[#ECFDF3] flex items-center justify-center">
+				<div class="rounded-[16px] bg-white px-[14px] py-[10px] ring-[1px] ring-[#DFE2E7]" style="box-shadow: 0 2px 8px rgba(9,88,102,0.06)">
+					<div class="flex items-center gap-[10px]">
+						<div class="w-[32px] h-[32px] rounded-[8px] bg-[#ECFDF3] flex items-center justify-center">
 							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-[#047857]" fill="currentColor">
 								<path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" />
 							</svg>
 						</div>
 						<div>
 							<p class="text-[0.6875rem] font-semibold uppercase tracking-[0.5px] text-[#7A8392] mb-[2px]">Pubblicati</p>
-							<p class="text-[1.5rem] font-bold text-[#047857] leading-tight">{{ publishedArticles.length }}</p>
+							<p class="text-[1.25rem] font-bold text-[#047857] leading-tight">{{ publishedArticles.length }}</p>
 						</div>
 					</div>
 				</div>
 
-				<div class="rounded-[18px] bg-white p-[18px] ring-[1px] ring-[#DFE2E7]" style="box-shadow: 0 2px 12px rgba(9,88,102,0.08)">
-					<div class="flex items-start gap-[12px]">
-						<div class="w-[36px] h-[36px] rounded-[10px] bg-[#FFF7F2] flex items-center justify-center">
+				<div class="rounded-[16px] bg-white px-[14px] py-[10px] ring-[1px] ring-[#DFE2E7]" style="box-shadow: 0 2px 8px rgba(9,88,102,0.06)">
+					<div class="flex items-center gap-[10px]">
+						<div class="w-[32px] h-[32px] rounded-[8px] bg-[#FFF7F2] flex items-center justify-center">
 							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-[#E44203]" fill="currentColor">
 								<path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z" />
 							</svg>
 						</div>
 						<div>
 							<p class="text-[0.6875rem] font-semibold uppercase tracking-[0.5px] text-[#7A8392] mb-[2px]">Bozze</p>
-							<p class="text-[1.5rem] font-bold text-[#E44203] leading-tight">{{ draftArticles.length }}</p>
+							<p class="text-[1.25rem] font-bold text-[#E44203] leading-tight">{{ draftArticles.length }}</p>
 						</div>
 					</div>
 				</div>
 
-				<div class="rounded-[18px] bg-white p-[18px] ring-[1px] ring-[#DFE2E7]" style="box-shadow: 0 2px 12px rgba(9,88,102,0.08)">
-					<div class="flex items-start gap-[12px]">
-						<div class="w-[36px] h-[36px] rounded-[10px] bg-[#F7FAFC] flex items-center justify-center">
+				<div class="rounded-[16px] bg-white px-[14px] py-[10px] ring-[1px] ring-[#DFE2E7]" style="box-shadow: 0 2px 8px rgba(9,88,102,0.06)">
+					<div class="flex items-center gap-[10px]">
+						<div class="w-[32px] h-[32px] rounded-[8px] bg-[#F7FAFC] flex items-center justify-center">
 							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-[#6A7486]" fill="currentColor">
 								<path d="M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M7,7H17V9H7V7M7,11H17V13H7V11M7,15H13V17H7V15Z" />
 							</svg>
 						</div>
 						<div>
 							<p class="text-[0.6875rem] font-semibold uppercase tracking-[0.5px] text-[#7A8392] mb-[2px]">Ordinati</p>
-							<p class="text-[1.5rem] font-bold text-[#1d2738] leading-tight">{{ orderedArticles.length }}</p>
+							<p class="text-[1.25rem] font-bold text-[#1d2738] leading-tight">{{ orderedArticles.length }}</p>
 						</div>
 					</div>
 				</div>

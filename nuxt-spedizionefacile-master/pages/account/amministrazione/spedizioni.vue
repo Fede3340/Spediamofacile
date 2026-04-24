@@ -111,15 +111,8 @@ onMounted(() => { fetchShipments(); });
 				</div>
 			</div>
 
-			<!-- Tabella spedizioni -->
+			<!-- Tabella spedizioni — header duplicato rimosso (P13: AccountPageHeader sopra ha già stesso titolo) -->
 			<div class="admin-spedizioni-table-card mt-[18px] desktop:mt-[22px]">
-				<div class="mb-[12px] flex flex-col gap-[6px] border-b border-[#EEF1F3] pb-[12px] tablet:flex-row tablet:items-end tablet:justify-between">
-					<div>
-						<h2 class="text-[16px] font-bold text-[#1d2738] font-['Montserrat',sans-serif]">Lista spedizioni BRT</h2>
-						<p class="mt-[4px] text-[13px] text-[#5A6474] leading-[1.4]">Tracking, consegna e azioni con layout speculare agli ordini.</p>
-					</div>
-				</div>
-
 				<div v-if="tabLoading" class="py-[24px] flex justify-center">
 					<div class="w-[32px] h-[32px] border-3 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)] rounded-full animate-spin"></div>
 				</div>

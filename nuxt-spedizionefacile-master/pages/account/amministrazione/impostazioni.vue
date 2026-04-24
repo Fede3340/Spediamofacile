@@ -66,25 +66,8 @@ onMounted(() => {
 
 			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
 
-			<div
-				class="rounded-[18px] bg-white ring-[1px] ring-[#DFE2E7] px-[18px] py-[18px]"
-				style="box-shadow: 0 2px 12px rgba(9,88,102,0.08)">
-				<div class="flex flex-col gap-[12px] desktop:flex-row desktop:items-start desktop:justify-between">
-					<div class="max-w-[760px]">
-						<p class="text-[0.75rem] font-semibold uppercase tracking-[0.08em] text-[#6A7486] mb-[6px]">Configurazione piattaforma</p>
-						<h2 class="text-[1.125rem] font-bold text-[#1d2738] font-['Montserrat',sans-serif]">Chiavi operative e parametri sensibili</h2>
-						<p class="text-[0.875rem] text-[#5A6474] mt-[4px] leading-[1.65]">
-							Questa pagina resta intenzionalmente semplice: una guida breve sopra, tre gruppi di campi sotto e un solo salvataggio finale.
-							Qui imposti le chiavi che governano checkout, wallet e integrazione BRT.
-						</p>
-					</div>
-					<div class="flex flex-wrap items-center gap-[8px]">
-						<span class="inline-flex items-center px-[10px] py-[5px] rounded-full bg-[#F4FAFC] text-[var(--color-brand-primary)] text-[0.75rem] font-medium border border-[#D8E9F0]">Chiavi lato server</span>
-						<span class="inline-flex items-center px-[10px] py-[5px] rounded-full bg-[#F8FAFC] text-[#5A6474] text-[0.75rem] font-medium border border-[#E5EAF0]">Solo corriere BRT</span>
-						<span class="inline-flex items-center px-[10px] py-[5px] rounded-full bg-[#FFF7F2] text-[#A34B18] text-[0.75rem] font-medium border border-[#F2D6C6]">Salvataggio manuale</span>
-					</div>
-				</div>
-			</div>
+			<!-- Banner intro rimosso (P13: AccountPageHeader sopra ha già titolo + descrizione + chip).
+			     Era duplicazione "meta-page-header doppio" (audit). -->
 
 			<div class="grid grid-cols-1 desktop:grid-cols-2 gap-[16px]">
 				<div
