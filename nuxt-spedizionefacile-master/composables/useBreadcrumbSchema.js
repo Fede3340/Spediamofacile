@@ -42,5 +42,12 @@ export const useBreadcrumbSchema = (items) => {
     }),
   }
 
-  useSchemaOrg(schema, 'breadcrumb-schema')
+  // P9: useSchemaOrg wrapper rimosso — inline useHead direttamente.
+  useHead({
+    script: [{
+      key: 'breadcrumb-schema-0',
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(schema),
+    }],
+  })
 }

@@ -15,27 +15,32 @@ useSeoMeta({
 
 // Organization + WebSite schema sono iniettati globalmente da app.vue via useSiteSchema().
 // Qui aggiungiamo solo WebApplication schema, specifico della homepage.
-useSchemaOrg([
-	{
-		'@context': 'https://schema.org',
-		'@type': 'WebApplication',
-		'@id': 'https://spediamofacile.it/#webapp',
-		name: 'SpedizioneFacile',
-		url: 'https://spediamofacile.it',
-		applicationCategory: 'BusinessApplication',
-		applicationSubCategory: 'Shipping',
-		operatingSystem: 'Any (web-based)',
-		browserRequirements: 'Requires JavaScript. Richiede un browser moderno.',
-		inLanguage: 'it-IT',
-		offers: {
-			'@type': 'Offer',
-			price: '0',
-			priceCurrency: 'EUR',
-			description: 'Registrazione e preventivo gratuiti. Paghi solo le spedizioni effettive.',
-		},
-		publisher: { '@id': 'https://spediamofacile.it/#organization' },
-	},
-]);
+// (P9: ex useSchemaOrg wrapper inline — 3 righe, non serve composable.)
+useHead({
+	script: [{
+		key: 'home-webapp-schema',
+		type: 'application/ld+json',
+		innerHTML: JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'WebApplication',
+			'@id': 'https://spediamofacile.it/#webapp',
+			name: 'SpedizioneFacile',
+			url: 'https://spediamofacile.it',
+			applicationCategory: 'BusinessApplication',
+			applicationSubCategory: 'Shipping',
+			operatingSystem: 'Any (web-based)',
+			browserRequirements: 'Requires JavaScript. Richiede un browser moderno.',
+			inLanguage: 'it-IT',
+			offers: {
+				'@type': 'Offer',
+				price: '0',
+				priceCurrency: 'EUR',
+				description: 'Registrazione e preventivo gratuiti. Paghi solo le spedizioni effettive.',
+			},
+			publisher: { '@id': 'https://spediamofacile.it/#organization' },
+		}),
+	}],
+});
 
 // Il preventivo rapido è il componente <Preventivo /> (hero della homepage).
 // Gestisce origine/destinazione, pacchi, peso e 3 dimensioni, e continua
