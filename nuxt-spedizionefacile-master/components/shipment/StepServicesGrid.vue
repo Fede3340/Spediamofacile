@@ -36,7 +36,8 @@ const emit = defineEmits([
 	'remove-configured-service',
 ]);
 
-const INTERACTION_LOCK_MS = 820;
+// 250ms basta a evitare doppi click — 820ms faceva pensare "rotto" (P8 audit).
+const INTERACTION_LOCK_MS = 250;
 const interactionLocks = reactive({});
 
 const withInteractionLock = (lockKey, callback) => {

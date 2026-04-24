@@ -180,7 +180,9 @@ export default function useContenutoHeader() {
 				// Guard: ferma eventuale interval precedente prima di crearne uno nuovo.
 				// Evita accumulo di polling duplicati su navigazioni SPA Home → altro → Home.
 				if (homepageHeroPoll) { clearInterval(homepageHeroPoll); homepageHeroPoll = null; }
-				homepageHeroPoll = setInterval(refreshHomepageImage, 30000);
+				// Polling 120s (2 min) — meno aggressivo per batteria/CPU.
+				// Update da admin arrivano comunque via 'homepage-image-updated' event + 'storage' event.
+				homepageHeroPoll = setInterval(refreshHomepageImage, 120000);
 				window.addEventListener('focus', refreshHomepageImage);
 				window.addEventListener('storage', onHomepageImageStorage);
 				window.addEventListener('homepage-image-updated', onHomepageImageEvent);

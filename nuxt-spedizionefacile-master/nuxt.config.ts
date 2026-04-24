@@ -61,11 +61,11 @@ export default defineNuxtConfig({
 				{ name: 'format-detection', content: 'telephone=no' },
 			],
 			link: [
+				// Preload solo i 4 pesi above-the-fold (P11 perf agent).
+				// Inter 500/700 e Montserrat 400 caricati on-demand via font-display: swap.
 				{ rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/inter-latin-400-normal.woff2', crossorigin: '' },
-				{ rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/inter-latin-500-normal.woff2', crossorigin: '' },
 				{ rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/inter-latin-600-normal.woff2', crossorigin: '' },
 				{ rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/inter-latin-700-normal.woff2', crossorigin: '' },
-				{ rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/montserrat-latin-400-normal.woff2', crossorigin: '' },
 				{ rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/montserrat-latin-600-normal.woff2', crossorigin: '' },
 			],
 		},

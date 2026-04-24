@@ -316,7 +316,7 @@ function onFieldBlur(pack, packIndex, field) {
 														]"
 													>
 														<span class="package-type-switcher__icon-wrap sf-shared-segment__icon" aria-hidden="true">
-															<img :src="`/img/quote/first-step/${packageType.img}`" :alt="packageType.text" :width="packageType.width" :height="packageType.height" class="package-type-switcher__icon-image" loading="eager" decoding="async" draggable="false" />
+															<img :src="`/img/quote/first-step/${packageType.img}`" :alt="packageType.text" :width="packageType.width" :height="packageType.height" class="package-type-switcher__icon-image" :loading="pack.package_type === packageType.text ? 'eager' : 'lazy'" decoding="async" draggable="false" />
 														</span>
 														<span class="sf-shared-segment__title">{{ packageType.text }}</span>
 													</button>
