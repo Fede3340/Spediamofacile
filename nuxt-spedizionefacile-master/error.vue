@@ -89,7 +89,7 @@ const handleHome = () => {
 							<path d="M0 30 L60 0 L120 30 L60 60 Z" fill="#f4a17a" />
 							<path d="M0 30 L60 60 L60 120 L0 90 Z" fill="url(#errorBox404)" />
 							<path d="M120 30 L60 60 L60 120 L120 90 Z" fill="#0a7489" />
-							<path d="M0 30 L60 60 L120 30" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.4" />
+							<path d="M0 30 L60 60 L120 30" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.4" />
 							<!-- nastro arancione -->
 							<rect x="58" y="0" width="4" height="120" fill="#e44203" opacity="0.85" />
 							<rect x="-2" y="44" width="124" height="4" fill="#e44203" opacity="0.85" transform="skewY(-26.5)" />
@@ -119,7 +119,7 @@ const handleHome = () => {
 						</g>
 						<g transform="translate(140 24)" fill="#e44203">
 							<circle cx="14" cy="14" r="14" opacity="0.18" />
-							<path d="M14 5 v10 M14 19 v.01" stroke="#e44203" stroke-width="3.2" stroke-linecap="round" />
+							<path d="M14 5 v10 M14 19 v.01" stroke="#e44203" stroke-width="3" stroke-linecap="round" />
 						</g>
 					</svg>
 
@@ -163,7 +163,7 @@ const handleHome = () => {
 
 					<NuxtLink
 						v-if="is404"
-						to="/traccia-spedizione"
+						to="/traccia"
 						class="btn btn-secondary error-card__cta"
 					>
 						Traccia spedizione

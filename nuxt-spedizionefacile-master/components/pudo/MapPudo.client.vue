@@ -83,7 +83,7 @@ const formatDistance = (meters) => {
 const createPointIcon = (isSelected) => {
 	const size = isSelected ? 36 : 28;
 	const inner = isSelected
-		? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+		? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
 		: '<span class="pudo-marker-dot"></span>';
 
 	const html = `
@@ -105,7 +105,7 @@ const createPointIcon = (isSelected) => {
 const createReferenceIcon = () => {
 	const html = `
 		<div class="pudo-ref-marker">
-			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 				<path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"></path>
 				<circle cx="12" cy="9" r="2.5"></circle>
 			</svg>

@@ -109,7 +109,7 @@ defineEmits(['update:content-description', 'update:content-error', 'update:sms-e
 							viewBox="0 0 24 24"
 							fill="none"
 							stroke="white"
-							stroke-width="2.7"
+							stroke-width="2"
 							stroke-linecap="round"
 							stroke-linejoin="round"
 							aria-hidden="true">

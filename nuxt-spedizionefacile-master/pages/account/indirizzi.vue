@@ -271,7 +271,7 @@ const tabs = computed(() => [
 						<circle cx="48" cy="48" r="46" fill="#F0F6F7" />
 						<path d="M48 22a14 14 0 0 0-14 14c0 10.5 14 26 14 26s14-15.5 14-26a14 14 0 0 0-14-14Zm0 19a5 5 0 1 1 0-10 5 5 0 0 1 0 10Z" fill="#095866" />
 						<circle cx="68" cy="64" r="14" fill="#E44203" />
-						<path d="M62 64h12M68 58v12" stroke="#fff" stroke-width="2.5" stroke-linecap="round" />
+						<path d="M62 64h12M68 58v12" stroke="#fff" stroke-width="2" stroke-linecap="round" />
 					</svg>
 				</div>
 				<h2 class="sf-addr-empty__title">La tua rubrica è ancora vuota</h2>

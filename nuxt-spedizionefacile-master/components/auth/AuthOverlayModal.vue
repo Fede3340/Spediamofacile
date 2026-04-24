@@ -219,7 +219,7 @@ const modalUi = {
             @click="closeModal"
           >
             <span class="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#E6E9EE] group-hover:bg-[#DDE3E9] transition-colors">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             </span>

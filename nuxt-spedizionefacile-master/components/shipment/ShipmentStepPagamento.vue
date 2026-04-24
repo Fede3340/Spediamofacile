@@ -360,7 +360,7 @@ const resolvedBillingShippingFullAddress = computed(() => {
 						<NuxtLink to="/" class="sf-flow-cta sf-flow-cta--primary">
 							Torna al preventivo
 							<span class="sf-flow-cta__arrow" aria-hidden="true">
-								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 									<path d="M5 12h14M13 5l7 7-7 7" />
 								</svg>
 							</span>
@@ -422,7 +422,7 @@ const resolvedBillingShippingFullAddress = computed(() => {
 								class="payment-summary-card__toggle-chevron"
 								:class="{ 'payment-summary-card__toggle-chevron--open': paymentSummaryExpanded }"
 								aria-hidden="true">
-								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 									<path d="M6 9l6 6 6-6" />
 								</svg>
 							</span>
@@ -443,7 +443,7 @@ const resolvedBillingShippingFullAddress = computed(() => {
 											type="button"
 											class="payment-summary-section__edit"
 											@click="$emit('edit-packages')">
-											<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+											<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 												<path d="M12 20h9" />
 												<path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z" />
 											</svg>
@@ -485,7 +485,7 @@ const resolvedBillingShippingFullAddress = computed(() => {
 											type="button"
 											class="payment-summary-section__edit"
 											@click="$emit('edit-addresses')">
-											<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+											<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 												<path d="M12 20h9" />
 												<path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z" />
 											</svg>
@@ -507,7 +507,7 @@ const resolvedBillingShippingFullAddress = computed(() => {
 											type="button"
 											class="payment-summary-section__edit"
 											@click="$emit('edit-services')">
-											<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+											<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 												<path d="M12 20h9" />
 												<path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z" />
 											</svg>
@@ -557,7 +557,7 @@ const resolvedBillingShippingFullAddress = computed(() => {
 						v-else-if="visiblePaymentBootstrapError"
 						class="shipment-stage-error"
 						role="alert">
-						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 							<circle cx="12" cy="12" r="10" />
 							<line x1="12" y1="8" x2="12" y2="12" />
 							<line x1="12" y1="16" x2="12.01" y2="16" />

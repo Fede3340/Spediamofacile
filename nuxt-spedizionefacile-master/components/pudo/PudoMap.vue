@@ -53,7 +53,7 @@ const buildMarkerSvg = (selected: boolean): string => {
 	return `
 		<svg xmlns="http://www.w3.org/2000/svg" width="30" height="40" viewBox="0 0 30 40">
 			<path d="M15 1 C7 1 1 7 1 15 c0 9.5 14 23.5 14 23.5 S29 24.5 29 15 C29 7 23 1 15 1 z"
-				fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
+				fill="${fill}" stroke="${stroke}" stroke-width="2"/>
 			<circle cx="15" cy="14" r="5" fill="#ffffff"/>
 		</svg>`
 }

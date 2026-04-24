@@ -110,7 +110,7 @@ useHead({
 				</svg>
 				<input ref="searchInputRef" v-model="searchQuery" type="search" class="faq-search__input" placeholder="Cerca: contrassegno, ritiro, fattura, reclamo..." autocomplete="off" aria-label="Cerca tra le domande frequenti">
 				<button v-if="searchQuery" type="button" class="faq-search__clear" aria-label="Cancella ricerca" @click="searchQuery = ''">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<path d="M18 6 6 18" />
 						<path d="m6 6 12 12" />
 					</svg>
@@ -176,7 +176,7 @@ useHead({
 								viewBox="0 0 24 24"
 								fill="none"
 								stroke="currentColor"
-								stroke-width="1.6"
+								stroke-width="2"
 								stroke-linecap="round"
 								stroke-linejoin="round"
 							>
@@ -226,7 +226,7 @@ useHead({
 											viewBox="0 0 24 24"
 											fill="none"
 											stroke="currentColor"
-											stroke-width="2.2"
+											stroke-width="2"
 											stroke-linecap="round"
 											stroke-linejoin="round"
 										>

@@ -37,7 +37,7 @@ const getBrandIcon = (brand) => {
     <!-- Empty state -->
     <div v-if="payments.data.length === 0" class="bg-white rounded-[16px] p-[20px] shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-transparent text-center">
       <div class="w-[64px] h-[64px] mx-auto mb-[16px] bg-[#F5F6F9] rounded-full flex items-center justify-center">
-        <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#095866" opacity="0.4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#095866" opacity="0.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
       </div>
       <h2 class="font-montserrat text-[1.125rem] font-[800] text-[var(--color-brand-text)] mb-[8px]">
         {{ cardsFeatureAvailable ? 'Nessuna carta salvata' : 'Pagamenti con carta non ancora attivi' }}

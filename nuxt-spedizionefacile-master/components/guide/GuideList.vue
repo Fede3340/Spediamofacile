@@ -48,7 +48,7 @@ defineEmits(['reset-filters']);
 
 			<div v-if="!filteredGuidesLength" class="guide-empty">
 				<div class="guide-empty__icon">
-					<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+					<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
 					</svg>
 				</div>

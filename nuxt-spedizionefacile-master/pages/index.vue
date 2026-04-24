@@ -161,7 +161,7 @@ onBeforeUnmount(() => observer?.disconnect());
 						<div class="step__icon" aria-hidden="true">
 							<svg viewBox="0 0 48 48" focusable="false">
 								<circle cx="24" cy="24" r="22" fill="#e6f1f3" />
-								<path d="M14 28h20M14 22h20M14 16h12" stroke="#095866" stroke-width="2.4" stroke-linecap="round" />
+								<path d="M14 28h20M14 22h20M14 16h12" stroke="#095866" stroke-width="2" stroke-linecap="round" />
 								<circle cx="34" cy="34" r="6" fill="#E44203" />
 								<path d="M31 34l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
 							</svg>
@@ -217,8 +217,8 @@ onBeforeUnmount(() => observer?.disconnect());
 						<div class="service-card__head">
 							<span class="service-card__tag">Italia</span>
 							<svg class="service-card__icon" viewBox="0 0 32 32" aria-hidden="true">
-								<path d="M16 3l11 6v8c0 7-5 11-11 13-6-2-11-6-11-13V9l11-6z" fill="#e6f1f3" stroke="#095866" stroke-width="1.6" />
-								<path d="M11 16l4 4 7-7" stroke="#E44203" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+								<path d="M16 3l11 6v8c0 7-5 11-11 13-6-2-11-6-11-13V9l11-6z" fill="#e6f1f3" stroke="#095866" stroke-width="2" />
+								<path d="M11 16l4 4 7-7" stroke="#E44203" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
 							</svg>
 						</div>
 						<h3 class="service-card__title">Spedizioni nazionali</h3>
@@ -235,8 +235,8 @@ onBeforeUnmount(() => observer?.disconnect());
 						<div class="service-card__head">
 							<span class="service-card__tag service-card__tag--accent">Europa</span>
 							<svg class="service-card__icon" viewBox="0 0 32 32" aria-hidden="true">
-								<circle cx="16" cy="16" r="13" fill="#fff5f0" stroke="#E44203" stroke-width="1.6" />
-								<path d="M3 16h26M16 3c4 4 4 22 0 26M16 3c-4 4-4 22 0 26" stroke="#095866" stroke-width="1.4" fill="none" />
+								<circle cx="16" cy="16" r="13" fill="#fff5f0" stroke="#E44203" stroke-width="2" />
+								<path d="M3 16h26M16 3c4 4 4 22 0 26M16 3c-4 4-4 22 0 26" stroke="#095866" stroke-width="2" fill="none" />
 							</svg>
 						</div>
 						<h3 class="service-card__title">Spedizioni in Europa</h3>
@@ -253,8 +253,8 @@ onBeforeUnmount(() => observer?.disconnect());
 						<div class="service-card__head">
 							<span class="service-card__tag">PUDO</span>
 							<svg class="service-card__icon" viewBox="0 0 32 32" aria-hidden="true">
-								<rect x="5" y="11" width="22" height="16" rx="2" fill="#e6f1f3" stroke="#095866" stroke-width="1.6" />
-								<path d="M5 11l11-7 11 7" fill="none" stroke="#095866" stroke-width="1.6" stroke-linejoin="round" />
+								<rect x="5" y="11" width="22" height="16" rx="2" fill="#e6f1f3" stroke="#095866" stroke-width="2" />
+								<path d="M5 11l11-7 11 7" fill="none" stroke="#095866" stroke-width="2" stroke-linejoin="round" />
 								<rect x="13" y="17" width="6" height="10" fill="#E44203" />
 							</svg>
 						</div>

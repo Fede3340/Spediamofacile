@@ -64,7 +64,7 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 						<svg aria-hidden="true" v-if="isAdmin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[13px] w-[13px]" fill="currentColor">
 							<path d="M12 2 4 5v6c0 5.55 3.84 10.74 8 11 4.16-.26 8-5.45 8-11V5l-8-3Z" />
 						</svg>
-						<svg aria-hidden="true" v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[14px] w-[14px]" fill="currentColor" stroke-width="2.5">
+						<svg aria-hidden="true" v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[14px] w-[14px]" fill="currentColor" stroke-width="2">
 							<path d="M12 5L19 12L17.59 13.41L13 8.83V20H11V8.83L6.41 13.41L5 12L12 5Z" />
 						</svg>
 						<span class="hidden sm:inline">{{ isAdmin ? 'Console' : 'Spedisci' }}</span>
@@ -101,7 +101,7 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 						class="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-[12px] border border-[rgba(9,88,102,0.08)] bg-[#F7FAFB] text-[var(--color-brand-primary)]"
 						aria-label="Chiudi menu account"
 						@click="emit('close')">
-						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[18px] w-[18px]" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[18px] w-[18px]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
 							<path d="M6 6l12 12" />
 							<path d="M18 6 6 18" />
 						</svg>

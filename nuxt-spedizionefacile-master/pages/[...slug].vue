@@ -21,9 +21,9 @@ useSeoMeta({
           <!-- Pacco -->
           <rect x="20" y="30" width="60" height="50" rx="4" stroke="var(--color-brand-primary)" stroke-width="3" fill="#F0F9FB"/>
           <line x1="20" y1="50" x2="80" y2="50" stroke="var(--color-brand-primary)" stroke-width="3"/>
-          <line x1="50" y1="50" x2="50" y2="80" stroke="var(--color-brand-primary)" stroke-width="2.5"/>
+          <line x1="50" y1="50" x2="50" y2="80" stroke="var(--color-brand-primary)" stroke-width="2"/>
           <!-- Nastro superiore -->
-          <path d="M40 30 L50 18 L60 30" stroke="var(--color-brand-primary)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M40 30 L50 18 L60 30" stroke="var(--color-brand-primary)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
           <!-- Punto interrogativo -->
           <circle cx="75" cy="25" r="14" fill="var(--color-brand-primary)" opacity="0.12"/>
           <text x="75" y="31" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--color-brand-primary)">?</text>

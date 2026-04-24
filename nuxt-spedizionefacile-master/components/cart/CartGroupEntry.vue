@@ -40,7 +40,7 @@ const toEditLocation = (itemId) => buildShipmentFlowEditLocation(itemId)
         <!-- Route -->
         <div class="flex items-center gap-[6px] mb-[2px] flex-wrap">
           <span class="text-[var(--color-brand-text)] text-[15px] sm:text-[16px]" style="font-weight: 700">{{ firstItem?.origin_address?.city || 'Partenza' }}</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           <span class="text-[var(--color-brand-text)] text-[15px] sm:text-[16px]" style="font-weight: 700">{{ firstItem?.destination_address?.city || 'Destinazione' }}</span>
           <!-- BRT pill -->
           <span class="text-[var(--color-brand-text-secondary)] text-[13px] px-[6px] py-[1px] rounded-full ring-[1px] ring-[#DFE2E7] bg-[#FAFBFC] shrink-0 ml-[2px]" style="font-weight: 600">
@@ -55,7 +55,7 @@ const toEditLocation = (itemId) => buildShipmentFlowEditLocation(itemId)
           </span>
           <span class="inline-flex items-center gap-[3px] px-[8px] py-[2px] rounded-full text-[11px]"
             :style="{ backgroundColor: entry.color + '14', color: entry.color, fontWeight: 600 }">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
             Spedizione unica
           </span>
         </div>
@@ -128,7 +128,7 @@ const toEditLocation = (itemId) => buildShipmentFlowEditLocation(itemId)
                 :disabled="(item.quantity || 1) <= 1"
                 class="w-[28px] h-[28px] flex items-center justify-center cursor-pointer hover:bg-[rgba(9,88,102,0.08)] rounded-l-full transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                <svg aria-hidden="true" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <svg aria-hidden="true" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
               </button>
               <span class="w-[22px] text-center text-[11px] text-[var(--color-brand-text)]" style="font-weight: 700">{{ item.quantity || 1 }}</span>
               <button
@@ -138,7 +138,7 @@ const toEditLocation = (itemId) => buildShipmentFlowEditLocation(itemId)
                 :disabled="(item.quantity || 1) >= 100"
                 class="w-[28px] h-[28px] flex items-center justify-center cursor-pointer hover:bg-[rgba(9,88,102,0.08)] rounded-r-full transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                <svg aria-hidden="true" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <svg aria-hidden="true" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               </button>
             </div>
             <!-- Edit -->

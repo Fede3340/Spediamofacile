@@ -58,11 +58,11 @@ const emit = defineEmits(['confirm-payment', 'update:termsAccepted'])
           :class="['sf-flow-cta', 'sf-flow-cta--primary', 'checkout-payment-submit', canPay ? 'checkout-payment-submit--active' : 'checkout-payment-submit--disabled']">
           <span>{{ isProcessing ? 'Apertura...' : paymentActionLabel }}</span>
           <span class="sf-flow-cta__arrow">
-            <svg v-if="isProcessing" class="spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <svg v-if="isProcessing" class="spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10" opacity="0.25"/>
               <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/>
             </svg>
-            <svg v-else width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg v-else width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </span>

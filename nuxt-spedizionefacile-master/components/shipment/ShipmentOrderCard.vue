@@ -50,7 +50,7 @@ const props = defineProps({
 
 					<p class="mt-[10px] flex flex-wrap items-center gap-x-[8px] gap-y-[4px] text-[1rem] font-bold leading-[1.25] text-[var(--color-brand-text)] tablet:text-[1.06rem]">
 						<span class="min-w-0 break-words">{{ getSenderName(order) }}</span>
-						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
 						<span class="min-w-0 break-words">{{ getRecipientName(order) }}</span>
 					</p>
 
@@ -89,7 +89,7 @@ const props = defineProps({
 					:to="`/traccia/${encodeURIComponent(getTrackingLabel(order))}`"
 					title="Traccia spedizione"
 					class="btn btn-primary inline-flex items-center justify-center gap-[8px] w-full min-h-[40px] tablet:w-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-primary)]">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
 					<span>Traccia</span>
 				</NuxtLink>
 

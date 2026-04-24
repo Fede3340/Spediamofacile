@@ -143,7 +143,7 @@ const inlineVisibleSubmitError = computed(() => {
 							class="shipment-readiness-hint shipment-step-indirizzi__hint"
 							role="status"
 							aria-live="polite">
-							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 								<circle cx="12" cy="12" r="10" />
 								<line x1="12" y1="8" x2="12" y2="12" />
 								<line x1="12" y1="16" x2="12.01" y2="16" />
@@ -164,7 +164,7 @@ const inlineVisibleSubmitError = computed(() => {
 									@click="$emit('back')"
 									aria-label="Torna ai servizi">
 									<span class="sf-flow-cta__arrow sf-flow-cta__arrow--leading">
-										<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+										<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 											<path d="M19 12H5M12 19l-7-7 7-7" />
 										</svg>
 									</span>
@@ -177,7 +177,7 @@ const inlineVisibleSubmitError = computed(() => {
 									@click="$emit('add-to-cart')"
 									aria-label="Aggiungi la spedizione al carrello">
 									<span class="sf-flow-cta__icon">
-										<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+										<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 											<circle cx="9" cy="21" r="1" />
 											<circle cx="20" cy="21" r="1" />
 											<path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6" />
@@ -194,7 +194,7 @@ const inlineVisibleSubmitError = computed(() => {
 									aria-label="Vai al pagamento">
 									<span>{{ (isSubmitting || isProceedingToPayment) ? 'Apertura...' : 'Vai al pagamento' }}</span>
 									<span class="sf-flow-cta__arrow">
-										<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+										<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 											<path d="M5 12h14M12 5l7 7-7 7" />
 										</svg>
 									</span>
@@ -205,7 +205,7 @@ const inlineVisibleSubmitError = computed(() => {
 							v-if="inlineVisibleSubmitError"
 							class="shipment-stage-error shipment-step-indirizzi__error"
 							role="alert">
-							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 								<circle cx="12" cy="12" r="10" />
 								<line x1="12" y1="8" x2="12" y2="12" />
 								<line x1="12" y1="16" x2="12.01" y2="16" />
@@ -216,7 +216,7 @@ const inlineVisibleSubmitError = computed(() => {
 								class="shipment-stage-error__dismiss"
 								@click="$emit('dismiss-error')"
 								aria-label="Chiudi messaggio di errore">
-								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 									<line x1="18" y1="6" x2="6" y2="18" />
 									<line x1="6" y1="6" x2="18" y2="18" />
 								</svg>

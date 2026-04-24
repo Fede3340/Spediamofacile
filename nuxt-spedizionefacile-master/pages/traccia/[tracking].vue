@@ -298,7 +298,7 @@ useSeoMeta({
 							class="sf-empty-state__cta"
 							aria-label="Cerca nuovo codice"
 						>
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 								<circle cx="11" cy="11" r="8" />
 								<line x1="21" y1="21" x2="16.65" y2="16.65" />
 							</svg>
@@ -364,7 +364,7 @@ useSeoMeta({
 												<rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
 												<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
 											</svg>
-											<svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+											<svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 												<polyline points="20 6 9 17 4 12" />
 											</svg>
 											<span class="text-[12px]" style="font-weight:600">{{ copyOk ? 'Copiato' : 'Copia' }}</span>
@@ -390,7 +390,7 @@ useSeoMeta({
 										</p>
 									</div>
 									<p v-if="isRefreshing" class="text-[11px] text-[#7a8493] m-0 inline-flex items-center gap-[4px]">
-										<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="animate-spin" aria-hidden="true">
+										<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin" aria-hidden="true">
 											<path d="M21 12a9 9 0 1 1-6.219-8.56" />
 										</svg>
 										Aggiornamento...
@@ -433,7 +433,7 @@ useSeoMeta({
 										style="font-weight:600"
 										@click="fetchTracking({ silent: true })"
 									>
-										<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" :class="{ 'animate-spin': isRefreshing }">
+										<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" :class="{ 'animate-spin': isRefreshing }">
 											<polyline points="23 4 23 10 17 10" />
 											<polyline points="1 20 1 14 7 14" />
 											<path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
@@ -457,7 +457,7 @@ useSeoMeta({
 									<div v-if="data.origin || data.destination" class="grid gap-[10px]">
 										<div class="flex items-start gap-[10px]">
 											<div class="route-icon route-icon-origin">
-												<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+												<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 													<circle cx="12" cy="12" r="3" />
 												</svg>
 											</div>

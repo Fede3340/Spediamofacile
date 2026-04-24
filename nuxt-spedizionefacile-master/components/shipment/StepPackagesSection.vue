@@ -82,7 +82,7 @@ const metrics = [
 							class="package-entry__delete"
 							@click="onDeletePack(pack._qid || packIndex)"
 							:aria-label="`Elimina collo ${packIndex + 1}`">
-							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 								<path d="M3 6h18" />
 								<path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" />
 								<path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
@@ -178,7 +178,7 @@ const metrics = [
 				class="btn btn-secondary btn-compact add-package-btn"
 				:disabled="isEuropeMonocollo"
 				@click="onAddPackage()">
-				<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round">
+				<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 					<path d="M12 5v14" />
 					<path d="M5 12h14" />
 				</svg>

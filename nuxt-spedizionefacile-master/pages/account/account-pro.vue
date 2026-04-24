@@ -226,7 +226,7 @@ const shareWhatsApp = () => {
 					class="ux-alert__icon"
 					fill="none"
 					stroke="currentColor"
-					stroke-width="1.9"
+					stroke-width="2"
 					stroke-linecap="round"
 					stroke-linejoin="round"
 					aria-hidden="true">

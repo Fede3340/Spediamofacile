@@ -43,7 +43,7 @@ const {
 					<NuxtLink
 						to="/preventivo"
 						class="btn btn-cta inline-flex items-center justify-center">
-						<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+						<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
 						Nuova spedizione
 					</NuxtLink>
 				</template>
@@ -126,7 +126,7 @@ const {
 			<!-- Empty state — pattern sf-empty-state condiviso sitewide -->
 			<div v-else class="sf-empty-state" role="status">
 				<div class="sf-empty-state__icon" aria-hidden="true">
-					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<path d="M21 16.5V7.5a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 7.5v9a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16.5Z"/>
 						<polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
 						<line x1="12" y1="22.08" x2="12" y2="12"/>
@@ -137,7 +137,7 @@ const {
 				<div class="sf-empty-state__actions">
 					<NuxtLink to="/preventivo" class="sf-empty-state__cta">
 						<span>Crea nuova spedizione</span>
-						<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+						<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 							<path d="M5 12h14"/><path d="m13 5 7 7-7 7"/>
 						</svg>
 					</NuxtLink>
