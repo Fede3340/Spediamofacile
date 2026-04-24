@@ -364,6 +364,8 @@ onMounted(async () => {
 					{ label: 'Ordini' },
 				]" />
 
+			<AdminOrdersViewTabs />
+
 			<!-- ALERT MESSAGE ---------------------------------------- -->
 			<div
 				v-if="actionMessage?.text || fetchError"

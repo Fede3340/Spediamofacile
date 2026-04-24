@@ -46,6 +46,8 @@ onMounted(() => { fetchShipments(); });
 					{ label: 'Spedizioni' },
 				]" />
 
+			<AdminOrdersViewTabs />
+
 			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
 
 			<!-- Toolbar: header + azioni + ricerca + pill filter -->
