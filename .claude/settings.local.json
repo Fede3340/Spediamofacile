@@ -9,11 +9,13 @@
     "CLAUDE_CODE_USE_BEDROCK": "0",
     "CLAUDE_CODE_USE_VERTEX": "0"
   },
-  "forceLoginMethod": "claudeai",
   "permissions": {
     "allow": [
       "Bash(mkdir -p \"C:\\\\Users\\\\Feder\\\\.claude\\\\plans\")",
-      "Read(//c/Users/Feder/.claude/plans/**)"
+      "Read(//c/Users/Feder/.claude/plans/**)",
+      "Bash(rm -rf \"G:/SpedizioneFacile-Consegna/nuxt-spedizionefacile-master/.claude\" \"G:/SpedizioneFacile-Consegna/nuxt-spedizionefacile-master/output/codex\")",
+      "Read(//g/SpedizioneFacile-Consegna/**)"
     ]
-  }
+  },
+  "forceLoginMethod": "claudeai"
 }
