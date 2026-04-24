@@ -69,4 +69,28 @@
 		border-top-right-radius: var(--admin-radius-sm);
 		border-bottom-right-radius: var(--admin-radius-sm);
 	}
+
+	/* P5 — Sticky header: scrollando lunghe liste l'utente non perde le intestazioni colonne. */
+	.admin-table-layout__desktop thead th {
+		position: sticky;
+		top: 0;
+		z-index: 2;
+		background: var(--admin-surface, #ffffff);
+		padding: 12px 12px;
+		font-size: 0.78rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--admin-text-secondary, #5A6474);
+		text-align: left;
+		border-bottom: 2px solid var(--admin-border, #E9EBEC);
+	}
+
+	/* P5 — Zebra stripe: righe alternate per leggibilità su >10 righe. */
+	.admin-table-layout__desktop tbody tr:nth-child(even) {
+		background: var(--admin-surface-alt, #FAFBFC);
+	}
+	.admin-table-layout__desktop tbody tr:nth-child(even):hover {
+		background: var(--admin-surface-hover, #F5F6F9);
+	}
 }

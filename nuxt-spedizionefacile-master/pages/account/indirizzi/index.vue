@@ -178,28 +178,25 @@ const tabs = computed(() => [
 <template>
 	<section class="sf-account-shell sf-addr-page">
 		<div class="my-container max-w-[1280px]">
-			<!-- HEADER -->
-			<header class="sf-addr-page__header">
-				<div>
-					<p class="sf-addr-page__eyebrow">Rubrica</p>
-					<h1 class="sf-addr-page__title">I tuoi indirizzi</h1>
-					<p class="sf-addr-page__desc">
-						Salva indirizzi di partenza e destinazione per spedire con un solo tap.
-						<span class="sf-addr-page__limit">{{ stats.total }} di {{ stats.max }} indirizzi salvati</span>
-					</p>
-				</div>
-				<button
-					type="button"
-					class="btn btn-cta sf-addr-page__cta"
-					:disabled="reachedLimit"
-					@click="openCreate"
-				>
-					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-						<path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-					</svg>
-					Nuovo indirizzo
-				</button>
-			</header>
+			<!-- HEADER unificato (P5 design system - prima era custom .sf-addr-page__header) -->
+			<AccountPageHeader
+				eyebrow="Rubrica"
+				title="I tuoi indirizzi"
+				:description="`Salva indirizzi di partenza e destinazione per spedire con un solo tap. ${stats.total} di ${stats.max} indirizzi salvati.`"
+				current="Indirizzi">
+				<template #actions>
+					<button
+						type="button"
+						class="btn btn-cta sf-addr-page__cta"
+						:disabled="reachedLimit"
+						@click="openCreate">
+						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+						</svg>
+						Nuovo indirizzo
+					</button>
+				</template>
+			</AccountPageHeader>
 
 			<!-- FLASH -->
 			<div v-if="flashSuccess" class="sf-addr-flash sf-addr-flash--success" role="status">
