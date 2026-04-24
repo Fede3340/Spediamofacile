@@ -13,42 +13,14 @@ useSeoMeta({
 		'Spedisci con BRT alle migliori tariffe. Preventivo in 30 secondi, ritiro a domicilio, tracking in tempo reale.',
 });
 
+// Organization + WebSite schema sono iniettati globalmente da app.vue via useSiteSchema().
+// Qui aggiungiamo solo WebApplication schema, specifico della homepage.
 useSchemaOrg([
-	{
-		'@context': 'https://schema.org',
-		'@type': 'Organization',
-		'@id': 'https://spediamofacile.it/#organization',
-		name: 'SpediamoFacile',
-		url: 'https://spediamofacile.it',
-		description: 'Piattaforma di spedizioni BRT al miglior prezzo, per privati e aziende.',
-		logo: {
-			'@type': 'ImageObject',
-			url: 'https://spediamofacile.it/img/logo-spedizionefacile.png',
-		},
-		areaServed: { '@type': 'Country', name: 'IT' },
-		contactPoint: {
-			'@type': 'ContactPoint',
-			contactType: 'customer service',
-			availableLanguage: ['Italian'],
-			url: 'https://spediamofacile.it/contatti',
-		},
-	},
-	{
-		'@context': 'https://schema.org',
-		'@type': 'WebSite',
-		'@id': 'https://spediamofacile.it/#website',
-		name: 'SpediamoFacile',
-		url: 'https://spediamofacile.it',
-		inLanguage: 'it-IT',
-		publisher: { '@id': 'https://spediamofacile.it/#organization' },
-	},
-	// WebApplication: descrive la piattaforma come SaaS di spedizioni.
-	// BrowserApplication permette a Google di mostrare il widget "App" nei rich results.
 	{
 		'@context': 'https://schema.org',
 		'@type': 'WebApplication',
 		'@id': 'https://spediamofacile.it/#webapp',
-		name: 'SpediamoFacile',
+		name: 'SpedizioneFacile',
 		url: 'https://spediamofacile.it',
 		applicationCategory: 'BusinessApplication',
 		applicationSubCategory: 'Shipping',

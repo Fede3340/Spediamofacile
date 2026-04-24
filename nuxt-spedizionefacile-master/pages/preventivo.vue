@@ -10,7 +10,7 @@ useSeoMeta({
 
 await navigateTo(
 	buildShipmentFlowLocation(route, route.query.step),
-	{ replace: true, redirectCode: 302 },
+	{ replace: true, redirectCode: 301 },
 );
 </script>
 

@@ -3,6 +3,9 @@ output/runtime-state/
 cookies.txt
 headers.txt
 
+# Local dev artifacts (QA playwright output, scratch files, ecc)
+.local/
+
 # Log directories
 _LOG/
 _LOGS/
