@@ -90,20 +90,7 @@ class GuestCartController extends Controller
     // Aggiunge uno o piu' pacchi al carrello dell'ospite
     // Se un pacco identico e' gia' nel carrello (stesse dimensioni, stesso percorso),
     // invece di crearne uno nuovo aumenta la quantita' di quello esistente
-    public function store(Request $request) {
-
-        // Validiamo che i dati minimi siano presenti
-        $request->validate([
-            'packages' => 'required|array|min:1',
-            'packages.*.package_type' => 'required|string',
-            'packages.*.weight' => 'required',
-            'packages.*.first_size' => 'required',
-            'packages.*.second_size' => 'required',
-            'packages.*.third_size' => 'required',
-            'origin_address' => 'required|array',
-            'destination_address' => 'required|array',
-        ]);
-
+    public function store(\App\Http\Requests\StoreGuestCartRequest $request) {
         // Recuperiamo il carrello attuale dalla sessione (o un array vuoto se non esiste)
         $cart = session()->get('cart', []);
 
