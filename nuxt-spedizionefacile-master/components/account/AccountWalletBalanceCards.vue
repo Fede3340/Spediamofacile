@@ -87,7 +87,7 @@ const quickLinks = computed(() => {
 </script>
 
 <template>
-	<div class="rounded-[18px] bg-white px-[18px] py-[18px]" style="box-shadow: 0 2px 8px rgba(9,88,102,0.06), 0 0 0 1px rgba(9,88,102,0.04);">
+	<div class="rounded-[16px] border border-[rgba(9,88,102,0.12)] bg-white px-[16px] py-[14px]" style="box-shadow: 0 2px 8px rgba(9,88,102,0.04);">
 		<div
 			v-if="balanceError"
 			:class="[
@@ -109,36 +109,14 @@ const quickLinks = computed(() => {
 			</button>
 		</div>
 
-		<div class="mb-[16px] flex flex-col gap-[10px] tablet:flex-row tablet:items-start tablet:justify-between">
-			<div class="flex items-start gap-[10px]">
-				<div class="flex h-[38px] w-[38px] items-center justify-center rounded-full bg-[#EDF7F8]">
-					<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-brand-primary)]">
-						<path d="M12 8v4l3 3" />
-						<circle cx="12" cy="12" r="10" />
-					</svg>
-				</div>
-				<div>
-					<h2 class="font-montserrat text-[1rem] font-[800] text-[var(--color-brand-text)]">Panoramica rapida</h2>
-					<p class="mt-[4px] text-[0.8125rem] leading-[1.5] text-[var(--color-brand-text-secondary)]">
-						Tutto quello che serve per leggere saldo, carta e storico senza duplicare la hero wallet.
-					</p>
-				</div>
-			</div>
-
-			<span class="inline-flex w-fit items-center rounded-full bg-[#F5F6F9] px-[10px] py-[5px] text-[0.75rem] font-semibold text-[var(--color-brand-text-secondary)]">
+		<!-- P15: "Panoramica rapida" + 2 sub-card overview RIMOSSE.
+		     Saldo+Carta sono già nei chip header + hero wallet sopra. Era duplicazione
+		     che rendeva la pagina un disastro disordinato come segnalato da utente. -->
+		<div class="mb-[12px] flex items-center justify-between">
+			<h2 class="font-montserrat text-[1rem] font-[800] text-[var(--color-brand-text)]">Accesso rapido</h2>
+			<span class="inline-flex items-center rounded-full bg-[#F5F6F9] px-[10px] py-[3px] text-[0.6875rem] font-semibold text-[var(--color-brand-text-secondary)]">
 				{{ statusLabel }}
 			</span>
-		</div>
-
-		<div class="grid gap-[10px] tablet:grid-cols-2">
-			<div
-				v-for="card in overviewCards"
-				:key="card.label"
-				:class="['rounded-[16px] border px-[14px] py-[14px]', card.tone]">
-				<p class="text-[0.6875rem] font-[700] uppercase tracking-[0.12em] opacity-70">{{ card.label }}</p>
-				<p class="mt-[6px] text-[1.05rem] font-[800] leading-[1.25]">{{ card.value }}</p>
-				<p class="mt-[5px] text-[0.78rem] leading-[1.45] opacity-80">{{ card.description }}</p>
-			</div>
 		</div>
 
 		<div class="mt-[14px] grid gap-[10px] tablet:grid-cols-2">
