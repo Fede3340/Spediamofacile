@@ -49,19 +49,9 @@ class ContentController extends Controller
 
     // Aggiorna le impostazioni del sito
     // Accetta solo le chiavi autorizzate (per sicurezza)
-    public function updateSettings(Request $request): JsonResponse
+    public function updateSettings(\App\Http\Requests\UpdateAdminSettingsRequest $request): JsonResponse
     {
-        $data = $request->validate([
-            'stripe_public_key' => 'nullable|string|max:255',
-            'stripe_secret_key' => 'nullable|string|max:255',
-            'stripe_webhook_secret' => 'nullable|string|max:255',
-            'brt_customer_id' => 'nullable|string|max:100',
-            'brt_username' => 'nullable|string|max:100',
-            'brt_password' => 'nullable|string|max:255',
-            'site_name' => 'nullable|string|max:100',
-            'support_email' => 'nullable|string|email|max:255',
-            'cod_surcharge' => 'nullable|numeric|min:0|max:9999',
-        ]);
+        $data = $request->validated();
 
         // Validazione formato chiavi Stripe per evitare salvataggio di valori invalidi
         if (! empty($data['stripe_public_key']) && ! preg_match('/^pk_(test|live)_/', $data['stripe_public_key'])) {

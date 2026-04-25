@@ -203,22 +203,8 @@ class BrtController extends Controller
         return response()->json($this->pudo->getPudoDetails($pudoId));
     }
 
-    public function testCreate(Request $request)
+    public function testCreate(\App\Http\Requests\BrtTestCreateShipmentRequest $request)
     {
-        $request->validate([
-            'consignee_name' => 'required|string|max:255',
-            'consignee_address' => 'required|string|max:255',
-            'consignee_city' => 'required|string|max:255',
-            'consignee_zip' => 'required|string|max:10',
-            'consignee_province' => 'required|string|max:2',
-            'consignee_country' => 'required|string|max:2',
-            'consignee_email' => 'nullable|email',
-            'consignee_phone' => 'nullable|string|max:20',
-            'weight_kg' => 'required|integer|min:1',
-            'parcels' => 'required|integer|min:1',
-            'notes' => 'nullable|string|max:255',
-        ]);
-
         return response()->json($this->shipment->testCreateShipment($request->validated()));
     }
 

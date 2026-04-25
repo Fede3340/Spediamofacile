@@ -46,7 +46,7 @@ class StripeCheckoutController extends Controller
      *  PUBLIC ENDPOINTS
      * =================================================================*/
 
-    public function markOrderCompleted(Request $request)
+    public function markOrderCompleted(\App\Http\Requests\PayWithExternalProviderRequest $request)
     {
         // Questo endpoint e' il secondo step canonico per bonifico e wallet.
         // Per wallet richiede un movimento gia' verificato, non addebita denaro da solo.
@@ -54,12 +54,6 @@ class StripeCheckoutController extends Controller
         // e la stessa transazione. Se il primo tentativo ha gia' scritto ordine +
         // transazione ma si e' fermato prima di dispatchare OrderPaid, un retry
         // deve far ripartire i side-effect post-pagamento una sola volta.
-        $request->validate([
-            'order_id' => 'required|integer', 'payment_type' => 'required|string|in:wallet,bonifico',
-            'ext_id' => 'nullable|string', 'is_existing_order' => 'nullable|boolean',
-            'idempotency_key' => 'nullable|string|max:255',
-        ]);
-
         $order = Order::findOrFail($request->order_id);
         if ($unauthorized = $this->ensureOrderOwnership($order)) return $unauthorized;
 
@@ -223,15 +217,8 @@ class StripeCheckoutController extends Controller
         return $order->rawStatus() === Order::COMPLETED;
     }
 
-    public function createOrder(Request $request)
+    public function createOrder(\App\Http\Requests\CreateOrderRequest $request)
     {
-        $request->validate([
-            'subtotal' => 'nullable|numeric', 'package_ids' => 'nullable|array',
-            'package_ids.*' => 'integer', 'billing_data' => 'nullable|array',
-            'client_submission_id' => 'nullable|string|max:255',
-            'single_order_only' => 'nullable|boolean',
-        ]);
-
         $userId = auth()->id();
         return DB::transaction(function () use ($request, $userId) {
             DB::table('users')->where('id', $userId)->lockForUpdate()->first();
@@ -325,14 +312,8 @@ class StripeCheckoutController extends Controller
         });
     }
 
-    public function createPayment(Request $request)
+    public function createPayment(\App\Http\Requests\CreateStripePaymentRequest $request)
     {
-        $request->validate([
-            'order_id' => 'required|integer', 'currency' => 'required|string',
-            'payment_method_id' => 'required|string',
-            'idempotency_key' => 'nullable|string|max:255',
-            'client_submission_id' => 'nullable|string|max:255',
-        ]);
         $order = Order::findOrFail($request->order_id);
         $user = $request->user();
         if ($unauthorized = $this->ensureOrderOwnership($order, $user?->id)) return $unauthorized;
@@ -353,13 +334,8 @@ class StripeCheckoutController extends Controller
         ));
     }
 
-    public function createPaymentIntent(Request $request)
+    public function createPaymentIntent(\App\Http\Requests\CreatePaymentIntentRequest $request)
     {
-        $request->validate([
-            'order_id' => 'required|integer',
-            'idempotency_key' => 'nullable|string|max:255',
-            'client_submission_id' => 'nullable|string|max:255',
-        ]);
         $order = Order::findOrFail($request->order_id);
         $user = $request->user();
         if ($unauthorized = $this->ensureOrderOwnership($order, $user?->id)) return $unauthorized;
@@ -398,15 +374,8 @@ class StripeCheckoutController extends Controller
         }
     }
 
-    public function orderPaid(Request $request)
+    public function orderPaid(\App\Http\Requests\OrderPaidRequest $request)
     {
-        $request->validate([
-            'order_id' => 'required|integer',
-            'ext_id' => 'required|string',
-            'is_existing_order' => 'nullable|boolean',
-            'client_submission_id' => 'nullable|string|max:255',
-        ]);
-
         $order = Order::findOrFail($request->order_id);
         if ($unauthorized = $this->ensureOrderOwnership($order)) return $unauthorized;
 

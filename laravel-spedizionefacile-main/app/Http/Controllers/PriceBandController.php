@@ -249,16 +249,9 @@ class PriceBandController extends Controller
     }
 
     // Salva le impostazioni promozionali
-    public function savePromoSettings(Request $request): JsonResponse
+    public function savePromoSettings(\App\Http\Requests\SavePromoSettingsRequest $request): JsonResponse
     {
-        $data = $request->validate([
-            'promo_active' => 'required|in:true,false',
-            'promo_label_text' => 'nullable|string|max:100',
-            'promo_label_color' => 'nullable|string|max:20',
-            'promo_show_badges' => 'required|in:true,false',
-            // Descrizione testuale dello sconto mostrata nell'header della homepage
-            'promo_description' => 'nullable|string|max:300',
-        ]);
+        $data = $request->validated();
 
         Setting::set('promo_active', $data['promo_active']);
         Setting::set('promo_label_text', $data['promo_label_text'] ?? '');

@@ -24,11 +24,9 @@ class UserManagementController extends Controller
 
     // Cambia il ruolo di un utente (es. da "User" a "Partner Pro" o "Admin")
     // Se l'utente viene promosso a Partner Pro, gli viene generato un codice referral
-    public function updateUserRole(Request $request, User $user): JsonResponse
+    public function updateUserRole(\App\Http\Requests\UpdateUserRoleRequest $request, User $user): JsonResponse
     {
-        $data = $request->validate([
-            'role' => ['required', 'string', 'in:User,Partner Pro,Admin'],
-        ]);
+        $data = $request->validated();
 
         $oldRole = $user->role;
         $user->role = $data['role'];
@@ -53,11 +51,9 @@ class UserManagementController extends Controller
     }
 
     // Cambia il tipo di account (privato/commerciante)
-    public function updateUserType(User $user, Request $request): JsonResponse
+    public function updateUserType(User $user, \App\Http\Requests\UpdateUserTypeRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'user_type' => 'required|in:privato,commerciante',
-        ]);
+        $validated = $request->validated();
 
         $oldType = $user->user_type;
         $user->update(['user_type' => $validated['user_type']]);
