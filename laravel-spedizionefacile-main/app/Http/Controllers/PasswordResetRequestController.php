@@ -63,13 +63,8 @@ class PasswordResetRequestController extends Controller
      *
      * Ref: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#authentication-responses
      */
-    public function sendEmail(Request $request) {
+    public function sendEmail(\App\Http\Requests\ForgotPasswordRequest $request) {
         $startedAt = microtime(true);
-
-        // Verifichiamo che l'email sia stata inserita e che sia un formato valido
-        $request->validate([
-            'email' => ['required', 'email'],
-        ]);
 
         // Anti-enumerazione: rispondiamo sempre allo stesso modo, ma inviamo
         // l'email solo se l'account esiste davvero.
