@@ -69,10 +69,8 @@ const handleClose = () => emit('close');
 				</div>
 
 				<div class="mt-[20px] flex flex-col gap-[8px] tablet:flex-row tablet:justify-end">
-					<button type="button" class="btn-secondary btn-compact" :disabled="confirming" @click="handleClose">Annulla</button>
-					<button type="button" class="btn-cta btn-compact" :disabled="confirming" @click="handleConfirm">
-						{{ confirming ? 'Conferma in corso...' : 'Conferma ricezione' }}
-					</button>
+					<SfButton variant="secondary" size="sm" :disabled="confirming" @click="handleClose">Annulla</SfButton>
+					<SfButton variant="primary" size="sm" :loading="confirming" loading-text="Conferma in corso..." @click="handleConfirm">Conferma ricezione</SfButton>
 				</div>
 			</div>
 		</div>

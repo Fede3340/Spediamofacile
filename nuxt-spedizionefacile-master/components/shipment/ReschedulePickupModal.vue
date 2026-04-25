@@ -219,21 +219,8 @@ const submit = async () => {
 
 				<!-- Actions -->
 				<div class="mt-[20px] flex flex-col gap-[10px] tablet:flex-row tablet:justify-end">
-					<button
-						type="button"
-						class="btn-secondary btn-compact"
-						:disabled="saving"
-						@click="emit('update:show', false)">
-						Annulla
-					</button>
-					<button
-						type="button"
-						class="btn-cta btn-compact inline-flex items-center justify-center gap-[6px]"
-						:disabled="saving"
-						@click="submit">
-						<svg v-if="saving" class="animate-spin" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg>
-						{{ saving ? 'Salvataggio...' : 'Conferma nuova data' }}
-					</button>
+					<SfButton variant="secondary" size="sm" :disabled="saving" @click="emit('update:show', false)">Annulla</SfButton>
+					<SfButton variant="primary" size="sm" :loading="saving" loading-text="Salvataggio..." @click="submit">Conferma nuova data</SfButton>
 				</div>
 
 				<p class="mt-[10px] text-[0.6875rem] text-[var(--color-brand-text-muted)]">

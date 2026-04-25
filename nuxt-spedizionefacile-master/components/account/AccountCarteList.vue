@@ -75,30 +75,34 @@ const getBrandIcon = (brand) => {
           </div>
           <!-- Actions -->
           <div class="flex w-full flex-wrap items-center gap-[8px] tablet:w-auto tablet:justify-end">
-            <button v-if="!payment.default" @click="emit('set-default', payment.id)"
-              class="btn-secondary btn-compact inline-flex items-center gap-[6px]">
-              <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <SfButton v-if="!payment.default" variant="secondary" size="sm" @click="emit('set-default', payment.id)">
+              <template #leading>
+                <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </template>
               Imposta predefinita
-            </button>
+            </SfButton>
             <template v-if="deleteConfirmId !== payment.id">
-              <button @click="emit('ask-delete', payment.id)"
-                class="btn-secondary btn-compact inline-flex items-center gap-[6px] text-red-600 hover:!border-red-200 hover:!bg-red-50">
-                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              <SfButton variant="danger" size="sm" @click="emit('ask-delete', payment.id)">
+                <template #leading>
+                  <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </template>
                 Elimina
-              </button>
+              </SfButton>
             </template>
             <template v-else>
               <div class="flex flex-wrap items-center gap-[6px]">
-                <button @click="emit('delete', payment.id)"
-                  class="btn-primary btn-compact">
-                  <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <SfButton variant="primary" size="sm" @click="emit('delete', payment.id)">
+                  <template #leading>
+                    <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </template>
                   Conferma
-                </button>
-                <button @click="emit('cancel-delete')"
-                  class="btn-secondary btn-compact">
-                  <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </SfButton>
+                <SfButton variant="secondary" size="sm" @click="emit('cancel-delete')">
+                  <template #leading>
+                    <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </template>
                   Annulla
-                </button>
+                </SfButton>
               </div>
             </template>
           </div>

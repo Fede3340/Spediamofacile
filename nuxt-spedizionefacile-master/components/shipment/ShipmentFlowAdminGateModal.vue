@@ -160,12 +160,8 @@ const onUpdateModelValue = (value) => {
 			<div class="sf-modal-divider" />
 
 			<div class="sf-modal-actions">
-				<button type="button" class="btn-secondary btn-compact" @click="handleCancel">
-					Torna al flusso corretto
-				</button>
-				<button type="button" class="btn-cta btn-compact" :disabled="isSubmitting" @click="handleConfirm">
-					{{ isSubmitting ? 'Verifica in corso...' : 'Continua come admin' }}
-				</button>
+				<SfButton variant="secondary" size="sm" @click="handleCancel">Torna al flusso corretto</SfButton>
+				<SfButton variant="primary" size="sm" :loading="isSubmitting" loading-text="Verifica in corso..." @click="handleConfirm">Continua come admin</SfButton>
 			</div>
 		</section>
 	</SfModal>
