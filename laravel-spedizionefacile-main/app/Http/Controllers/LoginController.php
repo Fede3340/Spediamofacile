@@ -77,14 +77,8 @@ class LoginController extends Controller
      * di risposta. L'errore e' generico ("credenziali non corrette") e non rivela
      * mai se l'email e' registrata.
      */
-    public function login(Request $request)
+    public function login(\App\Http\Requests\LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-            'remember' => 'boolean',
-        ]);
-
         $user = $this->resolveUserFromEmail((string) $request->email);
         $guestCart = $request->hasSession() ? $request->session()->get('cart', []) : [];
 
