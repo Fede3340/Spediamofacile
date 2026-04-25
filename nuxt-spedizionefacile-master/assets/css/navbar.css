@@ -346,48 +346,6 @@
   background-color: var(--color-brand-primary-light);
 }
 
-/* Logout link in mobile menu */
-.navbar-mobile-btn-logout {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  width: 100%;
-  height: 40px;
-  border: none;
-  background: none;
-  color: var(--color-brand-text-muted);
-  font-size: 14px;
-  font-weight: 500;
-  transition: color var(--sf-t1) var(--sf-ease);
-}
-
-.navbar-mobile-btn-logout:hover {
-  color: var(--color-brand-primary);
-}
-
-.navbar-mobile-btn-register {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  width: 100%;
-  height: 48px;
-  border-radius: 9999px;
-  border: none;
-  font-size: 15px;
-  font-weight: 600;
-  color: #fff;
-  background-color: var(--color-brand-accent);
-  transition: color var(--sf-t1) var(--sf-ease), background-color var(--sf-t1) var(--sf-ease), border-color var(--sf-t1) var(--sf-ease), box-shadow var(--sf-t1) var(--sf-ease), transform var(--sf-t1) var(--sf-ease);
-}
-
-.navbar-mobile-btn-register:hover {
-  background-color: var(--color-brand-accent-hover);
-}
-
 /* ============================================================
    MOBILE MENU: TRANSITIONS
    Prototype: fade+slide, duration 0.25s, ease [0.25,1,0.5,1]
