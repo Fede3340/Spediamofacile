@@ -44,18 +44,16 @@ const resolveAccountPageUrl = (url = '') => {
 						Nuova spedizione
 					</NuxtLink>
 
-					<button
-						type="button"
-						@click="handleLogout"
-						:disabled="isLoggingOut"
-						class="btn-secondary btn-compact inline-flex min-w-[118px] items-center justify-center gap-[8px]">
-						<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-							<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-							<polyline points="16 17 21 12 16 7" />
-							<line x1="21" y1="12" x2="9" y2="12" />
-						</svg>
-						{{ isLoggingOut ? 'Uscita...' : 'Esci' }}
-					</button>
+					<SfButton variant="secondary" size="sm" :loading="isLoggingOut" loading-text="Uscita..." @click="handleLogout">
+						<template #leading>
+							<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+								<polyline points="16 17 21 12 16 7" />
+								<line x1="21" y1="12" x2="9" y2="12" />
+							</svg>
+						</template>
+						Esci
+					</SfButton>
 				</div>
 			</template>
 		</AccountPageHeader>

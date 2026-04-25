@@ -53,10 +53,12 @@ const onTextInput = (index: number, event: Event) => {
 				</h2>
 				<p class="service-editor-panel__text">{{ panelDescription }}</p>
 			</div>
-			<button type="button" @click="emit('add')" class="btn-secondary btn-compact inline-flex items-center gap-[6px]">
-				<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[16px] h-[16px]" fill="currentColor"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg>
+			<SfButton variant="secondary" size="sm" @click="emit('add')">
+				<template #leading>
+					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[16px] h-[16px]" fill="currentColor"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg>
+				</template>
 				{{ addButtonLabel }}
-			</button>
+			</SfButton>
 		</div>
 		<div class="service-editor-stack">
 			<div v-for="(item, idx) in items" :key="idx" class="service-editor-stack-card service-editor-stack-card--teal">

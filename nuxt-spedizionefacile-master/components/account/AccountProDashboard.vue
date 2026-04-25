@@ -47,21 +47,9 @@ const historyItems = computed(() => props.earnings?.data || []);
 					</div>
 
 					<div class="mt-[12px] flex flex-wrap gap-[8px]">
-						<button
-							@click="emit('copy-link')"
-							class="btn-primary btn-compact inline-flex items-center justify-center gap-[6px]">
-							{{ copiedLink ? 'Link copiato' : 'Copia link' }}
-						</button>
-						<button
-							@click="emit('share-whatsapp')"
-							class="btn-secondary btn-compact inline-flex items-center justify-center gap-[6px]">
-							WhatsApp
-						</button>
-						<button
-							@click="emit('copy-code')"
-							class="btn-secondary btn-compact inline-flex items-center justify-center gap-[6px]">
-							{{ copied ? 'Codice copiato' : 'Copia codice' }}
-						</button>
+						<SfButton variant="primary" size="sm" @click="emit('copy-link')">{{ copiedLink ? 'Link copiato' : 'Copia link' }}</SfButton>
+						<SfButton variant="secondary" size="sm" @click="emit('share-whatsapp')">WhatsApp</SfButton>
+						<SfButton variant="secondary" size="sm" @click="emit('copy-code')">{{ copied ? 'Codice copiato' : 'Copia codice' }}</SfButton>
 					</div>
 				</div>
 
@@ -88,11 +76,9 @@ const historyItems = computed(() => props.earnings?.data || []);
 				<p class="text-[0.95rem] font-semibold text-[var(--color-brand-text)] mt-[6px] font-mono break-all">
 					SF-PRO-{{ user?.id?.toString().padStart(6, '0') }}
 				</p>
-				<button
-					@click="emit('copy-account-code')"
-					class="btn-secondary btn-compact mt-[10px] inline-flex items-center justify-center gap-[6px]">
-					{{ copiedAccountCode ? 'Copiato' : 'Copia codice' }}
-				</button>
+				<div class="mt-[10px] inline-flex">
+					<SfButton variant="secondary" size="sm" @click="emit('copy-account-code')">{{ copiedAccountCode ? 'Copiato' : 'Copia codice' }}</SfButton>
+				</div>
 			</div>
 
 			<div class="sf-account-stat-card">
