@@ -1,5 +1,7 @@
 <!-- Implementazione Leaflet diretta, senza wrapper vue-leaflet (evita errori di patch runtime). -->
 <script setup>
+import { escapeHtml } from '~/utils/html';
+
 let L = null;
 
 const props = defineProps({
@@ -64,14 +66,6 @@ const validPoints = computed(() =>
 		.filter((p) => isFiniteCoordinate(p?.latitude) && isFiniteCoordinate(p?.longitude))
 		.map((p, index) => ({ ...p, __mapKey: getPointKey(p, index) }))
 );
-
-const escapeHtml = (value) =>
-	String(value || '')
-		.replace(/&/g, '&amp;')
-		.replace(/</g, '&lt;')
-		.replace(/>/g, '&gt;')
-		.replace(/"/g, '&quot;')
-		.replace(/'/g, '&#039;');
 
 const formatDistance = (meters) => {
 	const value = Number(meters);

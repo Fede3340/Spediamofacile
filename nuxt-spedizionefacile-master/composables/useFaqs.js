@@ -260,15 +260,9 @@ const FAQS = [
 	},
 ];
 
-/** Escapa caratteri HTML per evitare XSS quando si usa v-html. */
-export function escapeHtml(value) {
-	return value
-		.replace(/&/g, '&amp;')
-		.replace(/</g, '&lt;')
-		.replace(/>/g, '&gt;')
-		.replace(/"/g, '&quot;')
-		.replace(/'/g, '&#39;');
-}
+// escapeHtml centralizzato in utils/html.ts (re-export per retro-compat dei caller).
+import { escapeHtml as escapeHtmlUtil } from '~/utils/html';
+export const escapeHtml = (value) => escapeHtmlUtil(value);
 
 /** Evidenzia con tag <mark> le occorrenze case-insensitive della query. */
 export function highlightMatch(text, query) {

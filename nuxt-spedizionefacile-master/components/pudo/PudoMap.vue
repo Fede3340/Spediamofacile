@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { BrtPudoNormalized } from '~/types'
+import { escapeHtml } from '~/utils/html'
 
 interface ReferencePoint {
 	latitude: number
@@ -38,14 +39,6 @@ const ITALY_ZOOM = 6
 const teal = '#095866'
 const orange = '#E44203'
 const tealDark = '#074a56'
-
-const escapeHtml = (v: unknown) =>
-	String(v ?? '')
-		.replace(/&/g, '&amp;')
-		.replace(/</g, '&lt;')
-		.replace(/>/g, '&gt;')
-		.replace(/"/g, '&quot;')
-		.replace(/'/g, '&#039;')
 
 const buildMarkerSvg = (selected: boolean): string => {
 	const fill = selected ? orange : teal
