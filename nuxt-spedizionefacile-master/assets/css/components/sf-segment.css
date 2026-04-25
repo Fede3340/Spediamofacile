@@ -34,10 +34,6 @@
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.sf-shared-segment-strip--three {
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
 .sf-shared-segment-strip--compact {
 	padding: 3px;
 	gap: 4px;
@@ -100,26 +96,6 @@
 	font-weight: 600;
 }
 
-.sf-shared-segment--choice {
-	min-height: 96px;
-	padding: 14px;
-	border-radius: 18px;
-	align-items: flex-start;
-	flex-direction: column;
-	justify-content: flex-start;
-	gap: 8px;
-}
-
-.sf-shared-segment--choice .sf-shared-segment__copy {
-	width: 100%;
-}
-
-.sf-shared-segment--choice .sf-shared-segment__icon {
-	width: 34px;
-	height: 34px;
-	border-radius: 12px;
-}
-
 .sf-shared-segment__icon {
 	flex: 0 0 auto;
 	display: inline-flex;
@@ -137,14 +113,6 @@
 	color: #ffffff;
 }
 
-.sf-shared-segment__copy {
-	display: flex;
-	min-width: 0;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 2px;
-}
-
 .sf-shared-segment__title {
 	font-family: var(--font-montserrat);
 	font-size: 0.875rem;
@@ -152,40 +120,6 @@
 	font-weight: 800;
 	letter-spacing: -0.01em;
 	color: inherit;
-}
-
-.sf-shared-segment--choice .sf-shared-segment__title {
-	font-size: 0.9375rem;
-}
-
-.sf-shared-segment__caption {
-	font-size: 0.75rem;
-	line-height: 1.35;
-	color: var(--color-brand-text-secondary);
-}
-
-.sf-shared-segment--active .sf-shared-segment__caption {
-	color: rgba(255, 255, 255, 0.82);
-}
-
-.sf-shared-segment__badge {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	display: inline-flex;
-	align-items: center;
-	min-height: 20px;
-	padding: 0 8px;
-	border-radius: 999px;
-	background: rgba(9, 88, 102, 0.08);
-	color: var(--color-brand-primary);
-	font-size: 0.6875rem;
-	font-weight: 700;
-	white-space: nowrap;
-}
-
-.sf-shared-segment--active .sf-shared-segment__badge {
-	background: rgba(9, 88, 102, 0.12);
 }
 
 /* ============================================================
@@ -285,10 +219,6 @@
 	flex: 0 0 30px;
 }
 
-.sf-flow-cta--ghost .sf-flow-cta__icon {
-	background: rgba(9, 88, 102, 0.08);
-}
-
 .sf-flow-cta--secondary {
 	border: 1px solid rgba(9, 88, 102, 0.16);
 	background: #ffffff;
@@ -310,27 +240,6 @@
 .sf-flow-cta--secondary:focus-visible {
 	outline: 3px solid rgba(9, 88, 102, 0.45);
 	outline-offset: 2px;
-}
-
-.sf-flow-cta--ghost {
-	border: 1px dashed rgba(9, 88, 102, 0.36);
-	background: rgba(9, 88, 102, 0.04);
-	color: var(--color-brand-primary);
-}
-
-.sf-flow-cta--ghost:hover {
-	border-color: rgba(9, 88, 102, 0.56);
-	background: rgba(9, 88, 102, 0.08);
-}
-
-.sf-flow-cta--ghost:focus-visible {
-	outline: 3px solid rgba(9, 88, 102, 0.45);
-	outline-offset: 2px;
-}
-
-.sf-flow-cta--ghost:disabled {
-	opacity: 0.5;
-	cursor: not-allowed;
 }
 
 .sf-flow-cta--compact {

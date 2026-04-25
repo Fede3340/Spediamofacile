@@ -7,54 +7,7 @@
 	color: #cfe0e4;
 }
 
-/* === 1) Fascia CTA pre-footer === */
-.site-footer__pre {
-	background: #f5f3ec;
-	color: #072e38;
-}
-.site-footer__pre-shell {
-	max-width: 1280px;
-	margin: 0 auto;
-	padding: 22px 24px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 24px;
-	flex-wrap: wrap;
-}
-.site-footer__pre-title {
-	margin: 0;
-	font-size: 1.5rem;
-	font-weight: 700;
-	color: #072e38;
-	letter-spacing: -0.01em;
-	line-height: 1.2;
-}
-.site-footer__pre-cta {
-	display: inline-flex;
-	align-items: center;
-	gap: 10px;
-	background: #E44203;
-	color: #fff;
-	font-weight: 600;
-	font-size: 0.9375rem;
-	padding: 12px 22px;
-	border-radius: 999px;
-	text-decoration: none;
-	transition: background-color var(--sf-t1) var(--sf-ease), transform var(--sf-t1) var(--sf-ease), box-shadow var(--sf-t1) var(--sf-ease);
-	box-shadow: 0 6px 18px rgba(228, 66, 3, 0.25);
-}
-.site-footer__pre-cta:hover {
-	background: #c93800;
-	transform: translateY(-1px);
-	box-shadow: 0 10px 22px rgba(228, 66, 3, 0.32);
-}
-.site-footer__pre-cta:focus-visible {
-	outline: 2px solid #072e38;
-	outline-offset: 3px;
-}
-
-/* === 2) Corpo footer === */
+/* === Corpo footer === */
 .site-footer__body {
 	background: #072e38;
 }
@@ -81,15 +34,6 @@
 	align-items: center;
 	gap: 10px;
 	text-decoration: none;
-	color: #fff;
-}
-.site-footer__logo-mark {
-	flex-shrink: 0;
-}
-.site-footer__logo-word {
-	font-size: 1.0625rem;
-	font-weight: 700;
-	letter-spacing: -0.01em;
 	color: #fff;
 }
 .site-footer__payoff {
