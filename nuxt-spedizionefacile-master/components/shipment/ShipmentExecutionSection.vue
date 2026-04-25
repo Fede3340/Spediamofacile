@@ -304,29 +304,29 @@ const runCardAction = (kind) => {
 
 				<div class="sf-account-value-card__actions">
 					<div class="flex flex-wrap gap-[8px]">
-						<button
-							type="button"
-							class="btn btn-primary btn-sm"
+						<SfButton
+							size="sm"
 							:disabled="isCardActionDisabled(card.key)"
 							@click="runCardAction(card.actionKind)">
 							{{ card.actionLabel }}
-						</button>
-						<button
+						</SfButton>
+						<SfButton
 							v-if="card.key === 'bordero' && borderoAvailable"
-							type="button"
-							class="btn btn-secondary btn-sm"
+							variant="secondary"
+							size="sm"
 							:disabled="downloadBorderoBusy || borderoBusy"
 							@click="emit('open-bordero')">
 							Apri borderò
-						</button>
-						<button
+						</SfButton>
+						<SfButton
 							v-if="card.key === 'bordero' && borderoAvailable"
-							type="button"
-							class="btn btn-secondary btn-sm"
-							:disabled="downloadBorderoBusy || borderoBusy"
+							variant="secondary"
+							size="sm"
+							:loading="downloadBorderoBusy"
+							:disabled="borderoBusy"
 							@click="emit('download-bordero')">
 							{{ downloadBorderoBusy ? 'Download...' : 'Scarica borderò' }}
-						</button>
+						</SfButton>
 					</div>
 				</div>
 			</article>

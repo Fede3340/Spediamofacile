@@ -254,10 +254,10 @@ const quickActions = [
 
 						<p v-if="submitError" class="contact-form__error" role="alert">{{ submitError }}</p>
 
-						<button type="submit" :disabled="isSubmitting || !turnstile.isReady.value" class="btn btn-cta btn-lg contact-form__cta" :class="{ 'is-loading': isSubmitting }">
+						<SfButton type="submit" size="lg" class="contact-form__cta" :loading="isSubmitting" :disabled="!turnstile.isReady.value">
 							<span v-if="!isSubmitting">Invia richiesta</span>
 							<span v-else>Invio in corso...</span>
-						</button>
+						</SfButton>
 					</form>
 				</div>
 			</div>

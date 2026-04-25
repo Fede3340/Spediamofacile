@@ -194,16 +194,15 @@ const tabs = computed(() => [
 				:description="`Salva indirizzi di partenza e destinazione per spedire con un solo tap. ${stats.total} di ${stats.max} indirizzi salvati.`"
 				current="Indirizzi">
 				<template #actions>
-					<button
-						type="button"
-						class="btn btn-cta sf-addr-page__cta"
+					<SfButton
+						class="sf-addr-page__cta"
 						:disabled="reachedLimit"
 						@click="openCreate">
 						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
 							<path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
 						</svg>
 						Nuovo indirizzo
-					</button>
+					</SfButton>
 				</template>
 			</AccountPageHeader>
 
