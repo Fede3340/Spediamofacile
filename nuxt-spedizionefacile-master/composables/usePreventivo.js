@@ -169,8 +169,8 @@ const usePreventivoFormInternal = (deps) => {
 		const countryCode = String(shipmentFlowStore?.shipmentDetails.origin_country_code || "IT").trim().toUpperCase() || "IT";
 		const option = europeCountryOptions.value.find((entry) => entry.code === countryCode);
 
-		shipmentFlowStore?.shipmentDetails.origin_country_code = countryCode;
-		shipmentFlowStore?.shipmentDetails.origin_country = option?.label || countryCode;
+		shipmentFlowStore.shipmentDetails.origin_country_code = countryCode;
+		shipmentFlowStore.shipmentDetails.origin_country = option?.label || countryCode;
 		originSuggestions.value = [];
 		showOriginSuggestions.value = false;
 		locationSearch.clearLocationSearchError();
@@ -178,21 +178,21 @@ const usePreventivoFormInternal = (deps) => {
 
 		if (countryCode === "IT") {
 			if (resetFields) {
-				shipmentFlowStore?.shipmentDetails.origin_city = "";
-				shipmentFlowStore?.shipmentDetails.origin_postal_code = "";
+				shipmentFlowStore.shipmentDetails.origin_city = "";
+				shipmentFlowStore.shipmentDetails.origin_postal_code = "";
 				originQuery.value = "";
 			}
 			return;
 		}
 
 		if (resetFields) {
-			shipmentFlowStore?.shipmentDetails.origin_city = "";
-			shipmentFlowStore?.shipmentDetails.origin_postal_code = "";
+			shipmentFlowStore.shipmentDetails.origin_city = "";
+			shipmentFlowStore.shipmentDetails.origin_postal_code = "";
 			originQuery.value = "";
 			return;
 		}
 
-		shipmentFlowStore?.shipmentDetails.origin_postal_code = "";
+		shipmentFlowStore.shipmentDetails.origin_postal_code = "";
 		originQuery.value = String(shipmentFlowStore?.shipmentDetails.origin_city || originQuery.value || "").trim();
 	};
 
@@ -200,8 +200,8 @@ const usePreventivoFormInternal = (deps) => {
 		const countryCode = String(shipmentFlowStore?.shipmentDetails.destination_country_code || "IT").trim().toUpperCase() || "IT";
 		const option = europeCountryOptions.value.find((entry) => entry.code === countryCode);
 
-		shipmentFlowStore?.shipmentDetails.destination_country_code = countryCode;
-		shipmentFlowStore?.shipmentDetails.destination_country = option?.label || countryCode;
+		shipmentFlowStore.shipmentDetails.destination_country_code = countryCode;
+		shipmentFlowStore.shipmentDetails.destination_country = option?.label || countryCode;
 		destSuggestions.value = [];
 		showDestSuggestions.value = false;
 		locationSearch.clearLocationSearchError();
@@ -209,21 +209,21 @@ const usePreventivoFormInternal = (deps) => {
 
 		if (countryCode === "IT") {
 			if (resetFields) {
-				shipmentFlowStore?.shipmentDetails.destination_city = "";
-				shipmentFlowStore?.shipmentDetails.destination_postal_code = "";
+				shipmentFlowStore.shipmentDetails.destination_city = "";
+				shipmentFlowStore.shipmentDetails.destination_postal_code = "";
 				destQuery.value = "";
 			}
 			return;
 		}
 
 		if (resetFields) {
-			shipmentFlowStore?.shipmentDetails.destination_city = "";
-			shipmentFlowStore?.shipmentDetails.destination_postal_code = "";
+			shipmentFlowStore.shipmentDetails.destination_city = "";
+			shipmentFlowStore.shipmentDetails.destination_postal_code = "";
 			destQuery.value = "";
 			return;
 		}
 
-		shipmentFlowStore?.shipmentDetails.destination_postal_code = "";
+		shipmentFlowStore.shipmentDetails.destination_postal_code = "";
 		destQuery.value = String(shipmentFlowStore?.shipmentDetails.destination_city || destQuery.value || "").trim();
 	};
 
@@ -231,8 +231,8 @@ const usePreventivoFormInternal = (deps) => {
 	const onDestManualInput = () => {
 		const value = String(destQuery.value || "").trimStart();
 		locationSearch.clearLocationSearchError();
-		shipmentFlowStore?.shipmentDetails.destination_city = value;
-		shipmentFlowStore?.shipmentDetails.destination_postal_code = "";
+		shipmentFlowStore.shipmentDetails.destination_city = value;
+		shipmentFlowStore.shipmentDetails.destination_postal_code = "";
 		destSuggestions.value = [];
 		showDestSuggestions.value = false;
 		sv.clearError("dest_cap");
@@ -242,8 +242,8 @@ const usePreventivoFormInternal = (deps) => {
 		const value = String(destQuery.value || "").trim();
 		locationSearch.clearLocationSearchError();
 		destQuery.value = value;
-		shipmentFlowStore?.shipmentDetails.destination_city = value;
-		shipmentFlowStore?.shipmentDetails.destination_postal_code = "";
+		shipmentFlowStore.shipmentDetails.destination_city = value;
+		shipmentFlowStore.shipmentDetails.destination_postal_code = "";
 		destSuggestions.value = [];
 		showDestSuggestions.value = false;
 	};
@@ -251,8 +251,8 @@ const usePreventivoFormInternal = (deps) => {
 	const onOriginManualInput = () => {
 		const value = String(originQuery.value || "").trimStart();
 		locationSearch.clearLocationSearchError();
-		shipmentFlowStore?.shipmentDetails.origin_city = value;
-		shipmentFlowStore?.shipmentDetails.origin_postal_code = "";
+		shipmentFlowStore.shipmentDetails.origin_city = value;
+		shipmentFlowStore.shipmentDetails.origin_postal_code = "";
 		originSuggestions.value = [];
 		showOriginSuggestions.value = false;
 		sv.clearError("origin_cap");
@@ -262,8 +262,8 @@ const usePreventivoFormInternal = (deps) => {
 		const value = String(originQuery.value || "").trim();
 		locationSearch.clearLocationSearchError();
 		originQuery.value = value;
-		shipmentFlowStore?.shipmentDetails.origin_city = value;
-		shipmentFlowStore?.shipmentDetails.origin_postal_code = "";
+		shipmentFlowStore.shipmentDetails.origin_city = value;
+		shipmentFlowStore.shipmentDetails.origin_postal_code = "";
 		originSuggestions.value = [];
 		showOriginSuggestions.value = false;
 	};
@@ -307,18 +307,18 @@ const usePreventivoFormInternal = (deps) => {
 			autoQuoteTimerRef(null);
 		}
 		shipmentFlowStore?.packages.splice(0);
-		shipmentFlowStore?.shipmentDetails.origin_city = "";
-		shipmentFlowStore?.shipmentDetails.origin_postal_code = "";
-		shipmentFlowStore?.shipmentDetails.origin_country_code = "IT";
-		shipmentFlowStore?.shipmentDetails.origin_country = "Italia";
-		shipmentFlowStore?.shipmentDetails.destination_city = "";
-		shipmentFlowStore?.shipmentDetails.destination_postal_code = "";
-		shipmentFlowStore?.shipmentDetails.destination_country_code = "IT";
-		shipmentFlowStore?.shipmentDetails.destination_country = "Italia";
-		shipmentFlowStore?.shipmentDetails.date = "";
-		shipmentFlowStore?.totalPrice = 0;
-		shipmentFlowStore?.stepNumber = 1;
-		shipmentFlowStore?.isQuoteStarted = false;
+		shipmentFlowStore.shipmentDetails.origin_city = "";
+		shipmentFlowStore.shipmentDetails.origin_postal_code = "";
+		shipmentFlowStore.shipmentDetails.origin_country_code = "IT";
+		shipmentFlowStore.shipmentDetails.origin_country = "Italia";
+		shipmentFlowStore.shipmentDetails.destination_city = "";
+		shipmentFlowStore.shipmentDetails.destination_postal_code = "";
+		shipmentFlowStore.shipmentDetails.destination_country_code = "IT";
+		shipmentFlowStore.shipmentDetails.destination_country = "Italia";
+		shipmentFlowStore.shipmentDetails.date = "";
+		shipmentFlowStore.totalPrice = 0;
+		shipmentFlowStore.stepNumber = 1;
+		shipmentFlowStore.isQuoteStarted = false;
 		messageError.value = null;
 		locationSearch.clearLocationSearchError();
 		lastQuotedSignature.value = "";
@@ -471,9 +471,9 @@ const usePreventivoCalcInternal = (deps) => {
 				return;
 			}
 
-			shipmentFlowStore?.totalPrice = Number(sessionData?.total_price || shipmentFlowStore?.totalPrice || 0);
-			shipmentFlowStore?.stepNumber = Number(sessionData?.step || 2);
-			shipmentFlowStore?.isQuoteStarted = true;
+			shipmentFlowStore.totalPrice = Number(sessionData?.total_price || shipmentFlowStore?.totalPrice || 0);
+			shipmentFlowStore.stepNumber = Number(sessionData?.step || 2);
+			shipmentFlowStore.isQuoteStarted = true;
 			ensurePackagesIdentity();
 			ensurePrimaryPackage();
 			return;
@@ -482,7 +482,7 @@ const usePreventivoCalcInternal = (deps) => {
 		const shipmentDetails = sessionData?.shipment_details || {};
 		for (const [key, value] of Object.entries(shipmentDetails)) {
 			if (key in shipmentFlowStore?.shipmentDetails) {
-				shipmentFlowStore?.shipmentDetails[key] = value ?? "";
+				shipmentFlowStore.shipmentDetails[key] = value ?? "";
 			}
 		}
 
@@ -495,9 +495,9 @@ const usePreventivoCalcInternal = (deps) => {
 			ensurePackagesIdentity();
 		}
 
-		shipmentFlowStore?.totalPrice = Number(sessionData?.total_price || shipmentFlowStore?.totalPrice || 0);
-		shipmentFlowStore?.stepNumber = Number(sessionData?.step || 2);
-		shipmentFlowStore?.isQuoteStarted = true;
+		shipmentFlowStore.totalPrice = Number(sessionData?.total_price || shipmentFlowStore?.totalPrice || 0);
+		shipmentFlowStore.stepNumber = Number(sessionData?.step || 2);
+		shipmentFlowStore.isQuoteStarted = true;
 		ensurePrimaryPackage();
 	};
 
@@ -574,7 +574,7 @@ const usePreventivoCalcInternal = (deps) => {
 			}
 		}
 
-		if (!shipmentFlowStore?.packages || shipmentFlowStore?.packages.length === 0) {
+		if (!shipmentFlowStore?.packages || shipmentFlowStore.packages.length === 0) {
 			if (!silent) {
 				messageError.value = { packages: ["Seleziona almeno un tipo di collo."] };
 				scrollToFirstError();
@@ -876,8 +876,8 @@ const usePreventivoResultsInternal = (deps) => {
 			lastQuotedSignature.value = payloadSignature;
 			await nextTick();
 			await navigateTo(buildShipmentFlowLocation({}, 'servizi'), { replace: true });
-			shipmentFlowStore?.stepNumber = 2;
-			shipmentFlowStore?.isQuoteStarted = true;
+			shipmentFlowStore.stepNumber = 2;
+			shipmentFlowStore.isQuoteStarted = true;
 		} finally {
 			clearTimeout(unlockTimer);
 			await nextTick();

@@ -153,7 +153,7 @@ export const useQuickQuotePackages = ({
 	};
 
 	const recalculatePackagesTotal = () => {
-		shipmentFlowStore?.totalPrice = shipmentFlowStore?.packages.reduce(
+		shipmentFlowStore.totalPrice = shipmentFlowStore?.packages.reduce(
 			(total, pack) => total + (Number(pack?.single_price) || 0),
 			0,
 		);
@@ -321,7 +321,7 @@ export const useQuickQuotePackages = ({
 		if (index < 0) return;
 		shipmentFlowStore?.packages.splice(index, 1);
 
-		if (shipmentFlowStore?.packages.length === 0) {
+		if (shipmentFlowStore.packages.length === 0) {
 			shipmentFlowStore?.packages.push(buildPackageDraft(QUICK_QUOTE_PACKAGE_TYPES[0]));
 		}
 

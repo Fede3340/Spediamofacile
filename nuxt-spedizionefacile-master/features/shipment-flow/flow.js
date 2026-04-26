@@ -93,7 +93,7 @@ export const useShipmentStepFlow = ({
 	};
 
 	const onPudoSelected = (pudo) => {
-		shipmentFlowStore?.selectedPudo = pudo;
+		shipmentFlowStore.selectedPudo = pudo;
 		destinationAddress.value.address = pudo.address || "";
 		destinationAddress.value.address_number = "SNC";
 		destinationAddress.value.city = pudo.city || "";
@@ -106,7 +106,7 @@ export const useShipmentStepFlow = ({
 			destinationAddress.value.full_name = "";
 		}
 
-		shipmentFlowStore?.shipmentDetails = {
+		shipmentFlowStore.shipmentDetails = {
 			...(shipmentFlowStore?.shipmentDetails || {}),
 			destination_city: pudo.city || destinationAddress.value.city || "",
 			destination_postal_code: pudo.zip_code || destinationAddress.value.postal_code || "",
@@ -114,7 +114,7 @@ export const useShipmentStepFlow = ({
 	};
 
 	const onPudoDeselected = () => {
-		shipmentFlowStore?.selectedPudo = null;
+		shipmentFlowStore.selectedPudo = null;
 		destinationAddress.value.address = "";
 		destinationAddress.value.address_number = "";
 		destinationAddress.value.city = session.value?.data?.shipment_details?.destination_city || "";
@@ -124,7 +124,7 @@ export const useShipmentStepFlow = ({
 
 	watch(deliveryMode, (newMode) => {
 		if (newMode === "home") {
-			shipmentFlowStore?.selectedPudo = null;
+			shipmentFlowStore.selectedPudo = null;
 			return;
 		}
 

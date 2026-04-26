@@ -94,14 +94,14 @@ export const useShipmentStepSubmit = ({
 				}
 			}
 
-			shipmentFlowStore?.pendingShipment = payload;
-			shipmentFlowStore?.originAddressData = { ...originAddress.value };
-			shipmentFlowStore?.destinationAddressData = { ...destinationAddress.value };
-			shipmentFlowStore?.pickupDate = services.value.date || "";
-			shipmentFlowStore?.smsEmailNotification = smsEmailNotification.value;
+			shipmentFlowStore.pendingShipment = payload;
+			shipmentFlowStore.originAddressData = { ...originAddress.value };
+			shipmentFlowStore.destinationAddressData = { ...destinationAddress.value };
+			shipmentFlowStore.pickupDate = services.value.date || "";
+			shipmentFlowStore.smsEmailNotification = smsEmailNotification.value;
 
 			if (editCartId) {
-				shipmentFlowStore?.editingCartItemId = editCartId;
+				shipmentFlowStore.editingCartItemId = editCartId;
 			}
 
 			uiFeedback.success("Dati salvati", "Apertura del riepilogo...", { timeout: 1800 });

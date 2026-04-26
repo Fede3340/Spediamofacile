@@ -203,8 +203,8 @@ export const useShipmentStepServices = ({ shipmentFlowStore, dateError }) => {
 			}
 
 			if (service.key === 'sponda_idraulica') {
-				shipmentFlowStore?.serviceData = shipmentFlowStore?.serviceData || {};
-				shipmentFlowStore?.serviceData.sponda_idraulica = { ...serviceData.value.sponda_idraulica };
+				shipmentFlowStore.serviceData = shipmentFlowStore?.serviceData || {};
+				shipmentFlowStore.serviceData.sponda_idraulica = { ...serviceData.value.sponda_idraulica };
 			}
 		} else {
 			const index = shipmentFlowStore?.servicesArray.indexOf(service.name);
@@ -309,11 +309,11 @@ export const useShipmentStepServices = ({ shipmentFlowStore, dateError }) => {
 	);
 
 	const resetServicesState = () => {
-		shipmentFlowStore?.servicesArray = [];
+		shipmentFlowStore.servicesArray = [];
 		services.value.service_type = '';
 		smsEmailNotification.value = false;
 		serviceData.value = createMergedServiceData();
-		shipmentFlowStore?.serviceData = createMergedServiceData();
+		shipmentFlowStore.serviceData = createMergedServiceData();
 		expandedServiceKey.value = '';
 		syncSelectedServicesVisual();
 	};
@@ -386,12 +386,12 @@ export const useShipmentStepServices = ({ shipmentFlowStore, dateError }) => {
 		([newDate]) => {
 			const selectedDate = newDate || '';
 			if (shipmentFlowStore?.pickupDate !== selectedDate) {
-				shipmentFlowStore?.pickupDate = selectedDate;
+				shipmentFlowStore.pickupDate = selectedDate;
 			}
 
 			const currentDetails = shipmentFlowStore?.shipmentDetails || {};
 			if ((currentDetails.date || '') !== selectedDate) {
-				shipmentFlowStore?.shipmentDetails = {
+				shipmentFlowStore.shipmentDetails = {
 					...currentDetails,
 					date: selectedDate,
 				};
@@ -405,7 +405,7 @@ export const useShipmentStepServices = ({ shipmentFlowStore, dateError }) => {
 	watch(
 		smsEmailNotification,
 		(enabled) => {
-			shipmentFlowStore?.smsEmailNotification = Boolean(enabled);
+			shipmentFlowStore.smsEmailNotification = Boolean(enabled);
 		},
 		{ immediate: true },
 	);
@@ -413,7 +413,7 @@ export const useShipmentStepServices = ({ shipmentFlowStore, dateError }) => {
 	watch(
 		serviceData,
 		(nextValue) => {
-			shipmentFlowStore?.serviceData = {
+			shipmentFlowStore.serviceData = {
 				contrassegno: { ...(nextValue?.contrassegno || {}) },
 				assicurazione: { ...(nextValue?.assicurazione || {}) },
 				sponda_idraulica: { ...(nextValue?.sponda_idraulica || {}) },

@@ -281,7 +281,7 @@ export function useShipmentStepPageOrchestration(deps) {
 		if (activeAccordionStep.value === 'payment') {
 			await ensurePaymentStageReady();
 		}
-		if (!Array.isArray(shipmentFlowStore?.packages) || shipmentFlowStore?.packages.length === 0) {
+		if (!Array.isArray(shipmentFlowStore?.packages) || shipmentFlowStore.packages.length === 0) {
 			addPackageInline();
 			ensurePackagesIdentity();
 		}

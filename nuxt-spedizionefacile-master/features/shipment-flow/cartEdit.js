@@ -38,7 +38,7 @@ export const useShipmentStepCartEdit = ({
 	};
 
 	const clearInvalidEditState = async () => {
-		shipmentFlowStore?.editingCartItemId = null;
+		shipmentFlowStore.editingCartItemId = null;
 		const nextQuery = { ...route.query };
 		delete nextQuery.edit;
 		delete nextQuery.edit_id;
@@ -51,7 +51,7 @@ export const useShipmentStepCartEdit = ({
 			const result = await sanctumClient(`/api/cart/${editCartId}`);
 			const item = result?.data || result;
 
-			shipmentFlowStore?.editingCartItemId = editCartId;
+			shipmentFlowStore.editingCartItemId = editCartId;
 
 			populateAddress(originAddress, item.origin_address);
 			populateAddress(destinationAddress, item.destination_address);
@@ -60,25 +60,25 @@ export const useShipmentStepCartEdit = ({
 				services.value.date = item.services.date || "";
 				services.value.time = item.services.time || "";
 				services.value.service_type = item.services.service_type || "";
-				shipmentFlowStore?.pickupDate = item.services.date || "";
+				shipmentFlowStore.pickupDate = item.services.date || "";
 
 				const serviceTypes = (item.services.service_type || "")
 					.split(", ")
 					.filter((service) => service && service !== "Nessuno");
-				shipmentFlowStore?.servicesArray = serviceTypes;
+				shipmentFlowStore.servicesArray = serviceTypes;
 				syncSelectedServicesVisual();
 			}
 
 			if (item.content_description) {
-				shipmentFlowStore?.contentDescription = item.content_description;
+				shipmentFlowStore.contentDescription = item.content_description;
 			}
 
 			if (item.services?.serviceData) {
-				shipmentFlowStore?.serviceData = { ...item.services.serviceData };
+				shipmentFlowStore.serviceData = { ...item.services.serviceData };
 			}
 
 			const priceInEuro = item.single_price ? (Number(item.single_price) / 100) : 0;
-			shipmentFlowStore?.packages = [{
+			shipmentFlowStore.packages = [{
 				package_type: item.package_type || "Pacco",
 				quantity: item.quantity || 1,
 				weight: item.weight,
@@ -90,7 +90,7 @@ export const useShipmentStepCartEdit = ({
 				single_price: priceInEuro,
 			}];
 
-			shipmentFlowStore?.shipmentDetails = {
+			shipmentFlowStore.shipmentDetails = {
 				origin_city: item.origin_address?.city || "",
 				origin_postal_code: item.origin_address?.postal_code || "",
 				destination_city: item.destination_address?.city || "",
@@ -100,7 +100,7 @@ export const useShipmentStepCartEdit = ({
 
 			showAddressFields.value = true;
 		} catch (error) {
-			shipmentFlowStore?.editingCartItemId = null;
+			shipmentFlowStore.editingCartItemId = null;
 			const statusCode = Number(error?.response?.status || error?.statusCode || 0);
 			if (statusCode === 404) {
 				await clearInvalidEditState();

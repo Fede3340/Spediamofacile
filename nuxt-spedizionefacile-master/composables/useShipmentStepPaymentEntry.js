@@ -174,11 +174,11 @@ export function useShipmentStepPaymentEntry(deps) {
 				? previousPayload.client_submission_id
 				: `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 			const payloadWithSubmission = { ...payload, client_submission_id: clientSubmissionId };
-			shipmentFlowStore?.pendingShipment = payloadWithSubmission;
+			shipmentFlowStore.pendingShipment = payloadWithSubmission;
 
 			if (editCartId) {
 				await sanctumClient(`/api/cart/${editCartId}`, { method: 'PUT', body: payloadWithSubmission });
-				shipmentFlowStore?.editingCartItemId = editCartId;
+				shipmentFlowStore.editingCartItemId = editCartId;
 				uiFeedback.success('Indirizzi salvati', 'Apro il pagamento nello stesso ventaglio...', { timeout: 1800 });
 				await openPaymentAccordion();
 				return;
@@ -195,7 +195,7 @@ export function useShipmentStepPaymentEntry(deps) {
 				|| result?.data?.client_submission_id
 				|| null;
 			if (canonicalSubmissionId && shipmentFlowStore?.pendingShipment) {
-				shipmentFlowStore?.pendingShipment = {
+				shipmentFlowStore.pendingShipment = {
 					...shipmentFlowStore?.pendingShipment,
 					client_submission_id: canonicalSubmissionId,
 				};
