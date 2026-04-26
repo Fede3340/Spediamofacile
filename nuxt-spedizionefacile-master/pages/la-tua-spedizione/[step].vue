@@ -1117,7 +1117,7 @@ const {
 						:can-save-dest-address="canSaveDestAddress"
 						:saving-origin-address="savingOriginAddress"
 						:saving-dest-address="savingDestAddress"
-						:selected-pudo="shipmentFlowStore.selectedPudo"
+						:selected-pudo="shipmentFlowStore?.selectedPudo ?? null"
 						:origin-selector-ref="originSelectorRef"
 						:dest-selector-ref="destSelectorRef"
 						:is-submitting="isSubmitting"
