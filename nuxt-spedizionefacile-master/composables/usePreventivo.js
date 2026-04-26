@@ -344,7 +344,7 @@ const usePreventivoFormInternal = (deps) => {
 			shipmentFlowStore.shipmentDetails.destination_city,
 			shipmentFlowStore.shipmentDetails.destination_postal_code,
 		);
-		const activeFieldId = process.client ? document?.activeElement?.id : "";
+		const activeFieldId = import.meta.client ? document?.activeElement?.id : "";
 		if (activeFieldId === "origin_city" || (originDraft && originDraft !== resolvedOrigin)) {
 			if (isOriginItaly.value) {
 				await settleOriginQuery();

@@ -477,7 +477,7 @@ export const useShipmentStepSummary = ({
 	};
 
 	const updateStepsVisibility = () => {
-		if (!process.client || !stepsRef.value) return;
+		if (!import.meta.client || !stepsRef.value) return;
 		const rect = stepsRef.value.getBoundingClientRect();
 		const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 		const visibleTop = Math.max(rect.top, 0);
@@ -489,7 +489,7 @@ export const useShipmentStepSummary = ({
 	};
 
 	const scheduleStepsVisibilityUpdate = () => {
-		if (!process.client) return;
+		if (!import.meta.client) return;
 		if (stepsVisibilityRaf) cancelAnimationFrame(stepsVisibilityRaf);
 		stepsVisibilityRaf = requestAnimationFrame(() => {
 			updateStepsVisibility();
@@ -498,7 +498,7 @@ export const useShipmentStepSummary = ({
 	};
 
 	const teardownStepsVisibilityObserver = () => {
-		if (!process.client) return;
+		if (!import.meta.client) return;
 		window.removeEventListener('scroll', scheduleStepsVisibilityUpdate);
 		window.removeEventListener('resize', scheduleStepsVisibilityUpdate);
 		if (stepsVisibilityRaf) {
@@ -512,7 +512,7 @@ export const useShipmentStepSummary = ({
 	};
 
 	const initStepsVisibilityObserver = () => {
-		if (!process.client || !stepsRef.value) return;
+		if (!import.meta.client || !stepsRef.value) return;
 		teardownStepsVisibilityObserver();
 
 		if ('IntersectionObserver' in window) {
@@ -549,7 +549,7 @@ export const useShipmentStepSummary = ({
 	watch(
 		() => stepsRef.value,
 		(el) => {
-			if (!process.client || !el) return;
+			if (!import.meta.client || !el) return;
 			nextTick(() => initStepsVisibilityObserver());
 		},
 		{ flush: 'post' }
@@ -558,7 +558,7 @@ export const useShipmentStepSummary = ({
 	watch(
 		() => status.value,
 		(newStatus) => {
-			if (!process.client || newStatus === 'pending') return;
+			if (!import.meta.client || newStatus === 'pending') return;
 			nextTick(() => initStepsVisibilityObserver());
 		}
 	);

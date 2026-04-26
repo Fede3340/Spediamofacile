@@ -181,7 +181,7 @@ export function useAccountDashboard() {
 	});
 
 	watch(isAdmin, async (value) => {
-		if (!process.client || !value || adminDashboardData.value || adminDashboardLoading.value) return;
+		if (!import.meta.client || !value || adminDashboardData.value || adminDashboardLoading.value) return;
 		await fetchAdminDashboard();
 	});
 
