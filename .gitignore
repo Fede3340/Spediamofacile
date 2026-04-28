@@ -50,3 +50,15 @@ tmp/
 .tmp/
 test-results/
 playwright-report/
+
+# DB e snapshot
+*.sqlite
+*.sqlite-journal
+_data/
+
+# Local helper scripts (Claude/Codex launcher, GUI panel) - personali
+scripts/local-tools/
+
+# Backup folder operativi (rinominati con timestamp)
+*-backup-*/
+*_backup_*/
