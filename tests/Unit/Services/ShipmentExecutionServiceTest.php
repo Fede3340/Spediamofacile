@@ -7,7 +7,7 @@ use App\Models\Package;
 use App\Models\PackageAddress;
 use App\Models\Service;
 use App\Models\User;
-use App\Services\BrtService;
+use App\Services\BrtClient;
 use App\Services\ShipmentDocumentDispatcher;
 use App\Services\ShipmentExecutionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,7 +21,7 @@ class ShipmentExecutionServiceTest extends TestCase
     public function test_ritiro_al_piano_does_not_enable_home_pickup_without_pickup_request(): void
     {
         $order = $this->createOrderWithService('ritiro_al_piano');
-        $brt = Mockery::mock(BrtService::class);
+        $brt = Mockery::mock(BrtClient::class);
         $brt->shouldReceive('requestHomePickup')->never();
 
         $result = $this->executionService($brt)->requestPickup($order);
@@ -45,7 +45,7 @@ class ShipmentExecutionServiceTest extends TestCase
             ],
         ]);
 
-        $brt = Mockery::mock(BrtService::class);
+        $brt = Mockery::mock(BrtClient::class);
         $brt->shouldReceive('requestHomePickup')
             ->once()
             ->withArgs(fn (Order $candidateOrder, array $pickupRequest) =>
@@ -75,7 +75,7 @@ class ShipmentExecutionServiceTest extends TestCase
             'time' => '10:00-13:00',
         ]);
 
-        $brt = Mockery::mock(BrtService::class);
+        $brt = Mockery::mock(BrtClient::class);
         $brt->shouldReceive('requestHomePickup')
             ->once()
             ->withArgs(fn (Order $candidateOrder, array $pickupRequest) =>
@@ -119,7 +119,7 @@ class ShipmentExecutionServiceTest extends TestCase
         return $order->fresh();
     }
 
-    private function executionService(BrtService $brt): ShipmentExecutionService
+    private function executionService(BrtClient $brt): ShipmentExecutionService
     {
         return new ShipmentExecutionService(
             $brt,

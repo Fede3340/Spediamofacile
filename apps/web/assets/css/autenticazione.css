@@ -406,9 +406,6 @@
 	.auth-shell-message__action {
 		width: 100%;
 	}
-.auth-choice-radio {
-		min-height: 36px;
-	}
 }
 
 /* ── Demo card caption ──────────────────────────────────── */

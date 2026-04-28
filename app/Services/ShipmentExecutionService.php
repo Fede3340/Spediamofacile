@@ -7,7 +7,7 @@ use App\Models\Order;
 class ShipmentExecutionService
 {
     public function __construct(
-        private readonly BrtService $brt,
+        private readonly BrtClient $brt,
         private readonly ShipmentDocumentDispatcher $documents,
     ) {}
 

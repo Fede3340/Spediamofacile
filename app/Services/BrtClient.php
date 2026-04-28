@@ -1,187 +1,165 @@
 <?php
-
 namespace App\Services;
 
 use App\Models\Order;
+use App\Models\Package;
 use App\Services\Brt\AddressNormalizer;
-use App\Services\Brt\BrtBordereauGenerator;
 use App\Services\Brt\BrtConfig;
 use App\Services\Brt\ErrorTranslator;
-use App\Services\Brt\FilialeLookup;
 use App\Services\Brt\PickupService;
-use App\Services\Brt\PudoPointMapper;
 use App\Services\Brt\PudoService;
 use App\Services\Brt\ShipmentService;
 use App\Services\Brt\TrackingService;
-use Carbon\Carbon;
-use Illuminate\Support\Collection;
 
 /**
  * BrtClient — Facade unificata per tutte le operazioni BRT.
  *
  * Punto d'ingresso pubblico unico per consumatori esterni (Controllers,
- * Listeners, Jobs). I 11 sub-service in `App\Services\Brt\*` mantengono
- * la responsabilità SOLID single-purpose; BrtClient è solo il facade
- * che li orchestra e fornisce un'API uniforme.
+ * Listeners, Jobs, Services). I 11 sub-service in `App\Services\Brt\*`
+ * mantengono la responsabilità SOLID single-purpose; BrtClient li
+ * orchestra fornendo un'API uniforme.
  *
- * RAZIONALE:
- *   - I caller esterni dipendono solo da BrtClient (1 dipendenza)
- *   - In futuro è possibile rimpiazzare l'implementazione interna senza
- *     rompere caller esterni (Open/Closed)
- *   - Sub-service restano testabili in isolamento via DI (i loro test
- *     attuali continuano a passare)
- *
- * USO:
- *   public function __construct(private readonly BrtClient $brt) {}
- *
- *   // Spedizioni
- *   $brt->createShipment($order);
- *   $brt->confirmShipment(123);
- *
- *   // Tracking
- *   $brt->getTrackingStatus($order);
- *
- *   // PUDO
- *   $brt->searchPudoByAddress('Via Roma 1', '20100', 'Milano');
- *   $brt->searchPudoByCoordinates(45.46, 9.18);
- *
- *   // Ritiri
- *   $brt->requestPickup($order, $pickupRequest);
- *
- *   // PDF
- *   $brt->buildBordereau($pickupDate, $orders, $sender);
- *   $brt->buildLabels($order);
- *
- *   // Indirizzi / Errori (helpers puri)
- *   $brt->normalizeAddress($address);
- *   $brt->translateError($code, $codeDesc, $message);
+ * Storia: rinominato da BrtService (2026-04-28) per chiarezza nome.
+ * I 7 caller esistenti aggiornati direttamente al nuovo nome.
  */
 class BrtClient
 {
-    public function __construct(
-        private readonly ShipmentService $shipments,
-        private readonly TrackingService $tracking,
-        private readonly PudoService $pudo,
-        private readonly PudoPointMapper $pudoMapper,
-        private readonly PickupService $pickups,
-        private readonly BrtBordereauGenerator $pdf,
-        private readonly AddressNormalizer $addresses,
-        private readonly ErrorTranslator $errors,
-        private readonly FilialeLookup $filiali,
-        private readonly BrtConfig $config,
-    ) {}
+    private BrtConfig $config;
+    private ShipmentService $shipmentService;
+    private PudoService $pudoService;
+    private TrackingService $trackingService;
 
-    /* ── Spedizioni ──────────────────────────────────────────────── */
+    public function __construct()
+    {
+        $this->config = new BrtConfig();
+        $addressNormalizer = new AddressNormalizer();
+        $errorTranslator = new ErrorTranslator();
+        $this->shipmentService = new ShipmentService($this->config, $addressNormalizer, $errorTranslator);
+        $this->pudoService = new PudoService($this->config);
+        $this->trackingService = new TrackingService($this->config);
+    }
+
+    // ── Shipment operations (delegated to Brt\ShipmentService) ───
 
     public function createShipment(Order $order, array $options = []): array
     {
-        return $this->shipments->createShipment($order, $options);
+        return $this->shipmentService->createShipment($order, $options);
+    }
+
+    public function testCreateShipment(array $data): array
+    {
+        return $this->shipmentService->testCreateShipment($data);
     }
 
     public function confirmShipment(int $numericSenderReference): array
     {
-        return $this->shipments->confirmShipment($numericSenderReference);
+        return $this->shipmentService->confirmShipment($numericSenderReference);
     }
 
     public function deleteShipment(int $numericSenderReference): array
     {
-        return $this->shipments->deleteShipment($numericSenderReference);
+        return $this->shipmentService->deleteShipment($numericSenderReference);
     }
 
-    /* ── Tracking ────────────────────────────────────────────────── */
+    // ── PUDO operations (delegated to Brt\PudoService) ───────────
 
-    public function getTrackingStatus(Order $order): array
+    public function getPudoByAddress(string $address, string $zipCode, string $city, string $countryCode = 'ITA', int $maxResults = 50): array
     {
-        return $this->tracking->getTrackingStatus($order);
+        return $this->pudoService->getPudoByAddress($address, $zipCode, $city, $countryCode, $maxResults);
     }
 
-    public function getTrackingUrl(string $parcelNumber): string
+    public function getPudoByCoordinates(float $latitude, float $longitude, int $maxResults = 50): array
     {
-        return $this->tracking->getTrackingUrl($parcelNumber);
-    }
-
-    public function mapCarrierStatus(string $eventCode, string $eventDesc = ''): ?string
-    {
-        return $this->tracking->mapCarrierStatus($eventCode, $eventDesc);
-    }
-
-    /* ── PUDO ────────────────────────────────────────────────────── */
-
-    public function searchPudoByAddress(string $address, string $zipCode, string $city, string $countryCode = 'ITA', int $maxResults = 50): array
-    {
-        return $this->pudo->getPudoByAddress($address, $zipCode, $city, $countryCode, $maxResults);
-    }
-
-    public function searchPudoByCoordinates(float $latitude, float $longitude, int $maxResults = 50): array
-    {
-        return $this->pudo->getPudoByCoordinates($latitude, $longitude, $maxResults);
+        return $this->pudoService->getPudoByCoordinates($latitude, $longitude, $maxResults);
     }
 
     public function getPudoDetails(string $pudoId): array
     {
-        return $this->pudo->getPudoDetails($pudoId);
+        return $this->pudoService->getPudoDetails($pudoId);
     }
 
-    /* ── Ritiri ──────────────────────────────────────────────────── */
+    // ── Tracking operations (delegated to Brt\TrackingService) ───
 
-    public function requestPickup(Order $order, array $pickupRequest): array
+    public function getTrackingUrl(string $parcelNumber): string
     {
-        return $this->pickups->requestPickup($order, $pickupRequest);
+        return $this->trackingService->getTrackingUrl($parcelNumber);
     }
 
-    /* ── PDF ─────────────────────────────────────────────────────── */
-
-    public function buildBordereau(Carbon $pickupDate, Collection $orders, array $sender): string
+    public function getTrackingStatus(Order $order): array
     {
-        return $this->pdf->buildDailyBordereau($pickupDate, $orders, $sender);
+        return $this->trackingService->getTrackingStatus($order);
     }
 
-    public function buildLabels(Order $order): string
+    // ── Home pickup (delegated to Brt\PickupService) ──────────
+
+    public function requestHomePickup(Order $order, array $pickupRequest): array
     {
-        return $this->pdf->buildOrderLabels($order);
+        if (! ((bool) ($pickupRequest['enabled'] ?? false))) {
+            return ['success' => true, 'status' => 'not_requested'];
+        }
+
+        if (empty($order->brt_parcel_id)) {
+            return [
+                'success' => false,
+                'status' => 'failed',
+                'error' => 'Impossibile richiedere il ritiro senza etichetta BRT generata.',
+            ];
+        }
+
+        return app(PickupService::class)->requestPickup($order, $pickupRequest);
     }
 
-    /* ── Helpers puri ────────────────────────────────────────────── */
+    // ── Bordero generation ───────────────────────────────────────
 
-    public function normalizeAddress(object $address): array
+    public function createBordero(Order $order): array
     {
-        return $this->addresses->normalizeAddressForBrt($address);
-    }
+        $order->loadMissing(['packages.originAddress', 'packages.destinationAddress', 'packages.service', 'user']);
 
-    public function countryToIso2(string $country): string
-    {
-        return $this->addresses->countryToIso2($country);
-    }
+        /** @var Package|null $package */
+        $package = $order->packages->first();
+        if (! $package || ! $package->originAddress || ! $package->destinationAddress) {
+            return [
+                'success' => false,
+                'error' => 'Dati spedizione insufficienti per generare il bordero.',
+            ];
+        }
 
-    public function translateError(int $code, string $codeDesc, string $message, array $createData = []): string
-    {
-        return $this->errors->translate($code, $codeDesc, $message, $createData);
-    }
+        $origin = $package->originAddress;
+        $destination = $package->destinationAddress;
+        $parcelCount = (int) $order->packages->sum(fn (Package $item) => max(1, (int) ($item->quantity ?? 1)));
+        $reference = 'BORD-' . str_pad((string) $order->id, 8, '0', STR_PAD_LEFT);
 
-    public function isRetryableError(int $code): bool
-    {
-        return $this->errors->isRetryable($code);
-    }
+        $pdf = app(BorderoPdfBuilder::class)->build([
+            'bordero_date' => now()->format('d/m/Y'),
+            'bordero_number' => (string) $order->id,
+            'bordero_reference' => $reference,
+            'localita' => (string) ($destination->city ?? ''),
+            'prov' => (string) ($destination->province ?? ''),
+            'lna' => (string) ($destination->postal_code ?? ''),
+            'rif_num' => (string) $order->id,
+            'rif_alpha' => (string) ($order->brt_parcel_id ?? $order->id),
+            'cod_bolla' => (string) ($order->brt_parcel_id ?? 'n/d'),
+            'incasso' => $order->is_cod ? 'COD' : 'NO',
+            'importo_incasso' => $order->is_cod ? number_format(((int) $order->cod_amount) / 100, 2, ',', '.') : '0,00',
+            'importo_assicurare' => '0,00',
+            'colli' => (string) $parcelCount,
+            'sender_name' => (string) ($origin->name ?? ''),
+            'sender_address' => trim((string) (($origin->address ?? '') . ' ' . ($origin->address_number ?? ''))),
+            'sender_city_line' => trim((string) (($origin->postal_code ?? '') . ' ' . ($origin->city ?? '') . ' (' . ($origin->province ?? '') . ')')),
+            'sender_phone' => (string) ($origin->telephone_number ?? ''),
+            'recipient_name' => (string) ($destination->name ?? ''),
+            'recipient_address' => trim((string) (($destination->address ?? '') . ' ' . ($destination->address_number ?? ''))),
+            'recipient_city_line' => trim((string) (($destination->postal_code ?? '') . ' ' . ($destination->city ?? '') . ' (' . ($destination->province ?? '') . ')')),
+            'recipient_phone' => (string) ($destination->telephone_number ?? ''),
+            'created_at' => now()->format('d/m/Y H:i'),
+        ]);
 
-    /* ── Accesso sub-service per casi d'uso avanzati ─────────────── */
-
-    /**
-     * Espone PudoPointMapper per il merge/filtering avanzato di PUDO da
-     * più sorgenti (DB locale + API BRT). Caso d'uso minoritario: la maggior
-     * parte dei caller usa direttamente searchPudoByAddress/Coordinates.
-     */
-    public function pudoMapper(): PudoPointMapper
-    {
-        return $this->pudoMapper;
-    }
-
-    public function filiali(): FilialeLookup
-    {
-        return $this->filiali;
-    }
-
-    public function config(): BrtConfig
-    {
-        return $this->config;
+        return [
+            'success' => true,
+            'bordero_reference' => $reference,
+            'document_base64' => base64_encode($pdf),
+            'document_mime' => 'application/pdf',
+            'document_filename' => 'bordero-' . $order->id . '.pdf',
+        ];
     }
 }

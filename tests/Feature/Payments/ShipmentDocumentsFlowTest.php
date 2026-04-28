@@ -8,7 +8,7 @@ use App\Mail\ShipmentLabelMail;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\User;
-use App\Services\BrtService;
+use App\Services\BrtClient;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Mockery;
@@ -20,7 +20,7 @@ class ShipmentDocumentsFlowTest extends TestCase
 
     private function bindBrtSuccessMock(): void
     {
-        $mock = Mockery::mock(BrtService::class)->makePartial();
+        $mock = Mockery::mock(BrtClient::class)->makePartial();
         $mock->shouldReceive('createShipment')->andReturn([
             'success' => true,
             'parcel_id' => 'PARCEL-123',
@@ -31,7 +31,7 @@ class ShipmentDocumentsFlowTest extends TestCase
             'raw_response' => [],
         ]);
 
-        app()->instance(BrtService::class, $mock);
+        app()->instance(BrtClient::class, $mock);
     }
 
     public function test_order_paid_sends_single_complete_documents_email_to_customer_and_admin(): void

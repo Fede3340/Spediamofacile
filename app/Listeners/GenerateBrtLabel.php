@@ -2,7 +2,7 @@
 namespace App\Listeners;
 
 use App\Events\OrderPaid;
-use App\Services\BrtService;
+use App\Services\BrtClient;
 use App\Services\OrderBrtFulfillmentService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -44,7 +44,7 @@ class GenerateBrtLabel implements ShouldQueue
         }
 
         $options = $fulfillment->buildAutomaticShipmentOptions($order);
-        $result = app(BrtService::class)->createShipment($order, $options);
+        $result = app(BrtClient::class)->createShipment($order, $options);
 
         if (! ($result['success'] ?? false)) {
             throw new \RuntimeException(

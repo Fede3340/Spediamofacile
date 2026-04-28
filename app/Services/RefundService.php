@@ -102,7 +102,7 @@ class RefundService
         }
 
         try {
-            $brtService = new BrtService;
+            $brtService = new BrtClient;
             $brtResult  = $brtService->deleteShipment((int) $order->brt_numeric_sender_reference);
             $success    = $brtResult['success'] ?? false;
 

@@ -212,7 +212,7 @@ class OrderManagementController extends Controller
      * PERCHE': La generazione automatica puo' fallire (errore BRT, indirizzo non valido).
      *   L'admin puo' ritentare manualmente dopo aver corretto i dati.
      * COME LEGGERLO: 1) Verifica configurazione BRT  2) Prepara opzioni (contrassegno, PUDO)
-     *   3) Chiama BrtService.createShipment()  4) Salva campi brt_*  5) Invia email etichetta
+     *   3) Chiama BrtClient.createShipment()  4) Salva campi brt_*  5) Invia email etichetta
      * COME MODIFICARLO: Per passare opzioni extra a BRT, aggiungerle nell'array $options.
      * COSA EVITARE: Non chiamare su ordini gia' con etichetta senza prima eliminare la vecchia.
      */

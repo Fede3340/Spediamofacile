@@ -6,7 +6,7 @@ use App\Models\Order;
 use App\Models\Package;
 use App\Models\PackageAddress;
 use App\Models\User;
-use App\Services\BrtService;
+use App\Services\BrtClient;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
@@ -48,7 +48,7 @@ class BrtShipmentPayloadTest extends TestCase
 
         $order = $this->makeOrderWithAddresses();
 
-        $result = app(BrtService::class)->createShipment($order);
+        $result = app(BrtClient::class)->createShipment($order);
 
         $this->assertTrue($result['success'] ?? false);
 
@@ -68,7 +68,7 @@ class BrtShipmentPayloadTest extends TestCase
             'https://brt.example.test/rest/v1/shipments/shipment' => Http::response($this->successfulShipmentResponse(), 200),
         ]);
 
-        $result = app(BrtService::class)->testCreateShipment([
+        $result = app(BrtClient::class)->testCreateShipment([
             'sender_name' => 'Mittente Test',
             'sender_address' => 'Via Roma 10',
             'sender_zip' => '00118',
