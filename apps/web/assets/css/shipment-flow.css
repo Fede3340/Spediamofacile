@@ -4190,6 +4190,22 @@
 	box-shadow: none;
 }
 
+/* SVG icone line-based: stroke deve seguire color del media container.
+   Senza questa regola gli svg hanno fill/stroke "none" -> invisibili. */
+.service-surface__media svg,
+.service-surface__media .service-surface__media-icon {
+	stroke: currentColor;
+}
+
+.service-surface__media svg path,
+.service-surface__media svg circle,
+.service-surface__media svg line,
+.service-surface__media svg polyline,
+.service-surface__media svg polygon,
+.service-surface__media svg rect {
+	stroke: currentColor;
+}
+
 .service-stage-shell--funnel-standard .service-surface--featured .service-surface__media {
 	background: var(--color-brand-primary);
 	color: #ffffff;
