@@ -20,6 +20,11 @@
 // 2. /api/stripe/mark-order-completed
 //
 // L'obiettivo di semplificazione futuro e' rendere questo boundary piu' lineare senza perdere idempotenza.
+//
+// Eccezione formale (~682 LOC): file critico Stripe + 3DS + idempotency-key.
+// Pure helpers gia' estratti in utils/checkout + utils/pendingPayment. Splittare
+// la logica reattiva richiede E2E gating con carta test 4242 4242 4242 4242
+// (vedi CLAUDE.md "Eccezioni documentate"). NON splittare in sessione autonoma.
 
 import { useCheckoutOrderContext } from '~/composables/useCheckoutOrderContext'
 import { buildCheckoutSuccessQuery, translateStripeError } from '~/utils/checkout'

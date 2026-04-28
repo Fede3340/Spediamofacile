@@ -14,6 +14,16 @@
  * @typedef {{ label: string, className: string }} PudoStatus
  */
 import { computed, ref, watch } from 'vue'
+import {
+	parseCoordinate,
+	extractLatitude,
+	extractLongitude,
+	parseDistanceMeters,
+	isFiniteCoordinate,
+	normalizeTextKey,
+	getErrorStatus,
+	getErrorMessage,
+} from '~/utils/pudoCoordinates'
 
 /* ============================================================================
  * SEZIONE 1 — API FETCH, GEOCODING, NORMALIZZAZIONE, DISTANZE
@@ -38,12 +48,6 @@ export function usePudoSearchApi(props, emit) {
 		return await $fetch(url, { method: 'GET', credentials: 'include', timeout: 15000 })
 	}
 
-	const getErrorStatus = (error) => {
-		return Number(error?.status ?? error?.response?.status ?? error?.data?.statusCode ?? 0)
-	}
-	const getErrorMessage = (error) => {
-		return error?.data?.error || error?.data?.message || error?.response?._data?.message || error?.message || ''
-	}
 
 	// ── Search state ──
 	const searchAddress = ref('')
@@ -70,45 +74,6 @@ export function usePudoSearchApi(props, emit) {
 	watch(() => props.initialCity, (v) => { if (v && !searchCity.value) searchCity.value = v })
 	watch(() => props.initialZip, (v) => { if (v && !searchZip.value) searchZip.value = v })
 
-	// ── Coordinate utilities ──
-	const parseCoordinate = (value) => {
-		if (value === null || value === undefined || value === '') return null
-		const parsed = Number.parseFloat(String(value).trim().replace(',', '.'))
-		return Number.isFinite(parsed) ? parsed : null
-	}
-
-	const extractLatitude = (point = {}) => {
-		const nested = (key) => point[key]
-		return parseCoordinate(
-			point.latitude ?? point.lat ?? nested('coordinates')?.latitude ?? nested('coordinates')?.lat
-			?? nested('coordinate')?.latitude ?? nested('coordinate')?.lat ?? nested('geo')?.latitude ?? nested('geo')?.lat
-			?? nested('location')?.latitude ?? nested('location')?.lat ?? nested('address_coordinates')?.latitude ?? nested('address_coordinates')?.lat,
-		)
-	}
-
-	const extractLongitude = (point = {}) => {
-		const nested = (key) => point[key]
-		return parseCoordinate(
-			point.longitude ?? point.lng ?? point.lon ?? nested('coordinates')?.longitude ?? nested('coordinates')?.lng
-			?? nested('coordinates')?.lon ?? nested('coordinate')?.longitude ?? nested('coordinate')?.lng ?? nested('coordinate')?.lon
-			?? nested('geo')?.longitude ?? nested('geo')?.lng ?? nested('geo')?.lon ?? nested('location')?.longitude ?? nested('location')?.lng
-			?? nested('location')?.lon ?? nested('address_coordinates')?.longitude ?? nested('address_coordinates')?.lng ?? nested('address_coordinates')?.lon,
-		)
-	}
-
-	const parseDistanceMeters = (value) => {
-		if (value === null || value === undefined || value === '') return null
-		const raw = String(value).trim().toLowerCase()
-		const cleaned = raw.replace(',', '.').replace(/[^\d.-]/g, '')
-		if (!cleaned) return null
-		const parsed = Number.parseFloat(cleaned)
-		if (!Number.isFinite(parsed)) return null
-		if (raw.includes('km')) return Math.round(parsed * 1000)
-		return Math.round(parsed)
-	}
-
-	const isFiniteCoordinate = (value) => Number.isFinite(parseCoordinate(value))
-	const normalizeTextKey = (value) => String(value || '').trim().toLowerCase()
 
 	// ── Computed ──
 	const hasSearchInput = computed(() => Boolean(searchCity.value?.trim() || searchZip.value?.trim()))

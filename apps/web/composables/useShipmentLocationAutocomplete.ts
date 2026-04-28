@@ -7,8 +7,20 @@
  *
  * Usato da: useShipmentStepValidation (facade)
  *
+ * Eccezione formale (~530 LOC): la logica gestisce DUE sezioni (origin/dest)
+ * con stato simmetrico ma indipendente. Splittare per sezione duplicherebbe
+ * codice. Helpers puri sono in utils/locationMatch.ts.
+ *
  * @returns {object} composable autocomplete location step spedizione
  */
+import {
+	sanitizeFullName,
+	formatCitySuggestionLabel,
+	formatCapSuggestionLabel,
+	isLocationCoherent,
+	extractUniqueProvinces,
+} from '~/utils/locationMatch';
+
 export const useShipmentLocationAutocomplete = ({
 	deliveryMode,
 	destinationAddress,
@@ -48,15 +60,7 @@ export const useShipmentLocationAutocomplete = ({
 		if (capSearchTimeout.dest) clearTimeout(capSearchTimeout.dest)
 	})
 	const locationLinkHints = reactive({ origin: [], dest: [] })
-	const sanitizeFullNameValue = (value) => (
-		sv.autoCapitalize(
-			String(value || '')
-				.replace(/\d/g, '')
-				.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ'’`.\-\s]/g, ' ')
-				.replace(/\s+/g, ' ')
-				.trim(),
-		)
-	)
+	const sanitizeFullNameValue = (value) => sanitizeFullName(value, sv.autoCapitalize);
 
 	const getSectionAddress = (section) => (section === 'origin' ? originAddress.value : destinationAddress.value)
 	const getSectionCountryCode = (section) => (
@@ -81,36 +85,8 @@ export const useShipmentLocationAutocomplete = ({
 		else destProvinceSuggestions.value = suggestions
 	}
 
-	const formatCitySuggestionLabel = (location) => {
-		const province = getProvinceLabel(location)
-		if (province) return `${location.place_name} (${province}) - ${location.postal_code}`
-		return `${location.place_name} - ${location.postal_code}`
-	}
-
-	const formatCapSuggestionLabel = (location) => {
-		const province = getProvinceLabel(location)
-		if (province) return `${location.postal_code} - ${location.place_name} (${province})`
-		return `${location.postal_code} - ${location.place_name}`
-	}
-
 	const setProvinceSuggestionsFromLocations = (section, locations) => {
-		const provinces = [...new Set(
-			dedupeLocations(locations)
-				.map((loc) => getProvinceLabel(loc))
-				.filter(Boolean),
-		)].sort()
-		setSectionProvinceSuggestions(section, provinces.slice(0, 20))
-	}
-
-	const isLocationCoherent = (location, city, province) => {
-		const cityNorm = normalizeLocationText(city || '')
-		const provinceNorm = normalizeLocationText(province || '')
-		const locCityNorm = normalizeLocationText(location?.place_name || '')
-		const locProvinceNorm = normalizeLocationText(getProvinceLabel(location) || '')
-
-		if (cityNorm && locCityNorm !== cityNorm) return false
-		if (provinceNorm && locProvinceNorm !== provinceNorm) return false
-		return true
+		setSectionProvinceSuggestions(section, extractUniqueProvinces(locations));
 	}
 
 	const validateProvinceField = (section, value) => {

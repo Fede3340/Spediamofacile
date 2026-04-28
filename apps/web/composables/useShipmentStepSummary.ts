@@ -1,5 +1,11 @@
 /**
  * @file useShipmentStepSummary — Composable useShipmentStepSummary.
+ *
+ * Eccezione formale (~628 LOC): orchestra ~30 computed che derivano da 8
+ * sorgenti dati (cart, session, store, props). Pure helpers (parse/format
+ * prezzo, getPackageLineAmount, cleanDisplayText) sono disponibili in
+ * utils/summaryHelpers.ts per evoluzioni future. Splittare la reattivita'
+ * computed-by-computed peggiora la leggibilita' senza ridurre LOC totali.
  */
 import { calculateShipmentServiceSurcharge } from "~/utils/shipmentServicePricing";
 import { formatEuro } from "~/utils/price.js";
