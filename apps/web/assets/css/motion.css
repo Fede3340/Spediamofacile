@@ -1,0 +1,102 @@
+/*
+ * MOTION SYSTEM — SpediamoFacile (2026-04-20)
+ *
+ * Regola d'oro: ogni animazione deve comunicare uno stato o guidare
+ * l'occhio. Niente decorativo. 3 token, 3 primitive, fine.
+ *
+ * Uso:
+ *   - Elementi interattivi (button/link/card/nav): classe `.sf-interactive`
+ *   - Entrata di modal/toast/popover: classe `.sf-reveal`
+ *   - Spinner loading (unica animazione infinita): classe `.sf-spin`
+ *
+ * Tutto il resto del sito DEVE essere neutro. Nessuna `transition:` sparsa.
+ */
+
+:root {
+	/* Un solo easing fisico (Material Motion-inspired) */
+	--sf-ease: cubic-bezier(0.2, 0, 0, 1);
+
+	/* Tre durate, zero variazioni ammesse */
+	--sf-t1: 120ms; /* micro: hover, press, focus */
+	--sf-t2: 240ms; /* macro: modal, toast, popover */
+	--sf-t3: 480ms; /* reveal enfatico, raro */
+}
+
+/*
+ * Gate hydration: durante il primo paint, nessuna animazione.
+ * La classe `.is-hydrated` viene aggiunta dal plugin client
+ * `plugins/02.hydrated-class.client.ts` dopo il primo render.
+ */
+html:not(.is-hydrated) *,
+html:not(.is-hydrated) *::before,
+html:not(.is-hydrated) *::after {
+	transition: none !important;
+	animation: none !important;
+}
+
+/* Rispetto utenti che preferiscono meno movimento */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+	}
+}
+
+/* ────────────────────────────────────────────────────────
+ * PRIMITIVA 1 — sf-interactive
+ * Copre ~90% dei casi: button, link, card, nav item.
+ * Hover colore, press scale leggero, focus ring teal.
+ * ──────────────────────────────────────────────────────── */
+.sf-interactive {
+	transition:
+		color var(--sf-t1) var(--sf-ease),
+		background-color var(--sf-t1) var(--sf-ease),
+		border-color var(--sf-t1) var(--sf-ease),
+		box-shadow var(--sf-t1) var(--sf-ease),
+		transform var(--sf-t1) var(--sf-ease);
+}
+
+.sf-interactive:active {
+	transform: scale(0.98);
+}
+
+.sf-interactive:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(9, 88, 102, 0.25);
+}
+
+/* ────────────────────────────────────────────────────────
+ * PRIMITIVA 2 — sf-reveal
+ * Entrata di modal, toast, popover, tooltip.
+ * Fade + traslazione morbida 6px.
+ * ──────────────────────────────────────────────────────── */
+.sf-reveal {
+	animation: sf-reveal var(--sf-t2) var(--sf-ease) both;
+}
+
+@keyframes sf-reveal {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+/* ────────────────────────────────────────────────────────
+ * PRIMITIVA 3 — sf-spin
+ * UNICA animazione infinita del sito. Solo per loader/spinner.
+ * ──────────────────────────────────────────────────────── */
+.sf-spin {
+	animation: sf-spin 700ms linear infinite;
+}
+
+@keyframes sf-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!--
+  OG:IMAGE REFERENCE — SpediamoFacile
+  =====================================
+  Questo file HTML rappresenta il design dell'immagine Open Graph (1200x630 px).
+
+  COME GENERARE LA PNG FINALE:
+  1. Apri questo file nel browser
+  2. Usa uno screenshot tool (o DevTools > screenshot) per catturare il contenitore
+  3. Salva come public/og-image.png (1200x630)
+  4. Oppure usa un servizio come https://htmlcsstoimage.com
+
+  L'immagine viene usata quando il link del sito viene condiviso su:
+  - Facebook, LinkedIn, Twitter/X, WhatsApp, Telegram, Slack, ecc.
+-->
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>OG Image - SpediamoFacile</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #f0f0f0;
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    .og-container {
+      width: 1200px;
+      height: 630px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #095866 0%, #0a6e7a 40%, #0d8a96 100%);
+    }
+
+    /* Pattern decorativo di sfondo */
+    .og-container::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .og-container::after {
+      content: '';
+      position: absolute;
+      bottom: -120px;
+      left: -60px;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .og-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100%;
+      padding: 80px 90px;
+    }
+
+    /* Logo area */
+    .og-logo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .og-logo-icon {
+      width: 56px;
+      height: 56px;
+      background: #E8722A;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .og-logo-icon svg {
+      width: 32px;
+      height: 32px;
+      fill: white;
+    }
+
+    .og-logo-text {
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .og-logo-text span {
+      color: #E8722A;
+    }
+
+    /* Titolo principale */
+    .og-title {
+      font-size: 52px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      max-width: 800px;
+      letter-spacing: -1px;
+    }
+
+    /* Sottotitolo */
+    .og-subtitle {
+      font-size: 24px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.5;
+      max-width: 700px;
+    }
+
+    /* Badge arancione in basso */
+    .og-badge {
+      position: absolute;
+      bottom: 60px;
+      right: 80px;
+      background: #E8722A;
+      color: white;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      z-index: 2;
+    }
+
+    /* URL in basso a sinistra */
+    .og-url {
+      position: absolute;
+      bottom: 68px;
+      left: 90px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <div class="og-container">
+    <div class="og-content">
+      <div class="og-logo">
+        <div class="og-logo-icon">
+          <!-- Pacco/box icon SVG -->
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 6h2v2h-2V7zm0 4h2v6h-2v-6z" fill="white" opacity="0"/>
+            <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.36.2-.8.2-1.15 0l-7.9-4.44A.99.99 0 013 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.36-.2.8-.2 1.15 0l7.9 4.44c.32.17.52.5.52.88v9zM12 4.15L5.04 8 12 11.85 18.96 8 12 4.15zM5 15.91l6 3.37v-6.73l-6-3.37v6.73zm14 0v-6.73l-6 3.37v6.73l6-3.37z"/>
+          </svg>
+        </div>
+        <div class="og-logo-text">Spediamo<span>Facile</span></div>
+      </div>
+
+      <h1 class="og-title">Spedizioni Nazionali e Internazionali ai Migliori Prezzi</h1>
+
+      <p class="og-subtitle">Confronta tariffe, prenota online e ricevi il ritiro a domicilio. Tracking in tempo reale e assistenza dedicata.</p>
+
+      <div class="og-badge">Confronta e Risparmia</div>
+      <div class="og-url">spediamofacile.it</div>
+    </div>
+  </div>
+</body>
+</html>

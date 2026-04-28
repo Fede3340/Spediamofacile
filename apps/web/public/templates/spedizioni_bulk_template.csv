@@ -1,0 +1,3 @@
+tipo_collo,peso_kg,lunghezza_cm,larghezza_cm,altezza_cm,origine_nome,origine_indirizzo,origine_cap,origine_citta,origine_provincia,destinazione_nome,destinazione_indirizzo,destinazione_cap,destinazione_citta,destinazione_provincia,destinazione_email,destinazione_telefono,contenuto,servizio,note
+scatola,2.5,30,20,15,Mario Rossi,Via Roma 10,20121,Milano,MI,Anna Bianchi,Corso Italia 25,00100,Roma,RM,anna.bianchi@example.com,+393331234567,Libri,standard,Lasciare al portinaio
+busta,0.5,25,18,2,SpedizioniSrl,Via Garibaldi 5,10121,Torino,TO,Luca Verdi,Piazza Duomo 1,80133,Napoli,NA,luca.verdi@example.com,+393409876543,Documenti,express,

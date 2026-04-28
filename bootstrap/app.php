@@ -84,12 +84,6 @@ return Application::configure(basePath: dirname(__DIR__))
         // (vedi app/Http/Middleware/SecurityHeaders.php per i dettagli)
         $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
 
-        // INERTIA: middleware per share auth/flash/app props alle pages Vue.
-        // Si aggancia DOPO statefulApi per avere $request->user() popolato.
-        $middleware->web(append: [
-            \App\Http\Middleware\HandleInertiaRequests::class,
-        ]);
-
         // SENTRY-OBS-01: contesto Sentry (user id + ruolo, ip hash, route name).
         // Eseguito DOPO trustProxies cosi' $request->ip() e' quello vero.
         // NON contiene PII: conforme GDPR. Vedi app/Http/Middleware/SentryContext.php.

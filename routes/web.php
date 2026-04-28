@@ -1,114 +1,99 @@
 <?php
 
 /**
- * web.php — rotte Inertia + webhook esterni.
+ * FILE: web.php (Rotte Web)
  *
- * Tutto il sito è servito via Inertia (root view: resources/views/app.blade.php).
- * I webhook BRT/Stripe restano POST web (no sessione, autenticati per firma).
- * Le rotte API legacy stanno in routes/api.php (mantenute per compatibilità API esterne).
+ * SCOPO:
+ *   Contiene SOLO le rotte che devono usare il middleware "web" standard di Laravel
+ *   (sessione classica, CSRF web, cookie). Queste rotte NON sono API.
+ *
+ * PERCHE' COSI' POCHE ROTTE?
+ *   Prima tutte le rotte API erano qui dentro un Route::group(['prefix' => 'api']).
+ *   Il problema era che il login (qui, middleware "web") creava la sessione in un modo,
+ *   ma GET /api/user (in api.php, middleware "statefulApi") la leggeva in un altro modo.
+ *   Risultato: dopo il login, l'utente risultava "Unauthenticated" perche' i due
+ *   middleware stack gestivano la sessione in maniera diversa.
+ *
+ *   SOLUZIONE: tutte le rotte /api/* sono state spostate in api.php, cosi' login,
+ *   /api/user, carrello, ordini ecc. usano TUTTI lo stesso middleware "statefulApi"
+ *   e la sessione funziona correttamente.
+ *
+ * COSA CONTIENE:
+ *   - GET /             → Pagina di benvenuto Laravel (non usata dal frontend Nuxt)
+ *   - GET /login        → Redirect a /autenticazione (necessaria per Sanctum)
+ *   - POST /stripe/webhook → Webhook Stripe (riceve notifiche pagamento, no sessione)
+ *   - GET /auth/google/callback → Callback OAuth Google (redirect dal browser di Google)
+ *
+ * CHIAMATO DA:
+ *   - Laravel (routing automatico)
+ *   - Stripe (webhook POST)
+ *   - Google OAuth (redirect callback)
+ *   - Sanctum internamente (rotta "login" come fallback per utenti non autenticati)
  */
 
-use App\Http\Controllers\InertiaAccountController;
-use App\Http\Controllers\InertiaAdminController;
-use App\Http\Controllers\InertiaAuthController;
-use App\Http\Controllers\InertiaCheckoutController;
-use App\Http\Controllers\InertiaShipmentController;
-use App\Http\Controllers\PagesController;
-use App\Http\Controllers\ServiziController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Shipping\BrtWebhookController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Checkout\StripeWebhookController;
-use App\Http\Controllers\Shipping\BrtWebhookController;
-use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
-/* ────── Public pages (Inertia) ────── */
-Route::get('/', [PagesController::class, 'home'])->name('home');
-Route::get('/chi-siamo', [PagesController::class, 'chiSiamo']);
-Route::get('/contatti', [PagesController::class, 'contatti']);
-Route::post('/contatti', [PagesController::class, 'contatti']); // form submit (stub: rimanda allo show)
-Route::get('/faq', [PagesController::class, 'faq']);
-Route::get('/privacy-policy', [PagesController::class, 'privacy']);
-Route::get('/cookie-policy', [PagesController::class, 'cookie']);
-Route::get('/termini-e-condizioni', [PagesController::class, 'termini']);
-Route::get('/traccia', [PagesController::class, 'tracciaForm']);
-Route::get('/traccia/{code}', [PagesController::class, 'tracciaShow'])->where('code', '[A-Za-z0-9\-]+');
-Route::get('/guide', [PagesController::class, 'guide']);
-
-/* ────── Servizi ────── */
-Route::get('/servizi', [ServiziController::class, 'index']);
-Route::get('/servizi/{slug}', [ServiziController::class, 'show']);
-
-/* ────── Preventivo + Funnel spedizione ────── */
-Route::get('/preventivo', [InertiaShipmentController::class, 'preventivo']);
-Route::post('/preventivo/calcola', [InertiaShipmentController::class, 'calcola']);
-Route::post('/la-tua-spedizione/inizia', [InertiaShipmentController::class, 'inizia']);
-Route::get('/la-tua-spedizione/{step}', [InertiaShipmentController::class, 'step']);
-Route::post('/la-tua-spedizione/{step}', [InertiaShipmentController::class, 'saveStep']);
-
-/* ────── Carrello + Checkout (Stripe hosted) ────── */
-Route::get('/carrello', [InertiaCheckoutController::class, 'carrello']);
-Route::middleware('auth')->group(function () {
-    Route::post('/checkout/stripe', [InertiaCheckoutController::class, 'startStripeCheckout'])->middleware('throttle:10,1');
-});
-Route::get('/checkout/return', [InertiaCheckoutController::class, 'return']);
-Route::get('/checkout/cancel', [InertiaCheckoutController::class, 'cancel']);
-Route::get('/checkout/success', [InertiaCheckoutController::class, 'success']);
-
-/* ────── Auth (Inertia) ────── */
-Route::middleware('guest')->group(function () {
-    Route::get('/login', [InertiaAuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [InertiaAuthController::class, 'login'])->middleware('throttle:5,1');
-    Route::get('/registrazione', [InertiaAuthController::class, 'showRegister']);
-    Route::post('/registrazione', [InertiaAuthController::class, 'register']);
-    Route::get('/recupera-password', [InertiaAuthController::class, 'showForgotPassword']);
-    Route::post('/recupera-password', [InertiaAuthController::class, 'forgotPassword']);
-    Route::get('/aggiorna-password/{token}', [InertiaAuthController::class, 'showResetPassword'])->name('password.reset');
-    Route::post('/aggiorna-password', [InertiaAuthController::class, 'resetPassword']);
+// Pagina principale del backend Laravel (non usata dal frontend Nuxt)
+// Mostra la pagina di benvenuto di default di Laravel
+Route::get('/', function () {
+    return view('welcome');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::post('/logout', [InertiaAuthController::class, 'logout'])->name('logout');
-    Route::get('/email/verify', [InertiaAuthController::class, 'showVerifyEmail'])->name('verification.notice');
-    Route::get('/email/verify/{id}/{hash}', [InertiaAuthController::class, 'verifyEmail'])->middleware('signed')->name('verification.verify');
-    Route::post('/email/verification-notification', [InertiaAuthController::class, 'resendVerification'])->middleware('throttle:6,1');
-
-    /* ────── Account cliente ────── */
-    Route::get('/account', [InertiaAccountController::class, 'dashboard']);
-    Route::get('/account/spedizioni', [InertiaAccountController::class, 'spedizioni']);
-    Route::get('/account/profilo', [InertiaAccountController::class, 'profilo']);
-    Route::put('/account/profilo', [InertiaAccountController::class, 'updateProfilo']);
-    Route::get('/account/indirizzi', [InertiaAccountController::class, 'indirizzi']);
-    Route::post('/account/indirizzi', [InertiaAccountController::class, 'storeIndirizzo']);
-    Route::delete('/account/indirizzi/{id}', [InertiaAccountController::class, 'deleteIndirizzo']);
-    Route::get('/account/fatture', [InertiaAccountController::class, 'fatture']);
-    Route::get('/account/portafoglio', [InertiaAccountController::class, 'portafoglio']);
-    Route::get('/account/assistenza', [InertiaAccountController::class, 'assistenza']);
-    Route::post('/account/spedizioni/{id}/cancel', [InertiaAccountController::class, 'cancelOrder']);
-
-    /* ────── Admin (auth + role check) ────── */
-    Route::middleware([\App\Http\Middleware\CheckAdmin::class])->prefix('account/amministrazione')->group(function () {
-        Route::get('/', [InertiaAdminController::class, 'dashboard']);
-        Route::get('/ordini', [InertiaAdminController::class, 'ordini']);
-        Route::get('/utenti', [InertiaAdminController::class, 'utenti']);
-        Route::get('/spedizioni', [InertiaAdminController::class, 'spedizioni']);
-        Route::get('/bonifici', [InertiaAdminController::class, 'bonifici']);
-        Route::get('/prezzi', [InertiaAdminController::class, 'prezzi']);
-        Route::get('/impostazioni', [InertiaAdminController::class, 'impostazioni']);
-        Route::put('/impostazioni', [InertiaAdminController::class, 'updateImpostazioni']);
-        Route::post('/ordini/{id}/status', [InertiaAdminController::class, 'changeOrderStatus']);
-        Route::post('/bonifici/{id}/conferma', [InertiaAdminController::class, 'confermaBonifico']);
-        Route::post('/ordini/{id}/etichetta', [InertiaAdminController::class, 'regeneraEtichetta']);
-        Route::put('/prezzi', [InertiaAdminController::class, 'savePriceBands']);
-    });
-});
-
-/* ────── Webhook esterni (no sessione, no Inertia) ────── */
-Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle']);
-Route::post('/webhooks/brt/tracking', [BrtWebhookController::class, 'handleTrackingUpdate'])->middleware('throttle:60,1');
-Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
-Route::get('/api/auth/google/redirect', [GoogleController::class, 'redirectToGoogle']);
-
-/* ────── Sanctum CSRF (per richieste AJAX da pages Inertia) ────── */
+// Rotta CSRF Sanctum ridefinita con rate limiting (throttle:30,1).
+// Sanctum l'avrebbe registrata automaticamente, ma in config/sanctum.php
+// abbiamo impostato 'routes' => false per avere controllo esplicito qui.
+// Il throttle evita che un client possa brute-forzare il cookie CSRF o
+// amplificare richieste verso servizi esterni.
 Route::middleware(['web', 'throttle:30,1'])
     ->get('/sanctum/csrf-cookie', [CsrfCookieController::class, 'show'])
     ->name('sanctum.csrf-cookie');
+
+// Rotta di login "fittizia" — Sanctum la usa come fallback
+// Quando un utente non autenticato tenta di accedere a una rotta protetta con auth:sanctum,
+// Laravel lo redirige alla rotta con nome 'login'. Noi lo mandiamo alla pagina di login
+// del frontend Nuxt (/autenticazione) cosi' puo' inserire le sue credenziali.
+// NOTA: questa rotta DEVE avere ->name('login') altrimenti Sanctum da' errore
+Route::get('/login', function () {
+    return redirect('/autenticazione');
+})->name('login');
+
+// Webhook di Stripe — riceve le notifiche di pagamento da Stripe
+// Stripe invia qui un POST ogni volta che un pagamento viene completato, rimborsato, ecc.
+// E' pubblico (senza login) perche' Stripe lo chiama direttamente dai suoi server.
+// La verifica dell'autenticita' viene fatta dal StripeWebhookController tramite la firma.
+Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle']);
+
+// Webhook BRT — riceve aggiornamenti tracking push da BRT
+// BRT invia qui un POST ogni volta che lo stato di una spedizione cambia.
+// E' pubblico (senza login) perche' BRT lo chiama direttamente dai suoi server.
+// La verifica dell'autenticita' avviene nel controller (HMAC o IP whitelist).
+// Rate limit: max 60 richieste al minuto per IP.
+Route::post('/webhooks/brt/tracking', [BrtWebhookController::class, 'handleTrackingUpdate'])
+    ->middleware(['throttle:60,1']);
+
+// Callback di Google OAuth — riceve il redirect dopo che l'utente si autentica con Google
+// Quando l'utente clicca "Accedi con Google", viene mandato su Google, e dopo
+// il login Google lo rimanda qui. Questa rotta e' in web.php (e NON in api.php)
+// perche' il redirect di Google arriva direttamente nel browser dell'utente,
+// quindi deve usare il middleware web per gestire la sessione e i cookie.
+Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
+// SENTRY-OBS-04: rotta di test per verificare integrazione Sentry.
+// Uso: dopo il deploy, visita /_test-sentry → verifica in Sentry dashboard
+// che l'evento arrivi con release tag, env tag, user context, PII sanitizzati.
+// Protetta da:
+//   - abort(404) in produzione (in genere; abilitabile temporaneamente via env)
+//   - throttle 1 richiesta al minuto per IP (anti-abuso)
+Route::get('/_test-sentry', function () {
+    // Blocco hard in produzione: questa rotta NON deve restare attiva.
+    // Per test post-deploy, abilitare temporaneamente SENTRY_TEST_ROUTE_ENABLED=true
+    // e rimuovere dopo la verifica.
+    if (app()->environment('production') && !env('SENTRY_TEST_ROUTE_ENABLED', false)) {
+        abort(404);
+    }
+    throw new \RuntimeException('Sentry test error — se lo vedi in dashboard, l\'integrazione funziona.');
+})->middleware('throttle:1,1')->name('sentry.test');

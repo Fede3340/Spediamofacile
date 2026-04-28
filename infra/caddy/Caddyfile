@@ -1,14 +1,15 @@
 # =============================================================================
-# CADDYFILE — Reverse proxy locale (post-rewrite v2)
+# CADDYFILE — Reverse proxy locale (split Laravel + Nuxt)
 # =============================================================================
 #
-# Sito monolite Laravel + Inertia: tutto passa da Laravel su :8000.
-# Caddy mantiene :8787 come endpoint storico locale per compat (URL preferito utente).
+# Caddy su :8787 fa split routing:
+#   /api/*  /sanctum/*  /storage/*  /auth/*  /webhooks/*  /stripe/*  → Laravel :8000
+#   tutto il resto (HTML pagine, asset Nuxt)                          → Nuxt   :3001
 #
-#   Browser → Caddy (:8787) → Laravel + Inertia (:8000)
+#   Browser → Caddy (:8787) ─┬─ Laravel (:8000) per API/Sanctum/auth
+#                            └─ Nuxt    (:3001) per pagine + asset
 #
-# Vite HMR (in dev) gira separatamente su :5173 e si auto-inietta nelle pagine
-# blade Inertia tramite @vite blade directive (nessun proxy necessario).
+# Cookie cross-origin: stesso host (127.0.0.1:8787) → sessione condivisa.
 # =============================================================================
 
 :8787 {
@@ -22,8 +23,17 @@
     Permissions-Policy "camera=(), microphone=(), geolocation=(self)"
   }
 
-  # Tutto il sito (HTML Inertia + API + asset) → Laravel
-  reverse_proxy {$SF_BACKEND_PROXY_TARGET:127.0.0.1:8000} {
+  # Backend Laravel: API, Sanctum CSRF, storage, auth Google, webhook esterni.
+  @api path /api/* /sanctum/* /storage/* /auth/* /webhooks/* /stripe/*
+  reverse_proxy @api {$SF_BACKEND_PROXY_TARGET:127.0.0.1:8000} {
+    header_up Host "127.0.0.1:8787"
+    header_up X-Forwarded-Host "127.0.0.1:8787"
+    header_up X-Forwarded-Port "8787"
+    header_up X-Forwarded-Proto "{http.request.scheme}"
+  }
+
+  # Frontend Nuxt: tutto il resto (HTML pagine + asset).
+  reverse_proxy {$SF_FRONTEND_PROXY_TARGET:127.0.0.1:3001} {
     header_up Host "127.0.0.1:8787"
     header_up X-Forwarded-Host "127.0.0.1:8787"
     header_up X-Forwarded-Port "8787"

@@ -32,7 +32,7 @@
 
 $routeDir = __DIR__ . '/api';
 
-// Auth: gestita interamente via Inertia (routes/web.php). API legacy rimosse.
+require $routeDir . '/auth.php';
 require $routeDir . '/shipment.php';
 require $routeDir . '/cart.php';
 require $routeDir . '/orders.php';

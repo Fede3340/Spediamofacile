@@ -1,0 +1,132 @@
+/*
+  EMPTY STATE — pattern condiviso sitewide.
+  Usato in: aree account (spedizioni, wallet, reclami, notifiche, indirizzi),
+  carrello, traccia spedizione, qualsiasi pagina con stato vuoto.
+
+  Struttura HTML canonica:
+    <div class="sf-empty-state" role="status">
+      <div class="sf-empty-state__icon" aria-hidden="true"><svg .../></div>
+      <h3 class="sf-empty-state__title">Titolo chiaro</h3>
+      <p class="sf-empty-state__copy">Descrizione breve (max 2 righe).</p>
+      <div class="sf-empty-state__actions">
+        <a class="sf-empty-state__cta">CTA primary (arancione)</a>
+        <a class="sf-empty-state__cta sf-empty-state__cta--ghost">CTA secondary (ghost teal)</a>
+      </div>
+    </div>
+
+  Token: teal #095866 (icona, ghost), arancione #E44203 (CTA primary).
+  Note: regole originariamente in account-shell.css; estratte qui per renderle
+  utilizzabili anche fuori dall'area account (carrello, tracking).
+  L'importazione avviene in assets/css/main.css.
+*/
+
+.sf-empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	padding: 48px 24px;
+	background: linear-gradient(180deg, #F7FAFB 0%, #ffffff 100%);
+	border: 1px dashed rgba(9, 88, 102, 0.24);
+	border-radius: 20px;
+	gap: 14px;
+}
+
+.sf-empty-state__icon {
+	width: 64px;
+	height: 64px;
+	border-radius: 20px;
+	background: rgba(9, 88, 102, 0.08);
+	color: var(--color-brand-primary, #095866);
+	display: grid;
+	place-items: center;
+}
+
+/* Icone SVG figlie: forziamo dimensioni 48px max coerenti */
+.sf-empty-state__icon svg {
+	width: 30px;
+	height: 30px;
+}
+
+.sf-empty-state__title {
+	margin: 0;
+	font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+	font-size: 18px;
+	font-weight: 800;
+	color: var(--color-brand-primary, #095866);
+	line-height: 1.25;
+}
+
+.sf-empty-state__copy {
+	margin: 0;
+	font-size: 14px;
+	color: #5F6773;
+	max-width: 420px;
+	line-height: 1.55;
+}
+
+/* Wrapper opzionale per 1-2 CTA affiancate */
+.sf-empty-state__actions {
+	margin-top: 6px;
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+}
+
+/* CTA primary — arancione (azione principale) */
+.sf-empty-state__cta {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 6px;
+	padding: 10px 18px;
+	font-size: 14px;
+	font-weight: 700;
+	color: #ffffff;
+	background: var(--color-brand-accent, #E44203);
+	border: 1px solid var(--color-brand-accent, #E44203);
+	border-radius: 999px;
+	cursor: pointer;
+	transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease, color 150ms ease;
+	text-decoration: none;
+}
+
+.sf-empty-state__cta:hover {
+	background: #C23703;
+	box-shadow: 0 6px 18px rgba(228, 66, 3, 0.28);
+	transform: translateY(-1px);
+}
+
+.sf-empty-state__cta:focus-visible {
+	outline: 2px solid var(--color-brand-primary, #095866);
+	outline-offset: 2px;
+}
+
+.sf-empty-state__cta svg {
+	transition: transform 150ms ease;
+}
+
+.sf-empty-state__cta:hover svg {
+	transform: translateX(2px);
+}
+
+/* CTA secondary ghost — bordo teal trasparente (azione secondaria) */
+.sf-empty-state__cta--ghost,
+.sf-empty-state__cta--secondary {
+	background: transparent;
+	color: var(--color-brand-primary, #095866);
+	border: 1px solid rgba(9, 88, 102, 0.24);
+}
+
+.sf-empty-state__cta--ghost:hover,
+.sf-empty-state__cta--secondary:hover {
+	background: rgba(9, 88, 102, 0.06);
+	color: var(--color-brand-primary, #095866);
+	box-shadow: none;
+}
+
+/* Quando dentro card chiusa di account-shell evitiamo doppio padding orizzontale */
+.sf-empty-state.sf-empty-state--inset {
+	margin: 14px;
+}

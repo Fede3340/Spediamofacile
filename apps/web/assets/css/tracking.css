@@ -1,0 +1,364 @@
+/*
+ * tracking.css — Stili dominio "tracking spedizione"
+ *
+ * Consolidato da:
+ *   - components/sf-tracking-events.css        (event-icon, event-line)
+ *   - components/sf-tracking-actions-bar.css   (action-btn variants)
+ *   - components/sf-tracking-stepper.css       (stepper-scroll, step-*)
+ *   - pages/traccia-tracking.css               (copy-btn, status-chip, route-*, sr-only)
+ *
+ * Importato globalmente da main.css. Nessun selettore route-locked: classi
+ * usate da componenti tracking E pagina traccia.
+ */
+
+/* ============================================================
+   TRACKING EVENTS TIMELINE — sf-tracking-events
+   ============================================================ */
+
+.event-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 999px;
+	flex-shrink: 0;
+	transition:
+		color var(--sf-t1) var(--sf-ease),
+		background-color var(--sf-t1) var(--sf-ease),
+		border-color var(--sf-t1) var(--sf-ease),
+		box-shadow var(--sf-t1) var(--sf-ease),
+		transform var(--sf-t1) var(--sf-ease);
+}
+
+.event-icon-latest {
+	background: #095866;
+	color: #ffffff;
+	box-shadow: 0 2px 6px rgba(9, 88, 102, 0.25);
+}
+
+.event-icon-past {
+	background: #ffffff;
+	color: #095866;
+	box-shadow: 0 0 0 1.5px rgba(9, 88, 102, 0.35) inset;
+}
+
+.event-line {
+	width: 2px;
+	flex: 1 1 auto;
+	min-height: 20px;
+	background: #DFE2E7;
+	border-radius: 1px;
+	margin-top: 4px;
+}
+
+.event-item:first-child .event-line {
+	background: rgba(9, 88, 102, 0.45);
+}
+
+/* ============================================================
+   TRACKING ACTIONS BAR — sf-tracking-actions-bar
+   ============================================================ */
+
+.action-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 16px;
+	border-radius: 12px;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1;
+	transition: transform var(--sf-t1) var(--sf-ease), box-shadow var(--sf-t1) var(--sf-ease), background-color var(--sf-t1) var(--sf-ease), border-color var(--sf-t1) var(--sf-ease);
+	text-decoration: none;
+	cursor: pointer;
+	border: 1.5px solid transparent;
+	white-space: nowrap;
+}
+
+.action-btn:hover {
+	transform: translateY(-1px);
+}
+
+.action-btn:active {
+	transform: translateY(0);
+}
+
+.action-btn:focus-visible {
+	outline: 2px solid #095866;
+	outline-offset: 2px;
+}
+
+.action-primary {
+	background: #095866;
+	color: #ffffff;
+	box-shadow: 0 4px 10px rgba(9, 88, 102, 0.18);
+}
+.action-primary:hover {
+	background: #074a56;
+	box-shadow: 0 6px 14px rgba(9, 88, 102, 0.24);
+}
+
+.action-secondary {
+	background: #ffffff;
+	color: #1d2738;
+	border-color: #DFE2E7;
+}
+.action-secondary:hover {
+	border-color: #095866;
+	color: #095866;
+}
+
+.action-warn {
+	background: #ffffff;
+	color: #E44203;
+	border-color: #f5c8b1;
+}
+.action-warn:hover {
+	background: #fff5ef;
+	border-color: #E44203;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.action-btn {
+		transition: none;
+	}
+	.action-btn:hover {
+		transform: none;
+	}
+}
+
+/* ============================================================
+   TRACKING STEPPER — sf-tracking-stepper
+   ============================================================ */
+
+.stepper-scroll {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+.stepper-scroll::-webkit-scrollbar {
+	display: none;
+}
+
+.step-circle {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 999px;
+	transition: color var(--sf-t1) var(--sf-ease), background-color var(--sf-t1) var(--sf-ease), border-color var(--sf-t1) var(--sf-ease), box-shadow var(--sf-t1) var(--sf-ease), transform var(--sf-t1) var(--sf-ease);
+}
+
+.step-done {
+	background: #095866;
+	color: #ffffff;
+	box-shadow: 0 2px 6px rgba(9, 88, 102, 0.25);
+}
+
+.step-current {
+	background: #ffffff;
+	color: #095866;
+	box-shadow: 0 0 0 2.5px #095866 inset;
+}
+
+.step-future {
+	background: #ffffff;
+	color: #9aa3b1;
+	box-shadow: 0 0 0 1.5px #DFE2E7 inset;
+}
+
+.step-num {
+	font-size: 13px;
+	font-weight: 800;
+	font-variant-numeric: tabular-nums;
+	line-height: 1;
+}
+
+.step-pulse {
+	position: absolute;
+	inset: -4px;
+	border-radius: 999px;
+	border: 2px solid rgba(9, 88, 102, 0.45);
+	animation: stepPulse 2s ease-out infinite;
+	pointer-events: none;
+}
+
+@keyframes stepPulse {
+	0% {
+		transform: scale(0.9);
+		opacity: 0.9;
+	}
+	70% {
+		transform: scale(1.25);
+		opacity: 0;
+	}
+	100% {
+		transform: scale(1.25);
+		opacity: 0;
+	}
+}
+
+.step-line {
+	height: 2px;
+	border-radius: 1px;
+	transition: background-color var(--sf-t2) var(--sf-ease);
+}
+
+.step-line-done {
+	background: #095866;
+}
+
+.step-line-future {
+	background: #DFE2E7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.step-pulse {
+		animation: none;
+		opacity: 0.55;
+	}
+	.step-circle {
+		transition: none;
+	}
+}
+
+/* ============================================================
+   TRACKING PAGE — copy/status/route helpers (era pages/traccia-tracking.css)
+   ============================================================ */
+
+.copy-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 10px;
+	border-radius: 8px;
+	background: #ffffff;
+	color: #095866;
+	border: 1.5px solid #DFE2E7;
+	transition: border-color var(--sf-t1) var(--sf-ease), background-color var(--sf-t1) var(--sf-ease), transform var(--sf-t1) var(--sf-ease);
+	cursor: pointer;
+}
+.copy-btn:hover {
+	border-color: #095866;
+	background: #eef7f8;
+}
+.copy-btn:active {
+	transform: scale(0.97);
+}
+.copy-btn:focus-visible {
+	outline: 2px solid #095866;
+	outline-offset: 2px;
+}
+
+.status-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 14px;
+	border-radius: 999px;
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+	border: 1.5px solid transparent;
+}
+.status-chip .status-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 999px;
+	background: currentColor;
+	box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.7);
+	flex-shrink: 0;
+}
+
+.chip-progress {
+	background: #eef7f8;
+	color: #095866;
+	border-color: #bdd5da;
+}
+.chip-success {
+	background: #f0fdf4;
+	color: #0a8a7a;
+	border-color: #c8e6cd;
+}
+.chip-warn {
+	background: #fff5ef;
+	color: #E44203;
+	border-color: #f5c8b1;
+}
+.chip-danger {
+	background: #fdecec;
+	color: #b3261e;
+	border-color: #f1b4b4;
+}
+
+.route-icon {
+	width: 28px;
+	height: 28px;
+	border-radius: 8px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+.route-icon-origin {
+	background: #eef7f8;
+	color: #095866;
+}
+.route-icon-dest {
+	background: #fff5ef;
+	color: #E44203;
+}
+.route-divider {
+	width: 2px;
+	height: 16px;
+	background: #DFE2E7;
+	margin-left: 13px;
+	border-radius: 1px;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+/*
+ * sf-pudo-detail-panel.css — Transizioni drawer dettaglio PUDO
+ *
+ * Estratto da components/pudo/PudoDetailPanel.vue.
+ * Mobile: slide from bottom. Tablet+ (≥768px): slide from right.
+ */
+
+.pudo-panel-enter-active,
+.pudo-panel-leave-active {
+	transition: opacity 0.2s ease;
+}
+
+.pudo-panel-enter-active > div,
+.pudo-panel-leave-active > div {
+	transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pudo-panel-enter-from,
+.pudo-panel-leave-to {
+	opacity: 0;
+}
+
+.pudo-panel-enter-from > div,
+.pudo-panel-leave-to > div {
+	transform: translateY(20px);
+}
+
+@media (min-width: 768px) {
+	.pudo-panel-enter-from > div,
+	.pudo-panel-leave-to > div {
+		transform: translateX(20px);
+	}
+}

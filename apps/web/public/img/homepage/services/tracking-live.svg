@@ -1,0 +1,32 @@
+<!--
+  Tracking live icon
+  Source inspiration: Tabler "map-route" (MIT) via Iconify API
+  https://api.iconify.design/tabler/map-route.svg
+  Adapted to SpediamoFacile brand colors/style.
+-->
+<svg width="94" height="94" viewBox="0 0 94 94" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="8" y="9" width="78" height="76" rx="18" fill="#EAF6FC"/>
+
+  <path
+    d="M22 29L37.2 22L52.4 29L67.6 22V55L52.4 62L37.2 55L22 62V29Z"
+    fill="#D9EEF9"
+    stroke="#203A72"
+    stroke-width="3"
+    stroke-linejoin="round"/>
+
+  <path
+    d="M34.6 45.6C38.1 41.6 43 39.8 47.8 42.1C52.9 44.5 57.4 42.4 62.4 35.4"
+    stroke="#14A0DE"
+    stroke-width="4"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+
+  <circle cx="34.6" cy="45.6" r="4.6" fill="#E44203" stroke="white" stroke-width="2.2"/>
+  <circle cx="47.8" cy="42.1" r="4.6" fill="#14A0DE" stroke="white" stroke-width="2.2"/>
+  <circle cx="62.4" cy="35.4" r="4.6" fill="#203A72" stroke="white" stroke-width="2.2"/>
+
+  <rect x="27.5" y="66.5" width="39" height="8.8" rx="4.4" fill="#203A72"/>
+  <circle cx="33.8" cy="70.9" r="1.6" fill="#D2F2EE"/>
+  <circle cx="39.9" cy="70.9" r="1.6" fill="#D2F2EE"/>
+  <circle cx="46" cy="70.9" r="1.6" fill="#D2F2EE"/>
+</svg>

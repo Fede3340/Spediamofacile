@@ -1,43 +1,54 @@
 # CLAUDE.md — Istruzioni per Claude Code in questo repo
 
-> SpediamoFacile v2.0 — monolite Laravel 11 + Inertia 2 + Vue 3.5 + Tailwind 4.
+> SpediamoFacile — Laravel 11 API headless + Nuxt 4 SPA, dietro Caddy reverse proxy.
 > Letto automaticamente da Claude Code all'apertura del progetto.
 
-## Stack (post rewrite 2026-04-28)
+## Stack
 
-- **Backend + Frontend in 1 repo**: `apps/api/` (Laravel 11 + Inertia 2 + Vue 3.5 + Tailwind 4)
-- **Auth**: Laravel Auth standard + Sanctum (carte salvate Stripe)
+- **Backend (root)**: Laravel 11 + Sanctum 4 + Stripe SDK 18 + BRT REST 3.x
+- **Frontend (`apps/web/`)**: Nuxt 4.1 + Vue 3.5 + Pinia 3 + Nuxt UI 4 + Tailwind 4
+- **Auth**: Sanctum SPA (cookie httpOnly stessa origin via Caddy)
 - **DB**: SQLite dev / Postgres prod (parity via Eloquent)
-- **Build**: Vite 5 (1 bundle, no Nitro, no Nuxt)
-- **Pagamenti**: Stripe SDK 18 (Elements per Payment Intent + idempotency)
-- **Corriere**: BRT REST 3.x via `App\Services\Brt\*`
-- **Docs**: `docs/` (4 doc canonici + ADR + operations + reference + legal)
+- **Pagamenti**: Stripe SDK 18 (Elements + idempotency)
+- **Corriere**: BRT REST 3.x via `App\Services\Brt\*` (facade `BrtClient`)
+- **Reverse proxy**: Caddy `:8787` split routing → Laravel `:8000` (API) + Nuxt `:3001` (SPA)
 
 ## Quickstart
 
 ```bash
-cd apps/api
+# Backend
 composer install
-npm install
 cp .env.example .env && php artisan key:generate
 php artisan migrate:fresh --seed
-npm run dev          # terminale 1 (Vite HMR)
-php artisan serve    # terminale 2 (Laravel :8000)
-# apri http://localhost:8000
+
+# Frontend
+cd apps/web && npm install && cd ../..
+
+# 3 processi in parallelo (preview MCP via .claude/launch.json):
+#   laravel-backend  → :8000  (php artisan serve)
+#   nuxt-dev         → :3001  (npm run dev --prefix apps/web)
+#   caddy-proxy      → :8787  (caddy run --config infra/caddy/Caddyfile)
+
+# Apri http://127.0.0.1:8787
 ```
 
-Onboarding completo: `docs/ONBOARDING.md` (~20 minuti).
+## Routing & cookie cross-origin
+
+Caddy `:8787` è il **single entry-point** del browser. Routing in `infra/caddy/Caddyfile`:
+
+- `/api/* /sanctum/* /storage/* /auth/* /webhooks/* /stripe/*` → Laravel `:8000`
+- tutto il resto (HTML pagine + asset Nuxt) → Nuxt `:3001`
+
+Cookie sessione Laravel (Sanctum SPA) emessi su `127.0.0.1:8787` → condivisi tra API e SPA senza CORS.
 
 ## Convenzioni codice
 
-- **Prezzi**: backend in cents (`MyMoney` / moneyphp). Frontend mostra `(cents/100).toFixed(2) + ' €'`.
-- **Auth Inertia**: utente in `usePage().props.auth.user`. Niente `$fetch` raw, niente fetch axios per dati pagina (Inertia li passa via props).
-- **Form**: `useForm()` di `@inertiajs/vue3`, errori in `form.errors.<field>`.
-- **Routes**: tutte in `routes/web.php` (Inertia). API legacy in `routes/api.php` per webhook + integrazioni esterne.
-- **Components**: in `resources/js/Components/`, importati esplicitamente nei Pages (no auto-import magici).
-- **Pages**: in `resources/js/Pages/`, una per route, layout default `AppLayout.vue`.
+- **Prezzi**: backend in **cents** (`MyMoney` / moneyphp). Frontend mostra `(cents/100).toFixed(2) + ' €'`.
+- **Auth Nuxt**: `useSanctumClient()` per chiamate API stateful. Mai `$fetch` raw senza credenziali.
+- **Routes**: tutte le rotte API in `routes/api/*.php` (loader: `routes/api.php`). `routes/web.php` solo per webhook + Sanctum CSRF + Google OAuth.
+- **Pages Nuxt**: in `apps/web/pages/`, layout default in `apps/web/layouts/default.vue`.
+- **Components Nuxt**: in `apps/web/components/`, auto-import abilitato (`<ServizioGrid>` direttamente).
 - **Palette**: teal `#095866` + arancione `#E44203` + neutri. **Mai blu** (no `blue-*`, `indigo-*`, `sky-*`, `slate-*`).
-- **CSS**: solo Tailwind 4 utility + tokens `@theme` in `resources/css/app.css`. No file CSS custom per pagina.
 - **Italiano** per stringhe utente (commenti, label, errori). **English** per identifier (variabili, funzioni, tabelle).
 
 ## File critici (idempotency / soldi reali)
@@ -51,7 +62,7 @@ Modificare solo con E2E gating Stripe (`4242 4242 4242 4242 09/30 123`):
 - `app/Services/WalletOrderPaymentService.php` — lock saldo wallet
 - `app/Models/Order.php` — `payableTotalCents()` autorità fatturazione
 - `app/Http/Controllers/Shipping/BrtWebhookController.php` — HMAC tracking
-- `bootstrap/app.php` — esclusioni CSRF webhook, trustProxies
+- `bootstrap/app.php` — esclusioni CSRF webhook, `statefulApi()`, `trustProxies('*')`
 
 ## Limiti dimensionali
 
@@ -71,14 +82,14 @@ lock esplicito Stripe (`users` con `lockForUpdate`).
 
 ## Test
 
-- Backend: `cd apps/api && php artisan test`
-- Frontend: build verifica via `npm run build`
-- E2E: Playwright in `apps/api/tests/e2e/` (in fase di port da Nuxt → Inertia)
+- **Backend**: `php artisan test` → 333 pass, 18 skipped (parallel richiede paratest 7.x)
+- **Frontend**: `cd apps/web && npm run build` (verifica build prod) + `npm run test` (vitest)
+- **E2E Playwright**: `cd apps/web && npx playwright test`
 
 ## Regole AI
 
-- **Mai `git commit` senza permesso esplicito utente** (eccezione: rewrite session 2026-04-28 con autorizzazione blanket).
-- **Italiano** per commenti, doc, output.
-- **Verifica con preview MCP** dopo ogni modifica visibile.
+- **Mai `git commit` senza permesso esplicito utente**.
+- **Italiano** per commenti, doc, output utente.
+- **Verifica con preview MCP** dopo ogni modifica visibile (`http://127.0.0.1:8787`).
 - **Max 3 agent paralleli**.
 - **Standard UX**: Awwwards / Baymard / NN Group.

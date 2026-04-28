@@ -1,0 +1,41 @@
+User-agent: *
+Allow: /
+
+# Aree private utente / flusso preventivo-checkout
+Disallow: /account
+Disallow: /checkout
+Disallow: /carrello
+Disallow: /riepilogo
+Disallow: /la-tua-spedizione
+
+# Pagine auth (hanno contenuto dinamico basato sulla sessione)
+Disallow: /autenticazione
+Disallow: /login
+Disallow: /registrazione
+Disallow: /recupera-password
+Disallow: /aggiorna-password
+Disallow: /verifica-email
+Disallow: /beta-invite
+
+# Tracking dinamico utente-specifico (noindex via page meta)
+Disallow: /traccia/
+
+# API e preview interne
+Disallow: /api/
+Disallow: /preview/
+
+# Stop a crawler "rumorosi" senza valore SEO (evita waste budget)
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Sitemap principale + index sitemap del modulo @nuxtjs/sitemap
+Sitemap: https://spediamofacile.it/sitemap.xml

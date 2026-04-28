@@ -1,0 +1,141 @@
+/**
+ * print.css — stile di stampa minimo (W5.1 Lighthouse perf/best-practices)
+ *
+ * Obiettivo: consentire agli utenti di stampare ordini, fatture, riepiloghi
+ * e pagine legali senza interferenze grafiche (navbar, footer, banner,
+ * pulsanti fluttuanti). Il contenuto occupa tutta la larghezza, i colori
+ * vengono resi piatti per risparmiare inchiostro e le interazioni invisibili
+ * (hover, shadow, gradient, transition) vengono neutralizzate.
+ *
+ * Nota: nessuna palette al di fuori di neutri + teal del brand. Il nero
+ * #000 è usato solo per testo stampa. Nessun blu.
+ */
+
+@media print {
+	/* Reset universale: sfondi piatti, nessuna ombra o transizione */
+	*,
+	*::before,
+	*::after {
+		background: transparent !important;
+		box-shadow: none !important;
+		text-shadow: none !important;
+		transition: none !important;
+		animation: none !important;
+	}
+
+	html,
+	body {
+		background: #ffffff !important;
+		color: #000000 !important;
+		font-size: 11pt;
+		line-height: 1.35;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+
+	/* Elementi di chrome da nascondere in stampa */
+	nav,
+	header.sf-app-header,
+	.navbar,
+	.sf-navbar,
+	.layout-help-btn,
+	footer,
+	.sf-footer,
+	.cookie-banner,
+	.sf-cookie-banner,
+	#a11y-live-region,
+	.sf-scroll-top,
+	.sf-auth-modal,
+	.sf-admin-mobile-drawer,
+	[data-print-hide='true'],
+	button,
+	.btn,
+	a[role='button'],
+	.sf-cta,
+	video,
+	iframe,
+	canvas {
+		display: none !important;
+	}
+
+	/* Logo header (se presente): mantenere in alto a sx come intestazione */
+	[data-print-logo='true'] {
+		display: block !important;
+		max-height: 36px;
+		margin-bottom: 12px;
+	}
+
+	/* Layout principale: full-width, niente max-width restrittivi */
+	main,
+	#main-content,
+	.sf-page,
+	.sf-container,
+	.sf-content,
+	article {
+		display: block !important;
+		width: 100% !important;
+		max-width: 100% !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		float: none !important;
+	}
+
+	/* Tabelle: bordi visibili, intestazioni leggibili */
+	table {
+		border-collapse: collapse !important;
+		width: 100% !important;
+	}
+	th,
+	td {
+		border: 1px solid #666 !important;
+		padding: 6px 8px !important;
+	}
+	thead {
+		display: table-header-group;
+	}
+	tr,
+	img {
+		page-break-inside: avoid;
+	}
+
+	/* Link: mostra URL dopo (utile per fatture/riepiloghi stampati) */
+	a[href]::after {
+		content: ' (' attr(href) ')';
+		font-size: 9pt;
+		color: #333;
+	}
+	a[href^='#']::after,
+	a[href^='javascript:']::after,
+	a[href^='mailto:']::after {
+		content: '';
+	}
+
+	/* Titoli: evita spezzare tra pagina e pagina */
+	h1,
+	h2,
+	h3 {
+		page-break-after: avoid;
+		color: #000 !important;
+	}
+
+	/* Immagini: evita overflow oltre margine foglio */
+	img {
+		max-width: 100% !important;
+		height: auto !important;
+	}
+
+	/* Badge e pill del brand: rendili piatti in stampa per risparmiare inchiostro */
+	.sf-badge,
+	.sf-pill,
+	.sf-chip {
+		border: 1px solid #333 !important;
+		color: #000 !important;
+		background: transparent !important;
+	}
+
+	/* Margini pagina standard A4 */
+	@page {
+		size: A4;
+		margin: 18mm;
+	}
+}
