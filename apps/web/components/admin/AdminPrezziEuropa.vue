@@ -69,11 +69,11 @@ const props = defineProps({
 						</div>
 						<input
 							:value="rate.price_cents == null ? '' : (Number(rate.price_cents || 0) / 100).toFixed(2).replace('.', ',')"
+							@input="updateEuropeRateAmountFromEuro(rate, $event.target.value)"
 							:disabled="rate.quote_required"
 							type="text"
 							placeholder="0,00"
-							class="w-full h-[38px] px-[10px] rounded-[12px] border-[1.5px] border-[#DFE2E7] bg-white text-[var(--color-brand-text)] disabled:bg-[var(--color-brand-bg-alt)] disabled:text-[var(--color-brand-text-muted)]"
-							@input="updateEuropeRateAmountFromEuro(rate, $event.target.value)">
+							class="w-full h-[38px] px-[10px] rounded-[12px] border-[1.5px] border-[#DFE2E7] bg-white text-[var(--color-brand-text)] disabled:bg-[var(--color-brand-bg-alt)] disabled:text-[var(--color-brand-text-muted)]">
 					</div>
 				</div>
 
@@ -99,18 +99,18 @@ const props = defineProps({
 								<td class="px-[16px] py-[10px]">
 									<input
 										:value="rate.price_cents == null ? '' : (Number(rate.price_cents || 0) / 100).toFixed(2).replace('.', ',')"
+										@input="updateEuropeRateAmountFromEuro(rate, $event.target.value)"
 										:disabled="rate.quote_required"
 										type="text"
 										placeholder="0,00"
-										class="w-[120px] h-[38px] px-[10px] rounded-[12px] border-[1.5px] border-[#DFE2E7] bg-white text-[var(--color-brand-text)] disabled:bg-[var(--color-brand-bg-alt)] disabled:text-[var(--color-brand-text-muted)]"
-										@input="updateEuropeRateAmountFromEuro(rate, $event.target.value)">
+										class="w-[120px] h-[38px] px-[10px] rounded-[12px] border-[1.5px] border-[#DFE2E7] bg-white text-[var(--color-brand-text)] disabled:bg-[var(--color-brand-bg-alt)] disabled:text-[var(--color-brand-text-muted)]">
 								</td>
 								<td class="px-[16px] py-[10px]">
 									<button
 										type="button"
+										@click="toggleEuropeRateQuote(rate)"
 										:class="rate.quote_required ? 'bg-amber-50 text-amber-800 border-amber-200' : 'bg-[#EDF6F8] text-[var(--color-brand-primary)] border-[#D8E9F0]'"
-										class="inline-flex items-center gap-[6px] px-[12px] py-[8px] rounded-full border text-[0.75rem] font-medium cursor-pointer"
-										@click="toggleEuropeRateQuote(rate)">
+										class="inline-flex items-center gap-[6px] px-[12px] py-[8px] rounded-full border text-[0.75rem] font-medium cursor-pointer">
 										{{ rate.quote_required ? 'Preventivo manuale' : 'Prezzo attivo' }}
 									</button>
 								</td>

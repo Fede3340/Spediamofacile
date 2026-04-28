@@ -94,9 +94,9 @@ const scrollTrack = (direction) => {
 
 				<button
 					v-for="(day, dayIndex) in props.daysInMonth"
-					:id="`date-${day.formattedDate}`"
 					:key="day.date.toISOString()"
 					type="button"
+					:id="`date-${day.formattedDate}`"
 					:data-pickup-day="day.formattedDate"
 					class="snap-start shrink-0 w-[78px] sm:w-[84px] h-[92px] sm:h-[98px] rounded-[16px] flex flex-col items-center justify-center cursor-pointer transition-all duration-[350ms]"
 					:class="isSelectedDay(day)

@@ -72,7 +72,7 @@ const isDisabled = computed(() => props.disabled || props.loading);
 		:class="buttonClasses"
 		:aria-disabled="isDisabled || null"
 		:tabindex="isDisabled ? -1 : null">
-		<span v-if="loading" class="sf-btn-spinner" aria-hidden="true"/>
+		<span v-if="loading" class="sf-btn-spinner" aria-hidden="true"></span>
 		<slot v-else-if="$slots.leading" name="leading" />
 		<span v-if="loading && loadingText">{{ loadingText }}</span>
 		<slot v-else />
@@ -93,7 +93,7 @@ const isDisabled = computed(() => props.disabled || props.loading);
 		:type="type"
 		:disabled="isDisabled"
 		:class="buttonClasses">
-		<span v-if="loading" class="sf-btn-spinner" aria-hidden="true"/>
+		<span v-if="loading" class="sf-btn-spinner" aria-hidden="true"></span>
 		<slot v-else-if="$slots.leading" name="leading" />
 		<span v-if="loading && loadingText">{{ loadingText }}</span>
 		<slot v-else />

@@ -1,5 +1,5 @@
 <script setup>
-import '~/assets/css/components/sf-faq.css';
+import '~/assets/css/content.css';
 
 const faqs = [
 	{
@@ -63,7 +63,7 @@ const toggle = (i) => {
 					stroke-linecap="round"
 					stroke-linejoin="round"
 					class="contact-faq-chevron">
-					<polyline points="6 9 12 15 18 9"/>
+					<polyline points="6 9 12 15 18 9"></polyline>
 				</svg>
 			</button>
 			<div class="contact-faq-content">

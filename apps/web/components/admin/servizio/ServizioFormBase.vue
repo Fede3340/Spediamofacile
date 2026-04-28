@@ -1,29 +1,17 @@
 <!-- VINCOLO: usa classi globali .service-editor-* definite in pages/account/amministrazione/servizi/nuovo.vue — NON aggiungere scoped. -->
-<script setup lang="ts">
-interface ServizioFormBaseProps {
-	title: string;
-	slug: string;
-	metaDescription: string;
-	intro: string;
-	isPublished: boolean;
-	publishStateHint: string;
-}
-
-defineProps<ServizioFormBaseProps>();
-
-const emit = defineEmits<{
-	(e: 'update:title', value: string): void;
-	(e: 'update:slug', value: string): void;
-	(e: 'update:metaDescription', value: string): void;
-	(e: 'update:intro', value: string): void;
-	(e: 'update:isPublished', value: boolean): void;
-	(e: 'slug-from-title'): void;
-}>();
-
-const onTitleInput = (event: Event) => {
-	const value = (event.target as HTMLInputElement).value;
-	emit('update:title', value);
-	emit('slug-from-title');
+<script setup>defineProps({
+  title: { type: String, required: true },
+  slug: { type: String, required: true },
+  metaDescription: { type: String, required: true },
+  intro: { type: String, required: true },
+  isPublished: { type: Boolean, default: false },
+  publishStateHint: { type: String, required: true },
+});
+const emit = defineEmits();
+const onTitleInput = (event) => {
+    const value = event.target.value;
+    emit('update:title', value);
+    emit('slug-from-title');
 };
 </script>
 
@@ -41,20 +29,20 @@ const onTitleInput = (event: Event) => {
 		<div class="service-editor-field-grid">
 			<div class="service-editor-field service-editor-field--half">
 				<label class="service-editor-label">Titolo</label>
-				<input :value="title" type="text" class="service-editor-input" placeholder="Titolo del servizio" @input="onTitleInput" >
+				<input :value="title" @input="onTitleInput" type="text" class="service-editor-input" placeholder="Titolo del servizio" />
 			</div>
 			<div class="service-editor-field service-editor-field--half">
 				<label class="service-editor-label">Slug (URL)</label>
-				<input :value="slug" type="text" class="service-editor-input service-editor-input--mono" placeholder="titolo-del-servizio" @input="emit('update:slug', ($event.target as HTMLInputElement).value)" >
+				<input :value="slug" @input="emit('update:slug', $event.target.value)" type="text" class="service-editor-input service-editor-input--mono" placeholder="titolo-del-servizio" />
 				<p class="service-editor-field__hint">Si aggiorna automaticamente dal titolo, ma puoi rifinirlo a mano.</p>
 			</div>
 			<div class="service-editor-field">
 				<label class="service-editor-label">Meta description</label>
-				<textarea :value="metaDescription" rows="2" class="service-editor-textarea" placeholder="Descrizione per i motori di ricerca" @input="emit('update:metaDescription', ($event.target as HTMLTextAreaElement).value)"/>
+				<textarea :value="metaDescription" @input="emit('update:metaDescription', $event.target.value)" rows="2" class="service-editor-textarea" placeholder="Descrizione per i motori di ricerca"></textarea>
 			</div>
 			<div class="service-editor-field">
 				<label class="service-editor-label">Introduzione</label>
-				<textarea :value="intro" rows="4" class="service-editor-textarea" placeholder="Paragrafo introduttivo del servizio" @input="emit('update:intro', ($event.target as HTMLTextAreaElement).value)"/>
+				<textarea :value="intro" @input="emit('update:intro', $event.target.value)" rows="4" class="service-editor-textarea" placeholder="Paragrafo introduttivo del servizio"></textarea>
 			</div>
 		</div>
 		<div class="service-editor-toggle-row">
@@ -68,9 +56,9 @@ const onTitleInput = (event: Event) => {
 					aria-label="Attiva o disattiva pubblicazione"
 					role="switch"
 					:aria-checked="isPublished ? 'true' : 'false'"
-					:class="['service-editor-toggle', isPublished ? 'service-editor-toggle--active' : '']"
-					@click="emit('update:isPublished', !isPublished)">
-					<span :class="['service-editor-toggle__thumb', isPublished ? 'service-editor-toggle__thumb--active' : '']"/>
+					@click="emit('update:isPublished', !isPublished)"
+					:class="['service-editor-toggle', isPublished ? 'service-editor-toggle--active' : '']">
+					<span :class="['service-editor-toggle__thumb', isPublished ? 'service-editor-toggle__thumb--active' : '']"></span>
 				</button>
 				<span class="service-editor-state-pill" :class="isPublished ? 'service-editor-state-pill--active' : ''">
 					{{ isPublished ? 'Pubblicato' : 'Bozza' }}

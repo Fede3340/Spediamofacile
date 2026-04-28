@@ -1,6 +1,6 @@
 <script setup>
 import { accountCardIcons } from '~/utils/account';
-import '~/assets/css/components/sf-account-dashboard.css';
+import '~/assets/css/account.css';
 
 defineProps({
 	customerOrdersLoading: { type: Boolean, default: false },

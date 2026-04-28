@@ -15,51 +15,29 @@ import { defineStore } from 'pinia'
 const PENDING_PAYMENT_KEY = 'sf_pending_payment'
 const PENDING_PAYMENT_TTL_MS = 24 * 60 * 60 * 1000
 
-export interface PendingPaymentDraft {
-	orderId: string | number
-	paymentMethod: 'carta' | 'wallet' | 'bonifico'
-	submissionId?: string | null
-	isExisting?: boolean
-	amount?: number
-	createdAt?: number
-	expiresAt?: number
-}
-
-export interface PaymentMethodOption {
-	key: 'carta' | 'bonifico' | 'wallet'
-	title: string
-	description: string
-	badge?: string
-}
-
-export interface SavedCardInfo {
-	card?: { id?: string, [key: string]: unknown }
-	[key: string]: unknown
-}
-
-function safeLocalGet<T = unknown>(key: string): T | null {
+function safeLocalGet<T = unknown>(key) {
 	if (typeof window === 'undefined') return null
 	try {
 		const raw = window.localStorage.getItem(key)
-		return raw ? JSON.parse(raw) as T : null
+		return raw ? JSON.parse(raw)  : null
 	} catch {
 		return null
 	}
 }
 
-function safeLocalSet(key: string, value: unknown): void {
+function safeLocalSet(key, value) {
 	if (typeof window === 'undefined') return
 	try { window.localStorage.setItem(key, JSON.stringify(value)) } catch { /* storage pieno */ }
 }
 
-function safeLocalRemove(key: string): void {
+function safeLocalRemove(key) {
 	if (typeof window === 'undefined') return
 	try { window.localStorage.removeItem(key) } catch { /* storage disabilitato */ }
 }
 
 /** Legge draft pagamento in sospeso. Ritorna null se scaduto o assente. */
-export function loadPendingPayment(): PendingPaymentDraft | null {
-	const data = safeLocalGet<PendingPaymentDraft>(PENDING_PAYMENT_KEY)
+export function loadPendingPayment() {
+	const data = safeLocalGet(PENDING_PAYMENT_KEY)
 	if (!data) return null
 	if (data.expiresAt && data.expiresAt < Date.now()) {
 		safeLocalRemove(PENDING_PAYMENT_KEY)
@@ -68,11 +46,11 @@ export function loadPendingPayment(): PendingPaymentDraft | null {
 	return data
 }
 
-export function clearPendingPayment(): void {
+export function clearPendingPayment() {
 	safeLocalRemove(PENDING_PAYMENT_KEY)
 }
 
-export const PAYMENT_METHOD_OPTIONS: PaymentMethodOption[] = [
+export const PAYMENT_METHOD_OPTIONS = [
 	{ key: 'carta', title: 'Carta', description: 'Visa, Mastercard, Amex', badge: 'Più usato' },
 	{ key: 'bonifico', title: 'Bonifico', description: '1-2 giorni lavorativi' },
 	{ key: 'wallet', title: 'Wallet', description: 'Saldo prepagato' },
@@ -80,21 +58,21 @@ export const PAYMENT_METHOD_OPTIONS: PaymentMethodOption[] = [
 
 export const usePaymentStore = defineStore('payment', () => {
 	// ---------- METODO + UI ----------
-	const paymentMethod = ref<'carta' | 'wallet' | 'bonifico'>('carta')
+	const paymentMethod = ref('carta')
 	const termsAccepted = ref(false)
 	const showConfirmModal = ref(false)
 	const isProcessing = ref(false)
 	const paymentStep = ref('')
 	const paymentError = ref('')
 	const paymentSuccess = ref(false)
-	const successOrderId = ref<string | number | null>(null)
+	const successOrderId = ref(null)
 
 	// ---------- STRIPE LIFECYCLE ----------
 	// stripe/cardElement sono istanze SDK (non reattive a livello fine): le wrappiamo
 	// in shallowRef per evitare overhead di reactive proxy su oggetti opachi.
-	const stripe = shallowRef<unknown>(null)
-	const cardElement = shallowRef<unknown>(null)
-	const cardElementContainer = ref<HTMLElement | null>(null)
+	const stripe = shallowRef(null)
+	const cardElement = shallowRef(null)
+	const cardElementContainer = ref(null)
 	const cardMounted = ref(false)
 	const cardComplete = ref(false)
 	const cardError = ref('')
@@ -106,24 +84,24 @@ export const usePaymentStore = defineStore('payment', () => {
 	const saveCardForFuture = ref(false)
 	const useNewCard = ref(false)
 	const hasSavedCard = ref(false)
-	const defaultPayment = ref<SavedCardInfo | null>(null)
+	const defaultPayment = ref(null)
 
 	// ---------- APPLE/GOOGLE PAY (ARCHIVIATO 2026-04-20) ----------
 	// Wallet express disattivati. Fallback inerti per compatibilita' template.
 	const canMakePayment = ref(false)
 	const isAppleAvailable = computed(() => false)
 	const isGoogleAvailable = computed(() => false)
-	const paymentRequestContainer = ref<HTMLElement | null>(null)
+	const paymentRequestContainer = ref(null)
 	const paymentRequestError = ref('')
 
 	// ---------- AZIONI ----------
-	function selectPaymentMethod(key: 'carta' | 'wallet' | 'bonifico'): void {
+	function selectPaymentMethod(key: 'carta' | 'wallet' | 'bonifico') {
 		paymentMethod.value = key
 		paymentError.value = ''
 	}
 
 	/** Salva draft pagamento (prima di 3DS). Recovery se sessione scade durante challenge. */
-	function persistPaymentDraft(draft: PendingPaymentDraft): void {
+	function persistPaymentDraft(draft) {
 		if (!draft?.orderId) return
 		safeLocalSet(PENDING_PAYMENT_KEY, {
 			...draft,
@@ -132,18 +110,18 @@ export const usePaymentStore = defineStore('payment', () => {
 		})
 	}
 
-	function setStripeUnavailable(notice = 'Pagamento con carta non disponibile al momento. Usa bonifico o wallet.'): void {
+	function setStripeUnavailable(notice = 'Pagamento con carta non disponibile al momento. Usa bonifico o wallet.') {
 		cardPaymentsUnavailable.value = true
 		cardPaymentsNotice.value = notice
 	}
 
-	function markPaymentSuccess(orderId: string | number): void {
+	function markPaymentSuccess(orderId) {
 		paymentSuccess.value = true
 		successOrderId.value = orderId
 	}
 
 	/** Reset completo dello store (post pagamento riuscito o cambio carrello). */
-	function resetPayment(): void {
+	function resetPayment() {
 		paymentMethod.value = 'carta'
 		termsAccepted.value = false
 		showConfirmModal.value = false

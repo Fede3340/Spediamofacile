@@ -72,15 +72,15 @@ const onEditInput = (event) => {
 								<input
 									:id="`edit-${bandType}-${idx}-base_price`"
 									:value="editValue"
-									type="number"
-									min="0"
-									step="0.01"
-									class="w-[100px] px-[10px] py-[8px] tablet:py-[6px] bg-white border-2 border-[var(--color-brand-primary)] rounded-[16px] text-[1rem] tablet:text-[0.8125rem] focus:outline-none"
-									placeholder="0,00" @input="onEditInput" @keydown.enter="confirmEdit(bandType, idx, 'base_price')"
+									@input="onEditInput"
+									@keydown.enter="confirmEdit(bandType, idx, 'base_price')"
 									@keydown.esc="cancelEdit()"
-									@blur="confirmEdit(bandType, idx, 'base_price')" >
+									@blur="confirmEdit(bandType, idx, 'base_price')"
+									type="number" min="0" step="0.01"
+									class="w-[100px] px-[10px] py-[8px] tablet:py-[6px] bg-white border-2 border-[var(--color-brand-primary)] rounded-[16px] text-[1rem] tablet:text-[0.8125rem] focus:outline-none"
+									placeholder="0,00" />
 							</div>
-							<button v-else type="button" class="px-[12px] py-[6px] rounded-[16px] text-[0.875rem] font-semibold text-[var(--color-brand-text)] hover:bg-[rgba(9,88,102,0.06)] transition-colors cursor-pointer border border-transparent hover:border-[rgba(9,88,102,0.2)]" @click="startEdit(bandType, idx, 'base_price')">
+							<button v-else type="button" @click="startEdit(bandType, idx, 'base_price')" class="px-[12px] py-[6px] rounded-[16px] text-[0.875rem] font-semibold text-[var(--color-brand-text)] hover:bg-[rgba(9,88,102,0.06)] transition-colors cursor-pointer border border-transparent hover:border-[rgba(9,88,102,0.2)]">
 								{{ centsToEuro(band.base_price) }}
 							</button>
 						</td>
@@ -91,15 +91,15 @@ const onEditInput = (event) => {
 								<input
 									:id="`edit-${bandType}-${idx}-discount_price`"
 									:value="editValue"
-									type="number"
-									min="0"
-									step="0.01"
-									class="w-[100px] px-[10px] py-[8px] tablet:py-[6px] bg-white border-2 border-[var(--color-brand-primary)] rounded-[16px] text-[1rem] tablet:text-[0.8125rem] focus:outline-none"
-									placeholder="vuoto = usa base" @input="onEditInput" @keydown.enter="confirmEdit(bandType, idx, 'discount_price')"
+									@input="onEditInput"
+									@keydown.enter="confirmEdit(bandType, idx, 'discount_price')"
 									@keydown.esc="cancelEdit()"
-									@blur="confirmEdit(bandType, idx, 'discount_price')" >
+									@blur="confirmEdit(bandType, idx, 'discount_price')"
+									type="number" min="0" step="0.01"
+									class="w-[100px] px-[10px] py-[8px] tablet:py-[6px] bg-white border-2 border-[var(--color-brand-primary)] rounded-[16px] text-[1rem] tablet:text-[0.8125rem] focus:outline-none"
+									placeholder="vuoto = usa base" />
 							</div>
-							<button v-else type="button" class="px-[12px] py-[6px] rounded-[16px] text-[0.875rem] text-[var(--color-brand-text-secondary)] hover:bg-[rgba(9,88,102,0.06)] transition-colors cursor-pointer border border-transparent hover:border-[rgba(9,88,102,0.2)]" @click="startEdit(bandType, idx, 'discount_price')">
+							<button v-else type="button" @click="startEdit(bandType, idx, 'discount_price')" class="px-[12px] py-[6px] rounded-[16px] text-[0.875rem] text-[var(--color-brand-text-secondary)] hover:bg-[rgba(9,88,102,0.06)] transition-colors cursor-pointer border border-transparent hover:border-[rgba(9,88,102,0.2)]">
 								{{ band.discount_price != null ? centsToEuro(band.discount_price) : '-' }}
 							</button>
 						</td>
@@ -121,13 +121,12 @@ const onEditInput = (event) => {
 						</td>
 						<!-- Toggle visibile -->
 						<td class="py-[14px] text-center">
-							<button
-type="button" role="switch"
+							<button type="button" @click="toggleShowDiscount(bandType, idx)"
+								role="switch"
 								:aria-checked="band.show_discount ? 'true' : 'false'"
 								:aria-label="`Mostra sconto per questa fascia: ${band.show_discount ? 'attivo' : 'disattivato'}`"
 								:class="band.show_discount ? 'bg-[var(--color-brand-primary)]' : 'bg-[#C8CCD0]'"
-								class="relative inline-flex h-[32px] w-[56px] tablet:h-[24px] tablet:w-[44px] items-center rounded-full transition-colors cursor-pointer"
-								@click="toggleShowDiscount(bandType, idx)">
+								class="relative inline-flex h-[32px] w-[56px] tablet:h-[24px] tablet:w-[44px] items-center rounded-full transition-colors cursor-pointer">
 								<span :class="band.show_discount ? 'translate-x-[28px] tablet:translate-x-[22px]' : 'translate-x-[2px]'" class="inline-block h-[26px] w-[26px] tablet:h-[20px] tablet:w-[20px] transform rounded-full bg-white transition-transform shadow-sm" />
 							</button>
 						</td>

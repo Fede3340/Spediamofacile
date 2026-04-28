@@ -12,9 +12,6 @@ useSeoMeta({
 	ogDescription: 'Guide pratiche per spedire in modo semplice e conveniente con SpediamoFacile.',
 });
 
-const runtimeConfig = useRuntimeConfig();
-const siteUrl = String(runtimeConfig.public?.siteUrl || 'https://spediamofacile.it').replace(/\/+$/, '');
-
 useHead({
 	script: [{
 		type: 'application/ld+json',
@@ -22,9 +19,9 @@ useHead({
 			'@context': 'https://schema.org',
 			'@type': 'CollectionPage',
 			name: 'Guide alle Spedizioni - SpediamoFacile',
-			url: `${siteUrl}/guide`,
+			url: 'https://spediamofacile.it/guide',
 			description: 'Raccolta di guide pratiche per spedire pacchi in Italia e all\'estero.',
-			mainEntity: { '@type': 'Organization', name: 'SpediamoFacile', url: siteUrl },
+			mainEntity: { '@type': 'Organization', name: 'SpediamoFacile', url: 'https://spediamofacile.it' },
 		}),
 	}],
 });

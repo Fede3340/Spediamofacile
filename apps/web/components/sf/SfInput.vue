@@ -12,6 +12,9 @@
  *     <template #prefix><svg>...</svg></template>
  *   </SfInput>
  */
+import { useId } from 'vue';
+
+const autoId = useId();
 const props = defineProps({
 	modelValue: { type: [String, Number], default: '' },
 	label: { type: String, default: '' },
@@ -22,7 +25,9 @@ const props = defineProps({
 	disabled: { type: Boolean, default: false },
 	required: { type: Boolean, default: false },
 	autocomplete: { type: String, default: 'off' },
-	id: { type: String, default: () => `sf-input-${Math.random().toString(36).slice(2, 8)}` },
+	// Default deterministico (useId crea un id stabile su SSR + client → hydration safe).
+	// Prima usavamo Math.random() che generava ids diversi su server/client.
+	id: { type: String, default: () => `sf-input-${autoId}` },
 });
 
 const emit = defineEmits(['update:modelValue', 'blur', 'focus']);
@@ -52,7 +57,7 @@ const onInput = (event) => emit('update:modelValue', event.target.value);
 				class="sf-input-control"
 				@input="onInput"
 				@blur="emit('blur', $event)"
-				@focus="emit('focus', $event)" >
+				@focus="emit('focus', $event)" />
 			<span v-if="$slots.suffix" class="sf-input-suffix">
 				<slot name="suffix" />
 			</span>

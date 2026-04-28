@@ -1,5 +1,5 @@
 <script setup>
-import '~/assets/css/components/sf-faq.css';
+import '~/assets/css/content.css';
 
 const props = defineProps({
 	items: { type: Array, default: () => [] },

@@ -1,38 +1,24 @@
 <!-- Hero unificato pagine content (contatti, servizi, guide, traccia, faq, chi-siamo, privacy/termini/cookie).
      Centrato, con variante compact per flussi operativi come il preventivo. -->
-<script setup lang="ts">
-import '~/assets/css/components/sf-page-header.css'
-
-type PublicPageCrumb = {
-	label: string
-	to?: string
-}
-
-const props = withDefaults(defineProps<{
-	crumbs?: PublicPageCrumb[]
-	eyebrow?: string
-	title: string
-	description?: string
-	kicker?: string
-	variant?: 'default' | 'compact'
-}>(), {
-	crumbs: () => [],
-	eyebrow: '',
-	description: '',
-	kicker: '',
-	variant: 'default',
-})
-
-const eyebrowText = computed(() => props.eyebrow || props.kicker || '')
-const hasBreadcrumbs = computed(() => props.crumbs.length > 0)
-const hasExtra = useSlots().default !== undefined
-const hasActions = useSlots().actions !== undefined
+<script setup>import '~/assets/css/layout.css';
+const props = defineProps({
+  crumbs: { type: Array, default: () => [] },
+  eyebrow: { type: String, default: '' },
+  title: { type: String, required: true },
+  description: { type: String, default: '' },
+  kicker: { type: String, default: '' },
+  variant: { type: String, default: 'default' },
+});
+const eyebrowText = computed(() => props.eyebrow || props.kicker || '');
+const hasBreadcrumbs = computed(() => props.crumbs.length > 0);
+const hasExtra = useSlots().default !== undefined;
+const hasActions = useSlots().actions !== undefined;
 const headerClass = computed(() => ({
-	'public-page-header--compact': props.variant === 'compact',
-}))
+    'public-page-header--compact': props.variant === 'compact',
+}));
 const breadcrumbClass = computed(() => ({
-	'public-page-breadcrumb--compact': props.variant === 'compact',
-}))
+    'public-page-breadcrumb--compact': props.variant === 'compact',
+}));
 </script>
 
 <template>

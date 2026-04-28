@@ -22,15 +22,14 @@ const toEditLocation = (itemId) => buildShipmentFlowEditLocation(itemId)
     <!-- Group header (clickable) -->
     <button
       type="button"
-      class="w-full flex items-start gap-[14px] p-[16px] sm:p-[18px] hover:bg-[rgba(9,88,102,0.03)] transition cursor-pointer text-left"
       @click="emit('toggle')"
+      class="w-full flex items-start gap-[14px] p-[16px] sm:p-[18px] hover:bg-[rgba(9,88,102,0.03)] transition cursor-pointer text-left"
     >
       <!-- Icon box with group color accent -->
       <div class="w-[48px] h-[48px] rounded-[12px] bg-[#F8F9FB] ring-[1px] ring-[#DFE2E7] flex items-center justify-center shrink-0 relative">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" :stroke="entry.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
         <!-- Colli count dot -->
-        <span
-class="absolute -top-[4px] -right-[4px] w-[20px] h-[20px] rounded-full flex items-center justify-center text-white text-[10px]"
+        <span class="absolute -top-[4px] -right-[4px] w-[20px] h-[20px] rounded-full flex items-center justify-center text-white text-[10px]"
           :style="{ backgroundColor: entry.color, fontWeight: 700 }">
           {{ entry.items.length }}
         </span>
@@ -54,8 +53,7 @@ class="absolute -top-[4px] -right-[4px] w-[20px] h-[20px] rounded-full flex item
           <span class="inline-flex items-center px-[8px] py-[2px] rounded-full bg-[#F8F9FB] ring-[1px] ring-[#DFE2E7] text-[12px] text-[var(--color-brand-text-secondary)]" style="font-weight: 600">
             {{ entry.items.length }} colli
           </span>
-          <span
-class="inline-flex items-center gap-[3px] px-[8px] py-[2px] rounded-full text-[11px]"
+          <span class="inline-flex items-center gap-[3px] px-[8px] py-[2px] rounded-full text-[11px]"
             :style="{ backgroundColor: entry.color + '14', color: entry.color, fontWeight: 600 }">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
             Spedizione unica
@@ -65,11 +63,11 @@ class="inline-flex items-center gap-[3px] px-[8px] py-[2px] rounded-full text-[1
         <!-- Addresses -->
         <div class="flex flex-col sm:flex-row sm:items-center gap-[2px] sm:gap-[12px] mt-[6px] text-[13px] text-[var(--color-brand-text-secondary)]">
           <span class="flex items-center gap-[4px]">
-            <span class="w-[5px] h-[5px] rounded-full bg-[var(--color-brand-primary)] shrink-0"/>
+            <span class="w-[5px] h-[5px] rounded-full bg-[var(--color-brand-primary)] shrink-0"></span>
             {{ firstItem?.origin_address?.name || 'Mittente' }} &ndash; {{ firstItem?.origin_address?.city || 'N/D' }}
           </span>
           <span class="flex items-center gap-[4px]">
-            <span class="w-[5px] h-[5px] rounded-full bg-[var(--color-brand-primary)] shrink-0"/>
+            <span class="w-[5px] h-[5px] rounded-full bg-[var(--color-brand-primary)] shrink-0"></span>
             {{ firstItem?.destination_address?.name || 'Destinatario' }} &ndash; {{ firstItem?.destination_address?.city || 'N/D' }}
           </span>
         </div>
@@ -126,9 +124,9 @@ class="inline-flex items-center gap-[3px] px-[8px] py-[2px] rounded-full text-[1
               <button
                 type="button"
                 aria-label="Diminuisci quantità"
+                @click="emit('update-quantity', item.id, (item.quantity || 1) - 1)"
                 :disabled="(item.quantity || 1) <= 1"
                 class="w-[28px] h-[28px] flex items-center justify-center cursor-pointer hover:bg-[rgba(9,88,102,0.08)] rounded-l-full transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                @click="emit('update-quantity', item.id, (item.quantity || 1) - 1)"
               >
                 <svg aria-hidden="true" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
               </button>
@@ -136,9 +134,9 @@ class="inline-flex items-center gap-[3px] px-[8px] py-[2px] rounded-full text-[1
               <button
                 type="button"
                 aria-label="Aumenta quantità"
+                @click="emit('update-quantity', item.id, (item.quantity || 1) + 1)"
                 :disabled="(item.quantity || 1) >= 100"
                 class="w-[28px] h-[28px] flex items-center justify-center cursor-pointer hover:bg-[rgba(9,88,102,0.08)] rounded-r-full transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                @click="emit('update-quantity', item.id, (item.quantity || 1) + 1)"
               >
                 <svg aria-hidden="true" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               </button>
@@ -155,10 +153,10 @@ class="inline-flex items-center gap-[3px] px-[8px] py-[2px] rounded-full text-[1
             <!-- Delete -->
             <button
               type="button"
+              @click="emit('delete', item.id)"
               class="w-[28px] h-[28px] rounded-full bg-[#E6E9EE] flex items-center justify-center hover:bg-[#FECACA] cursor-pointer transition-colors"
               title="Elimina collo"
               aria-label="Elimina collo"
-              @click="emit('delete', item.id)"
             >
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
             </button>

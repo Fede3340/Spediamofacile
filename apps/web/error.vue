@@ -9,19 +9,14 @@
 	Design: palette teal + arancione, illustrazione SVG inline (zero asset extra),
 	radius 14px, shadow soft. Mai blu.
 -->
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue'
 
-interface NuxtErrorShape {
-	statusCode?: number
-	statusMessage?: string
-	message?: string
-	url?: string
-}
+const props = defineProps({
+	error: { type: Object, required: true },
+})
 
-const props = defineProps<{ error: NuxtErrorShape }>()
-
-const statusCode = computed<number>(() => Number(props.error?.statusCode) || 500)
+const statusCode = computed(() => Number(props.error?.statusCode) || 500)
 const is404 = computed(() => statusCode.value === 404)
 const is503 = computed(() => statusCode.value === 503)
 const is5xx = computed(() => statusCode.value >= 500 && statusCode.value !== 503)

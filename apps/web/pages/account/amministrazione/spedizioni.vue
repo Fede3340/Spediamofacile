@@ -1,6 +1,6 @@
 <!-- FILE: pages/account/amministrazione/spedizioni.vue -->
 <script setup>
-import '~/assets/css/components/sf-admin-spedizioni.css';
+import '~/assets/css/admin.css';
 
 definePageMeta({
 	middleware: ['app-auth', 'admin'],
@@ -91,10 +91,10 @@ onMounted(() => { fetchShipments(); });
 							</svg>
 							<input
 								v-model="shipmentsSearch"
+								@input="onShipmentsSearch"
 								type="text"
 								placeholder="Cerca per utente, Parcel ID, tratta..."
-								class="admin-spedizioni-toolbar__input"
-								@input="onShipmentsSearch" >
+								class="admin-spedizioni-toolbar__input" />
 						</div>
 					</label>
 					<div class="admin-spedizioni-toolbar__field admin-spedizioni-toolbar__field--filters">
@@ -111,13 +111,13 @@ onMounted(() => { fetchShipments(); });
 			<!-- Tabella spedizioni — header duplicato rimosso (P13: AccountPageHeader sopra ha già stesso titolo) -->
 			<div class="admin-spedizioni-table-card mt-[18px] desktop:mt-[22px]">
 				<div v-if="tabLoading" class="py-[24px] flex justify-center">
-					<div class="w-[32px] h-[32px] border-3 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)] rounded-full animate-spin"/>
+					<div class="w-[32px] h-[32px] border-3 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)] rounded-full animate-spin"></div>
 				</div>
 
 				<div v-else-if="fetchError" class="text-center py-[28px]">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[40px] h-[40px] text-red-300 mx-auto mb-[12px]" fill="currentColor"><path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/></svg>
 					<p class="text-[var(--color-brand-text-secondary)] mb-[12px]">Errore nel caricamento delle spedizioni.</p>
-					<button class="px-[14px] py-[8px] bg-[var(--color-brand-primary)] text-white rounded-[50px] text-[13px] font-medium cursor-pointer hover:bg-[var(--color-brand-primary-hover)] transition-colors" @click="fetchShipments">Riprova</button>
+					<button @click="fetchShipments" class="px-[14px] py-[8px] bg-[var(--color-brand-primary)] text-white rounded-[50px] text-[13px] font-medium cursor-pointer hover:bg-[var(--color-brand-primary-hover)] transition-colors">Riprova</button>
 				</div>
 
 				<div v-else-if="!visibleShipments?.length" class="text-center py-[28px]">
@@ -144,15 +144,15 @@ onMounted(() => { fetchShipments(); });
 					<p class="text-[0.8125rem] font-medium text-[#5c6d7f]">{{ paginationLabel }}</p>
 					<div class="flex items-center justify-between gap-[8px] tablet:justify-end">
 						<button
+							@click="shipmentsPage = Math.max(1, shipmentsPage - 1); fetchShipments();"
 							:disabled="shipmentsPage <= 1"
-							class="btn-tertiary px-[12px] py-[8px] text-[0.8125rem] disabled:opacity-40"
-							@click="shipmentsPage = Math.max(1, shipmentsPage - 1); fetchShipments();">
+							class="btn-tertiary px-[12px] py-[8px] text-[0.8125rem] disabled:opacity-40">
 							Precedente
 						</button>
 						<button
+							@click="shipmentsPage = Math.min(shipmentsData.last_page, shipmentsPage + 1); fetchShipments();"
 							:disabled="shipmentsPage >= shipmentsData.last_page"
-							class="btn-tertiary px-[12px] py-[8px] text-[0.8125rem] disabled:opacity-40"
-							@click="shipmentsPage = Math.min(shipmentsData.last_page, shipmentsPage + 1); fetchShipments();">
+							class="btn-tertiary px-[12px] py-[8px] text-[0.8125rem] disabled:opacity-40">
 							Successivo
 						</button>
 					</div>

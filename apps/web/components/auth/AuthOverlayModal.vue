@@ -1,7 +1,5 @@
-<script setup lang="ts">
-// Carica autenticazione.css solo quando l'overlay è montato (code-splitting route-specific).
-import '~/assets/css/autenticazione.css'
-
+<script setup>// Carica autenticazione.css solo quando l'overlay è montato (code-splitting route-specific).
+import '~/assets/css/autenticazione.css';
 // Shell del modal autenticazione. Orchestra 4 flussi distinti (Login / Registrati /
 // Forgot password / Verifica email) delegando la presentazione a sub-componenti:
 //   • AuthLoginForm        — tab Login (email + password + link forgot)
@@ -10,192 +8,157 @@ import '~/assets/css/autenticazione.css'
 //   • AuthVerifyForm       — flusso "verifica email OTP"
 //   • AuthSocialButtons    — 3 bottoni Google/Apple/Facebook (login + register)
 // Logica di business in useAuthOverlay (composable). Stato locale qui: solo forgot mode.
-
-const {
-  loginForm, registerForm, isLoading, resendLoading,
-  authError, authSuccess, socialError, verificationMode,
-  verificationLoading, verificationCode, verificationError,
-  verificationSuccess, showLoginPassword, showRegisterPassword,
-  showRegisterPasswordConfirm, socialErrorTone, isBusy,
-  isOpen, selectedTab, entryMode, authProviders,
-  clearFeedback, resetVerificationMode, closeModal,
-  startSocialAuth, handleLogin, handleRegister,
-  handleVerificationInput, handleVerificationKeydown,
-  verifyCode, resendVerificationEmail,
-} = useAuthOverlay()
-const { clearEntryMode } = useAuthModal()
-
+const { loginForm, registerForm, isLoading, resendLoading, authError, authSuccess, socialError, verificationMode, verificationLoading, verificationCode, verificationError, verificationSuccess, showLoginPassword, showRegisterPassword, showRegisterPasswordConfirm, socialErrorTone, isBusy, isOpen, selectedTab, entryMode, authProviders, clearFeedback, resetVerificationMode, closeModal, startSocialAuth, handleLogin, handleRegister, handleVerificationInput, handleVerificationKeydown, verifyCode, resendVerificationEmail, } = useAuthOverlay();
+const { clearEntryMode } = useAuthModalStore();
 // Cloudflare Turnstile (CAPTCHA) sul form di registrazione.
-const registerTurnstile = useTurnstile()
-
+const registerTurnstile = useTurnstile();
 // Wrapper handleRegister che blocca se il CAPTCHA non e' stato risolto
 // e propaga il token come campo extra sul payload via registerForm.
 const handleRegisterWithCaptcha = () => {
-  if (!registerTurnstile.isReady.value) {
-    // forziamo il feedback utente senza far submit
-    return
-  }
-  // Aggiungo il token al form prima della POST
-  ;(registerForm.value as Record<string, unknown>).cf_turnstile_token = registerTurnstile.token.value
-  handleRegister()
-}
-
+    if (!registerTurnstile.isReady.value) {
+        // forziamo il feedback utente senza far submit
+        return;
+    }
+    // Aggiungo il token al form prima della POST
+    ;
+    registerForm.value.cf_turnstile_token = registerTurnstile.token.value;
+    handleRegister();
+};
 const modalDescription = computed(() => {
-  if (forgotMode.value) {
-    return 'Inserisci la tua email e ti invieremo il link per reimpostare la password.'
-  }
-  if (verificationMode.value) {
-    return 'Inserisci il codice ricevuto per completare la verifica del tuo account.'
-  }
-  return selectedTab.value === 'register'
-    ? 'Crea il tuo account per gestire spedizioni, pagamenti e profilo in un solo flusso.'
-    : 'Accedi al tuo account per continuare con preventivo, ordini e pagamenti.'
-})
-
+    if (forgotMode.value) {
+        return 'Inserisci la tua email e ti invieremo il link per reimpostare la password.';
+    }
+    if (verificationMode.value) {
+        return 'Inserisci il codice ricevuto per completare la verifica del tuo account.';
+    }
+    return selectedTab.value === 'register'
+        ? 'Crea il tuo account per gestire spedizioni, pagamenti e profilo in un solo flusso.'
+        : 'Accedi al tuo account per continuare con preventivo, ordini e pagamenti.';
+});
 // --- Forgot password state (local to this component) ---
-const forgotMode = ref(false)
-const forgotEmail = ref('')
-const forgotLoading = ref(false)
-const forgotError = ref('')
-const forgotSuccess = ref('')
-
-const sanctum = useSanctumClient()
-
+const forgotMode = ref(false);
+const forgotEmail = ref('');
+const forgotLoading = ref(false);
+const forgotError = ref('');
+const forgotSuccess = ref('');
+const sanctum = useSanctumClient();
 const enterForgotMode = () => {
-  forgotMode.value = true
-  forgotEmail.value = loginForm.value.email || ''
-  forgotError.value = ''
-  forgotSuccess.value = ''
-  clearFeedback()
-}
-
+    forgotMode.value = true;
+    forgotEmail.value = loginForm.value.email || '';
+    forgotError.value = '';
+    forgotSuccess.value = '';
+    clearFeedback();
+};
 const exitForgotMode = () => {
-  forgotMode.value = false
-  forgotError.value = ''
-  forgotSuccess.value = ''
-  clearEntryMode()
-}
-
-watch(
-  [isOpen, entryMode],
-  ([open, mode]) => {
+    forgotMode.value = false;
+    forgotError.value = '';
+    forgotSuccess.value = '';
+    clearEntryMode();
+};
+watch([isOpen, entryMode], ([open, mode]) => {
     if (!open) {
-      exitForgotMode()
-      return
+        exitForgotMode();
+        return;
     }
-
     if (mode === 'forgot' && selectedTab.value === 'login' && !forgotMode.value) {
-      enterForgotMode()
+        enterForgotMode();
     }
-  },
-  { immediate: true },
-)
-
+}, { immediate: true });
 const handleForgotPassword = async () => {
-  forgotError.value = ''
-  forgotSuccess.value = ''
-  if (!forgotEmail.value) {
-    forgotError.value = 'Inserisci la tua email per continuare.'
-    return
-  }
-  forgotLoading.value = true
-  try {
-    const response = await sanctum<{ message?: string }>('/api/forgot-password', {
-      method: 'POST',
-      body: { email: forgotEmail.value },
-    })
-    forgotSuccess.value = response?.message || 'Link di recupero inviato. Controlla la tua email.'
-  } catch (error: any) {
-    const data = error?.response?._data || error?.data || {}
-    forgotError.value = data?.message || "Errore durante l'invio. Riprova."
-  } finally {
-    forgotLoading.value = false
-  }
-}
-
+    forgotError.value = '';
+    forgotSuccess.value = '';
+    if (!forgotEmail.value) {
+        forgotError.value = 'Inserisci la tua email per continuare.';
+        return;
+    }
+    forgotLoading.value = true;
+    try {
+        const response = await sanctum('/api/forgot-password', {
+            method: 'POST',
+            body: { email: forgotEmail.value },
+        });
+        forgotSuccess.value = response?.message || 'Link di recupero inviato. Controlla la tua email.';
+    }
+    catch (error) {
+        const data = error?.response?._data || error?.data || {};
+        forgotError.value = data?.message || "Errore durante l'invio. Riprova.";
+    }
+    finally {
+        forgotLoading.value = false;
+    }
+};
 // Reset forgot mode when switching tabs
 watch(selectedTab, () => {
-  if (forgotMode.value) exitForgotMode()
-})
-
+    if (forgotMode.value)
+        exitForgotMode();
+});
 // Body scroll lock: il contenuto sotto NON deve muoversi quando il modal è aperto.
 // Salva scrollY, blocca position:fixed, ripristina su close/unmount.
-const scrollLockState = { scrollY: 0, locked: false }
+const scrollLockState = { scrollY: 0, locked: false };
 const lockBodyScroll = () => {
-  if (typeof document === 'undefined' || scrollLockState.locked) return
-  scrollLockState.scrollY = window.scrollY || window.pageYOffset || 0
-  const body = document.body
-  body.style.position = 'fixed'
-  body.style.top = `-${scrollLockState.scrollY}px`
-  body.style.left = '0'
-  body.style.right = '0'
-  body.style.width = '100%'
-  body.style.overflow = 'hidden'
-  scrollLockState.locked = true
-}
+    if (typeof document === 'undefined' || scrollLockState.locked)
+        return;
+    scrollLockState.scrollY = window.scrollY || window.pageYOffset || 0;
+    const body = document.body;
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollLockState.scrollY}px`;
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.width = '100%';
+    body.style.overflow = 'hidden';
+    scrollLockState.locked = true;
+};
 const unlockBodyScroll = () => {
-  if (typeof document === 'undefined' || !scrollLockState.locked) return
-  const body = document.body
-  body.style.position = ''
-  body.style.top = ''
-  body.style.left = ''
-  body.style.right = ''
-  body.style.width = ''
-  body.style.overflow = ''
-  window.scrollTo(0, scrollLockState.scrollY)
-  scrollLockState.locked = false
-}
-
-let cleanupScrollLockTimer: number | null = null
-
+    if (typeof document === 'undefined' || !scrollLockState.locked)
+        return;
+    const body = document.body;
+    body.style.position = '';
+    body.style.top = '';
+    body.style.left = '';
+    body.style.right = '';
+    body.style.width = '';
+    body.style.overflow = '';
+    window.scrollTo(0, scrollLockState.scrollY);
+    scrollLockState.locked = false;
+};
 const cleanupAuthScrollLock = () => {
-  if (typeof document === 'undefined') return
-  if (cleanupScrollLockTimer) {
-    window.clearTimeout(cleanupScrollLockTimer)
-  }
-  cleanupScrollLockTimer = window.setTimeout(() => {
-    cleanupScrollLockTimer = null
-    if (isOpen.value) return
-    const hasOpenDialog = document.querySelector('[data-slot="content"][data-state="open"], [role="dialog"][data-state="open"]')
-    if (hasOpenDialog) return
-    const body = document.body
-    body.style.position = ''
-    body.style.top = ''
-    body.style.left = ''
-    body.style.right = ''
-    body.style.width = ''
-    body.style.overflow = ''
-  }, 250)
-}
-
-onBeforeUnmount(() => {
-  if (cleanupScrollLockTimer) {
-    window.clearTimeout(cleanupScrollLockTimer)
-    cleanupScrollLockTimer = null
-  }
-})
-
+    if (typeof document === 'undefined')
+        return;
+    window.setTimeout(() => {
+        if (isOpen.value)
+            return;
+        const hasOpenDialog = document.querySelector('[data-slot="content"][data-state="open"], [role="dialog"][data-state="open"]');
+        if (hasOpenDialog)
+            return;
+        const body = document.body;
+        body.style.position = '';
+        body.style.top = '';
+        body.style.left = '';
+        body.style.right = '';
+        body.style.width = '';
+        body.style.overflow = '';
+    }, 250);
+};
 watch(isOpen, (open) => {
-  if (open) lockBodyScroll()
-  else {
-    unlockBodyScroll()
-    cleanupAuthScrollLock()
-  }
-}, { immediate: true })
-
+    if (open)
+        lockBodyScroll();
+    else {
+        unlockBodyScroll();
+        cleanupAuthScrollLock();
+    }
+}, { immediate: true });
 onBeforeUnmount(() => {
-  unlockBodyScroll()
-})
-
+    unlockBodyScroll();
+});
 // Design tokens. ! per vincere sui default di app.config.
 const modalUi = {
-  overlay: 'fixed inset-0 bg-black/50 backdrop-blur-[10px]',
-  content: '!px-0 !pt-0 !pb-0 !p-0 !ring-0 !ring-transparent !divide-y-0 !border-0 !bg-transparent w-[calc(100vw-1rem)] max-w-[440px] max-h-[calc(100dvh-10px)] sm:max-h-[calc(100dvh-14px)] max-sm:max-h-[100dvh] max-sm:h-[100dvh] max-sm:w-full max-sm:max-w-full max-sm:rounded-none overflow-hidden rounded-[18px] shadow-[0_24px_80px_rgba(0,0,0,0.2),0_0_0_1px_rgba(9,88,102,0.06)]',
-  body: '!p-0 !sm:p-0 overflow-visible',
-  header: 'sr-only',
-  title: 'sr-only',
-  wrapper: 'sr-only',
-}
+    overlay: 'fixed inset-0 bg-black/50 backdrop-blur-[10px]',
+    content: '!px-0 !pt-0 !pb-0 !p-0 !ring-0 !ring-transparent !divide-y-0 !border-0 !bg-transparent w-[calc(100vw-1rem)] max-w-[440px] max-h-[calc(100dvh-10px)] sm:max-h-[calc(100dvh-14px)] max-sm:max-h-[100dvh] max-sm:h-[100dvh] max-sm:w-full max-sm:max-w-full max-sm:rounded-none overflow-hidden rounded-[18px] shadow-[0_24px_80px_rgba(0,0,0,0.2),0_0_0_1px_rgba(9,88,102,0.06)]',
+    body: '!p-0 !sm:p-0 overflow-visible',
+    header: 'sr-only',
+    title: 'sr-only',
+    wrapper: 'sr-only',
+};
 </script>
 
 <template>

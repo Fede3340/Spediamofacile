@@ -1,59 +1,39 @@
 <!-- COMPONENTE: SfSkeleton (atom) -->
-<script setup lang="ts">
-import { computed } from 'vue';
-
-type SkeletonVariant =
-  | 'line' | 'circle' | 'card' | 'text-block'
-  | 'text' | 'title' | 'avatar' | 'button' | 'custom';
-
-interface Props {
-  variant?: SkeletonVariant;
-  /** Usato con variant="custom" o in backward-compat */
-  width?: string;
-  height?: string;
-  rounded?: string;
-  count?: number;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  variant: undefined,
-  width: '100%',
-  height: '14px',
-  rounded: undefined,
-  count: 1,
+<script setup>import { computed } from 'vue';
+const props = defineProps({
+  variant: { type: Object, default: () => ({}) },
+  width: { type: String, default: '100%' },
+  height: { type: String, default: '14px' },
+  rounded: { type: String, default: '' },
+  count: { type: Number, default: 1 },
 });
-
 // Preset single-shape (una barra). text-block è gestito a parte nel template.
-const PRESETS: Record<Exclude<SkeletonVariant, 'text-block'>, { width: string; height: string; rounded: string }> = {
-  line:   { width: '100%',  height: '14px',  rounded: '6px' },
-  text:   { width: '100%',  height: '14px',  rounded: '6px' }, // alias legacy di "line"
-  title:  { width: '70%',   height: '22px',  rounded: '8px' },
-  circle: { width: '40px',  height: '40px',  rounded: '9999px' },
-  avatar: { width: '40px',  height: '40px',  rounded: '9999px' }, // alias legacy
-  card:   { width: '100%',  height: '120px', rounded: '16px' },
-  button: { width: '120px', height: '40px',  rounded: '10px' },
-  custom: { width: '100%',  height: '14px',  rounded: '6px' },
+const PRESETS = {
+    line: { width: '100%', height: '14px', rounded: '6px' },
+    text: { width: '100%', height: '14px', rounded: '6px' }, // alias legacy di "line"
+    title: { width: '70%', height: '22px', rounded: '8px' },
+    circle: { width: '40px', height: '40px', rounded: '9999px' },
+    avatar: { width: '40px', height: '40px', rounded: '9999px' }, // alias legacy
+    card: { width: '100%', height: '120px', rounded: '16px' },
+    button: { width: '120px', height: '40px', rounded: '10px' },
+    custom: { width: '100%', height: '14px', rounded: '6px' },
 };
-
 const isTextBlock = computed(() => props.variant === 'text-block');
-
 const resolved = computed(() => {
-  if (props.variant && props.variant !== 'custom' && props.variant !== 'text-block') {
-    return PRESETS[props.variant];
-  }
-  return {
-    width: props.width,
-    height: props.height,
-    rounded: props.rounded ?? (props.variant === 'custom' ? '6px' : 'var(--radius-sm, 6px)'),
-  };
+    if (props.variant && props.variant !== 'custom' && props.variant !== 'text-block') {
+        return PRESETS[props.variant];
+    }
+    return {
+        width: props.width,
+        height: props.height,
+        rounded: props.rounded ?? (props.variant === 'custom' ? '6px' : 'var(--radius-sm, 6px)'),
+    };
 });
-
 const itemStyle = computed(() => ({
-  width: resolved.value.width,
-  height: resolved.value.height,
-  borderRadius: resolved.value.rounded,
+    width: resolved.value.width,
+    height: resolved.value.height,
+    borderRadius: resolved.value.rounded,
 }));
-
 const items = computed(() => Array.from({ length: Math.max(1, props.count) }));
 </script>
 

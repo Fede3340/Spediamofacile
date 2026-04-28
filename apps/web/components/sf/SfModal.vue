@@ -1,81 +1,76 @@
-<script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, useId, watch } from 'vue';
-
-type Size = 'sm' | 'md' | 'lg' | 'xl';
-
-interface Props {
-	modelValue: boolean;
-	title?: string;
-	size?: Size;
-	closeOnBackdrop?: boolean;
-	persistent?: boolean;
-	hideClose?: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-	title: '',
-	size: 'md',
-	closeOnBackdrop: true,
-	persistent: false,
-	hideClose: false,
+<script setup>import { computed, nextTick, onBeforeUnmount, ref, useId, watch } from 'vue';
+const props = defineProps({
+  modelValue: { type: Boolean, default: false },
+  title: { type: String, default: '' },
+  size: { type: String, default: 'md' },
+  closeOnBackdrop: { type: Boolean, default: true },
+  persistent: { type: Boolean, default: false },
+  hideClose: { type: Boolean, default: false },
 });
-
-const emit = defineEmits<{
-	(e: 'update:modelValue', v: boolean): void;
-	(e: 'close'): void;
-}>();
-
+const emit = defineEmits();
 const titleId = `sf-modal-title-${useId()}`;
-const dialogRef = ref<HTMLElement | null>(null);
-let previousActive: HTMLElement | null = null;
-
+const dialogRef = ref(null);
+let previousActive = null;
 const panelClasses = computed(() => ['sf-modal__panel', `sf-modal__panel--${props.size}`]);
-
 function close() {
-	if (props.persistent) return;
-	emit('update:modelValue', false);
-	emit('close');
+    if (props.persistent)
+        return;
+    emit('update:modelValue', false);
+    emit('close');
 }
-
-function onBackdrop() { if (props.closeOnBackdrop) close(); }
-
-function getFocusables(): HTMLElement[] {
-	if (!dialogRef.value) return [];
-	const selector = 'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
-	return Array.from(dialogRef.value.querySelectorAll<HTMLElement>(selector))
-		.filter((el) => !el.hasAttribute('inert'));
+function onBackdrop() { if (props.closeOnBackdrop)
+    close(); }
+function getFocusables() {
+    if (!dialogRef.value)
+        return [];
+    const selector = 'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    return Array.from(dialogRef.value.querySelectorAll(selector))
+        .filter((el) => !el.hasAttribute('inert'));
 }
-
-function onKeydown(e: KeyboardEvent) {
-	if (e.key === 'Escape' && !props.persistent) { e.preventDefault(); close(); return; }
-	if (e.key !== 'Tab') return;
-	const focusables = getFocusables();
-	if (focusables.length === 0) { e.preventDefault(); dialogRef.value?.focus(); return; }
-	const first = focusables[0]!;
-	const last = focusables[focusables.length - 1]!;
-	const active = document.activeElement as HTMLElement | null;
-	if (e.shiftKey && active === first) { e.preventDefault(); last.focus(); }
-	else if (!e.shiftKey && active === last) { e.preventDefault(); first.focus(); }
+function onKeydown(e) {
+    if (e.key === 'Escape' && !props.persistent) {
+        e.preventDefault();
+        close();
+        return;
+    }
+    if (e.key !== 'Tab')
+        return;
+    const focusables = getFocusables();
+    if (focusables.length === 0) {
+        e.preventDefault();
+        dialogRef.value?.focus();
+        return;
+    }
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const active = document.activeElement;
+    if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+    }
+    else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+    }
 }
-
-function lockScroll(lock: boolean) {
-	if (typeof document === 'undefined') return;
-	document.body.style.overflow = lock ? 'hidden' : '';
+function lockScroll(lock) {
+    if (typeof document === 'undefined')
+        return;
+    document.body.style.overflow = lock ? 'hidden' : '';
 }
-
 watch(() => props.modelValue, async (open) => {
-	if (open) {
-		previousActive = (document.activeElement as HTMLElement) || null;
-		lockScroll(true);
-		await nextTick();
-		const focusables = getFocusables();
-		(focusables[0] || dialogRef.value)?.focus();
-	} else {
-		lockScroll(false);
-		previousActive?.focus?.();
-	}
+    if (open) {
+        previousActive = document.activeElement || null;
+        lockScroll(true);
+        await nextTick();
+        const focusables = getFocusables();
+        (focusables[0] || dialogRef.value)?.focus();
+    }
+    else {
+        lockScroll(false);
+        previousActive?.focus?.();
+    }
 }, { immediate: true });
-
 onBeforeUnmount(() => { lockScroll(false); });
 </script>
 

@@ -1,3 +1,6 @@
+<!-- AdminUserDetailDrawer.vue — Drawer dettaglio utente admin (M9).
+     Orchestratore slim: usa i sub-component in `components/admin/user-detail/` per
+     header, profilo, permessi, tab e azioni. Logica fetch/save resta qui. -->
 <script setup>
 import { ref, computed, watch } from 'vue';
 
@@ -9,27 +12,20 @@ const props = defineProps({
 
 const emit = defineEmits(['update:open', 'updated', 'impersonate']);
 
-const { formatDate, formatPrice } = useAdmin();
+const sanctum = useSanctumClient();
+const { showSuccess, showError, formatDate, formatPrice } = useAdmin();
 
-const {
-	loading,
-	saving,
-	user,
-	orders,
-	addresses,
-	walletTx,
-	auditLog,
-	form,
-	isBanned,
-	fetchDetail,
-	saveProfile,
-	resetPassword,
-	toggleBan,
-	changeEmail,
-	impersonate,
-} = useAdminUserDetail(emit);
-
+/* ===== State ===== */
+const loading = ref(false);
+const saving = ref(false);
+const user = ref(null);
+const orders = ref([]);
+const addresses = ref([]);
+const walletTx = ref([]);
+const auditLog = ref([]);
 const activeTab = ref('orders');
+
+const form = ref({ role: 'User', status: 'active', is_pro: false });
 
 const showBanConfirm = ref(false);
 const showResetConfirm = ref(false);
@@ -37,10 +33,11 @@ const showEmailModal = ref(false);
 const showImpersonateConfirm = ref(false);
 const newEmail = ref('');
 
+/* ===== Computed ===== */
 const fullName = computed(() => user.value
 	? `${user.value.name || ''} ${user.value.surname || ''}`.trim()
 	: '');
-
+const isBanned = computed(() => form.value.status === 'banned');
 const tabs = [
 	{ key: 'orders', label: 'Ordini' },
 	{ key: 'addresses', label: 'Indirizzi' },
@@ -48,48 +45,133 @@ const tabs = [
 	{ key: 'audit', label: 'Audit log' },
 ];
 
-/* Wallet tx amount in cents -> euros (fallback se formatPrice non disponibile) */
+/* ===== Helpers ===== */
 const formatTxAmount = (cents) => {
 	if (typeof formatPrice === 'function') return formatPrice(cents);
 	const n = Number(cents) / 100;
 	return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(n);
 };
 
+/* ===== Fetch ===== */
+const fetchDetail = async () => {
+	if (!props.userId) return;
+	loading.value = true;
+	try {
+		const res = await sanctum(`/api/admin/users/${props.userId}`);
+		const data = res?.data ?? res ?? null;
+		user.value = data;
+		form.value = {
+			role: data?.role || 'User',
+			status: data?.status || (data?.banned_at ? 'banned' : (data?.email_verified_at ? 'active' : 'pending-verification')),
+			is_pro: Boolean(data?.is_pro),
+		};
+		orders.value = Array.isArray(data?.orders) ? data.orders : [];
+		addresses.value = Array.isArray(data?.addresses) ? data.addresses : [];
+		walletTx.value = Array.isArray(data?.wallet_transactions) ? data.wallet_transactions : [];
+		auditLog.value = Array.isArray(data?.audit_log) ? data.audit_log : [];
+	} catch (e) {
+		showError(e, 'Errore nel caricamento del dettaglio utente.');
+		user.value = null;
+	} finally {
+		loading.value = false;
+	}
+};
+
 watch(() => [props.open, props.userId], ([isOpen, id]) => {
 	if (isOpen && id) {
 		activeTab.value = 'orders';
-		fetchDetail(id);
+		fetchDetail();
 	}
 });
 
-const close = () => emit('update:open', false);
+/* ===== Save profilo ===== */
+const saveProfile = async () => {
+	if (!user.value) return;
+	saving.value = true;
+	try {
+		await sanctum(`/api/admin/users/${user.value.id}`, { method: 'PATCH', body: { ...form.value } });
+		showSuccess('Profilo aggiornato correttamente.');
+		emit('updated');
+		await fetchDetail();
+	} catch (e) {
+		showError(e, "Errore durante l'aggiornamento del profilo.");
+	} finally {
+		saving.value = false;
+	}
+};
 
-const askResetPassword = () => { showResetConfirm.value = true; };
+/* ===== Reset password ===== */
 const doResetPassword = async () => {
-	const ok = await resetPassword();
-	if (ok) showResetConfirm.value = false;
+	if (!user.value) return;
+	saving.value = true;
+	try {
+		await sanctum(`/api/admin/users/${user.value.id}/reset-password`, { method: 'POST' });
+		showSuccess('Email di reset password inviata.');
+		showResetConfirm.value = false;
+	} catch (e) {
+		showError(e, "Errore durante l'invio del reset password.");
+	} finally {
+		saving.value = false;
+	}
 };
 
-const askBan = () => { showBanConfirm.value = true; };
+/* ===== Ban / Unban ===== */
 const doBanToggle = async () => {
-	const ok = await toggleBan();
-	if (ok) showBanConfirm.value = false;
+	if (!user.value) return;
+	saving.value = true;
+	try {
+		const next = isBanned.value ? 'active' : 'banned';
+		await sanctum(`/api/admin/users/${user.value.id}`, { method: 'PATCH', body: { status: next } });
+		showSuccess(next === 'banned' ? 'Utente bannato.' : 'Ban rimosso.');
+		showBanConfirm.value = false;
+		emit('updated');
+		await fetchDetail();
+	} catch (e) {
+		showError(e, "Errore durante l'operazione di ban.");
+	} finally {
+		saving.value = false;
+	}
 };
 
+/* ===== Cambia email (admin-master) ===== */
 const askChangeEmail = () => {
 	newEmail.value = user.value?.email || '';
 	showEmailModal.value = true;
 };
 const doChangeEmail = async () => {
-	const ok = await changeEmail(newEmail.value);
-	if (ok) showEmailModal.value = false;
+	if (!user.value || !newEmail.value) return;
+	saving.value = true;
+	try {
+		await sanctum(`/api/admin/users/${user.value.id}`, { method: 'PATCH', body: { email: newEmail.value } });
+		showSuccess('Email aggiornata.');
+		showEmailModal.value = false;
+		emit('updated');
+		await fetchDetail();
+	} catch (e) {
+		showError(e, "Errore durante il cambio email.");
+	} finally {
+		saving.value = false;
+	}
 };
 
-const askImpersonate = () => { showImpersonateConfirm.value = true; };
+/* ===== Impersonate ===== */
 const doImpersonate = async () => {
-	const ok = await impersonate();
-	if (ok) showImpersonateConfirm.value = false;
+	if (!user.value) return;
+	saving.value = true;
+	try {
+		await sanctum(`/api/admin/users/${user.value.id}/impersonate`, { method: 'POST' });
+		showSuccess('Sessione impersonata avviata. Verrai reindirizzato.');
+		showImpersonateConfirm.value = false;
+		emit('impersonate', user.value);
+		setTimeout(() => { window.location.href = '/account'; }, 600);
+	} catch (e) {
+		showError(e, "Errore durante l'impersona.");
+	} finally {
+		saving.value = false;
+	}
 };
+
+const close = () => emit('update:open', false);
 </script>
 
 <template>
@@ -124,35 +206,19 @@ const doImpersonate = async () => {
 									</button>
 								</div>
 
-								<UserDetailTabOrders
-									v-if="activeTab === 'orders'"
-									:orders="orders"
-									:format-date="formatDate"
-									:format-price="formatTxAmount" />
-
-								<UserDetailTabAddresses
-									v-if="activeTab === 'addresses'"
-									:addresses="addresses" />
-
-								<UserDetailTabWallet
-									v-if="activeTab === 'wallet'"
-									:transactions="walletTx"
-									:format-date="formatDate"
-									:format-price="formatTxAmount" />
-
-								<UserDetailTabAuditLog
-									v-if="activeTab === 'audit'"
-									:events="auditLog"
-									:format-date="formatDate" />
+								<UserDetailTabOrders v-if="activeTab === 'orders'" :orders="orders" :format-date="formatDate" :format-price="formatTxAmount" />
+								<UserDetailTabAddresses v-if="activeTab === 'addresses'" :addresses="addresses" />
+								<UserDetailTabWallet v-if="activeTab === 'wallet'" :transactions="walletTx" :format-date="formatDate" :format-price="formatTxAmount" />
+								<UserDetailTabAuditLog v-if="activeTab === 'audit'" :events="auditLog" :format-date="formatDate" />
 							</section>
 
 							<UserDetailActionsMenu
 								:is-banned="isBanned"
 								:can-master="canMaster"
-								@reset-password="askResetPassword"
-								@toggle-ban="askBan"
+								@reset-password="showResetConfirm = true"
+								@toggle-ban="showBanConfirm = true"
 								@change-email="askChangeEmail"
-								@impersonate="askImpersonate" />
+								@impersonate="showImpersonateConfirm = true" />
 						</template>
 
 						<div v-else class="admin-drawer-empty admin-drawer-empty--lg">
@@ -203,136 +269,59 @@ const doImpersonate = async () => {
 </template>
 
 <style scoped>
-/* Shell del drawer dettaglio utente: overlay, transizione, body container,
- * tabs strip e stati globali (loading, empty). Le sezioni interne hanno
- * i propri scoped style nei sub-componenti in components/admin/user-detail/. */
+/* sf-admin-user-detail.css — stili overlay drawer + tab generici. */
 .admin-drawer-overlay {
-	position: fixed;
-	inset: 0;
-	background: rgba(9, 19, 28, 0.36);
-	backdrop-filter: blur(6px);
-	z-index: 60;
-	display: flex;
-	justify-content: flex-end;
+	position: fixed; inset: 0; z-index: 100;
+	background: rgba(15, 25, 35, 0.36);
+	backdrop-filter: blur(4px);
+	display: flex; justify-content: flex-end;
 }
-
 .admin-drawer {
-	width: min(480px, 100vw);
+	background: #fff;
+	width: min(640px, 100vw);
 	height: 100vh;
-	background: var(--admin-surface);
-	border-left: 1px solid var(--admin-border);
-	box-shadow: var(--admin-shadow-lg);
-	display: flex;
-	flex-direction: column;
+	display: flex; flex-direction: column;
+	box-shadow: -8px 0 24px rgba(15, 25, 35, 0.12);
+	overflow: hidden;
 }
-
-.drawer-fade-enter-active,
-.drawer-fade-leave-active {
-	transition: opacity 0.2s ease;
-}
-
-.drawer-fade-enter-active .admin-drawer,
-.drawer-fade-leave-active .admin-drawer {
-	transition: transform 0.25s ease;
-}
-
-.drawer-fade-enter-from,
-.drawer-fade-leave-to {
-	opacity: 0;
-}
-
-.drawer-fade-enter-from .admin-drawer,
-.drawer-fade-leave-to .admin-drawer {
-	transform: translateX(24px);
-}
-
 .admin-drawer__body {
 	flex: 1;
 	overflow-y: auto;
-	padding: 16px 20px 24px;
-	display: flex;
-	flex-direction: column;
-	gap: 18px;
+	padding: 20px;
+	display: flex; flex-direction: column; gap: 18px;
 }
-
 .admin-drawer__loading {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 10px;
-	padding: 60px 0;
-	color: var(--admin-text-muted);
-	font-size: 0.875rem;
+	display: flex; flex-direction: column; align-items: center; gap: 12px;
+	padding: 60px 20px; color: #5b6b7d;
 }
-
 .admin-drawer__spinner {
-	width: 24px;
-	height: 24px;
-	border-radius: 999px;
-	border: 2px solid var(--admin-border);
-	border-top-color: var(--admin-status-success);
-	animation: spin 0.8s linear infinite;
+	width: 32px; height: 32px;
+	border: 3px solid #e3eaf0; border-top-color: #095866;
+	border-radius: 50%;
+	animation: drawer-spin .9s linear infinite;
 }
-
-@keyframes spin {
-	to { transform: rotate(360deg); }
-}
-
-.admin-drawer-section {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-}
-
+@keyframes drawer-spin { to { transform: rotate(360deg); } }
+.admin-drawer-section { background: #fff; border-radius: 14px; }
 .admin-drawer-tabs {
-	display: flex;
-	gap: 4px;
-	padding: 4px;
-	background: var(--admin-surface-muted);
-	border: 1px solid var(--admin-border);
-	border-radius: var(--admin-radius-pill);
+	display: flex; gap: 4px;
+	border-bottom: 1px solid #e3eaf0;
+	margin-bottom: 14px;
 }
-
 .admin-drawer-tab {
-	flex: 1;
-	padding: 8px 10px;
-	border-radius: var(--admin-radius-pill);
-	background: transparent;
-	border: none;
-	color: var(--admin-text-secondary);
-	font-size: 0.75rem;
-	font-weight: 700;
-	cursor: pointer;
-	transition: var(--admin-transition-fast);
+	padding: 8px 14px;
+	background: transparent; border: 0;
+	font-size: 13px; font-weight: 600;
+	color: #5b6b7d; cursor: pointer;
+	border-bottom: 2px solid transparent;
 }
-
-.admin-drawer-tab:hover {
-	color: var(--admin-text-primary);
-}
-
-.admin-drawer-tab--active {
-	background: var(--admin-surface);
-	color: var(--admin-status-success-text);
-	box-shadow: var(--admin-shadow-sm);
-}
-
+.admin-drawer-tab--active { color: #095866; border-bottom-color: #095866; }
 .admin-drawer-empty {
-	padding: 24px;
-	text-align: center;
-	color: var(--admin-text-muted);
-	font-size: 0.8125rem;
-	background: var(--admin-surface-muted);
-	border: 1px dashed var(--admin-border);
-	border-radius: var(--admin-radius-sm);
+	padding: 18px; text-align: center;
+	color: #6b7a87; font-size: 13.5px;
+	background: #f7f9fb; border-radius: 10px;
 }
+.admin-drawer-empty--lg { padding: 40px 20px; }
 
-.admin-drawer-empty--lg {
-	padding: 60px 24px;
-}
-
-@media (max-width: 540px) {
-	.admin-drawer {
-		width: 100vw;
-	}
-}
+.drawer-fade-enter-active, .drawer-fade-leave-active { transition: opacity 200ms ease; }
+.drawer-fade-enter-from, .drawer-fade-leave-to { opacity: 0; }
 </style>

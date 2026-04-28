@@ -101,7 +101,7 @@ onMounted(() => {
 								v-model="settingsData.stripe_public_key"
 								type="text"
 								class="form-input font-mono"
-								placeholder="pk_..." >
+								placeholder="pk_..." />
 						</div>
 						<div>
 							<label class="form-label">Secret Key</label>
@@ -109,7 +109,7 @@ onMounted(() => {
 								v-model="settingsData.stripe_secret_key"
 								type="password"
 								class="form-input font-mono"
-								placeholder="sk_..." >
+								placeholder="sk_..." />
 						</div>
 						<div>
 							<label class="form-label">Webhook Secret</label>
@@ -117,7 +117,7 @@ onMounted(() => {
 								v-model="settingsData.stripe_webhook_secret"
 								type="password"
 								class="form-input font-mono"
-								placeholder="whsec_..." >
+								placeholder="whsec_..." />
 						</div>
 					</div>
 				</div>
@@ -150,21 +150,21 @@ onMounted(() => {
 							<input
 								v-model="settingsData.brt_customer_id"
 								type="text"
-								class="form-input" >
+								class="form-input" />
 						</div>
 						<div>
 							<label class="form-label">Username</label>
 							<input
 								v-model="settingsData.brt_username"
 								type="text"
-								class="form-input" >
+								class="form-input" />
 						</div>
 						<div>
 							<label class="form-label">Password</label>
 							<input
 								v-model="settingsData.brt_password"
 								type="password"
-								class="form-input" >
+								class="form-input" />
 						</div>
 					</div>
 				</div>
@@ -192,14 +192,14 @@ onMounted(() => {
 							<input
 								v-model="settingsData.site_name"
 								type="text"
-								class="form-input" >
+								class="form-input" />
 						</div>
 						<div>
 							<label class="form-label">Email supporto</label>
 							<input
 								v-model="settingsData.support_email"
 								type="email"
-								class="form-input" >
+								class="form-input" />
 						</div>
 						<div>
 							<label class="form-label">Sovrapprezzo contrassegno (&euro;)</label>
@@ -207,7 +207,7 @@ onMounted(() => {
 								v-model="settingsData.cod_surcharge"
 								type="text"
 								class="form-input"
-								placeholder="3.50" >
+								placeholder="3.50" />
 						</div>
 					</div>
 				</div>
@@ -221,19 +221,19 @@ onMounted(() => {
 					<p class="text-[0.8125rem] text-[#5A6474] mt-[2px]">Salva dopo aver verificato tutte le sezioni. Le chiavi restano lato server e non vanno duplicate altrove.</p>
 				</div>
 				<button
+					@click="saveSettings"
 					:disabled="savingSettings"
-					class="inline-flex w-full items-center justify-center gap-[8px] tablet:w-auto h-[40px] px-[18px] rounded-full bg-gradient-to-r from-[#095866] to-[#0a6e7f] text-white text-[13px] font-semibold shadow-[0_2px_8px_rgba(9,88,102,0.25)] hover:shadow-[0_4px_14px_rgba(9,88,102,0.35)] transition-all disabled:opacity-50 cursor-pointer"
-					@click="saveSettings">
+					class="inline-flex w-full items-center justify-center gap-[8px] tablet:w-auto h-[40px] px-[18px] rounded-full bg-gradient-to-r from-[#095866] to-[#0a6e7f] text-white text-[13px] font-semibold shadow-[0_2px_8px_rgba(9,88,102,0.25)] hover:shadow-[0_4px_14px_rgba(9,88,102,0.35)] transition-all disabled:opacity-50 cursor-pointer">
 					<svg
-						v-if="savingSettings"
 						aria-hidden="true"
+						v-if="savingSettings"
 						xmlns="http://www.w3.org/2000/svg"
 						viewBox="0 0 24 24"
 						class="w-[18px] h-[18px] animate-spin"
 						fill="currentColor">
 						<path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
 					</svg>
-					<svg v-else aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="currentColor">
+					<svg aria-hidden="true" v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="currentColor">
 						<path d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" />
 					</svg>
 					{{ savingSettings ? 'Salvataggio...' : 'Salva impostazioni' }}

@@ -23,10 +23,10 @@ const getBrandIcon = (brand) => {
   <div v-if="status === 'pending'">
     <div v-for="n in 2" :key="n" class="bg-white rounded-[16px] p-[14px] mb-[8px]" style="box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
       <div class="flex animate-pulse items-center gap-[12px]">
-        <div class="w-[50px] h-[34px] rounded-[8px] bg-gray-200"/>
+        <div class="w-[50px] h-[34px] rounded-[8px] bg-gray-200"></div>
         <div class="flex-1 space-y-[6px]">
-          <div class="h-[13px] rounded-full bg-gray-200 w-[40%]"/>
-          <div class="h-[11px] rounded-full bg-gray-200 w-[25%]"/>
+          <div class="h-[13px] rounded-full bg-gray-200 w-[40%]"></div>
+          <div class="h-[11px] rounded-full bg-gray-200 w-[25%]"></div>
         </div>
       </div>
     </div>
@@ -47,15 +47,14 @@ const getBrandIcon = (brand) => {
         <span v-else-if="isAdmin">Configura Stripe per attivare carte e wallet.</span>
         <span v-else>Le carte saranno disponibili appena Stripe sarÁ  attivo.</span>
       </p>
-      <button v-if="cardsFeatureAvailable" class="btn-primary btn-compact font-semibold text-[0.875rem]" @click="emit('toggle-form')">Aggiungi la tua prima carta</button>
-      <button v-else-if="isAdmin" class="btn-primary btn-compact font-semibold text-[0.875rem]" @click="emit('open-admin-settings')">Apri impostazioni Stripe</button>
+      <button v-if="cardsFeatureAvailable" @click="emit('toggle-form')" class="btn-primary btn-compact font-semibold text-[0.875rem]">Aggiungi la tua prima carta</button>
+      <button v-else-if="isAdmin" @click="emit('open-admin-settings')" class="btn-primary btn-compact font-semibold text-[0.875rem]">Apri impostazioni Stripe</button>
       <p v-else class="text-[var(--color-brand-text-secondary)] text-[0.875rem] font-medium">Quando Stripe sarÁ  attivo, qui comparirÁ  il pulsante per aggiungere la tua prima carta.</p>
     </div>
 
     <!-- Card items -->
     <div v-else class="space-y-[14px]">
-      <div
-v-for="(payment, index) in payments.data" :key="index"
+      <div v-for="(payment, index) in payments.data" :key="index"
         :class="['bg-white rounded-[16px] p-[16px] desktop:p-[18px] border transition-all', payment.default ? 'border-[var(--color-brand-primary)]' : 'border-transparent hover:bg-[rgba(9,88,102,0.03)]']"
         style="box-shadow: 0 2px 8px rgba(9,88,102,0.06), 0 0 0 1px rgba(9,88,102,0.04);">
         <div class="flex flex-col gap-[12px] tablet:flex-row tablet:items-center tablet:gap-[14px]">

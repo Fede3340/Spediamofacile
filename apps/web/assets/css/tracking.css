@@ -329,3 +329,36 @@
 	white-space: nowrap;
 	border: 0;
 }
+/*
+ * sf-pudo-detail-panel.css — Transizioni drawer dettaglio PUDO
+ *
+ * Estratto da components/pudo/PudoDetailPanel.vue.
+ * Mobile: slide from bottom. Tablet+ (≥768px): slide from right.
+ */
+
+.pudo-panel-enter-active,
+.pudo-panel-leave-active {
+	transition: opacity 0.2s ease;
+}
+
+.pudo-panel-enter-active > div,
+.pudo-panel-leave-active > div {
+	transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pudo-panel-enter-from,
+.pudo-panel-leave-to {
+	opacity: 0;
+}
+
+.pudo-panel-enter-from > div,
+.pudo-panel-leave-to > div {
+	transform: translateY(20px);
+}
+
+@media (min-width: 768px) {
+	.pudo-panel-enter-from > div,
+	.pudo-panel-leave-to > div {
+		transform: translateX(20px);
+	}
+}

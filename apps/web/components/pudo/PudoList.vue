@@ -1,55 +1,43 @@
-<script setup lang="ts">
-import { computed } from 'vue'
-import type { BrtPudoNormalized } from '~/types'
-
-interface Props {
-	items: BrtPudoNormalized[]
-	loading?: boolean
-	selectedKey?: string | null
-	hasReference?: boolean
-}
-
-const props = withDefaults(defineProps<Props>(), {
-	loading: false,
-	selectedKey: null,
-	hasReference: false,
-})
-
-const emit = defineEmits<{
-	(e: 'select', pudo: BrtPudoNormalized): void
-}>()
-
-const isSelected = (p: BrtPudoNormalized) =>
-	props.selectedKey != null && String(props.selectedKey) === String(p.ui_key)
-
-const formatDistance = (meters: number | null | undefined): string => {
-	const v = Number(meters)
-	if (!Number.isFinite(v)) return ''
-	return v >= 1000 ? `${(v / 1000).toFixed(1)} km` : `${Math.round(v)} m`
-}
-
-const todayHoursPreview = (raw: unknown): string => {
-	if (!raw) return ''
-	if (typeof raw === 'string') return raw.split(/[\n|;]/g)[0]?.trim() || ''
-	if (Array.isArray(raw)) return String(raw[0] || '').trim()
-	if (typeof raw === 'object') {
-		const entries = Object.entries(raw as Record<string, unknown>)
-		return entries[0] ? `${entries[0][0]}: ${entries[0][1]}` : ''
-	}
-	return ''
-}
-
-const hasOpenInfo = (raw: unknown): boolean => Boolean(todayHoursPreview(raw))
-
-const pudoTypeLabel = (p: BrtPudoNormalized): string => {
-	const name = (p.name || '').toLowerCase()
-	if (name.includes('fermo deposito')) return 'Fermo Deposito'
-	if (name.includes('fermo posta')) return 'Fermo Posta'
-	if (name.includes('locker')) return 'Locker BRT'
-	return 'Punto BRT'
-}
-
-const itemsCount = computed(() => props.items.length)
+<script setup>import { computed } from 'vue';
+const props = defineProps({
+  items: { type: Array, required: true },
+  loading: { type: Boolean, default: false },
+  selectedKey: { default: null },
+  hasReference: { type: Boolean, default: false },
+});
+const emit = defineEmits();
+const isSelected = (p) => props.selectedKey != null && String(props.selectedKey) === String(p.ui_key);
+const formatDistance = (meters) => {
+    const v = Number(meters);
+    if (!Number.isFinite(v))
+        return '';
+    return v >= 1000 ? `${(v / 1000).toFixed(1)} km` : `${Math.round(v)} m`;
+};
+const todayHoursPreview = (raw) => {
+    if (!raw)
+        return '';
+    if (typeof raw === 'string')
+        return raw.split(/\n|\||;/g)[0]?.trim() || '';
+    if (Array.isArray(raw))
+        return String(raw[0] || '').trim();
+    if (typeof raw === 'object') {
+        const entries = Object.entries(raw);
+        return entries[0] ? `${entries[0][0]}: ${entries[0][1]}` : '';
+    }
+    return '';
+};
+const hasOpenInfo = (raw) => Boolean(todayHoursPreview(raw));
+const pudoTypeLabel = (p) => {
+    const name = (p.name || '').toLowerCase();
+    if (name.includes('fermo deposito'))
+        return 'Fermo Deposito';
+    if (name.includes('fermo posta'))
+        return 'Fermo Posta';
+    if (name.includes('locker'))
+        return 'Locker BRT';
+    return 'Punto BRT';
+};
+const itemsCount = computed(() => props.items.length);
 </script>
 
 <template>
@@ -60,7 +48,8 @@ const itemsCount = computed(() => props.items.length)
 				<div
 					v-for="n in 4"
 					:key="n"
-					class="h-[110px] rounded-[14px] bg-[#F2F8F9] border border-[var(--color-brand-border,#E9EBEC)] animate-pulse"/>
+					class="h-[110px] rounded-[14px] bg-[#F2F8F9] border border-[var(--color-brand-border,#E9EBEC)] animate-pulse">
+				</div>
 			</div>
 		</template>
 
@@ -68,11 +57,10 @@ const itemsCount = computed(() => props.items.length)
 		<template v-else-if="itemsCount === 0">
 			<div class="flex flex-col items-center justify-center text-center px-[20px] py-[40px] text-[var(--color-brand-text-secondary,#4b5563)]">
 				<div class="w-[48px] h-[48px] rounded-full bg-[#F2F8F9] flex items-center justify-center mb-[12px]">
-					<svg
-width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 						stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<circle cx="11" cy="11" r="8"/>
-						<path d="m21 21-4.35-4.35"/>
+						<circle cx="11" cy="11" r="8"></circle>
+						<path d="m21 21-4.35-4.35"></path>
 					</svg>
 				</div>
 				<p class="text-[0.875rem] font-semibold text-[var(--color-brand-text,#0f172a)]">
@@ -126,11 +114,10 @@ width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 						<span
 							v-if="hasOpenInfo(p.opening_hours)"
 							class="inline-flex items-center gap-[5px] text-[0.75rem] text-[var(--color-brand-text-secondary,#4b5563)]">
-							<svg
-width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 								stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-								<circle cx="12" cy="12" r="10"/>
-								<polyline points="12 6 12 12 16 14"/>
+								<circle cx="12" cy="12" r="10"></circle>
+								<polyline points="12 6 12 12 16 14"></polyline>
 							</svg>
 							{{ todayHoursPreview(p.opening_hours) }}
 						</span>

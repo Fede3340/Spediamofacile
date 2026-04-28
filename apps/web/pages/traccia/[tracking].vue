@@ -1,5 +1,5 @@
 <script setup>
-// Stili in assets/css/tracking.css (importato da main.css).
+import '~/assets/css/tracking.css';
 import TrackingStepper from '~/components/tracking/TrackingStepper.vue';
 import TrackingEventsTimeline from '~/components/tracking/TrackingEventsTimeline.vue';
 import TrackingActionsBar from '~/components/tracking/TrackingActionsBar.vue';
@@ -34,7 +34,7 @@ const STEPS = [
 // Mapping da raw_status backend → step canonico
 const RAW_TO_STEP = {
 	pending: 0,
-	payed: 0,
+	paid: 0,
 	completed: 0,
 	processing: 1,
 	label_generated: 1,
@@ -204,10 +204,6 @@ onBeforeUnmount(() => {
 	if (typeof document !== 'undefined') {
 		document.removeEventListener('visibilitychange', handleVisibilityChange);
 	}
-	if (copyOkResetTimer) {
-		clearTimeout(copyOkResetTimer);
-		copyOkResetTimer = null;
-	}
 });
 
 // Re-fetch se cambia il param di route
@@ -221,18 +217,12 @@ watch(() => route.params.tracking, async (v, old) => {
 });
 
 // ---- Azioni UI ----
-// Track del timer reset 'copyOk' per cleanup su unmount + click rapidi.
-let copyOkResetTimer = null;
 async function copyCode() {
 	if (!trackingCode.value) return;
 	try {
 		await navigator.clipboard.writeText(trackingCode.value);
 		copyOk.value = true;
-		if (copyOkResetTimer) clearTimeout(copyOkResetTimer);
-		copyOkResetTimer = setTimeout(() => {
-			copyOkResetTimer = null;
-			copyOk.value = false;
-		}, 1800);
+		setTimeout(() => (copyOk.value = false), 1800);
 	} catch {
 		// silently fail
 	}
@@ -291,12 +281,12 @@ useSeoMeta({
 				<!-- Loading skeleton globale -->
 				<div v-if="isLoading" class="grid gap-[18px]" aria-busy="true">
 					<div class="rounded-[16px] p-[24px] animate-pulse" style="background:#fff; box-shadow: 0 2px 12px rgba(0,0,0,0.04)">
-						<div class="h-[20px] w-[40%] rounded bg-[#E6E9EE] mb-[12px]"/>
-						<div class="h-[36px] w-[60%] rounded bg-[#E6E9EE] mb-[10px]"/>
-						<div class="h-[14px] w-[30%] rounded bg-[#EEF1F5]"/>
+						<div class="h-[20px] w-[40%] rounded bg-[#E6E9EE] mb-[12px]"></div>
+						<div class="h-[36px] w-[60%] rounded bg-[#E6E9EE] mb-[10px]"></div>
+						<div class="h-[14px] w-[30%] rounded bg-[#EEF1F5]"></div>
 					</div>
 					<div class="rounded-[16px] p-[24px] animate-pulse" style="background:#fff">
-						<div class="h-[60px] rounded bg-[#EEF1F5]"/>
+						<div class="h-[60px] rounded bg-[#EEF1F5]"></div>
 					</div>
 				</div>
 
@@ -322,7 +312,7 @@ useSeoMeta({
 							placeholder="Inserisci un altro codice..."
 							class="flex-1 h-[46px] rounded-[12px] px-[14px] text-[14px] text-[#1d2738] bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[3px] focus:ring-[#095866]/60 outline-none transition-all"
 							style="font-weight:600"
-						>
+						/>
 						<button
 							type="submit"
 							:disabled="!newSearchInput.trim()"
@@ -373,7 +363,7 @@ useSeoMeta({
 
 					<!-- HERO compatto -->
 					<section class="rounded-[16px] overflow-hidden" data-shadow="soft" aria-label="Riepilogo spedizione">
-						<div class="h-[4px]" data-accent="bar"/>
+						<div class="h-[4px]" data-accent="bar"></div>
 						<div class="p-[20px] sm:p-[24px]" style="background:#ffffff">
 							<div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-[16px]">
 								<!-- Codice + copia -->
@@ -382,9 +372,9 @@ useSeoMeta({
 										Codice tracking
 									</p>
 									<div class="flex items-center gap-[10px] flex-wrap">
-										<h2 class="font-mono text-[1.5rem] sm:text-[1.75rem] lg:text-[2rem] text-[var(--color-brand-text)] m-0 leading-[1.1] break-all" style="font-weight:800; letter-spacing:-0.01em">
+										<h1 class="font-mono text-[1.5rem] sm:text-[1.75rem] lg:text-[2rem] text-[#1d2738] m-0 leading-[1.1] break-all" style="font-weight:800; letter-spacing:-0.01em">
 											{{ data.code }}
-										</h2>
+										</h1>
 										<button
 											type="button"
 											class="copy-btn"
@@ -409,7 +399,7 @@ useSeoMeta({
 								<!-- Stato + ETA -->
 								<div class="flex flex-col items-start lg:items-end gap-[8px]">
 									<span class="status-chip" :class="statusChipClass">
-										<span class="status-dot" aria-hidden="true"/>
+										<span class="status-dot" aria-hidden="true"></span>
 										{{ data.status_label }}
 									</span>
 									<div v-if="etaFormatted && !isDelivered" class="text-right">
@@ -437,7 +427,7 @@ useSeoMeta({
 
 					<!-- STEPPER -->
 					<section class="rounded-[16px] overflow-hidden" data-shadow="soft" aria-label="Avanzamento fasi">
-						<div class="h-[3px]" data-accent="bar"/>
+						<div class="h-[3px]" data-accent="bar"></div>
 						<div class="p-[20px] sm:p-[24px]" style="background:#ffffff">
 							<TrackingStepper
 								:steps="STEPS"
@@ -451,7 +441,7 @@ useSeoMeta({
 					<section class="grid gap-[18px] lg:grid-cols-3">
 						<!-- TIMELINE EVENTI -->
 						<div class="lg:col-span-2 rounded-[16px] overflow-hidden" data-shadow="soft">
-							<div class="h-[3px]" data-accent="bar"/>
+							<div class="h-[3px]" data-accent="bar"></div>
 							<div class="p-[20px] sm:p-[24px]" style="background:#ffffff">
 								<div class="flex items-center justify-between mb-[14px]">
 									<h2 class="text-[1rem] text-[#1d2738] m-0" style="font-weight:700">
@@ -478,7 +468,7 @@ useSeoMeta({
 
 						<!-- SIDEBAR DETTAGLI -->
 						<aside class="rounded-[16px] overflow-hidden" data-shadow="soft" aria-label="Dettagli spedizione">
-							<div class="h-[3px]" data-accent="bar"/>
+							<div class="h-[3px]" data-accent="bar"></div>
 							<div class="p-[20px] sm:p-[24px] grid gap-[16px]" style="background:#ffffff">
 								<!-- Origine → destinazione -->
 								<div>
@@ -501,7 +491,7 @@ useSeoMeta({
 												</p>
 											</div>
 										</div>
-										<div class="route-divider" aria-hidden="true"/>
+										<div class="route-divider" aria-hidden="true"></div>
 										<div class="flex items-start gap-[10px]">
 											<div class="route-icon route-icon-dest">
 												<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

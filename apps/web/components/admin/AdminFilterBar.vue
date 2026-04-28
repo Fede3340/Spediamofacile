@@ -1,6 +1,6 @@
 <!-- AdminFilterBar.vue — Barra filtri a pill per liste admin. -->
 <script setup>
-import '~/assets/css/components/sf-admin-filters.css';
+import '~/assets/css/admin.css';
 
 defineProps({
 	filters: { type: Array, required: true },

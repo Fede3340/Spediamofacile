@@ -1,13 +1,15 @@
 <!-- Chi Siamo — Hero → Mission → Numeri → Timeline → Valori → Team → Partnership BRT → CTA -->
 <script setup>
+import '~/assets/css/content.css';
+
 useSeoMeta({
 	title: 'Chi siamo',
+	ogTitle: 'Chi siamo',
 	description:
 		'Intermediari BRT autorizzati dal 2020. Aiutiamo PMI e privati italiani a spedire con prezzi trasparenti, ritiro a domicilio e supporto umano dedicato.',
+	ogDescription:
+		'Intermediari BRT autorizzati dal 2020 al servizio di PMI e privati italiani: prezzi chiari, ritiro a domicilio, supporto umano.',
 })
-
-const runtimeConfig = useRuntimeConfig()
-const siteUrl = String(runtimeConfig.public?.siteUrl || 'https://spediamofacile.it').replace(/\/+$/, '')
 
 useHead({
 	script: [
@@ -16,12 +18,12 @@ useHead({
 			innerHTML: JSON.stringify({
 				'@context': 'https://schema.org',
 				'@type': 'AboutPage',
-				name: 'Chi siamo — SpediamoFacile',
-				url: `${siteUrl}/chi-siamo`,
+				name: 'Chi siamo — SpedizioneFacile',
+				url: 'https://spediamofacile.it/chi-siamo',
 				mainEntity: {
 					'@type': 'Organization',
 					name: 'SpediamoFacile',
-					url: siteUrl,
+					url: 'https://spediamofacile.it',
 					foundingDate: '2020',
 					description:
 						'Intermediario BRT autorizzato che semplifica le spedizioni per PMI e privati italiani.',
@@ -121,37 +123,37 @@ const team = [
 </script>
 
 <template>
-	<div class="bg-[var(--color-brand-bg)] text-[var(--color-brand-text)] font-[Inter,system-ui,-apple-system,sans-serif]">
-		<!-- HERO -->
+	<div class="about-page">
+		<!-- ── HERO ─────────────────────────────────────────────────────── -->
 		<PublicPageHeader
 			eyebrow="Chi siamo"
 			title="Intermediari BRT autorizzati, dal 2020"
 			description="Al servizio di PMI e privati italiani. Lavoriamo ogni giorno per rendere le spedizioni una scelta consapevole: prezzo chiaro, ritiro a domicilio, tracciamento in tempo reale e una persona vera quando serve un aiuto."
 			:crumbs="[{ label: 'Home', to: '/' }, { label: 'Chi siamo' }]">
-			<div class="flex flex-wrap gap-2.5" role="list">
-				<span class="about-pill" role="listitem">Intermediari BRT autorizzati</span>
-				<span class="about-pill" role="listitem">Sede a Milano</span>
-				<span class="about-pill" role="listitem">Team italiano</span>
+			<div class="about-hero__pills" role="list">
+				<span class="about-hero__pill" role="listitem">Intermediari BRT autorizzati</span>
+				<span class="about-hero__pill" role="listitem">Sede a Milano</span>
+				<span class="about-hero__pill" role="listitem">Team italiano</span>
 			</div>
 		</PublicPageHeader>
 
-		<!-- MISSION -->
-		<section class="py-[88px] bg-white" aria-labelledby="about-mission-title">
-			<div class="my-container">
-				<header class="max-w-[760px] mb-10">
-					<span class="about-accent" aria-hidden="true"/>
-					<p class="about-eyebrow">La nostra missione</p>
-					<h2 id="about-mission-title" class="about-section-title">
+		<!-- ── MISSION ──────────────────────────────────────────────────── -->
+		<section class="about-mission" aria-labelledby="about-mission-title">
+			<div class="my-container about-mission__inner">
+				<header class="about-mission__header">
+					<span class="about-mission__accent" aria-hidden="true"></span>
+					<p class="about-mission__eyebrow">La nostra missione</p>
+					<h2 id="about-mission-title" class="about-mission__title">
 						Spedire deve essere un’azione quotidiana, non un problema da risolvere.
 					</h2>
 				</header>
-				<div class="grid grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-10">
-					<p class="m-0 text-[17px] leading-[1.7] text-[var(--color-brand-text-secondary)]">
+				<div class="about-mission__grid">
+					<p class="about-mission__paragraph">
 						Siamo nati per togliere fatica al gesto più comune del commercio: mandare un pacco da A
 						a B. Lo facciamo con la rete BRT, contratti diretti e un’interfaccia che mostra subito
 						la tariffa migliore tra peso reale e peso volumetrico, senza giochi sui supplementi.
 					</p>
-					<p class="m-0 text-[17px] leading-[1.7] text-[var(--color-brand-text-secondary)]">
+					<p class="about-mission__paragraph">
 						Crediamo in una logistica vicina alle persone: pochi click per il preventivo, un ritiro
 						programmato in giornata, un’assistenza che risponde con un nome e un cognome. È così
 						che vogliamo essere il punto di riferimento per chi cerca qualità e convenienza nello
@@ -161,99 +163,99 @@ const team = [
 			</div>
 		</section>
 
-		<!-- NUMERI CHIAVE -->
-		<section class="py-[72px] border-y border-[var(--color-brand-border)] bg-[var(--color-brand-page-gradient,#f8f9fb)]" aria-labelledby="about-stats-title">
+		<!-- ── NUMERI CHIAVE ────────────────────────────────────────────── -->
+		<section class="about-stats" aria-labelledby="about-stats-title">
 			<div class="my-container">
-				<h2 id="about-stats-title" class="m-0 mb-8 text-[clamp(24px,2.6vw,32px)] font-bold tracking-[-0.01em] text-[var(--color-brand-text)]">I numeri di SpedizioneFacile</h2>
-				<dl class="m-0 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
-					<div v-for="stat in stats" :key="stat.label" class="about-card px-6 py-7">
-						<dt class="flex items-baseline gap-1 m-0 mb-2">
-							<span class="text-[42px] font-extrabold leading-none tracking-[-0.02em] text-[var(--color-brand-primary)]">{{ stat.value }}</span>
-							<span v-if="stat.suffix" class="text-[22px] font-bold text-[var(--color-brand-accent)]">{{ stat.suffix }}</span>
+				<h2 id="about-stats-title" class="about-stats__title">I numeri di SpedizioneFacile</h2>
+				<dl class="about-stats__grid">
+					<div v-for="stat in stats" :key="stat.label" class="about-stats__card">
+						<dt class="about-stats__value">
+							<span class="about-stats__number">{{ stat.value }}</span>
+							<span v-if="stat.suffix" class="about-stats__suffix">{{ stat.suffix }}</span>
 						</dt>
-						<dd class="m-0 text-sm leading-[1.5] text-[var(--color-brand-text-secondary)]">{{ stat.label }}</dd>
+						<dd class="about-stats__label">{{ stat.label }}</dd>
 					</div>
 				</dl>
-				<p class="mt-6 mb-0 text-xs text-[var(--color-brand-text-muted)]">Dati aggiornati al primo trimestre 2026.</p>
+				<p class="about-stats__note">Dati aggiornati al primo trimestre 2026.</p>
 			</div>
 		</section>
 
-		<!-- TIMELINE -->
-		<section class="py-24 bg-white lg:py-24" aria-labelledby="about-timeline-title">
+		<!-- ── TIMELINE ─────────────────────────────────────────────────── -->
+		<section class="about-timeline" aria-labelledby="about-timeline-title">
 			<div class="my-container">
-				<header class="max-w-[720px] mb-12">
-					<span class="about-accent" aria-hidden="true"/>
-					<p class="about-eyebrow">La nostra storia</p>
-					<h2 id="about-timeline-title" class="about-section-title">Cinque tappe in cinque anni</h2>
+				<header class="about-timeline__header">
+					<span class="about-timeline__accent" aria-hidden="true"></span>
+					<p class="about-timeline__eyebrow">La nostra storia</p>
+					<h2 id="about-timeline-title" class="about-timeline__title">Cinque tappe in cinque anni</h2>
 				</header>
-				<ol class="about-timeline-list list-none m-0 p-0 relative">
-					<li v-for="m in milestones" :key="m.year" class="grid grid-cols-[32px_1fr] gap-5 pt-2 pb-8 relative last:pb-0">
-						<div class="flex justify-center pt-1.5" aria-hidden="true">
-							<span class="block w-[14px] h-[14px] rounded-full border-[3px] border-white bg-[var(--color-brand-primary)] shadow-[0_0_0_2px_var(--color-brand-primary)]"/>
+				<ol class="about-timeline__list">
+					<li v-for="m in milestones" :key="m.year" class="about-timeline__item">
+						<div class="about-timeline__marker" aria-hidden="true">
+							<span class="about-timeline__dot"></span>
 						</div>
-						<div>
-							<span class="inline-block text-xs font-bold tracking-[0.08em] text-[var(--color-brand-accent)] bg-[#fff5ef] border border-[#ffd9c4] px-2.5 py-1 rounded-full mb-2.5">{{ m.year }}</span>
-							<h3 class="m-0 mb-2 text-xl font-bold text-[var(--color-brand-text)]">{{ m.title }}</h3>
-							<p class="m-0 text-[15px] leading-[1.65] text-[var(--color-brand-text-secondary)]">{{ m.text }}</p>
+						<div class="about-timeline__body">
+							<span class="about-timeline__year">{{ m.year }}</span>
+							<h3 class="about-timeline__title-item">{{ m.title }}</h3>
+							<p class="about-timeline__text">{{ m.text }}</p>
 						</div>
 					</li>
 				</ol>
 			</div>
 		</section>
 
-		<!-- VALORI -->
-		<section class="py-[88px] border-t border-[var(--color-brand-border)] bg-[var(--color-brand-page-gradient,#f8f9fb)]" aria-labelledby="about-values-title">
+		<!-- ── VALORI ───────────────────────────────────────────────────── -->
+		<section class="about-values" aria-labelledby="about-values-title">
 			<div class="my-container">
-				<header class="max-w-[720px] mb-10">
-					<span class="about-accent" aria-hidden="true"/>
-					<p class="about-eyebrow">Cosa ci guida</p>
-					<h2 id="about-values-title" class="about-section-title">Tre principi non negoziabili</h2>
+				<header class="about-values__header">
+					<span class="about-values__accent" aria-hidden="true"></span>
+					<p class="about-values__eyebrow">Cosa ci guida</p>
+					<h2 id="about-values-title" class="about-values__title">Tre principi non negoziabili</h2>
 				</header>
-				<div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
-					<article v-for="v in values" :key="v.title" class="about-card px-7 py-8 rounded-[18px]">
-						<span class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#eef5f7] mb-5" aria-hidden="true">
+				<div class="about-values__grid">
+					<article v-for="v in values" :key="v.title" class="about-values__card">
+						<span class="about-values__icon" aria-hidden="true">
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28">
-								<path :d="v.icon.bg" class="about-icon-bg" />
-								<path :d="v.icon.fg" class="about-icon-fg" />
+								<path :d="v.icon.bg" class="about-values__icon-bg" />
+								<path :d="v.icon.fg" class="about-values__icon-fg" />
 							</svg>
 						</span>
-						<h3 class="m-0 mb-2.5 text-xl font-bold text-[var(--color-brand-text)]">{{ v.title }}</h3>
-						<p class="m-0 text-[15px] leading-[1.65] text-[var(--color-brand-text-secondary)]">{{ v.text }}</p>
+						<h3 class="about-values__card-title">{{ v.title }}</h3>
+						<p class="about-values__card-text">{{ v.text }}</p>
 					</article>
 				</div>
 			</div>
 		</section>
 
-		<!-- TEAM -->
-		<section class="py-24 bg-white" aria-labelledby="about-team-title">
+		<!-- ── TEAM ─────────────────────────────────────────────────────── -->
+		<section class="about-team" aria-labelledby="about-team-title">
 			<div class="my-container">
-				<header class="max-w-[720px] mb-10">
-					<span class="about-accent" aria-hidden="true"/>
-					<p class="about-eyebrow">Le persone</p>
-					<h2 id="about-team-title" class="m-0 mb-4 font-bold tracking-[-0.015em] text-[var(--color-brand-text)] text-[clamp(28px,3.4vw,40px)]">Chi c’è dietro la piattaforma</h2>
-					<p class="m-0 text-base leading-[1.6] text-[var(--color-brand-text-secondary)]">
+				<header class="about-team__header">
+					<span class="about-team__accent" aria-hidden="true"></span>
+					<p class="about-team__eyebrow">Le persone</p>
+					<h2 id="about-team-title" class="about-team__title">Chi c’è dietro la piattaforma</h2>
+					<p class="about-team__lead">
 						Un team piccolo e diretto: ogni messaggio che ricevi arriva da una persona di questa
 						lista o da chi lavora con noi tutti i giorni.
 					</p>
 				</header>
-				<ul class="list-none m-0 p-0 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-					<li v-for="member in team" :key="member.name" class="about-card p-6 text-center">
-						<div class="w-[72px] h-[72px] rounded-full mx-auto mb-4 flex items-center justify-center border border-[var(--color-brand-border)] bg-[linear-gradient(135deg,#eef5f7_0%,#d9e7eb_100%)]" aria-hidden="true">
-							<span class="text-[22px] font-bold tracking-[0.04em] text-[var(--color-brand-primary)]">{{ member.initials }}</span>
+				<ul class="about-team__grid">
+					<li v-for="member in team" :key="member.name" class="about-team__card">
+						<div class="about-team__avatar" aria-hidden="true">
+							<span class="about-team__initials">{{ member.initials }}</span>
 						</div>
-						<p class="m-0 mb-1 text-base font-bold text-[var(--color-brand-text)]">{{ member.name }}</p>
-						<p class="m-0 text-[13px] text-[var(--color-brand-text-secondary)]">{{ member.role }}</p>
+						<p class="about-team__name">{{ member.name }}</p>
+						<p class="about-team__role">{{ member.role }}</p>
 					</li>
 				</ul>
 			</div>
 		</section>
 
-		<!-- PARTNERSHIP BRT -->
-		<section class="py-20 bg-[var(--color-brand-primary)] text-white" aria-labelledby="about-partnership-title">
-			<div class="my-container grid grid-cols-1 items-center gap-8 sm:grid-cols-[200px_1fr] sm:gap-12">
-				<div class="flex justify-center sm:justify-start" aria-hidden="true">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48" class="w-40 h-auto" role="img" aria-label="Logo BRT">
-						<rect x="0" y="0" width="120" height="48" rx="6" fill="#ffffff" />
+		<!-- ── PARTNERSHIP BRT ──────────────────────────────────────────── -->
+		<section class="about-partnership" aria-labelledby="about-partnership-title">
+			<div class="my-container about-partnership__inner">
+				<div class="about-partnership__logo" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48" role="img" aria-label="Logo BRT">
+						<rect x="0" y="0" width="120" height="48" rx="6" class="about-partnership__logo-bg" />
 						<text
 							x="60"
 							y="32"
@@ -262,44 +264,44 @@ const team = [
 							font-weight="800"
 							font-size="22"
 							letter-spacing="2"
-							fill="var(--color-brand-primary, #095866)">
+							class="about-partnership__logo-text">
 							BRT
 						</text>
 					</svg>
 				</div>
-				<div>
-					<p class="m-0 mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#f6c9b3]">Partnership ufficiale</p>
-					<h2 id="about-partnership-title" class="m-0 mb-4 text-white font-bold tracking-[-0.015em] text-[clamp(26px,3.2vw,36px)]">
+				<div class="about-partnership__copy">
+					<p class="about-partnership__eyebrow">Partnership ufficiale</p>
+					<h2 id="about-partnership-title" class="about-partnership__title">
 						Intermediari BRT autorizzati
 					</h2>
-					<p class="m-0 mb-3 text-base leading-[1.7] text-white/90">
+					<p class="about-partnership__text">
 						SpedizioneFacile opera in qualità di intermediario BRT autorizzato. Le tariffe che
 						vedi nel preventivo arrivano dal listino contrattualizzato direttamente con il
 						corriere: nessun rivenditore di terze parti, nessun ricarico nascosto, supporto
 						gestito dal nostro team in coordinamento con la rete BRT.
 					</p>
-					<p class="m-0 text-xs text-white/60">
+					<p class="about-partnership__note">
 						BRT è marchio registrato di BRT S.p.A. Logo a fini illustrativi.
 					</p>
 				</div>
 			</div>
 		</section>
 
-		<!-- CTA FINALE -->
-		<section class="py-24 bg-white" aria-labelledby="about-cta-title">
-			<div class="my-container grid grid-cols-1 items-center gap-8 rounded-[24px] border border-[var(--color-brand-border)] p-10 bg-[var(--color-brand-page-gradient,#f8f9fb)] sm:grid-cols-[1.4fr_1fr] sm:p-14">
-				<div>
-					<p class="about-eyebrow">Lavora con noi</p>
-					<h2 id="about-cta-title" class="m-0 mb-3 text-[clamp(24px,2.8vw,32px)] font-bold tracking-[-0.01em] text-[var(--color-brand-text)]">
+		<!-- ── CTA FINALE ───────────────────────────────────────────────── -->
+		<section class="about-cta" aria-labelledby="about-cta-title">
+			<div class="my-container about-cta__inner">
+				<div class="about-cta__copy">
+					<p class="about-cta__eyebrow">Lavora con noi</p>
+					<h2 id="about-cta-title" class="about-cta__title">
 						Vuoi entrare nel team o proporci una collaborazione?
 					</h2>
-					<p class="m-0 text-base leading-[1.65] text-[var(--color-brand-text-secondary)]">
+					<p class="about-cta__text">
 						Scriviamoci. Cerchiamo persone che mettano la stessa cura nei dettagli che mettiamo nel
 						prodotto: stesura candidature spontanee, partnership commerciali, idee per il prossimo
 						passo.
 					</p>
 				</div>
-				<div class="flex flex-wrap gap-3 sm:justify-end">
+				<div class="about-cta__actions">
 					<SfButton to="/contatti" size="lg">Lavora con noi</SfButton>
 					<SfButton to="/preventivo" variant="secondary" size="lg">Calcola un preventivo</SfButton>
 				</div>
@@ -308,18 +310,3 @@ const team = [
 	</div>
 </template>
 
-<style scoped>
-/* Micro-elementi ricorrenti pagina: pill hero, accent bar, eyebrow, titoli sezione, card hover */
-.about-pill { display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 999px; background: #fff; border: 1px solid var(--color-brand-border); font-size: 13px; font-weight: 600; color: var(--color-brand-text-secondary); }
-.about-accent { display: block; width: 40px; height: 3px; background: var(--color-brand-accent); border-radius: 2px; margin-bottom: 18px; }
-.about-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-brand-primary); margin: 0 0 12px; }
-.about-section-title { font-size: clamp(28px, 3.4vw, 40px); font-weight: 700; line-height: 1.2; letter-spacing: -0.015em; color: var(--color-brand-text); margin: 0; }
-.about-card { background: #fff; border: 1px solid var(--color-brand-border); border-radius: 16px; transition: transform 0.2s ease, border-color 0.2s ease; }
-.about-card:hover { transform: translateY(-2px); border-color: var(--color-brand-primary-light); }
-.about-timeline-list::before { content: ''; position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: var(--color-brand-border); border-radius: 1px; }
-.about-icon-bg { fill: var(--color-brand-primary); opacity: 0.18; }
-.about-icon-fg { fill: var(--color-brand-primary); }
-@media (prefers-reduced-motion: reduce) {
-	.about-card, .about-card:hover { transition: none; transform: none; }
-}
-</style>

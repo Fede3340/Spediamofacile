@@ -1,5 +1,5 @@
 <script setup>
-import '~/assets/css/components/sf-guide.css';
+import '~/assets/css/content.css';
 </script>
 
 <template>
@@ -18,7 +18,7 @@ import '~/assets/css/components/sf-guide.css';
 							type="email"
 							placeholder="La tua email..."
 							class="guide-newsletter__input"
-						>
+						/>
 						<button type="submit" class="guide-newsletter__btn">
 							Iscriviti
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

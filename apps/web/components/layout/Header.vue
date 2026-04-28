@@ -37,7 +37,7 @@ onUnmounted(() => {
 		<div
 			v-if="!isAuthMinimalShellRoute"
 			class="header-accent-line"
-		/>
+		></div>
 
 		<div class="max-w-[1280px] mx-auto px-[14px] sm:px-[40px]">
 			<Navbar />

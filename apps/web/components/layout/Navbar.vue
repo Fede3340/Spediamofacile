@@ -1,5 +1,5 @@
 <script setup>
-import '~/assets/css/navbar.css'
+import '~/assets/css/layout.css'
 
 const navLinks = [
   { page: "/servizi", text: "Servizi", icon: 'truck' },
@@ -10,7 +10,7 @@ const navLinks = [
 ];
 
 const { accountLabel, isAuthenticatedForUi, isAuthUiPending, mobileAccountLabel } = useAuthUiState();
-const { openAuthModal } = useAuthModal();
+const { openAuthModal } = useAuthModalStore();
 const { cart } = useCartFetch();
 const route = useRoute();
 const { isAccountRoute, isAuthMinimalShellRoute, isQuoteFlowRoute } = useShellRouteState();
@@ -166,7 +166,7 @@ onBeforeUnmount(() => {
           </NuxtLink>
 
         <!-- Cart — prototype: gradient orange, rounded-full -->
-        <NuxtLink v-slot="{ href, navigate }" to="/carrello" custom>
+        <NuxtLink to="/carrello" custom v-slot="{ href, navigate }">
           <a
             :href="href"
             class="navbar-cart-btn"
@@ -188,9 +188,9 @@ onBeforeUnmount(() => {
           @click="mobileMenuOpen = !mobileMenuOpen"
         >
           <div class="navbar-hamburger" :class="{ 'navbar-hamburger--open': mobileMenuOpen }">
-            <span class="navbar-hamburger__line navbar-hamburger__line--1"/>
-            <span class="navbar-hamburger__line navbar-hamburger__line--2"/>
-            <span class="navbar-hamburger__line navbar-hamburger__line--3"/>
+            <span class="navbar-hamburger__line navbar-hamburger__line--1"></span>
+            <span class="navbar-hamburger__line navbar-hamburger__line--2"></span>
+            <span class="navbar-hamburger__line navbar-hamburger__line--3"></span>
           </div>
         </button>
       </div>

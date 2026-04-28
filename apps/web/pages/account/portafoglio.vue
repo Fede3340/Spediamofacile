@@ -246,8 +246,7 @@ onMounted(() => {
 			</AccountPageHeader>
 
 			<!-- Wallet hero card compatto (P13: rimosso dot-pattern + 2 radial-gradient = rumore visivo). -->
-			<div
-class="rounded-[16px] px-[20px] py-[18px] mb-[20px] sf-animate-in sf-animate-in-1 tablet:px-[24px] tablet:py-[20px]"
+			<div class="rounded-[16px] px-[20px] py-[18px] mb-[20px] sf-animate-in sf-animate-in-1 tablet:px-[24px] tablet:py-[20px]"
 				style="background: linear-gradient(135deg, #F3FAFB 0%, #E6F2F4 100%); border: 1px solid rgba(9, 88, 102, 0.12);">
 				<div class="flex flex-col gap-[18px]">
 					<div class="flex flex-col gap-[14px] desktop:flex-row desktop:items-end desktop:justify-between">
@@ -263,17 +262,16 @@ class="rounded-[16px] px-[20px] py-[18px] mb-[20px] sf-animate-in sf-animate-in-
 						<div class="flex flex-wrap gap-[8px]">
 							<button
 								type="button"
+								@click="refreshWalletData"
 								:disabled="isRefreshingWallet"
-								class="h-[38px] px-[14px] rounded-full bg-white text-[var(--color-brand-primary)] text-[12px] font-[700] flex items-center gap-[6px] cursor-pointer border border-[rgba(9,88,102,0.12)] hover:bg-[rgba(9,88,102,0.04)] transition-colors duration-[250ms] disabled:opacity-60"
-								@click="refreshWalletData">
+								class="h-[38px] px-[14px] rounded-full bg-white text-[var(--color-brand-primary)] text-[12px] font-[700] flex items-center gap-[6px] cursor-pointer border border-[rgba(9,88,102,0.12)] hover:bg-[rgba(9,88,102,0.04)] transition-colors duration-[250ms] disabled:opacity-60">
 								<span v-if="!isRefreshingWallet">
 									<svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
 								</span>
-								<span v-else class="h-[14px] w-[14px] rounded-full border-2 border-[var(--color-brand-primary)] border-r-transparent animate-spin"/>
+								<span v-else class="h-[14px] w-[14px] rounded-full border-2 border-[var(--color-brand-primary)] border-r-transparent animate-spin"></span>
 								{{ isRefreshingWallet ? 'Aggiornamento...' : 'Aggiorna' }}
 							</button>
-							<NuxtLink
-to="/account/carte"
+							<NuxtLink to="/account/carte"
 								class="h-[38px] px-[14px] rounded-full text-white text-[12px] font-[700] flex items-center gap-[6px] cursor-pointer transition-colors duration-[350ms] sf-cta-glow"
 								style="background: var(--gradient-cta);">
 								<svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>

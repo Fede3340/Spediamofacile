@@ -1,7 +1,7 @@
 /**
  * servicesStore — servizi utente (sezione "Servizi e supplementi" pannello admin).
  *
- * Estratto dalla sezione "services" di composables/useAdminPrezzi.js
+ * Estratto dalla sezione "services" di composables/useAdminPricing.js
  * (split atomico Pinia 2026-04-26). Comprende:
  *   - state servicePricing (etichetta, notifiche, sponda, contrassegno, assicurazione)
  *   - UI state della vista admin (tab attivo + filtri/search)
@@ -16,26 +16,22 @@ import {
 } from '~/utils/adminPrezziHelpers'
 import { useAdminSupplementsStore } from '~/stores/admin/supplementsStore'
 
-type KeyedRule = Record<string, unknown>
-type KeyedGroup = Record<string, KeyedRule>
-type ServiceSection = 'service_pricing' | 'automatic_supplements' | 'operational_fees'
-
 export const useAdminServicesStore = defineStore('admin-services', () => {
 	// ---------- STATE ----------
-	const servicePricing = ref<KeyedGroup>({})
-	const originalServicePricing = ref<KeyedGroup>({})
+	const servicePricing = ref({})
+	const originalServicePricing = ref({})
 
 	// ---------- UI STATE ----------
-	const adminView = ref<'nazionale' | 'europa' | 'servizi'>('nazionale')
+	const adminView = ref('nazionale')
 	const serviceSearch = ref('')
-	const serviceFilter = ref<'all' | ServiceSection>('all')
+	const serviceFilter = ref('all')
 
 	// ---------- COMPUTED ----------
 	const servicePricingEntries = computed(() =>
 		Object.entries(servicePricing.value || {}).map(([key, rule]) => ({
 			key,
 			rule,
-			section: 'service_pricing' as const,
+			section: 'service_pricing' ,
 		})),
 	)
 
@@ -49,28 +45,28 @@ export const useAdminServicesStore = defineStore('admin-services', () => {
 			...(activeFilter === 'all' || activeFilter === 'operational_fees' ? supplements.operationalFeeEntries : []),
 		].filter(({ rule }) => {
 			if (!search) return true
-			const r = rule as { label?: string, description?: string, note?: string }
+			const r = rule as { label, description, note?: string }
 			return `${r.label ?? ''} ${r.description ?? ''} ${r.note ?? ''}`.toLowerCase().includes(search)
 		})
 	})
 
 	// ---------- HYDRATION ----------
-	const applyDefaults = (): void => {
+	const applyDefaults = () => {
 		servicePricing.value = normalizePricingGroup({}, ADMIN_DEFAULT_SERVICE_PRICING)
 		originalServicePricing.value = cloneForSnapshot(servicePricing.value)
 	}
 
-	const hydrateFromApi = (data: Record<string, unknown>): void => {
+	const hydrateFromApi = (data) => {
 		servicePricing.value = normalizePricingGroup(
-			(data.service_pricing as KeyedGroup) || {},
+			(data.service_pricing ) || {},
 			ADMIN_DEFAULT_SERVICE_PRICING,
 		)
 		originalServicePricing.value = cloneForSnapshot(servicePricing.value)
 	}
 
-	const persistApiResponse = (data: Record<string, unknown>, fallbackPayload: Record<string, unknown>): void => {
+	const persistApiResponse = (data, fallbackPayload) => {
 		servicePricing.value = normalizePricingGroup(
-			(data.service_pricing as KeyedGroup) || (fallbackPayload.service_pricing as KeyedGroup) || {},
+			(data.service_pricing ) || (fallbackPayload.service_pricing ) || {},
 			ADMIN_DEFAULT_SERVICE_PRICING,
 		)
 		originalServicePricing.value = cloneForSnapshot(servicePricing.value)

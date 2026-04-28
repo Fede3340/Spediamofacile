@@ -46,9 +46,9 @@ const toEditLocation = (itemId) => buildShipmentFlowEditLocation(itemId)
         </div>
       </div>
       <div class="flex items-center gap-[4px] shrink-0">
-        <button type="button" :disabled="(entry.item.quantity || 1) <= 1" :class="quantityButtonCompactClass" @click="emit('update-quantity', entry.item.id, (entry.item.quantity || 1) - 1)">-</button>
+        <button type="button" @click="emit('update-quantity', entry.item.id, (entry.item.quantity || 1) - 1)" :disabled="(entry.item.quantity || 1) <= 1" :class="quantityButtonCompactClass">-</button>
         <span class="min-w-[20px] text-center font-semibold text-[0.8125rem] text-[var(--color-brand-text)]">{{ entry.item.quantity || 1 }}</span>
-        <button type="button" :disabled="(entry.item.quantity || 1) >= 100" :class="quantityButtonCompactClass" @click="emit('update-quantity', entry.item.id, (entry.item.quantity || 1) + 1)">+</button>
+        <button type="button" @click="emit('update-quantity', entry.item.id, (entry.item.quantity || 1) + 1)" :disabled="(entry.item.quantity || 1) >= 100" :class="quantityButtonCompactClass">+</button>
       </div>
       <div class="text-right shrink-0 min-w-[80px]">
         <span v-if="(entry.item.quantity || 1) > 1" class="block text-[0.6875rem] text-[var(--color-brand-text-muted)]">{{ formatPrice(unitPrice(entry.item)) }}/cad</span>
@@ -58,7 +58,7 @@ const toEditLocation = (itemId) => buildShipmentFlowEditLocation(itemId)
         <NuxtLink :to="toEditLocation(entry.item.id)" class="text-[var(--color-brand-primary)] hover:text-[var(--color-brand-primary-hover)] cursor-pointer" title="Modifica" aria-label="Modifica spedizione">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </NuxtLink>
-        <button type="button" class="text-red-500 hover:text-red-600 cursor-pointer" title="Elimina" aria-label="Elimina spedizione" @click="emit('delete', entry.item.id)">
+        <button type="button" @click="emit('delete', entry.item.id)" class="text-red-500 hover:text-red-600 cursor-pointer" title="Elimina" aria-label="Elimina spedizione">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
         </button>
       </div>
@@ -78,16 +78,16 @@ const toEditLocation = (itemId) => buildShipmentFlowEditLocation(itemId)
       </div>
       <div class="flex items-center justify-between mt-[6px]">
         <div class="flex items-center gap-[8px]">
-          <button type="button" :disabled="(entry.item.quantity || 1) <= 1" :class="quantityButtonMobileClass" @click="emit('update-quantity', entry.item.id, (entry.item.quantity || 1) - 1)">-</button>
+          <button type="button" @click="emit('update-quantity', entry.item.id, (entry.item.quantity || 1) - 1)" :disabled="(entry.item.quantity || 1) <= 1" :class="quantityButtonMobileClass">-</button>
           <span class="min-w-[24px] text-center font-semibold text-[0.875rem] text-[var(--color-brand-text)]">{{ entry.item.quantity || 1 }}x</span>
-          <button type="button" :disabled="(entry.item.quantity || 1) >= 100" :class="quantityButtonMobileClass" @click="emit('update-quantity', entry.item.id, (entry.item.quantity || 1) + 1)">+</button>
+          <button type="button" @click="emit('update-quantity', entry.item.id, (entry.item.quantity || 1) + 1)" :disabled="(entry.item.quantity || 1) >= 100" :class="quantityButtonMobileClass">+</button>
         </div>
         <div class="flex items-center gap-[12px]">
           <NuxtLink :to="toEditLocation(entry.item.id)" class="inline-flex items-center gap-[4px] text-[0.8125rem] text-[var(--color-brand-primary)] font-semibold hover:opacity-80 cursor-pointer min-h-[44px] px-[4px]">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
             Modifica
           </NuxtLink>
-          <button type="button" class="text-[0.8125rem] text-red-500 font-semibold hover:opacity-80 cursor-pointer min-h-[44px] px-[4px]" @click="emit('delete', entry.item.id)">Elimina</button>
+          <button type="button" @click="emit('delete', entry.item.id)" class="text-[0.8125rem] text-red-500 font-semibold hover:opacity-80 cursor-pointer min-h-[44px] px-[4px]">Elimina</button>
         </div>
       </div>
     </div>

@@ -92,14 +92,13 @@ const supportChecklist = computed(() => {
 	];
 });
 
-const runtimeConfig = useRuntimeConfig();
-const siteUrl = String(runtimeConfig.public?.siteUrl || 'https://spediamofacile.it').replace(/\/+$/, '');
-
 useSeoMeta({
 	title: () => (service.value?.title ?? 'Servizio'),
+	ogTitle: () => (service.value?.title ?? 'Servizio'),
 	description: () => serviceMetaDescription.value,
-	ogImage: () => service.value?.featured_image || `${siteUrl}/og/default.png`,
-	twitterImage: () => service.value?.featured_image || `${siteUrl}/og/default.png`,
+	ogDescription: () => serviceMetaDescription.value,
+	ogImage: () => service.value?.featured_image || 'https://spediamofacile.it/og/default.png',
+	twitterImage: () => service.value?.featured_image || 'https://spediamofacile.it/og/default.png',
 });
 
 // Breadcrumb schema: Home › Servizi › <titolo>
@@ -121,13 +120,13 @@ useHead(() => {
 				'@context': 'https://schema.org',
 				'@type': 'Service',
 				name: service.value.title,
-				url: `${siteUrl}/servizi/${slug.value}`,
+				url: `https://spediamofacile.it/servizi/${slug.value}`,
 				serviceType: 'Spedizione',
 				provider: {
 					'@type': 'Organization',
-					'@id': `${siteUrl}/#organization`,
+					'@id': 'https://spediamofacile.it/#organization',
 					name: 'SpediamoFacile',
-					url: siteUrl,
+					url: 'https://spediamofacile.it',
 				},
 				areaServed: {
 					'@type': 'Country',
@@ -163,7 +162,7 @@ useHead(() => {
 
 <template>
 	<section v-if="pending" class="flex min-h-[420px] items-center justify-center">
-		<div class="h-[40px] w-[40px] rounded-full border-3 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)] animate-spin"/>
+		<div class="h-[40px] w-[40px] rounded-full border-3 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)] animate-spin"></div>
 	</section>
 
 	<div v-else-if="service" class="service-detail-shell min-h-screen">

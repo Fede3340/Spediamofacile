@@ -1,7 +1,7 @@
 <!-- FILE: pages/account/amministrazione/utenti.vue -->
 <script setup>
-import '~/assets/css/pages/admin.css';
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
+import '~/assets/css/admin.css';
+import { ref, computed, onMounted, watch } from 'vue';
 
 definePageMeta({
 	middleware: ['app-auth', 'admin'],
@@ -170,29 +170,16 @@ const handleEditUser = (user) => {
 	drawerOpen.value = true;
 };
 
-// Track del timer di redirect post-impersonate per cleanup su unmount.
-let impersonateRedirectTimer = null;
 const handleImpersonate = async (user) => {
 	if (!user) return;
 	try {
 		await sanctum(`/api/admin/users/${user.id}/impersonate`, { method: 'POST' });
 		showSuccess(`Impersonazione attiva: ${user.name} ${user.surname}.`);
-		if (impersonateRedirectTimer) clearTimeout(impersonateRedirectTimer);
-		impersonateRedirectTimer = setTimeout(() => {
-			impersonateRedirectTimer = null;
-			window.location.href = '/account';
-		}, 600);
+		setTimeout(() => { window.location.href = '/account'; }, 600);
 	} catch (e) {
 		showError(e, "Errore durante l'impersona.");
 	}
 };
-
-onBeforeUnmount(() => {
-	if (impersonateRedirectTimer) {
-		clearTimeout(impersonateRedirectTimer);
-		impersonateRedirectTimer = null;
-	}
-});
 
 const onUserUpdated = () => fetchUsers();
 
@@ -236,7 +223,7 @@ const exportCsv = () => {
 		];
 		lines.push(row.join(';'));
 	}
-	const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+	const blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
 	const url = URL.createObjectURL(blob);
 	const a = document.createElement('a');
 	a.href = url;
@@ -334,7 +321,7 @@ onMounted(() => {
 							v-model="search"
 							type="search"
 							placeholder="Cerca per nome o email..."
-							class="admin-utenti-search__input" >
+							class="admin-utenti-search__input" />
 					</label>
 
 					<select v-model="roleFilter" class="admin-utenti-select" aria-label="Filtra per ruolo">
@@ -353,7 +340,7 @@ onMounted(() => {
 					</select>
 
 					<label class="admin-utenti-toggle">
-						<input v-model="onlyVerified" type="checkbox" >
+						<input v-model="onlyVerified" type="checkbox" />
 						<span class="admin-utenti-toggle__track"><span class="admin-utenti-toggle__thumb" /></span>
 						<span class="admin-utenti-toggle__label">Solo verificati</span>
 					</label>

@@ -238,7 +238,7 @@ describe('Price Calculation Logic (usePriceBands)', () => {
     })
 
     it('peso NaN restituisce null', () => {
-      expect(getBandPriceCents('weight', Number.NaN)).toBeNull()
+      expect(getBandPriceCents('weight', NaN)).toBeNull()
     })
   })
 

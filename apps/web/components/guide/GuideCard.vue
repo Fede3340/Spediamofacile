@@ -1,5 +1,5 @@
 <script setup>
-import '~/assets/css/components/sf-guide.css';
+import '~/assets/css/content.css';
 
 defineProps({
 	guide: { type: Object, required: true },
@@ -28,8 +28,8 @@ defineProps({
 				width="720"
 				height="480"
 				@error="applyFallback"
-			>
-			<div class="guide-card__overlay"/>
+			/>
+			<div class="guide-card__overlay"></div>
 			<span
 				class="guide-card__badge"
 				:style="{ background: categoryColor.bg, color: categoryColor.text }"
@@ -74,8 +74,8 @@ defineProps({
 				width="400"
 				height="240"
 				@error="applyFallback"
-			>
-			<div class="guide-card__overlay"/>
+			/>
+			<div class="guide-card__overlay"></div>
 			<span
 				class="guide-card__badge"
 				:style="{ background: categoryColor.bg, color: categoryColor.text }"

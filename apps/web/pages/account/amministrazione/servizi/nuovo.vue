@@ -1,6 +1,6 @@
 <!-- FILE: pages/account/amministrazione/servizi/nuovo.vue -->
 <script setup>
-import '~/assets/css/admin-servizio-editor.css';
+import '~/assets/css/admin.css';
 
 definePageMeta({
 	middleware: ["app-auth", "admin"],
@@ -76,29 +76,15 @@ const removeSection = (idx) => { if (form.value.sections.length > 1) form.value.
 const addFaq = () => { form.value.faqs.push({ title: '', text: '' }); };
 const removeFaq = (idx) => { if (form.value.faqs.length > 1) form.value.faqs.splice(idx, 1); };
 
-// Track del timer di redirect post-save per cleanup su unmount
-// (evita router.push su componente smontato se l'utente naviga via).
-let postSaveRedirectTimer = null;
 const saveService = async () => {
 	saving.value = true;
 	try {
 		await sanctum("/api/admin/articles", { method: "POST", body: form.value });
 		showSuccess("Servizio creato con successo.");
-		if (postSaveRedirectTimer) clearTimeout(postSaveRedirectTimer);
-		postSaveRedirectTimer = setTimeout(() => {
-			postSaveRedirectTimer = null;
-			router.push('/account/amministrazione/servizi');
-		}, 800);
+		setTimeout(() => { router.push('/account/amministrazione/servizi'); }, 800);
 	} catch (e) { showError(e, "Errore durante la creazione del servizio."); }
 	finally { saving.value = false; }
 };
-
-onBeforeUnmount(() => {
-	if (postSaveRedirectTimer) {
-		clearTimeout(postSaveRedirectTimer);
-		postSaveRedirectTimer = null;
-	}
-});
 
 // Icone SVG per i due stack (sezioni / faq)
 const SECTIONS_ICON_PATH = 'M7,5H21V7H7V5M7,13V11H21V13H7M4,4.5A1.5,1.5 0 0,1 5.5,6A1.5,1.5 0 0,1 4,7.5A1.5,1.5 0 0,1 2.5,6A1.5,1.5 0 0,1 4,4.5M4,10.5A1.5,1.5 0 0,1 5.5,12A1.5,1.5 0 0,1 4,13.5A1.5,1.5 0 0,1 2.5,12A1.5,1.5 0 0,1 4,10.5M7,19V17H21V19H7M4,16.5A1.5,1.5 0 0,1 5.5,18A1.5,1.5 0 0,1 4,19.5A1.5,1.5 0 0,1 2.5,18A1.5,1.5 0 0,1 4,16.5Z';

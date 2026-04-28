@@ -2,9 +2,6 @@
 defineProps({
   cardHolderName: { type: String, default: '' },
   errorMessage: { type: [String, null], default: null },
-  numberId: { type: String, default: 'card-number' },
-  expiryId: { type: String, default: 'card-expiry' },
-  cvcId: { type: String, default: 'card-cvc' },
 })
 
 const emit = defineEmits(['update:cardHolderName', 'save', 'cancel'])
@@ -22,7 +19,7 @@ const emit = defineEmits(['update:cardHolderName', 'save', 'cancel'])
 
     <div class="mb-[16px]">
       <label class="block text-[0.75rem] font-semibold text-[var(--color-brand-text)] mb-[5px]">Numero carta</label>
-      <div :id="numberId" class="account-carte-stripe-field"/>
+      <div class="account-carte-stripe-field" id="card-number"></div>
     </div>
 
     <div class="mb-[16px]">
@@ -30,20 +27,20 @@ const emit = defineEmits(['update:cardHolderName', 'save', 'cancel'])
       <input
         type="text"
         :value="cardHolderName"
+        @input="emit('update:cardHolderName', $event.target.value)"
         class="w-full px-[14px] py-[11px] bg-[#F5F6F9] border border-[var(--color-brand-border)] rounded-[16px] text-[0.875rem] text-[var(--color-brand-text)] placeholder:text-[var(--color-brand-text-muted)] focus:border-[var(--color-brand-primary)] focus:outline-none transition-colors"
         placeholder="Mario Rossi"
-        required
-        @input="emit('update:cardHolderName', $event.target.value)" >
+        required />
     </div>
 
     <div class="grid grid-cols-1 tablet:grid-cols-[minmax(0,1fr)_132px] gap-[12px] mb-[16px]">
       <div class="min-w-0">
         <label class="block text-[0.75rem] font-semibold text-[var(--color-brand-text)] mb-[5px]">Scadenza</label>
-        <div :id="expiryId" class="account-carte-stripe-field"/>
+        <div class="account-carte-stripe-field" id="card-expiry"></div>
       </div>
       <div class="min-w-0 tablet:w-[132px]">
         <label class="block text-[0.75rem] font-semibold text-[var(--color-brand-text)] mb-[5px]">CVC</label>
-        <div :id="cvcId" class="account-carte-stripe-field"/>
+        <div class="account-carte-stripe-field" id="card-cvc"></div>
       </div>
     </div>
 

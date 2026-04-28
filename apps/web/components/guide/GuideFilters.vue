@@ -1,5 +1,5 @@
 <script setup>
-import '~/assets/css/components/sf-guide.css';
+import '~/assets/css/content.css';
 
 defineProps({
 	searchQuery: { type: String, default: '' },
@@ -26,7 +26,7 @@ defineEmits(['update:searchQuery', 'update:activeCategory']);
 							placeholder="Cerca nelle guide..."
 							class="guide-search-input"
 							@input="$emit('update:searchQuery', $event.target.value)"
-						>
+						/>
 						<button
 							v-if="searchQuery"
 							class="guide-search-clear"

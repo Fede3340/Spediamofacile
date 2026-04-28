@@ -115,6 +115,6 @@ defineProps({
 	</svg>
 </template>
 
-<!-- Stili estratti in assets/css/components/sf-service-icon.css (importato da main.css).
+<!-- Stili estratti in assets/css/servizi.css (importato da main.css).
      Nota: i selettori parent-scope .service-surface:hover .service-icon non funzionavano
      con <style scoped> perché il padre vive in un componente diverso. Ora sono globali. -->

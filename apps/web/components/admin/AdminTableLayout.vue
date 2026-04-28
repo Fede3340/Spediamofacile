@@ -1,6 +1,6 @@
 <!-- AdminTableLayout.vue — Layout unificato per liste admin. -->
 <script setup>
-import '~/assets/css/components/sf-admin-tables.css';
+import '~/assets/css/admin.css';
 
 defineProps({
 	items: { type: Array, required: true },

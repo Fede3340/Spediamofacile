@@ -1,5 +1,5 @@
 <script setup>
-import '~/assets/css/account-shell.css';
+import '~/assets/css/account.css';
 
 /*
   AccountPageHeader — hero unificato per tutte le pagine /account/*.

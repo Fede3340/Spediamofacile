@@ -21,7 +21,7 @@ const emit = defineEmits(['close', 'open-auth', 'open-register'])
           v-if="open"
           class="lg:hidden fixed inset-0 z-[9998] navbar-mobile-backdrop"
           @click="emit('close')"
-        />
+        ></div>
       </Transition>
 
       <!-- Menu panel — prototype: absolute, mx-[12px], rounded-[18px], slide+fade -->
@@ -62,7 +62,7 @@ const emit = defineEmits(['close', 'open-auth', 'open-register'])
           </nav>
 
           <!-- Separator — prototype: border-t border-[#f0f0f0] -->
-          <div class="navbar-mobile-menu-separator mx-0"/>
+          <div class="navbar-mobile-menu-separator mx-0"></div>
 
           <!-- Auth buttons — prototype: px-[16px] py-[12px] -->
           <div class="px-[16px] py-[12px]">

@@ -1,5 +1,5 @@
 <script setup>
-import '~/assets/css/components/sf-admin-content-catalog.css';
+import '~/assets/css/admin.css';
 
 const props = defineProps({
 	article: { type: Object, required: true },
@@ -43,7 +43,7 @@ const visualKind = computed(() => (props.kind === 'guide' ? 'guide' : 'service')
 				height="80"
 				class="sf-admin-content-row__image"
 				loading="lazy"
-				decoding="async" >
+				decoding="async" />
 			<svg
 				v-else-if="visualKind === 'guide'"
 				aria-hidden="true"

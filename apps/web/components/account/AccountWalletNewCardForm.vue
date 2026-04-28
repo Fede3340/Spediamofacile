@@ -17,13 +17,13 @@ defineEmits(["update:cardHolderName", "close"]);
 					La useremo per questa operazione e la salveremo come carta predefinita per checkout e wallet.
 				</p>
 			</div>
-			<button type="button" class="whitespace-nowrap text-[0.8125rem] font-medium text-[var(--color-brand-primary)] hover:opacity-80 transition-opacity cursor-pointer" @click="$emit('close')">
+			<button type="button" @click="$emit('close')" class="whitespace-nowrap text-[0.8125rem] font-medium text-[var(--color-brand-primary)] hover:opacity-80 transition-opacity cursor-pointer">
 				{{ hasSavedCard ? 'Usa carta salvata' : 'Chiudi' }}
 			</button>
 		</div>
 
 		<div v-if="isPreparingNewCardForm" class="flex items-center gap-[10px] rounded-[16px] border border-[var(--color-brand-border)] bg-[#FAFCFD] px-[14px] py-[12px] text-[0.8125rem] text-[var(--color-brand-text-secondary)]">
-			<div class="h-[20px] w-[20px] animate-spin rounded-full border-2 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)]"/>
+			<div class="h-[20px] w-[20px] animate-spin rounded-full border-2 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)]"></div>
 			Preparazione modulo carta in corso...
 		</div>
 
@@ -32,25 +32,25 @@ defineEmits(["update:cardHolderName", "close"]);
 				<label class="mb-[6px] block text-[0.8125rem] font-semibold text-[var(--color-brand-text)]">Titolare carta</label>
 				<input
 					:value="cardHolderName"
+					@input="$emit('update:cardHolderName', $event.target.value)"
 					type="text"
 					placeholder="Mario Rossi"
-					class="w-full rounded-[16px] border border-[var(--color-brand-border)] bg-white px-[14px] py-[12px] text-[0.9375rem] text-[var(--color-brand-text)] placeholder:text-[var(--color-brand-text-muted)] transition-colors focus:border-[var(--color-brand-primary)] focus:outline-none"
-					@input="$emit('update:cardHolderName', $event.target.value)" >
+					class="w-full rounded-[16px] border border-[var(--color-brand-border)] bg-white px-[14px] py-[12px] text-[0.9375rem] text-[var(--color-brand-text)] placeholder:text-[var(--color-brand-text-muted)] transition-colors focus:border-[var(--color-brand-primary)] focus:outline-none" />
 			</div>
 
 			<div>
 				<label class="mb-[6px] block text-[0.8125rem] font-semibold text-[var(--color-brand-text)]">Numero carta</label>
-				<div id="wallet-card-number" class="stripe-field"/>
+				<div id="wallet-card-number" class="stripe-field"></div>
 			</div>
 
 			<div class="grid grid-cols-1 gap-[12px] tablet:grid-cols-[minmax(0,1fr)_132px]">
 				<div>
 					<label class="mb-[6px] block text-[0.8125rem] font-semibold text-[var(--color-brand-text)]">Scadenza</label>
-					<div id="wallet-card-expiry" class="stripe-field"/>
+					<div id="wallet-card-expiry" class="stripe-field"></div>
 				</div>
 				<div class="min-w-0 tablet:w-[132px]">
 					<label class="mb-[6px] block text-[0.8125rem] font-semibold text-[var(--color-brand-text)]">CVC</label>
-					<div id="wallet-card-cvc" class="stripe-field"/>
+					<div id="wallet-card-cvc" class="stripe-field"></div>
 				</div>
 			</div>
 

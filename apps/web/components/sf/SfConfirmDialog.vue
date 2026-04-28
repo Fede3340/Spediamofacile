@@ -1,70 +1,73 @@
 <!-- COMPONENTE: SfConfirmDialog (organism) -->
-<script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, useId, watch } from 'vue';
-import { useConfirmDialog } from '~/composables/useConfirmDialog';
-
-const { state, _resolve } = useConfirmDialog();
-
+<script setup>import { computed, nextTick, onBeforeUnmount, ref, useId, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useConfirmDialogStore } from '~/stores/confirmDialogStore';
+const store = useConfirmDialogStore();
+const { state } = storeToRefs(store);
+const _resolve = store.resolveDialog;
 const titleId = `sf-confirm-title-${useId()}`;
 const descId = `sf-confirm-desc-${useId()}`;
-const dialogRef = ref<HTMLElement | null>(null);
-let previousActive: HTMLElement | null = null;
-
+const dialogRef = ref(null);
+let previousActive = null;
 const visible = computed(() => state.value.open);
 const isDanger = computed(() => state.value.tone === 'danger');
-
-function answer(value: boolean) {
-  _resolve(value);
+function answer(value) {
+    _resolve(value);
 }
-
-function getFocusables(): HTMLElement[] {
-  if (!dialogRef.value) return [];
-  const sel = 'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
-  return Array.from(dialogRef.value.querySelectorAll<HTMLElement>(sel))
-    .filter((el) => !el.hasAttribute('inert'));
+function getFocusables() {
+    if (!dialogRef.value)
+        return [];
+    const sel = 'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    return Array.from(dialogRef.value.querySelectorAll(sel))
+        .filter((el) => !el.hasAttribute('inert'));
 }
-
-function onKeydown(e: KeyboardEvent) {
-  if (e.key === 'Escape') {
-    e.preventDefault();
-    answer(false);
-    return;
-  }
-  if (e.key !== 'Tab') return;
-  const focusables = getFocusables();
-  if (focusables.length === 0) {
-    e.preventDefault();
-    dialogRef.value?.focus();
-    return;
-  }
-  const first = focusables[0]!;
-  const last = focusables[focusables.length - 1]!;
-  const active = document.activeElement as HTMLElement | null;
-  if (e.shiftKey && active === first) { e.preventDefault(); last.focus(); }
-  else if (!e.shiftKey && active === last) { e.preventDefault(); first.focus(); }
-}
-
-function lockScroll(lock: boolean) {
-  if (typeof document === 'undefined') return;
-  document.body.style.overflow = lock ? 'hidden' : '';
-}
-
-watch(visible, async (open) => {
-  if (open) {
-    previousActive = (document.activeElement as HTMLElement) || null;
-    lockScroll(true);
-    await nextTick();
-    // Focus su bottone conferma di default (sicuro per default 'default'; per danger
-    // l'utente deve comunque azionare deliberatamente)
+function onKeydown(e) {
+    if (e.key === 'Escape') {
+        e.preventDefault();
+        answer(false);
+        return;
+    }
+    if (e.key !== 'Tab')
+        return;
     const focusables = getFocusables();
-    const confirmBtn = focusables.find((f) => f.dataset.role === 'confirm');
-    (confirmBtn || focusables[0] || dialogRef.value)?.focus();
-  } else {
-    lockScroll(false);
-    previousActive?.focus?.();
-  }
+    if (focusables.length === 0) {
+        e.preventDefault();
+        dialogRef.value?.focus();
+        return;
+    }
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const active = document.activeElement;
+    if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+    }
+    else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+    }
+}
+function lockScroll(lock) {
+    if (typeof document === 'undefined')
+        return;
+    document.body.style.overflow = lock ? 'hidden' : '';
+}
+watch(visible, async (open) => {
+    if (open) {
+        previousActive = document.activeElement || null;
+        lockScroll(true);
+        await nextTick();
+        // Focus su bottone conferma di default (sicuro per default 'default'; per danger
+        // l'utente deve comunque azionare deliberatamente)
+        const focusables = getFocusables();
+        const confirmBtn = focusables.find((f) => f.dataset.role === 'confirm');
+        (confirmBtn || focusables[0] || dialogRef.value)?.focus();
+    }
+    else {
+        lockScroll(false);
+        previousActive?.focus?.();
+    }
 });
-
 onBeforeUnmount(() => { lockScroll(false); });
 </script>
 
@@ -88,8 +91,7 @@ onBeforeUnmount(() => { lockScroll(false); });
         >
           <div :class="['sf-confirm__icon', isDanger ? 'sf-confirm__icon--danger' : 'sf-confirm__icon--default']" aria-hidden="true">
             <svg v-if="isDanger" width="28" height="28" viewBox="0 0 24 24" fill="none">
-              <path
-d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
+              <path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <svg v-else width="28" height="28" viewBox="0 0 24 24" fill="none">

@@ -4,10 +4,9 @@
 	Header: input ricerca CAP/indirizzo, filtri (orari/servizi), bottone geolocalizzazione.
 	Stack: usePudoSearch composable, components/pudo/* per UI, Leaflet client-only mappa.
 -->
-<script setup lang="ts">
+<script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { usePudoSearch } from '~/composables/usePudo'
-import type { BrtPudoNormalized } from '~/types'
 
 definePageMeta({
 	// Layout di default (Header + Footer del sito)
@@ -23,11 +22,8 @@ useSeoMeta({
 	robots: 'index, follow',
 })
 
-const runtimeConfig = useRuntimeConfig()
-const siteUrl = String(runtimeConfig.public?.siteUrl || 'https://spediamofacile.it').replace(/\/+$/, '')
-
 useHead({
-	link: [{ rel: 'canonical', href: `${siteUrl}/pudo` }],
+	link: [{ rel: 'canonical', href: 'https://spediamofacile.it/pudo' }],
 	script: [
 		// Service schema: locator dei punti BRT come servizio pubblico offerto.
 		// Preferito a LocalBusiness singolo perché i PUDO sono punti terzi.
@@ -38,11 +34,11 @@ useHead({
 				'@context': 'https://schema.org',
 				'@type': 'Service',
 				name: 'Punti BRT — PUDO locator',
-				url: `${siteUrl}/pudo`,
+				url: 'https://spediamofacile.it/pudo',
 				serviceType: 'Parcel Pickup and Drop-off locator',
 				provider: {
 					'@type': 'Organization',
-					'@id': `${siteUrl}/#organization`,
+					'@id': 'https://spediamofacile.it/#organization',
 					name: 'SpediamoFacile',
 				},
 				areaServed: { '@type': 'Country', name: 'IT' },
@@ -63,8 +59,6 @@ useBreadcrumbSchema([
 const PudoMap = defineAsyncComponent(() => import('~/components/pudo/PudoMap.vue'))
 
 // usePudoSearch mantiene API legacy e API pagina: qui usiamo solo la API pagina pubblica.
-const pudoSearch = usePudoSearch() as any
-
 const {
 	query,
 	filters,
@@ -86,35 +80,35 @@ const {
 	resetFilters,
 	startNowTimer,
 	stopNowTimer,
-} = pudoSearch
+} = usePudoSearch()
 
 const detailOpen = ref(false)
 
-const onPudoFromList = (p: BrtPudoNormalized) => {
+const onPudoFromList = (p) => {
 	selectPudo(p)
 	detailOpen.value = true
 }
-const onPudoFromMap = (p: BrtPudoNormalized) => {
+const onPudoFromMap = (p) => {
 	selectPudo(p)
 	detailOpen.value = true
 }
 const closeDetail = () => {
 	detailOpen.value = false
 }
-const handleChosen = (p: BrtPudoNormalized) => {
-	// In una pagina pubblica solo confermiamo + chiudiamo. Riusabile in funnel
-	// agganciando un v-on:pudo-selected al composable parent.
+const handleChosen = (p) => {
+	// Pagina pubblica: confermiamo + chiudiamo. Riusabile nel funnel
+	// agganciando v-on:pudo-selected al composable parent.
 	closeDetail()
 	if (typeof window !== 'undefined') {
 		window.scrollTo({ top: 0, behavior: 'smooth' })
 	}
 	selectPudo(p)
 }
-const onInput = (e: Event) => {
-	const value = (e.target as HTMLInputElement)?.value ?? ''
+const onInput = (e) => {
+	const value = e.target?.value ?? ''
 	search(value)
 }
-const onSubmit = (e: Event) => {
+const onSubmit = (e) => {
 	e.preventDefault()
 	searchImmediate()
 }
@@ -138,7 +132,7 @@ onBeforeUnmount(() => stopNowTimer())
 			<div class="max-w-[1280px] mx-auto px-[16px] tablet:px-[24px] py-[28px] tablet:py-[44px]">
 				<div class="max-w-[760px]">
 					<span class="inline-flex items-center gap-[6px] text-[0.75rem] font-semibold uppercase tracking-wide text-[var(--color-brand-primary,#095866)] bg-[#E6F0F2] rounded-full px-[10px] py-[4px] mb-[12px]">
-						<span class="w-[6px] h-[6px] rounded-full bg-[#E44203]"/>
+						<span class="w-[6px] h-[6px] rounded-full bg-[#E44203]"></span>
 						Rete BRT
 					</span>
 					<h1 class="text-[1.75rem] tablet:text-[2.25rem] font-bold text-[var(--color-brand-text,#0f172a)] leading-tight">
@@ -159,12 +153,11 @@ onBeforeUnmount(() => stopNowTimer())
 						<!-- Input -->
 						<div class="flex-1 relative">
 							<label for="pudo-search" class="sr-only">CAP, città o indirizzo</label>
-							<svg
-class="absolute left-[14px] top-1/2 -translate-y-1/2 text-[var(--color-brand-text-secondary,#4b5563)]"
+							<svg class="absolute left-[14px] top-1/2 -translate-y-1/2 text-[var(--color-brand-text-secondary,#4b5563)]"
 								width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 								stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-								<circle cx="11" cy="11" r="8"/>
-								<path d="m21 21-4.35-4.35"/>
+								<circle cx="11" cy="11" r="8"></circle>
+								<path d="m21 21-4.35-4.35"></path>
 							</svg>
 							<input
 								id="pudo-search"
@@ -175,7 +168,7 @@ class="absolute left-[14px] top-1/2 -translate-y-1/2 text-[var(--color-brand-tex
 								enterkeyhint="search"
 								class="w-full h-[48px] pl-[40px] pr-[14px] rounded-[14px] border border-[var(--color-brand-border,#E9EBEC)] bg-white text-[0.9375rem] text-[var(--color-brand-text,#0f172a)] placeholder:text-[var(--color-brand-text-secondary,#94a3a8)] focus:outline-none focus:border-[var(--color-brand-primary,#095866)] focus:shadow-[0_0_0_3px_rgba(9,88,102,0.15)] transition"
 								@input="onInput"
-							>
+							/>
 						</div>
 						<!-- Geolocalizzazione -->
 						<button
@@ -183,16 +176,15 @@ class="absolute left-[14px] top-1/2 -translate-y-1/2 text-[var(--color-brand-tex
 							:disabled="geolocating || loading"
 							class="inline-flex items-center justify-center gap-[8px] h-[48px] px-[18px] rounded-[14px] border border-[var(--color-brand-border,#E9EBEC)] bg-white text-[var(--color-brand-primary,#095866)] text-[0.875rem] font-semibold hover:bg-[#F2F8F9] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
 							@click="useCurrentLocation">
-							<svg
-v-if="!geolocating" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							<svg v-if="!geolocating" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 								stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-								<circle cx="12" cy="12" r="3"/>
-								<path d="M12 2v3"/>
-								<path d="M12 19v3"/>
-								<path d="M2 12h3"/>
-								<path d="M19 12h3"/>
+								<circle cx="12" cy="12" r="3"></circle>
+								<path d="M12 2v3"></path>
+								<path d="M12 19v3"></path>
+								<path d="M2 12h3"></path>
+								<path d="M19 12h3"></path>
 							</svg>
-							<span v-else class="inline-block w-[16px] h-[16px] border-2 border-[var(--color-brand-primary,#095866)] border-t-transparent rounded-full animate-spin"/>
+							<span v-else class="inline-block w-[16px] h-[16px] border-2 border-[var(--color-brand-primary,#095866)] border-t-transparent rounded-full animate-spin"></span>
 							{{ geolocating ? 'Localizzo...' : 'Vicino a me' }}
 						</button>
 						<!-- Cerca -->
@@ -200,13 +192,12 @@ v-if="!geolocating" width="16" height="16" viewBox="0 0 24 24" fill="none" strok
 							type="submit"
 							:disabled="loading"
 							class="inline-flex items-center justify-center gap-[8px] h-[48px] px-[22px] rounded-[14px] bg-[var(--color-brand-primary,#095866)] text-white text-[0.9375rem] font-semibold hover:bg-[var(--color-brand-primary-hover,#074a56)] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
-							<svg
-v-if="!loading" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							<svg v-if="!loading" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 								stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-								<circle cx="11" cy="11" r="8"/>
-								<path d="m21 21-4.35-4.35"/>
+								<circle cx="11" cy="11" r="8"></circle>
+								<path d="m21 21-4.35-4.35"></path>
 							</svg>
-							<span v-else class="inline-block w-[16px] h-[16px] border-2 border-white border-t-transparent rounded-full animate-spin"/>
+							<span v-else class="inline-block w-[16px] h-[16px] border-2 border-white border-t-transparent rounded-full animate-spin"></span>
 							{{ loading ? 'Ricerca...' : 'Cerca punti' }}
 						</button>
 					</div>
@@ -217,25 +208,25 @@ v-if="!loading" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="c
 							Filtri
 						</span>
 						<label class="inline-flex items-center gap-[6px] cursor-pointer">
-							<input v-model="filters.openNow" type="checkbox" class="sr-only peer" >
+							<input v-model="filters.openNow" type="checkbox" class="sr-only peer" />
 							<span class="inline-flex items-center gap-[5px] text-[0.8125rem] font-medium px-[10px] py-[5px] rounded-full border border-[var(--color-brand-border,#E9EBEC)] bg-white text-[var(--color-brand-text,#0f172a)] peer-checked:bg-[var(--color-brand-primary,#095866)] peer-checked:text-white peer-checked:border-[var(--color-brand-primary,#095866)] peer-focus-visible:ring-2 peer-focus-visible:ring-[#E44203] transition-colors">
 								Aperto ora
 							</span>
 						</label>
 						<label class="inline-flex items-center gap-[6px] cursor-pointer">
-							<input v-model="filters.ritiro" type="checkbox" class="sr-only peer" >
+							<input v-model="filters.ritiro" type="checkbox" class="sr-only peer" />
 							<span class="inline-flex items-center gap-[5px] text-[0.8125rem] font-medium px-[10px] py-[5px] rounded-full border border-[var(--color-brand-border,#E9EBEC)] bg-white text-[var(--color-brand-text,#0f172a)] peer-checked:bg-[var(--color-brand-primary,#095866)] peer-checked:text-white peer-checked:border-[var(--color-brand-primary,#095866)] peer-focus-visible:ring-2 peer-focus-visible:ring-[#E44203] transition-colors">
 								Ritiro
 							</span>
 						</label>
 						<label class="inline-flex items-center gap-[6px] cursor-pointer">
-							<input v-model="filters.consegna" type="checkbox" class="sr-only peer" >
+							<input v-model="filters.consegna" type="checkbox" class="sr-only peer" />
 							<span class="inline-flex items-center gap-[5px] text-[0.8125rem] font-medium px-[10px] py-[5px] rounded-full border border-[var(--color-brand-border,#E9EBEC)] bg-white text-[var(--color-brand-text,#0f172a)] peer-checked:bg-[var(--color-brand-primary,#095866)] peer-checked:text-white peer-checked:border-[var(--color-brand-primary,#095866)] peer-focus-visible:ring-2 peer-focus-visible:ring-[#E44203] transition-colors">
 								Consegna
 							</span>
 						</label>
 						<label class="inline-flex items-center gap-[6px] cursor-pointer">
-							<input v-model="filters.sabato" type="checkbox" class="sr-only peer" >
+							<input v-model="filters.sabato" type="checkbox" class="sr-only peer" />
 							<span class="inline-flex items-center gap-[5px] text-[0.8125rem] font-medium px-[10px] py-[5px] rounded-full border border-[var(--color-brand-border,#E9EBEC)] bg-white text-[var(--color-brand-text,#0f172a)] peer-checked:bg-[var(--color-brand-primary,#095866)] peer-checked:text-white peer-checked:border-[var(--color-brand-primary,#095866)] peer-focus-visible:ring-2 peer-focus-visible:ring-[#E44203] transition-colors">
 								Aperto sabato
 							</span>
@@ -253,12 +244,11 @@ v-if="!loading" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="c
 				<!-- Stato risultati / errori -->
 				<div v-if="searched || searchError" class="mt-[14px] flex items-center gap-[10px] flex-wrap text-[0.8125rem]">
 					<span v-if="searchError" class="inline-flex items-center gap-[6px] text-[#a52f02] bg-[#fff1ec] border border-[#fcd9c8] rounded-full px-[10px] py-[4px]">
-						<svg
-width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+						<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 							stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-							<circle cx="12" cy="12" r="10"/>
-							<line x1="12" y1="8" x2="12" y2="12"/>
-							<line x1="12" y1="16" x2="12.01" y2="16"/>
+							<circle cx="12" cy="12" r="10"></circle>
+							<line x1="12" y1="8" x2="12" y2="12"></line>
+							<line x1="12" y1="16" x2="12.01" y2="16"></line>
 						</svg>
 						{{ searchError }}
 					</span>

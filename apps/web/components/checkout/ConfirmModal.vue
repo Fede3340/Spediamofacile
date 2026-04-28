@@ -45,17 +45,14 @@ onUnmounted(() => { document.removeEventListener('keydown', trapFocus) })
 
 <template>
   <Teleport to="body">
-    <div
-v-if="show" class="fixed inset-0 z-[9999] flex items-center justify-center p-[20px]"
+    <div v-if="show" class="fixed inset-0 z-[9999] flex items-center justify-center p-[20px]"
       style="background: rgba(9,19,28,0.36); backdrop-filter: blur(6px)"
       @click.self="emit('close')">
-      <div
-ref="dialogRef" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title" class="w-full max-w-[440px] bg-white rounded-[16px] p-[24px] animate-[scale-in_0.2s_ease-out]"
+      <div ref="dialogRef" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title" class="w-full max-w-[440px] bg-white rounded-[16px] p-[24px] animate-[scale-in_0.2s_ease-out]"
         style="outline:1px solid #DFE2E7; outline-offset:-1px; box-shadow: 0 8px 32px rgba(0,0,0,0.12)">
         <!-- Header -->
         <div class="flex items-start gap-[12px] mb-[16px]">
-          <div
-class="w-[40px] h-[40px] rounded-[12px] flex items-center justify-center shrink-0" aria-hidden="true"
+          <div class="w-[40px] h-[40px] rounded-[12px] flex items-center justify-center shrink-0" aria-hidden="true"
             style="background:rgba(9,88,102,0.06); outline:1px solid rgba(9,88,102,0.12); outline-offset:-1px">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
           </div>
@@ -72,19 +69,17 @@ class="w-[40px] h-[40px] rounded-[12px] flex items-center justify-center shrink-
         </div>
 
         <!-- Divider -->
-        <div class="h-[1px] bg-[#EEF0F3] mb-[16px]"/>
+        <div class="h-[1px] bg-[#EEF0F3] mb-[16px]"></div>
 
         <!-- Actions -->
         <div class="flex gap-[10px]">
-          <button
-type="button" class="flex-1 h-[44px] rounded-full bg-white text-[14px] text-[var(--color-brand-text-secondary)] cursor-pointer"
-            style="font-weight:600; outline: 1.5px solid #DFE2E7; outline-offset:-1.5px"
-            @click="emit('close')">
+          <button type="button" @click="emit('close')"
+            class="flex-1 h-[44px] rounded-full bg-white text-[14px] text-[var(--color-brand-text-secondary)] cursor-pointer"
+            style="font-weight:600; outline: 1.5px solid #DFE2E7; outline-offset:-1.5px">
             Annulla
           </button>
-          <button
-type="button" class="btn-cta-filled flex-1 h-[44px] rounded-full text-[14px] cursor-pointer"
-            @click="emit('confirm')">
+          <button type="button" @click="emit('confirm')"
+            class="btn-cta-filled flex-1 h-[44px] rounded-full text-[14px] cursor-pointer">
             Conferma
           </button>
         </div>

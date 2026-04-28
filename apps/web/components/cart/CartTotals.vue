@@ -1,5 +1,5 @@
 <script setup>
-import '~/assets/css/components/sf-cart-totals.css';
+import '~/assets/css/shipment-flow.css';
 
 defineProps({
   cartMeta: { type: Object, default: () => ({}) },
@@ -50,16 +50,15 @@ const emit = defineEmits(['toggle-coupon', 'apply-coupon', 'remove-coupon', 'upd
     <!-- Promo code toggle -->
     <button
       type="button"
+      @click="emit('toggle-coupon')"
       :aria-expanded="showCouponPanel"
       class="cart-totals-card__coupon-toggle"
-      @click="emit('toggle-coupon')"
     >
       <span class="cart-totals-card__coupon-label">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
         Codice sconto
       </span>
-      <svg
-width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
         class="cart-totals-card__coupon-chevron" :class="showCouponPanel ? 'is-open' : ''"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
 
@@ -73,9 +72,9 @@ width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" str
           <span class="cart-totals-card__coupon-applied-badge">-{{ couponDiscount }}%</span>
           <button
             type="button"
+            @click="emit('remove-coupon')"
             class="cart-totals-card__coupon-applied-remove"
             aria-label="Rimuovi coupon"
-            @click="emit('remove-coupon')"
           >Rimuovi</button>
         </div>
 
@@ -84,11 +83,11 @@ width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" str
           <input
             type="text"
             :value="couponCode"
+            @input="emit('update:coupon-code', $event.target.value)"
             placeholder="Inserisci codice"
             class="cart-totals-card__coupon-input"
             aria-label="Codice sconto"
-            @input="emit('update:coupon-code', $event.target.value)"
-          >
+          />
           <SfButton size="sm" class="cart-totals-card__coupon-apply" @click="emit('apply-coupon')">Applica</SfButton>
         </template>
       </div>

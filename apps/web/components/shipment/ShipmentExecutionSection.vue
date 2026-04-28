@@ -263,7 +263,7 @@ const runCardAction = (kind) => {
 						<input
 							v-model="pickupForm.enabled"
 							type="checkbox"
-							class="mt-[3px] h-[16px] w-[16px] rounded border-[#C9D3DD] text-[var(--color-brand-primary)]" >
+							class="mt-[3px] h-[16px] w-[16px] rounded border-[#C9D3DD] text-[var(--color-brand-primary)]" />
 						<span class="min-w-0">
 							<span class="block text-[0.875rem] font-semibold text-[var(--color-brand-text)]">Richiedi ritiro per questo ordine</span>
 							<span class="mt-[2px] block text-[0.8125rem] leading-[1.5] text-[var(--color-brand-text-secondary)]">
@@ -276,7 +276,7 @@ const runCardAction = (kind) => {
 						<div class="grid gap-[10px] desktop:grid-cols-2">
 							<div>
 								<label class="form-label">Data ritiro</label>
-								<input v-model="pickupForm.date" type="date" class="form-input" >
+								<input v-model="pickupForm.date" type="date" class="form-input" />
 							</div>
 							<div>
 								<label class="form-label">Fascia</label>
@@ -291,7 +291,7 @@ const runCardAction = (kind) => {
 								v-model="pickupForm.notes"
 								rows="3"
 								class="form-input min-h-[92px] resize-y"
-								placeholder="Esempio: citofono, piano, fascia preferita o istruzioni per il corriere."/>
+								placeholder="Esempio: citofono, piano, fascia preferita o istruzioni per il corriere."></textarea>
 						</div>
 					</div>
 

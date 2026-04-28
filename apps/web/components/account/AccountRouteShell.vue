@@ -7,7 +7,7 @@
  *   - AccountMobileDrawer (< lg topbar + drawer)
  * I nav groups sono definiti in utils/accountNavigationGroups.ts.
  */
-import '~/assets/css/components/sf-account-shell.css';
+import '~/assets/css/account.css';
 import AccountSidebar from './AccountSidebar.vue';
 import AccountMobileDrawer from './AccountMobileDrawer.vue';
 import {

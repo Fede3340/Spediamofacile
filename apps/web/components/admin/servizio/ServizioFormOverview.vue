@@ -1,10 +1,9 @@
-<script setup lang="ts">
-defineProps<{
-	publishStateLabel: string;
-	publishStateHint: string;
-	sectionCount: number;
-	faqCount: number;
-}>();
+<script setup>defineProps({
+  publishStateLabel: { type: String, required: true },
+  publishStateHint: { type: String, required: true },
+  sectionCount: { type: Number, required: true },
+  faqCount: { type: Number, required: true },
+});
 </script>
 
 <template>

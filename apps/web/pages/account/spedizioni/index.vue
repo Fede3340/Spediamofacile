@@ -66,21 +66,21 @@ const {
 							v-model="searchQuery"
 							type="text"
 							placeholder="Cerca riferimento, tracking, mittente o destinatario..."
-							class="form-input pl-[42px]" >
+							class="form-input pl-[42px]" />
 					</div>
 					<!-- Filtri come chip teal: stato non attivo = outline teal soft, attivo = pieno teal con badge bianco -->
 					<div class="flex flex-wrap gap-[8px]" role="tablist" aria-label="Filtri spedizioni">
 						<button
 							v-for="filter in filterPills"
 							:key="filter.id"
+							@click="changeFilter(filter.id)"
 							type="button"
 							role="tab"
 							:aria-selected="filter.id === activeFilter"
 							:class="filter.id === activeFilter
 								? 'bg-[var(--color-brand-primary,#095866)] text-white border-[var(--color-brand-primary,#095866)] shadow-[0_4px_12px_rgba(9,88,102,0.18)]'
 								: 'bg-white text-[var(--color-brand-primary,#095866)] border-[rgba(9,88,102,0.22)] hover:border-[var(--color-brand-primary,#095866)] hover:bg-[#EEF7F8]'"
-							class="inline-flex items-center gap-[8px] px-[14px] h-[36px] rounded-full border text-[13px] font-[700] cursor-pointer transition-all duration-[200ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary,#095866)] focus-visible:ring-offset-2"
-							@click="changeFilter(filter.id)">
+							class="inline-flex items-center gap-[8px] px-[14px] h-[36px] rounded-full border text-[13px] font-[700] cursor-pointer transition-all duration-[200ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary,#095866)] focus-visible:ring-offset-2">
 							<span>{{ filter.label }}</span>
 							<span
 								:class="filter.id === activeFilter

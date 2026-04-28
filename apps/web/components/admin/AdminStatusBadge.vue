@@ -1,6 +1,5 @@
 <!-- AdminStatusBadge.vue — Badge stato admin unificato. -->
 <script setup>
-import '~/assets/css/components/sf-admin-tables.css';
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -19,7 +18,7 @@ const ORDER_STATUS_MAP = {
 	processing: { tone: 'info', label: 'In lavorazione' },
 	label_generated: { tone: 'info', label: 'Etichetta generata' },
 	completed: { tone: 'success', label: 'Completato' },
-	payed: { tone: 'success', label: 'Pagato' },
+	paid: { tone: 'success', label: 'Pagato' },
 	payment_failed: { tone: 'danger', label: 'Pagamento fallito' },
 	cancelled: { tone: 'neutral', label: 'Annullato' },
 	refunded: { tone: 'warning', label: 'Rimborsato' },
@@ -57,4 +56,4 @@ const label = computed(() => props.label || entry.value.label);
 	</span>
 </template>
 
-<!-- Stili in assets/css/components/sf-admin-tables.css (consolidato). -->
+<!-- Stili estratti in assets/css/admin.css (importato da main.css). -->

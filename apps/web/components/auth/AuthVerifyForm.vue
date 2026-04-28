@@ -1,25 +1,15 @@
-<script setup lang="ts">
-// Form verifica email OTP (codice 6 cifre).
+<script setup>// Form verifica email OTP (codice 6 cifre).
 // Handler di input/keydown/submit/resend vivono in useAuthOverlay — qui solo presentazione.
-
 defineProps({
-  email: { type: String, default: '' },
-  code: { type: Array as () => string[], required: true },
-  isLoading: { type: Boolean, default: false },
-  resendLoading: { type: Boolean, default: false },
-  error: { type: String, default: '' },
-  success: { type: String, default: '' },
-})
-
-const emit = defineEmits<{
-  (e: 'submit'): void
-  (e: 'resend'): void
-  (e: 'back'): void
-  (e: 'input', index: number, ev: Event): void
-  (e: 'keydown', index: number, ev: KeyboardEvent): void
-}>()
-
-const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex items-center justify-center gap-[10px] mt-[4px] cursor-pointer active:scale-[0.985] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[#E44203]/25 disabled:cursor-wait'
+    email: { type: String, default: '' },
+    code: { type: Array, required: true },
+    isLoading: { type: Boolean, default: false },
+    resendLoading: { type: Boolean, default: false },
+    error: { type: String, default: '' },
+    success: { type: String, default: '' },
+});
+const emit = defineEmits();
+const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex items-center justify-center gap-[10px] mt-[4px] cursor-pointer active:scale-[0.985] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[#E44203]/25 disabled:cursor-wait';
 </script>
 
 <template>
@@ -40,8 +30,8 @@ const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex it
         maxlength="1"
         class="w-[40px] h-[46px] sm:w-[44px] sm:h-[48px] rounded-[12px] bg-[#F8F9FB] text-center text-[16px] font-bold ring-[1.5px] ring-[#DFE2E7] focus:ring-[3px] focus:ring-[#095866]/60 focus:bg-white outline-none transition-all duration-200"
         @input="emit('input', index, $event)"
-        @keydown="emit('keydown', index, $event as KeyboardEvent)"
-      >
+        @keydown="emit('keydown', index, $event)"
+      />
     </div>
 
     <div v-if="error" class="flex items-center gap-[8px] bg-[#FFF5F2] ring-[1px] ring-[#E44203]/10 rounded-[12px] px-[14px] py-[11px]">

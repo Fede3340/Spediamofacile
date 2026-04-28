@@ -1,22 +1,14 @@
-<script setup lang="ts">
-// Form di login (email + password + link "password dimenticata").
+<script setup>// Form di login (email + password + link "password dimenticata").
 // La logica di handleLogin vive in useAuthOverlay — qui solo presentazione.
-
 defineProps({
-  form: { type: Object, required: true },
-  isLoading: { type: Boolean, default: false },
-  showPassword: { type: Boolean, default: false },
-})
-
-const emit = defineEmits<{
-  (e: 'submit'): void
-  (e: 'enter-forgot'): void
-  (e: 'toggle-password'): void
-}>()
-
-const INPUT_CLS = 'w-full h-[46px] rounded-[12px] px-[14px] text-[14px] font-medium text-[#1d2738] bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[2.5px] focus:ring-[#095866]/50 placeholder:text-[#aaa] outline-none transition-all duration-200'
-const LABEL_CLS = 'text-[#777] text-[11px] uppercase tracking-[0.4px] font-bold block'
-const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex items-center justify-center gap-[10px] mt-[4px] cursor-pointer active:scale-[0.985] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[#E44203]/25 disabled:cursor-wait'
+    form: { type: Object, required: true },
+    isLoading: { type: Boolean, default: false },
+    showPassword: { type: Boolean, default: false },
+});
+const emit = defineEmits();
+const INPUT_CLS = 'w-full h-[46px] rounded-[12px] px-[14px] text-[14px] font-medium text-[#1d2738] bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[2.5px] focus:ring-[#095866]/50 placeholder:text-[#aaa] outline-none transition-all duration-200';
+const LABEL_CLS = 'text-[#777] text-[11px] uppercase tracking-[0.4px] font-bold block';
+const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex items-center justify-center gap-[10px] mt-[4px] cursor-pointer active:scale-[0.985] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[#E44203]/25 disabled:cursor-wait';
 </script>
 
 <template>
@@ -35,8 +27,7 @@ const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex it
         type="email"
         autocomplete="username"
         placeholder="nome@email.com"
-        required
-      >
+      />
     </div>
 
     <div class="flex flex-col gap-[5px]">
@@ -58,9 +49,7 @@ const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex it
           :type="showPassword ? 'text' : 'password'"
           autocomplete="current-password"
           placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
-          required
-          minlength="6"
-        >
+        />
         <button
           type="button"
           class="absolute right-[14px] top-1/2 -translate-y-1/2 text-[#C0C5CC] hover:text-[#777] cursor-pointer transition-colors bg-transparent border-0 p-0"

@@ -1,6 +1,6 @@
 <!-- COMPONENTE: AdminOrderFiltersBar.vue -->
 <script setup>
-import '~/assets/css/components/sf-admin-filters.css';
+import '~/assets/css/admin.css';
 import { ref, computed, watch } from 'vue';
 
 const props = defineProps({
@@ -83,28 +83,17 @@ const hasAnyFilter = computed(() => {
 });
 
 /* Debounce ricerca testuale */
-let searchDebounce = null;
+let searchDebounce;
 const onSearchInput = (e) => {
 	const value = e.target.value;
 	setField('search', value);
-	if (searchDebounce) clearTimeout(searchDebounce);
-	searchDebounce = setTimeout(() => {
-		searchDebounce = null;
-		emit('apply');
-	}, 350);
+	clearTimeout(searchDebounce);
+	searchDebounce = setTimeout(() => emit('apply'), 350);
 };
 
 /* Apply manuale per gli altri filtri */
 const onApply = () => emit('apply');
 const onReset = () => emit('reset');
-
-// Cleanup del timer di debounce su unmount per evitare emit zombie.
-onBeforeUnmount(() => {
-	if (searchDebounce) {
-		clearTimeout(searchDebounce);
-		searchDebounce = null;
-	}
-});
 </script>
 
 <template>
@@ -122,7 +111,7 @@ onBeforeUnmount(() => {
 					placeholder="Cerca codice ordine, email o nome cliente"
 					class="m6-filters-bar__search-input"
 					autocomplete="off"
-					@input="onSearchInput" >
+					@input="onSearchInput" />
 				<button
 					v-if="filters.search"
 					type="button"
@@ -196,7 +185,7 @@ onBeforeUnmount(() => {
 							type="date"
 							class="m6-field__input"
 							:value="filters.date_from"
-							@change="setField('date_from', $event.target.value); onApply();" >
+							@change="setField('date_from', $event.target.value); onApply();" />
 					</div>
 
 					<div class="m6-field">
@@ -206,7 +195,7 @@ onBeforeUnmount(() => {
 							type="date"
 							class="m6-field__input"
 							:value="filters.date_to"
-							@change="setField('date_to', $event.target.value); onApply();" >
+							@change="setField('date_to', $event.target.value); onApply();" />
 					</div>
 
 					<!-- Amount min/max (in euro, lato BE convertire) -->
@@ -221,7 +210,7 @@ onBeforeUnmount(() => {
 							class="m6-field__input"
 							placeholder="0,00"
 							:value="filters.amount_min"
-							@change="setField('amount_min', $event.target.value); onApply();" >
+							@change="setField('amount_min', $event.target.value); onApply();" />
 					</div>
 
 					<div class="m6-field">
@@ -235,7 +224,7 @@ onBeforeUnmount(() => {
 							class="m6-field__input"
 							placeholder="999,00"
 							:value="filters.amount_max"
-							@change="setField('amount_max', $event.target.value); onApply();" >
+							@change="setField('amount_max', $event.target.value); onApply();" />
 					</div>
 				</div>
 

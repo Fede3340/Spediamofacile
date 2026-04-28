@@ -3,7 +3,7 @@
   All Stripe card-element logic lives in the parent composable; we just get refs/props.
 -->
 <script setup>
-import '~/assets/css/components/sf-checkout-flow.css';
+import '~/assets/css/shipment-flow.css';
 
 const props = defineProps({
 	paymentMethod: { type: String, required: true },
@@ -116,7 +116,7 @@ const walletQuickLabel = computed(() => {
 			</div>
 			<div
 				:ref="paymentRequestRefCallback"
-				class="payment-wallet-section__button"/>
+				class="payment-wallet-section__button"></div>
 			<p v-if="paymentRequestError" class="payment-wallet-section__error">{{ paymentRequestError }}</p>
 			<div class="payment-wallet-section__divider">
 				<span>oppure scegli un altro metodo</span>
@@ -128,6 +128,7 @@ const walletQuickLabel = computed(() => {
 				v-for="option in paymentMethodOptions"
 				:key="option.key"
 				type="button"
+				@click="emit('select-payment-method', option.key)"
 				role="tab"
 				:aria-pressed="paymentMethod === option.key"
 				:aria-selected="paymentMethod === option.key"
@@ -136,8 +137,7 @@ const walletQuickLabel = computed(() => {
 					'checkout-payment-option',
 					paymentMethod === option.key ? 'checkout-payment-option--active' : 'checkout-payment-option--idle',
 					option.key === 'carta' && cardPaymentsUnavailable ? 'checkout-payment-option--disabled' : '',
-				]"
-				@click="emit('select-payment-method', option.key)">
+				]">
 				<span v-if="option.badge" class="checkout-payment-option__badge">{{ option.badge }}</span>
 				<span class="checkout-payment-option__main">
 					<span class="checkout-payment-option__icon-shell">
@@ -187,12 +187,12 @@ const walletQuickLabel = computed(() => {
 					<button
 						v-if="hasSavedCard"
 						type="button"
+						@click="handleUseNewCard(false)"
 						:disabled="isCardFormTransitioning"
 						:class="[
 							'checkout-payment-choice',
 							!useNewCard ? 'checkout-payment-choice--selected' : 'checkout-payment-choice--idle',
-						]"
-						@click="handleUseNewCard(false)">
+						]">
 						<span class="checkout-payment-choice__brand">{{ defaultPayment.card.brand?.toUpperCase() }}</span>
 						<div class="checkout-payment-choice__copy">
 							<p class="checkout-payment-choice__eyebrow">Carta salvata</p>
@@ -201,21 +201,21 @@ const walletQuickLabel = computed(() => {
 							</p>
 							<p class="checkout-payment-choice__text">Scade {{ defaultPayment.card.exp_month }}/{{ defaultPayment.card.exp_year }}</p>
 						</div>
-						<span :class="['checkout-payment-choice__radio', !useNewCard ? 'checkout-payment-choice__radio--selected' : '']"/>
+						<span :class="['checkout-payment-choice__radio', !useNewCard ? 'checkout-payment-choice__radio--selected' : '']"></span>
 					</button>
 
 					<div
 						role="button"
 						:tabindex="isCardFormTransitioning ? -1 : 0"
 						:aria-disabled="isCardFormTransitioning"
+						@click="handleUseNewCard(true)"
+						@keydown.enter.prevent="handleUseNewCard(true)"
+						@keydown.space.prevent="handleUseNewCard(true)"
 						:class="[
 							'checkout-payment-choice checkout-payment-choice--expandable',
 							!hasSavedCard || useNewCard ? 'checkout-payment-choice--selected' : 'checkout-payment-choice--idle',
 							isCardFormTransitioning ? 'is-transitioning' : '',
-						]"
-						@click="handleUseNewCard(true)"
-						@keydown.enter.prevent="handleUseNewCard(true)"
-						@keydown.space.prevent="handleUseNewCard(true)">
+						]">
 						<div class="checkout-payment-choice__header">
 							<span class="checkout-payment-choice__icon-shell">
 								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -231,7 +231,7 @@ const walletQuickLabel = computed(() => {
 								:class="[
 									'checkout-payment-choice__radio',
 									!hasSavedCard || useNewCard ? 'checkout-payment-choice__radio--selected' : '',
-								]"/>
+								]"></span>
 						</div>
 
 						<!-- Transition rimossa: l'utente trovava fastidioso il fade ad ogni click.
@@ -243,7 +243,7 @@ const walletQuickLabel = computed(() => {
 									</div>
 								</div>
 
-								<div id="card-element" :ref="cardRefCallback" class="checkout-payment-card-form__element"/>
+								<div id="card-element" :ref="cardRefCallback" class="checkout-payment-card-form__element"></div>
 								<p v-if="stripeLoading" class="checkout-payment-card-form__helper">
 									Preparazione del modulo carta in corso...
 								</p>
@@ -253,9 +253,9 @@ const walletQuickLabel = computed(() => {
 								     @click.stop sul label blocca il bubbling al div[role=button] genitore. -->
 								<label class="checkout-payment-card-form__save" @click.stop>
 									<input
-										v-model="localSaveCard"
 										type="checkbox"
-										class="checkout-payment-card-form__checkbox" >
+										v-model="localSaveCard"
+										class="checkout-payment-card-form__checkbox" />
 									<span>Salva carta per pagamenti futuri (puoi revocare in qualsiasi momento dal tuo account)</span>
 								</label>
 							</div>

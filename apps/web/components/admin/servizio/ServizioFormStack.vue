@@ -1,45 +1,27 @@
-<script setup lang="ts">
-interface StackItem {
-	heading?: string;
-	title?: string;
-	text?: string;
-}
-
-interface ServizioFormStackProps {
-	items: StackItem[];
-	panelTitle: string;
-	panelDescription: string;
-	indexLabel: string;
-	addButtonLabel: string;
-	headingPlaceholder: string;
-	textPlaceholder: string;
-	textRows?: number;
-	iconPath: string;
-	fieldKey: 'heading' | 'title';
-}
-
-const props = withDefaults(defineProps<ServizioFormStackProps>(), {
-	textRows: 4,
+<script setup>const props = defineProps({
+  items: { type: Array, required: true },
+  panelTitle: { type: String, required: true },
+  panelDescription: { type: String, required: true },
+  indexLabel: { type: String, required: true },
+  addButtonLabel: { type: String, required: true },
+  headingPlaceholder: { type: String, required: true },
+  textPlaceholder: { type: String, required: true },
+  textRows: { type: Number, default: 4 },
+  iconPath: { type: String, required: true },
+  fieldKey: { type: String, required: true },
 });
-
-const emit = defineEmits<{
-	(e: 'update:items', value: StackItem[]): void;
-	(e: 'add'): void;
-	(e: 'remove', index: number): void;
-}>();
-
-const onHeadingInput = (index: number, event: Event) => {
-	const value = (event.target as HTMLInputElement).value;
-	const next = [...props.items];
-	next[index] = { ...next[index], [props.fieldKey]: value };
-	emit('update:items', next);
+const emit = defineEmits();
+const onHeadingInput = (index, event) => {
+    const value = event.target.value;
+    const next = [...props.items];
+    next[index] = { ...next[index], [props.fieldKey]: value };
+    emit('update:items', next);
 };
-
-const onTextInput = (index: number, event: Event) => {
-	const value = (event.target as HTMLTextAreaElement).value;
-	const next = [...props.items];
-	next[index] = { ...next[index], text: value };
-	emit('update:items', next);
+const onTextInput = (index, event) => {
+    const value = event.target.value;
+    const next = [...props.items];
+    next[index] = { ...next[index], text: value };
+    emit('update:items', next);
 };
 </script>
 
@@ -67,14 +49,14 @@ const onTextInput = (index: number, event: Event) => {
 					<button
 						v-if="items.length > 1"
 						type="button"
-						class="service-editor-remove"
-						@click="emit('remove', idx)">
+						@click="emit('remove', idx)"
+						class="service-editor-remove">
 						Rimuovi
 					</button>
 				</div>
 				<div class="service-editor-stack-card__body">
-					<input :value="item[fieldKey]" type="text" class="service-editor-input" :placeholder="headingPlaceholder" @input="onHeadingInput(idx, $event)" >
-					<textarea :value="item.text" :rows="textRows" class="service-editor-textarea" :placeholder="textPlaceholder" @input="onTextInput(idx, $event)"/>
+					<input :value="item[fieldKey]" @input="onHeadingInput(idx, $event)" type="text" class="service-editor-input" :placeholder="headingPlaceholder" />
+					<textarea :value="item.text" @input="onTextInput(idx, $event)" :rows="textRows" class="service-editor-textarea" :placeholder="textPlaceholder"></textarea>
 				</div>
 			</div>
 		</div>

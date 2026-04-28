@@ -5,16 +5,14 @@
   Usato in Success.vue dopo checkout con paymentMethod === 'bonifico'.
 -->
 <script setup>
-import '~/assets/css/components/sf-checkout-flow.css';
+import '~/assets/css/shipment-flow.css';
 
 const props = defineProps({
 	orderId: { type: [String, Number], required: true },
 	amount: { type: String, default: '' }, // formattato es. "24,50 EUR"
-	// Coordinate bancarie reali: passate via prop dal parent o lette da app.config.
-	// I default sotto sono placeholder visibili in dev — il parent deve passare i dati reali in production.
-	iban: { type: String, default: '' },
+	iban: { type: String, default: 'IT60 X054 2811 1010 0000 0123 456' },
 	bankName: { type: String, default: 'SpediamoFacile SRL' },
-	bic: { type: String, default: '' },
+	bic: { type: String, default: 'BPMOIT22XXX' },
 });
 
 const orderIds = computed(() => String(props.orderId || '').split(',').map((s) => s.trim()).filter(Boolean));
@@ -25,28 +23,16 @@ const causale = computed(() => {
 });
 
 const copied = ref('');
-let copyResetTimer = null;
 
 const copy = async (value, key) => {
 	try {
 		await navigator.clipboard.writeText(value);
 		copied.value = key;
-		if (copyResetTimer) clearTimeout(copyResetTimer);
-		copyResetTimer = setTimeout(() => {
-			copyResetTimer = null;
-			if (copied.value === key) copied.value = '';
-		}, 1800);
+		setTimeout(() => { if (copied.value === key) copied.value = ''; }, 1800);
 	} catch (_) {
 		// fallback — nessun-op, l'utente puo' selezionare manualmente
 	}
 };
-
-onBeforeUnmount(() => {
-	if (copyResetTimer) {
-		clearTimeout(copyResetTimer);
-		copyResetTimer = null;
-	}
-});
 </script>
 
 <template>
@@ -70,7 +56,7 @@ onBeforeUnmount(() => {
 				<div class="bti-field__label">IBAN</div>
 				<div class="bti-field__row">
 					<span class="bti-field__value bti-field__value--mono">{{ iban }}</span>
-					<button type="button" class="bti-copy" :aria-label="`Copia IBAN`" @click="copy(iban, 'iban')">
+					<button type="button" class="bti-copy" @click="copy(iban, 'iban')" :aria-label="`Copia IBAN`">
 						{{ copied === 'iban' ? 'Copiato' : 'Copia' }}
 					</button>
 				</div>
@@ -80,7 +66,7 @@ onBeforeUnmount(() => {
 				<div class="bti-field__label">Causale (obbligatoria)</div>
 				<div class="bti-field__row">
 					<span class="bti-field__value bti-field__value--mono">{{ causale }}</span>
-					<button type="button" class="bti-copy bti-copy--primary" :aria-label="`Copia causale`" @click="copy(causale, 'causale')">
+					<button type="button" class="bti-copy bti-copy--primary" @click="copy(causale, 'causale')" :aria-label="`Copia causale`">
 						{{ copied === 'causale' ? 'Copiato' : 'Copia' }}
 					</button>
 				</div>
@@ -96,7 +82,7 @@ onBeforeUnmount(() => {
 				<div class="bti-field__label">BIC / SWIFT</div>
 				<div class="bti-field__row">
 					<span class="bti-field__value bti-field__value--mono">{{ bic }}</span>
-					<button type="button" class="bti-copy" :aria-label="`Copia BIC`" @click="copy(bic, 'bic')">
+					<button type="button" class="bti-copy" @click="copy(bic, 'bic')" :aria-label="`Copia BIC`">
 						{{ copied === 'bic' ? 'Copiato' : 'Copia' }}
 					</button>
 				</div>

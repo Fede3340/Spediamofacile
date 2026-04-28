@@ -9,7 +9,7 @@
  * restano funzionanti per link diretti e SEO; il vantaggio è la voce
  * unica nella sidebar e l'header coerente.
  */
-import '~/assets/css/account-shell.css';
+import '~/assets/css/account.css';
 
 definePageMeta({
 	middleware: ['app-auth'],

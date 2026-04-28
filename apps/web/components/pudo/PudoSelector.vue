@@ -37,7 +37,7 @@ onBeforeUnmount(() => stopNowTimer());
 					type="text"
 					placeholder="es. Via Roma 10"
 					class="w-full bg-white rounded-[16px] h-[44px] px-[10px] text-[1rem] border border-[var(--color-brand-border)] transition-[border-color,box-shadow] duration-200 focus:border-[var(--color-brand-primary)] focus:shadow-[0_0_0_3px_rgba(9,88,102,0.15)]"
-					@keydown.enter.prevent="searchPudo" >
+					@keydown.enter.prevent="searchPudo" />
 			</div>
 
 			<div class="w-full">
@@ -48,7 +48,7 @@ onBeforeUnmount(() => stopNowTimer());
 					type="text"
 					placeholder="es. Iglesias"
 					class="w-full bg-white rounded-[16px] h-[44px] px-[10px] text-[1rem] border border-[var(--color-brand-border)] transition-[border-color,box-shadow] duration-200 focus:border-[var(--color-brand-primary)] focus:shadow-[0_0_0_3px_rgba(9,88,102,0.15)]"
-					@keydown.enter.prevent="searchPudo" >
+					@keydown.enter.prevent="searchPudo" />
 			</div>
 
 			<div class="w-full tablet:max-w-[130px]">
@@ -60,25 +60,25 @@ onBeforeUnmount(() => stopNowTimer());
 					maxlength="5"
 					placeholder="es. 09016"
 					class="w-full bg-white rounded-[16px] h-[44px] px-[10px] text-[1rem] border border-[var(--color-brand-border)] transition-[border-color,box-shadow] duration-200 focus:border-[var(--color-brand-primary)] focus:shadow-[0_0_0_3px_rgba(9,88,102,0.15)]"
-					@keydown.enter.prevent="searchPudo" >
+					@keydown.enter.prevent="searchPudo" />
 			</div>
 
 			<div class="col-span-1 tablet:col-span-2 desktop:col-span-1 flex flex-col tablet:flex-row items-stretch tablet:items-end gap-[8px] w-full tablet:w-auto">
 				<button
 					type="button"
+					@click="searchPudo"
 					:disabled="loading || !hasSearchInput"
-					class="inline-flex items-center justify-center gap-[6px] h-[44px] px-[16px] bg-[var(--color-brand-primary)] text-white rounded-[16px] text-[0.875rem] font-semibold hover:bg-[var(--color-brand-primary-hover)] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap min-w-0 tablet:min-w-[142px]"
-					@click="searchPudo">
+					class="inline-flex items-center justify-center gap-[6px] h-[44px] px-[16px] bg-[var(--color-brand-primary)] text-white rounded-[16px] text-[0.875rem] font-semibold hover:bg-[var(--color-brand-primary-hover)] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap min-w-0 tablet:min-w-[142px]">
 					<svg v-if="!loading" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-					<span v-if="loading" class="inline-block w-[16px] h-[16px] border-2 border-white border-t-transparent rounded-full animate-spin"/>
+					<span v-if="loading" class="inline-block w-[16px] h-[16px] border-2 border-white border-t-transparent rounded-full animate-spin"></span>
 					{{ loading ? 'Ricerca...' : 'Cerca punti' }}
 				</button>
 				<button
 					type="button"
+					@click="useCurrentLocation"
 					:disabled="geolocating || loading"
-					class="inline-flex items-center justify-center gap-[6px] h-[44px] px-[14px] bg-white text-[var(--color-brand-primary)] border border-[#C6D2D5] rounded-[16px] text-[0.8125rem] font-semibold hover:bg-[#F2F8F9] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap min-w-0 tablet:min-w-[150px]"
-					@click="useCurrentLocation">
-					<span v-if="geolocating" class="inline-block w-[14px] h-[14px] border-2 border-[var(--color-brand-primary)] border-t-transparent rounded-full animate-spin"/>
+					class="inline-flex items-center justify-center gap-[6px] h-[44px] px-[14px] bg-white text-[var(--color-brand-primary)] border border-[#C6D2D5] rounded-[16px] text-[0.8125rem] font-semibold hover:bg-[#F2F8F9] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap min-w-0 tablet:min-w-[150px]">
+					<span v-if="geolocating" class="inline-block w-[14px] h-[14px] border-2 border-[var(--color-brand-primary)] border-t-transparent rounded-full animate-spin"></span>
 					<span v-else class="inline-flex items-center gap-[6px]">
 						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
@@ -108,7 +108,7 @@ onBeforeUnmount(() => stopNowTimer());
 		<div v-if="searched" class="mt-[12px] grid grid-cols-1 desktop:grid-cols-2 gap-[14px] items-stretch">
 			<div class="order-2 desktop:order-1 h-[360px] tablet:h-[420px] desktop:h-[520px]">
 				<div v-if="loading" class="flex items-center justify-center h-full">
-					<span class="inline-block w-[28px] h-[28px] border-3 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)] rounded-full animate-spin"/>
+					<span class="inline-block w-[28px] h-[28px] border-3 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)] rounded-full animate-spin"></span>
 				</div>
 
 				<div v-else class="h-full flex flex-col">
@@ -150,7 +150,7 @@ onBeforeUnmount(() => stopNowTimer());
 									<div
 										class="w-[22px] h-[22px] rounded-full border-[2px] flex items-center justify-center"
 										:class="selectedPudoKey === pudo.ui_key ? 'border-[var(--color-brand-primary)] bg-[var(--color-brand-primary)]' : 'border-[#95A3B3] bg-transparent'">
-										<div v-if="selectedPudoKey === pudo.ui_key" class="w-[10px] h-[10px] rounded-full bg-white"/>
+										<div v-if="selectedPudoKey === pudo.ui_key" class="w-[10px] h-[10px] rounded-full bg-white"></div>
 									</div>
 								</div>
 							</div>
@@ -164,7 +164,7 @@ onBeforeUnmount(() => stopNowTimer());
 
 							<div v-if="expandedPudoKey === String(pudo.pudo_id || pudo.ui_key)" class="mt-[10px] pt-[10px] border-t border-[#E4E4E4] text-[0.8125rem]" @click.stop>
 								<div v-if="loadingDetailsKey === String(pudo.pudo_id || pudo.ui_key)" class="flex items-center gap-[6px] text-[var(--color-brand-text-secondary)]">
-									<span class="inline-block w-[14px] h-[14px] border-2 border-[var(--color-brand-primary)] border-t-transparent rounded-full animate-spin"/>
+									<span class="inline-block w-[14px] h-[14px] border-2 border-[var(--color-brand-primary)] border-t-transparent rounded-full animate-spin"></span>
 									Caricamento dettagli...
 								</div>
 								<template v-else-if="pudoDetails[String(pudo.pudo_id || pudo.ui_key)]">
@@ -183,8 +183,8 @@ onBeforeUnmount(() => stopNowTimer());
 
 							<button
 								type="button"
-								class="mt-[6px] text-[0.75rem] text-[var(--color-brand-primary)] font-semibold hover:opacity-80 cursor-pointer"
-								@click.stop="toggleDetails(pudo)">
+								@click.stop="toggleDetails(pudo)"
+								class="mt-[6px] text-[0.75rem] text-[var(--color-brand-primary)] font-semibold hover:opacity-80 cursor-pointer">
 								{{ expandedPudoKey === String(pudo.pudo_id || pudo.ui_key) ? 'Chiudi dettagli' : 'Dettagli e orari' }}
 							</button>
 						</div>

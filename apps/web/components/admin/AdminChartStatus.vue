@@ -1,7 +1,7 @@
 <script setup>
 /** AdminChartStatus.vue */
 import { computed } from 'vue';
-import { chartToNumber as toNumber, formatInteger, formatPercentage as formatPercent, computeSegments } from '~/utils/chart';
+import { useChartLogic } from '~/composables/useChartLogic';
 
 const props = defineProps({
 	statusData: {
@@ -16,6 +16,8 @@ const props = defineProps({
 	},
 });
 
+const { toNumber, formatInteger, formatPercentage: formatPercent, computeSegments } = useChartLogic();
+
 /**
  * Palette status mappata sui token admin-theme.css.
  * - success (consegnato/pagato/completato) -> teal primary
@@ -29,7 +31,7 @@ const statusColors = {
 	consegnato: 'var(--admin-status-success)',
 	consegnati: 'var(--admin-status-success)',
 	delivered: 'var(--admin-status-success)',
-	payed: 'var(--admin-status-success)',
+	paid: 'var(--admin-status-success)',
 	pagato: 'var(--admin-status-success)',
 	completed: 'var(--admin-status-success)',
 	completato: 'var(--admin-status-success)',
@@ -71,7 +73,7 @@ const statusLabels = {
 	in_consegna: 'In consegna',
 	pending: 'In attesa',
 	in_attesa: 'In attesa',
-	payed: 'Pagati',
+	paid: 'Pagati',
 	pagato: 'Pagati',
 	confermato: 'Confermati',
 	completed: 'Completati',
@@ -198,7 +200,7 @@ const hasStatusData = computed(() => normalizedStatuses.value.length > 0 && stat
 				class="admin-console-analytics__legend-item">
 				<span
 					class="admin-console-analytics__legend-swatch"
-					:style="{ background: item.color }"/>
+					:style="{ background: item.color }"></span>
 				<span class="admin-console-analytics__legend-label">{{ item.label }}</span>
 				<strong class="admin-console-analytics__legend-count">{{ formatInteger(item.count) }}</strong>
 				<span class="admin-console-analytics__legend-share">{{ formatPercent(item.share) }}</span>
@@ -207,7 +209,7 @@ const hasStatusData = computed(() => normalizedStatuses.value.length > 0 && stat
 	</div>
 
 	<div v-else class="admin-console-analytics__empty">
-		<div class="admin-console-analytics__empty-dot"/>
+		<div class="admin-console-analytics__empty-dot"></div>
 		<p>Nessun dato stati disponibile.</p>
 	</div>
 </template>

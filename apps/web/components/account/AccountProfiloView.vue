@@ -119,10 +119,10 @@ const infoFields = computed(() => {
 				<h2 id="sf-profilo-view-dati" class="text-[var(--color-brand-text)] text-[14px] tracking-[-0.2px] font-[700]">Dati personali</h2>
 			</div>
 			<button
+				@click="emit('edit')"
 				type="button"
 				aria-label="Modifica dati personali"
-				class="sf-flow-cta sf-flow-cta--secondary sf-flow-cta--compact !h-[36px] !px-[14px] !text-[12px]"
-				@click="emit('edit')">
+				class="sf-flow-cta sf-flow-cta--secondary sf-flow-cta--compact !h-[36px] !px-[14px] !text-[12px]">
 				<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
 				Modifica
 			</button>
@@ -135,9 +135,8 @@ const infoFields = computed(() => {
 					:key="idx"
 					class="flex items-start gap-[10px] p-[12px] rounded-[14px] hover:bg-[rgba(9,88,102,0.03)] transition-colors">
 					<div class="w-[32px] h-[32px] rounded-[10px] bg-[rgba(9,88,102,0.07)] flex items-center justify-center shrink-0">
-						<svg
-v-if="field.stroke"
-							aria-hidden="true"
+						<svg aria-hidden="true"
+							v-if="field.stroke"
 							xmlns="http://www.w3.org/2000/svg"
 							width="15"
 							height="15"
@@ -145,15 +144,14 @@ v-if="field.stroke"
 							fill="none"
 							stroke="#095866"
 							stroke-width="2"
-							v-html="field.icon"/>
-						<svg
-v-else
-							aria-hidden="true"
+							v-html="field.icon"></svg>
+						<svg aria-hidden="true"
+							v-else
 							xmlns="http://www.w3.org/2000/svg"
 							viewBox="0 0 24 24"
 							class="w-[15px] h-[15px]"
 							fill="#095866"
-							v-html="field.icon"/>
+							v-html="field.icon"></svg>
 					</div>
 					<div class="min-w-0 flex-1">
 						<p class="text-[var(--color-brand-text-muted)] text-[10px] font-[600] uppercase tracking-[0.3px]">{{ field.label }}</p>
@@ -205,9 +203,9 @@ v-else
 			</p>
 			<!-- Esporta dati -->
 			<button
+				@click="exportData"
 				:disabled="exportingData"
-				class="flex items-center gap-[10px] p-[12px] rounded-[12px] hover:bg-[rgba(9,88,102,0.03)] transition-colors cursor-pointer group w-full text-left disabled:opacity-60 disabled:cursor-not-allowed"
-				@click="exportData">
+				class="flex items-center gap-[10px] p-[12px] rounded-[12px] hover:bg-[rgba(9,88,102,0.03)] transition-colors cursor-pointer group w-full text-left disabled:opacity-60 disabled:cursor-not-allowed">
 				<div class="w-[32px] h-[32px] rounded-[10px] bg-[rgba(9,88,102,0.07)] flex items-center justify-center shrink-0">
 					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
 				</div>
@@ -222,8 +220,8 @@ v-else
 			<!-- Elimina account -->
 			<button
 				v-if="!showDeleteConfirm"
-				class="flex items-center gap-[10px] p-[12px] rounded-[12px] transition-colors cursor-pointer group w-full text-left sf-profilo-delete-trigger"
-				@click="showDeleteConfirm = true">
+				@click="showDeleteConfirm = true"
+				class="flex items-center gap-[10px] p-[12px] rounded-[12px] transition-colors cursor-pointer group w-full text-left sf-profilo-delete-trigger">
 				<div class="w-[32px] h-[32px] rounded-[10px] flex items-center justify-center shrink-0" style="background: rgba(239,68,68,0.08);">
 					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
 				</div>
@@ -244,16 +242,16 @@ v-else
 				<p id="sf-profilo-delete-desc" class="text-[12px] leading-[1.45]" style="color: var(--color-brand-error);">Azione irreversibile. Dati personali, indirizzi e spedizioni eliminati. Ordini completati anonimizzati per obblighi fiscali.</p>
 				<div class="flex gap-[12px]">
 					<button
+						@click="showDeleteConfirm = false"
 						type="button"
-						class="sf-flow-cta sf-flow-cta--secondary sf-flow-cta--compact !h-[36px] !px-[14px] !text-[12px]"
-						@click="showDeleteConfirm = false">
+						class="sf-flow-cta sf-flow-cta--secondary sf-flow-cta--compact !h-[36px] !px-[14px] !text-[12px]">
 						Annulla
 					</button>
 					<button
+						@click="confirmDeleteAccount"
 						:disabled="deletingAccount"
 						type="button"
-						class="sf-flow-cta sf-flow-cta--compact sf-profilo-delete-confirm !h-[36px] !px-[14px] !text-[12px] disabled:opacity-60 disabled:cursor-not-allowed"
-						@click="confirmDeleteAccount">
+						class="sf-flow-cta sf-flow-cta--compact sf-profilo-delete-confirm !h-[36px] !px-[14px] !text-[12px] disabled:opacity-60 disabled:cursor-not-allowed">
 						{{ deletingAccount ? 'Eliminazione...' : 'Conferma eliminazione' }}
 					</button>
 				</div>
@@ -263,13 +261,13 @@ v-else
 
 	<!-- Logout button -->
 	<button
+		@click.prevent="emit('logout')"
 		type="button"
 		aria-label="Esci dall'account"
-		class="w-full h-[40px] rounded-full bg-[#F0F1F4] hover:bg-[rgba(9,88,102,0.08)] text-[var(--color-brand-text-muted)] hover:text-[var(--color-brand-primary)] text-[12px] font-[600] flex items-center justify-center gap-[8px] cursor-pointer transition-all duration-[350ms]"
-		@click.prevent="emit('logout')">
+		class="w-full h-[40px] rounded-full bg-[#F0F1F4] hover:bg-[rgba(9,88,102,0.08)] text-[var(--color-brand-text-muted)] hover:text-[var(--color-brand-primary)] text-[12px] font-[600] flex items-center justify-center gap-[8px] cursor-pointer transition-all duration-[350ms]">
 		<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
 		Esci dall'account
 	</button>
 </template>
 
-<!-- Stili estratti in assets/css/components/sf-account-profilo-view.css (importato da main.css). -->
+<!-- Stili estratti in assets/css/account.css (importato da main.css). -->

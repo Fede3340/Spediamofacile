@@ -1,12 +1,14 @@
 <script setup>
 // Pagina Contatti — redesign editoriale (hero + strip canali + form centrato + FAQ grid + quick next)
-useSeoMeta({
-	title: 'Contatti',
-	description: 'Hai bisogno di aiuto? Contatta il team di SpediamoFacile per assistenza sulle tue spedizioni, preventivi personalizzati o informazioni sui nostri servizi.',
-})
+import '~/assets/css/content.css'
+import '~/assets/css/contatti.css'
 
-const runtimeConfig = useRuntimeConfig()
-const siteUrl = String(runtimeConfig.public?.siteUrl || 'https://spediamofacile.it').replace(/\/+$/, '')
+useSeoMeta({
+	title: 'Contatti - Assistenza e Supporto',
+	ogTitle: 'Contatti',
+	description: 'Hai bisogno di aiuto? Contatta il team di SpediamoFacile per assistenza sulle tue spedizioni, preventivi personalizzati o informazioni sui nostri servizi.',
+	ogDescription: 'Contatta SpediamoFacile per assistenza e supporto sulle tue spedizioni.',
+})
 
 useHead({
 	script: [{
@@ -15,11 +17,11 @@ useHead({
 			'@context': 'https://schema.org',
 			'@type': 'ContactPage',
 			name: 'Contatti SpediamoFacile',
-			url: `${siteUrl}/contatti`,
+			url: 'https://spediamofacile.it/contatti',
 			mainEntity: {
 				'@type': 'Organization',
 				name: 'SpediamoFacile',
-				url: siteUrl,
+				url: 'https://spediamofacile.it',
 				contactPoint: {
 					'@type': 'ContactPoint',
 					contactType: 'customer service',
@@ -146,36 +148,36 @@ const quickActions = [
 </script>
 
 <template>
-	<div class="min-h-screen pb-16 bg-[var(--gradient-page-surface,linear-gradient(180deg,#fff_0%,#f6fafb_100%))]">
-		<!-- HERO editoriale: titolo + claim + pill canali rapidi -->
+	<div class="contatti-page">
+		<!-- ── HERO editoriale: accent bar + titolo + claim + pill canali rapidi ── -->
 		<PublicPageHeader
 			eyebrow="Assistenza e supporto"
 			title="Parla con noi"
 			description="Rispondiamo in giornata a email, telefono o messaggio. Nessun bot, solo persone che conoscono il mondo BRT."
 			:crumbs="[{ label: 'Home', to: '/' }, { label: 'Contatti' }]">
-			<div class="mt-2 flex flex-wrap gap-x-6 gap-y-3">
-				<a href="mailto:info@spediamofacile.it" class="contatti-pill">
-					<span class="contatti-pill__label">Email</span>
-					<span class="contatti-pill__arrow" aria-hidden="true">→</span>
-					<span class="contatti-pill__value">info@spediamofacile.it</span>
+			<div class="contatti-hero__pills">
+				<a href="mailto:info@spediamofacile.it" class="contatti-hero__pill">
+					<span class="contatti-hero__pill-label">Email</span>
+					<span class="contatti-hero__pill-arrow" aria-hidden="true">→</span>
+					<span class="contatti-hero__pill-value">info@spediamofacile.it</span>
 				</a>
-				<a href="tel:+390282954130" class="contatti-pill">
-					<span class="contatti-pill__label">Telefono</span>
-					<span class="contatti-pill__arrow" aria-hidden="true">→</span>
-					<span class="contatti-pill__value">+39 02 8295 4130</span>
+				<a href="tel:+390282954130" class="contatti-hero__pill">
+					<span class="contatti-hero__pill-label">Telefono</span>
+					<span class="contatti-hero__pill-arrow" aria-hidden="true">→</span>
+					<span class="contatti-hero__pill-value">+39 02 8295 4130</span>
 				</a>
-				<span class="contatti-pill is-static">
-					<span class="contatti-pill__label">Sede</span>
-					<span class="contatti-pill__arrow" aria-hidden="true">→</span>
-					<span class="contatti-pill__value">Milano (MI)</span>
+				<span class="contatti-hero__pill contatti-hero__pill--static">
+					<span class="contatti-hero__pill-label">Sede</span>
+					<span class="contatti-hero__pill-arrow" aria-hidden="true">→</span>
+					<span class="contatti-hero__pill-value">Milano (MI)</span>
 				</span>
 			</div>
 		</PublicPageHeader>
 
-		<!-- STRIP canali: 4 card icona con valore -->
-		<section class="mt-8" aria-label="Canali di contatto">
+		<!-- ── STRIP canali: 4 card icona con valore ── -->
+		<section class="contact-strip" aria-label="Canali di contatto">
 			<div class="my-container">
-				<div class="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(200px,1fr))]">
+				<div class="contact-strip__grid">
 					<component
 						:is="channel.href ? 'a' : 'div'"
 						v-for="channel in channels"
@@ -183,77 +185,77 @@ const quickActions = [
 						:href="channel.href || undefined"
 						:target="channel.href && channel.href.startsWith('http') ? '_blank' : undefined"
 						:rel="channel.href && channel.href.startsWith('http') ? 'noopener noreferrer' : undefined"
-						class="contatti-card grid gap-2 p-5 bg-white rounded-2xl no-underline text-inherit border border-[rgba(9,88,102,0.12)] shadow-[0_2px_8px_rgba(9,88,102,0.04)]">
-						<span class="inline-flex items-center justify-center w-11 h-11 rounded-[14px] text-[var(--color-brand-primary)] bg-[linear-gradient(135deg,rgba(9,88,102,0.16),rgba(9,88,102,0.04))]" aria-hidden="true">
+						class="contact-strip__card">
+						<span class="contact-strip__icon" aria-hidden="true">
 							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
 								<path :d="channel.icon" />
 							</svg>
 						</span>
-						<span class="text-[0.6875rem] font-bold uppercase tracking-[0.1em] text-[var(--color-brand-text-secondary)]">{{ channel.label }}</span>
-						<span class="text-[0.9375rem] font-semibold text-[var(--color-brand-primary)] break-words">{{ channel.value }}</span>
+						<span class="contact-strip__label">{{ channel.label }}</span>
+						<span class="contact-strip__value">{{ channel.value }}</span>
 					</component>
 				</div>
 			</div>
 		</section>
 
-		<!-- FORM centrato -->
-		<section class="mt-8" aria-labelledby="contact-form-title">
+		<!-- ── FORM centrato (max 640px) ── -->
+		<section class="contact-form-centered" aria-labelledby="contact-form-title">
 			<div class="my-container">
-				<div v-if="submitSuccess" class="contatti-panel grid gap-3 justify-items-center text-center">
-					<div class="inline-flex items-center justify-center w-14 h-14 rounded-full text-[var(--color-brand-primary)] bg-[linear-gradient(135deg,rgba(9,88,102,0.18),rgba(9,88,102,0.04))]" aria-hidden="true">
+				<div v-if="submitSuccess" class="contact-form-centered__success">
+					<div class="contact-form-centered__success-icon" aria-hidden="true">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
 							<path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5L18,9.5L16.59,8.09L11,13.67L7.91,10.59L6.5,12L11,16.5Z" />
 						</svg>
 					</div>
-					<h2 class="contatti-h2">Messaggio inviato</h2>
-					<p class="m-0 max-w-[44ch] text-[0.95rem] leading-[1.55] text-[var(--color-brand-text-secondary)]">Ti risponderemo in giornata. Nel frattempo puoi tracciare una spedizione o calcolare un preventivo.</p>
+					<h2 class="contact-form-centered__title">Messaggio inviato</h2>
+					<p class="contact-form-centered__success-text">Ti risponderemo in giornata. Nel frattempo puoi tracciare una spedizione o calcolare un preventivo.</p>
 					<SfButton @click="submitSuccess = false">
 						Invia un altro messaggio
 					</SfButton>
 				</div>
 
-				<div v-else class="contatti-panel">
-					<header class="grid gap-2 mb-6 text-center justify-items-center">
-						<span class="block w-12 h-[3px] rounded-full bg-[var(--color-brand-accent)]" aria-hidden="true"/>
-						<h2 id="contact-form-title" class="contatti-h2">Scrivici</h2>
-						<p class="m-0 max-w-[48ch] text-[0.95rem] leading-[1.55] text-[var(--color-brand-text-secondary)]">Descrivi la richiesta con peso, tratta e urgenza: piu contesto, risposta piu precisa.</p>
+				<div v-else class="contact-form-centered__wrap">
+					<header class="contact-form-centered__header">
+						<span class="contact-form-centered__accent" aria-hidden="true"></span>
+						<h2 id="contact-form-title" class="contact-form-centered__title">Scrivici</h2>
+						<p class="contact-form-centered__lead">Descrivi la richiesta con peso, tratta e urgenza: piu contesto, risposta piu precisa.</p>
 					</header>
 
-					<form class="grid gap-4" novalidate @submit.prevent="handleSubmit">
-						<div class="grid gap-4 md:grid-cols-2">
-							<div class="grid gap-1.5">
-								<label for="cf-name" class="contatti-label">Nome</label>
-								<input id="cf-name" v-model="contactForm.name" type="text" required autocomplete="given-name" class="contatti-input min-h-12 px-4" placeholder="Es. Mario" >
+					<form class="contact-form" novalidate @submit.prevent="handleSubmit">
+						<div class="contact-form__grid contact-form__grid--two">
+							<div class="contact-field">
+								<label for="cf-name" class="contact-field__label">Nome</label>
+								<input id="cf-name" v-model="contactForm.name" type="text" required autocomplete="given-name" class="contact-field__input" placeholder="Es. Mario" />
 							</div>
-							<div class="grid gap-1.5">
-								<label for="cf-surname" class="contatti-label">Cognome</label>
-								<input id="cf-surname" v-model="contactForm.surname" type="text" required autocomplete="family-name" class="contatti-input min-h-12 px-4" placeholder="Es. Rossi" >
-							</div>
-						</div>
-
-						<div class="grid gap-4 md:grid-cols-2">
-							<div class="grid gap-1.5">
-								<label for="cf-email" class="contatti-label">Email</label>
-								<input id="cf-email" v-model="contactForm.email" type="email" required autocomplete="email" class="contatti-input min-h-12 px-4" placeholder="nome@email.it" >
-							</div>
-							<div class="grid gap-1.5">
-								<label for="cf-phone" class="contatti-label">Telefono <span class="font-medium text-[var(--color-brand-text-secondary)]">(opzionale)</span></label>
-								<input id="cf-phone" v-model="contactForm.telephone_number" type="tel" autocomplete="tel" class="contatti-input min-h-12 px-4" placeholder="+39 ..." >
+							<div class="contact-field">
+								<label for="cf-surname" class="contact-field__label">Cognome</label>
+								<input id="cf-surname" v-model="contactForm.surname" type="text" required autocomplete="family-name" class="contact-field__input" placeholder="Es. Rossi" />
 							</div>
 						</div>
 
-						<div class="grid gap-1.5">
-							<label for="cf-message" class="contatti-label">Messaggio <span class="font-medium text-[var(--color-brand-text-secondary)]">(per reclami: indica "Reclamo" e numero spedizione BRT)</span></label>
-							<textarea id="cf-message" v-model="contactForm.message" required rows="6" maxlength="1500" class="contatti-input min-h-[160px] py-3.5 px-4 leading-[1.55] resize-y" placeholder="Racconta la richiesta con dettagli utili (tratta, peso, urgenza). Per un reclamo: inizia con &quot;Reclamo&quot; e allega numero spedizione."/>
+						<div class="contact-form__grid contact-form__grid--two">
+							<div class="contact-field">
+								<label for="cf-email" class="contact-field__label">Email</label>
+								<input id="cf-email" v-model="contactForm.email" type="email" required autocomplete="email" class="contact-field__input" placeholder="nome@email.it" />
+							</div>
+							<div class="contact-field">
+								<label for="cf-phone" class="contact-field__label">Telefono <span class="contact-field__hint">(opzionale)</span></label>
+								<input id="cf-phone" v-model="contactForm.telephone_number" type="tel" autocomplete="tel" class="contact-field__input" placeholder="+39 ..." />
+							</div>
 						</div>
 
-						<div class="flex justify-center mt-1" aria-label="Verifica anti-bot">
+						<div class="contact-field">
+							<label for="cf-message" class="contact-field__label">Messaggio <span class="contact-field__hint">(per reclami: indica "Reclamo" e numero spedizione BRT)</span></label>
+							<textarea id="cf-message" v-model="contactForm.message" required rows="6" maxlength="1500" class="contact-field__textarea" placeholder="Racconta la richiesta con dettagli utili (tratta, peso, urgenza). Per un reclamo: inizia con &quot;Reclamo&quot; e allega numero spedizione."></textarea>
+						</div>
+
+						<div class="contact-form__turnstile" aria-label="Verifica anti-bot">
 							<NuxtTurnstile v-model="turnstile.token.value" @expired="turnstile.onExpire" @error="turnstile.onError" />
 						</div>
 
-						<p v-if="submitError" class="m-0 px-3.5 py-3 rounded-xl text-sm font-semibold text-[var(--color-brand-error)] bg-[var(--color-error-bg,#fee8e0)] border border-[var(--color-error-border,#fbc4ac)]" role="alert">{{ submitError }}</p>
+						<p v-if="submitError" class="contact-form__error" role="alert">{{ submitError }}</p>
 
-						<SfButton type="submit" size="lg" class="w-full justify-center mt-1 md:w-auto md:min-w-[220px] md:ml-auto" :loading="isSubmitting" :disabled="!turnstile.isReady.value">
+						<SfButton type="submit" size="lg" class="contact-form__cta" :loading="isSubmitting" :disabled="!turnstile.isReady.value">
 							<span v-if="!isSubmitting">Invia richiesta</span>
 							<span v-else>Invio in corso...</span>
 						</SfButton>
@@ -262,37 +264,37 @@ const quickActions = [
 			</div>
 		</section>
 
-		<!-- FAQ grid editoriale -->
-		<section class="mt-8" aria-labelledby="contact-faq-title">
+		<!-- ── FAQ grid editoriale ── -->
+		<section class="contact-faq-grid" aria-labelledby="contact-faq-title">
 			<div class="my-container">
-				<header class="grid gap-2.5 mb-6 justify-items-center text-center">
-					<span class="block w-12 h-[3px] rounded-full bg-[var(--color-brand-accent)]" aria-hidden="true"/>
-					<h2 id="contact-faq-title" class="m-0 font-montserrat text-[1.75rem] leading-[1.1] tracking-[-0.025em] font-extrabold text-[var(--color-brand-primary)]">Domande frequenti</h2>
-					<p class="m-0 max-w-[56ch] text-[0.95rem] text-[var(--color-brand-text-secondary)]">Prima di scriverci, dai un'occhiata: molte risposte sono qui.</p>
+				<header class="contact-faq-grid__header">
+					<span class="contact-faq-grid__accent" aria-hidden="true"></span>
+					<h2 id="contact-faq-title" class="contact-faq-grid__title">Domande frequenti</h2>
+					<p class="contact-faq-grid__lead">Prima di scriverci, dai un'occhiata: molte risposte sono qui.</p>
 				</header>
 				<ContactFAQ />
 			</div>
 		</section>
 
-		<!-- Quick next: 3 strip orizzontali per azione rapida -->
-		<section class="mt-8" aria-label="Prossime azioni utili">
+		<!-- ── Quick next: 3 strip orizzontali per azione rapida ── -->
+		<section class="contact-quick-next" aria-label="Prossime azioni utili">
 			<div class="my-container">
-				<div class="grid gap-3">
+				<div class="contact-quick-next__grid">
 					<NuxtLink
 						v-for="action in quickActions"
 						:key="action.href"
 						:to="action.href"
-						class="contatti-quick-strip grid grid-cols-[auto_1fr_auto] items-center gap-4 px-5 py-4 bg-white rounded-2xl no-underline text-inherit border border-[rgba(9,88,102,0.12)]">
-						<span class="inline-flex items-center justify-center w-10 h-10 rounded-xl text-[var(--color-brand-primary)] bg-[linear-gradient(135deg,rgba(9,88,102,0.16),rgba(9,88,102,0.04))]" aria-hidden="true">
+						class="contact-quick-next__strip">
+						<span class="contact-quick-next__icon" aria-hidden="true">
 							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
 								<path :d="action.icon" />
 							</svg>
 						</span>
-						<span class="grid gap-0.5 text-center">
-							<span class="text-[0.9375rem] font-bold text-[var(--color-brand-primary)]">{{ action.title }}</span>
-							<span class="text-[0.82rem] text-[var(--color-brand-text-secondary)]">{{ action.text }}</span>
+						<span class="contact-quick-next__body">
+							<span class="contact-quick-next__title">{{ action.title }}</span>
+							<span class="contact-quick-next__text">{{ action.text }}</span>
 						</span>
-						<span class="contatti-quick-strip__arrow inline-flex items-center justify-center text-[var(--color-brand-accent)]" aria-hidden="true">
+						<span class="contact-quick-next__arrow" aria-hidden="true">
 							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 								<path d="M5 12h14" />
 								<path d="m12 5 7 7-7 7" />
@@ -304,99 +306,3 @@ const quickActions = [
 		</section>
 	</div>
 </template>
-
-<style scoped>
-/* Pill rapide hero: pattern teal con hover translate + accent border */
-.contatti-pill {
-	display: inline-flex;
-	align-items: center;
-	gap: 10px;
-	padding: 10px 18px;
-	border-radius: 999px;
-	background: #fff;
-	border: 1px solid rgba(9, 88, 102, 0.18);
-	color: var(--color-brand-primary);
-	text-decoration: none;
-	font-size: 0.9rem;
-	transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
-}
-.contatti-pill:hover:not(.is-static) {
-	transform: translateY(-1px);
-	border-color: var(--color-brand-accent);
-	box-shadow: 0 6px 16px rgba(9, 88, 102, 0.08);
-}
-.is-static { cursor: default; }
-.contatti-pill__label {
-	font-weight: 700;
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
-	font-size: 0.72rem;
-	color: var(--color-brand-text-secondary);
-}
-.contatti-pill__arrow { color: var(--color-brand-accent); font-weight: 700; }
-.contatti-pill__value { font-weight: 600; color: var(--color-brand-primary); }
-
-/* Card e strip: hover translate + box-shadow accent */
-.contatti-card,
-.contatti-quick-strip {
-	transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
-}
-a.contatti-card:hover {
-	transform: translateY(-2px);
-	border-color: rgba(9, 88, 102, 0.3);
-	box-shadow: 0 8px 24px rgba(9, 88, 102, 0.08);
-}
-.contatti-quick-strip:hover {
-	transform: translateY(-1px);
-	border-color: var(--color-brand-accent);
-	box-shadow: 0 8px 20px rgba(9, 88, 102, 0.08);
-}
-.contatti-quick-strip__arrow { transition: transform 240ms ease; }
-.contatti-quick-strip:hover .contatti-quick-strip__arrow { transform: translateX(3px); }
-
-/* Pannello form / success: shadow doppio */
-.contatti-panel {
-	width: 100%;
-	background: #fff;
-	border: 1px solid rgba(9, 88, 102, 0.12);
-	border-radius: 20px;
-	padding: 20px 16px;
-	box-shadow: 0 4px 16px rgba(9, 88, 102, 0.05), 0 12px 32px rgba(9, 88, 102, 0.04);
-}
-@media (min-width: 768px) {
-	.contatti-panel { padding: 36px 40px; }
-}
-
-/* Heading e label form: usano Montserrat e token brand */
-.contatti-h2 {
-	margin: 0;
-	font-family: var(--font-montserrat);
-	font-size: 1.625rem;
-	line-height: 1.1;
-	letter-spacing: -0.025em;
-	font-weight: 800;
-	color: var(--color-brand-primary);
-}
-.contatti-label { font-size: 0.82rem; font-weight: 700; color: var(--color-brand-text); }
-
-/* Input con focus ring teal */
-.contatti-input {
-	width: 100%;
-	border-radius: 12px;
-	border: 1.5px solid var(--color-border, #dfe4ea);
-	background: #fff;
-	color: var(--color-brand-text);
-	font-size: 0.95rem;
-	font-family: inherit;
-	transition: border-color 200ms ease, box-shadow 200ms ease;
-}
-.contatti-input::placeholder { color: var(--color-text-faint, #9aa5b1); }
-.contatti-input:focus {
-	outline: none;
-	border-color: var(--color-brand-primary);
-	box-shadow: 0 0 0 3px rgba(9, 88, 102, 0.12);
-}
-@media (max-width: 23.4375rem) {
-	.contatti-input { font-size: 16px; } /* evita zoom iOS */
-}
-</style>

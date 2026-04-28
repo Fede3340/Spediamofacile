@@ -1,6 +1,6 @@
 <!-- COMPONENTE: TrackingActionsBar (tracking/TrackingActionsBar.vue) -->
 <script setup>
-// Stili in assets/css/tracking.css (importato da main.css).
+import '~/assets/css/tracking.css';
 
 const props = defineProps({
 	orderId: {
@@ -36,7 +36,7 @@ const emit = defineEmits(['reschedule', 'change-address']);
 
 <template>
 	<div class="tracking-actions-bar rounded-[16px] overflow-hidden" data-shadow="soft">
-		<div class="h-[3px]" data-accent="bar"/>
+		<div class="h-[3px]" data-accent="bar"></div>
 		<div class="p-[16px] sm:p-[18px]" style="background: var(--gradient-page-surface, #ffffff)">
 			<p class="text-[11px] uppercase tracking-[0.4px] text-[#777] mb-[12px]" style="font-weight:700">
 				Azioni rapide

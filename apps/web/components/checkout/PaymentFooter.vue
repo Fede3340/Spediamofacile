@@ -39,7 +39,7 @@ const emit = defineEmits(['confirm-payment', 'update:termsAccepted'])
     <div class="checkout-payment-footer__body">
       <div class="checkout-payment-footer__support">
         <label class="checkout-payment-footer__terms">
-          <input type="checkbox" :checked="termsAccepted" class="checkout-payment-footer__checkbox" @change="emit('update:termsAccepted', $event.target.checked)" >
+          <input type="checkbox" :checked="termsAccepted" @change="emit('update:termsAccepted', $event.target.checked)" class="checkout-payment-footer__checkbox" />
           <span class="checkout-payment-footer__terms-text">
             Ho letto e accetto i
             <NuxtLink to="/termini-e-condizioni" class="checkout-payment-footer__terms-link">Termini e condizioni</NuxtLink>
@@ -53,9 +53,9 @@ const emit = defineEmits(['confirm-payment', 'update:termsAccepted'])
       <div class="checkout-payment-footer__cta">
         <button
           type="button"
+          @click="emit('confirm-payment')"
           :disabled="!canPay"
-          :class="['sf-flow-cta', 'sf-flow-cta--primary', 'checkout-payment-submit', canPay ? 'checkout-payment-submit--active' : 'checkout-payment-submit--disabled']"
-          @click="emit('confirm-payment')">
+          :class="['sf-flow-cta', 'sf-flow-cta--primary', 'checkout-payment-submit', canPay ? 'checkout-payment-submit--active' : 'checkout-payment-submit--disabled']">
           <span>{{ isProcessing ? 'Apertura...' : paymentActionLabel }}</span>
           <span class="sf-flow-cta__arrow">
             <svg v-if="isProcessing" class="spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

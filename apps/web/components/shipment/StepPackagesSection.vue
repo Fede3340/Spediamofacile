@@ -41,7 +41,7 @@ const metrics = [
 				:key="pack._qid || packIndex"
 				class="package-entry">
 				<div class="package-entry__header">
-					<span class="package-entry__header-balance" aria-hidden="true"/>
+					<span class="package-entry__header-balance" aria-hidden="true"></span>
 					<div class="package-entry__type-switcher-shell">
 						<div
 							class="package-type-switcher package-type-switcher--shared sf-shared-segment-strip sf-shared-segment-strip--compact"
@@ -68,7 +68,7 @@ const metrics = [
 										class="package-type-switcher__icon-image"
 										loading="eager"
 										decoding="async"
-										draggable="false" >
+										draggable="false" />
 								</span>
 								<span class="sf-shared-segment__title">{{ option.text }}</span>
 							</button>
@@ -80,8 +80,8 @@ const metrics = [
 							v-if="packages.length > 1"
 							type="button"
 							class="package-entry__delete"
-							:aria-label="`Elimina collo ${packIndex + 1}`"
-							@click="onDeletePack(pack._qid || packIndex)">
+							@click="onDeletePack(pack._qid || packIndex)"
+							:aria-label="`Elimina collo ${packIndex + 1}`">
 							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 								<path d="M3 6h18" />
 								<path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" />
@@ -89,7 +89,7 @@ const metrics = [
 								<path d="M10 11v6M14 11v6" />
 							</svg>
 						</button>
-						<span v-else class="package-entry__header-balance" aria-hidden="true"/>
+						<span v-else class="package-entry__header-balance" aria-hidden="true"></span>
 					</div>
 				</div>
 
@@ -102,8 +102,8 @@ const metrics = [
 									type="button"
 									class="quantity-stepper__button"
 									:disabled="isEuropeMonocollo"
-									:aria-label="`Riduci quantita collo ${packIndex + 1}`"
-									@click="onDecrementQuantity(pack)">
+									@click="onDecrementQuantity(pack)"
+									:aria-label="`Riduci quantita collo ${packIndex + 1}`">
 									<span class="quantity-stepper__symbol" aria-hidden="true">-</span>
 								</button>
 								<input
@@ -123,13 +123,13 @@ const metrics = [
 									data-form-type="other"
 									class="quantity-stepper__input"
 									:readonly="isEuropeMonocollo"
-									@input="onQuantityInput(pack)" >
+									@input="onQuantityInput(pack)" />
 								<button
 									type="button"
 									class="quantity-stepper__button"
 									:disabled="isEuropeMonocollo"
-									:aria-label="`Aumenta quantita collo ${packIndex + 1}`"
-									@click="onIncrementQuantity(pack)">
+									@click="onIncrementQuantity(pack)"
+									:aria-label="`Aumenta quantita collo ${packIndex + 1}`">
 									<span class="quantity-stepper__symbol" aria-hidden="true">+</span>
 								</button>
 							</div>
@@ -159,7 +159,7 @@ const metrics = [
 								placeholder="0"
 								:class="getMetricInputClass(packIndex, metric.key)"
 								@input="metric.key === 'weight' ? onWeightInput(pack, packIndex) : onDimensionInput(pack, packIndex, metric.key)"
-								@blur="metric.key === 'weight' ? onWeightBlur(pack, packIndex) : onDimensionBlur(pack, packIndex, metric.key)" >
+								@blur="metric.key === 'weight' ? onWeightBlur(pack, packIndex) : onDimensionBlur(pack, packIndex, metric.key)" />
 							<span class="package-field-card__unit">{{ metric.unit }}</span>
 						</div>
 						<div v-if="getMetricError(packIndex, metric.key)" class="package-field-card__feedback packages-stage-feedback">

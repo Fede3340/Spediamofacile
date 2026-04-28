@@ -42,8 +42,7 @@ const externalTrackingHref = computed(() => getBrtTrackingUrl(props.orderData));
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
 							Traccia spedizione
 						</NuxtLink>
-						<a
-v-if="externalTrackingHref" :href="externalTrackingHref" target="_blank" rel="noopener noreferrer"
+						<a v-if="externalTrackingHref" :href="externalTrackingHref" target="_blank" rel="noopener noreferrer"
 							class="inline-flex items-center gap-[6px] px-[14px] py-[8px] border border-[var(--color-brand-primary)] text-[var(--color-brand-primary)] rounded-[16px] font-semibold text-[0.8125rem] hover:bg-[var(--color-brand-primary)] hover:text-white transition">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
 							Vedi su BRT
@@ -56,9 +55,8 @@ v-if="externalTrackingHref" :href="externalTrackingHref" target="_blank" rel="no
 		<!-- Label available -->
 		<template v-if="orderData.has_label">
 			<div class="flex flex-wrap items-center gap-[10px] mb-[12px]">
-				<button
-type="button" class="inline-flex items-center gap-[6px] px-[16px] py-[10px] bg-[var(--color-brand-primary)] text-white rounded-[50px] text-[0.875rem] font-semibold hover:bg-[var(--color-brand-primary-hover)] transition cursor-pointer"
-					@click="emit('downloadLabel')">
+				<button @click="emit('downloadLabel')" type="button"
+					class="inline-flex items-center gap-[6px] px-[16px] py-[10px] bg-[var(--color-brand-primary)] text-white rounded-[50px] text-[0.875rem] font-semibold hover:bg-[var(--color-brand-primary-hover)] transition cursor-pointer">
 					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
 					Scarica Etichetta Spedizione
 				</button>
@@ -78,9 +76,8 @@ type="button" class="inline-flex items-center gap-[6px] px-[16px] py-[10px] bg-[
 				<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
 				<p class="text-[0.8125rem] text-amber-800 flex-1">Etichetta in generazione...</p>
 			</div>
-			<button
-:disabled="regenerating" type="button" class="inline-flex items-center gap-[6px] px-[16px] py-[10px] bg-[var(--color-brand-accent)] text-white rounded-[50px] text-[0.875rem] font-semibold hover:opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
-				@click="emit('regenerateLabel')">
+			<button @click="emit('regenerateLabel')" :disabled="regenerating" type="button"
+				class="inline-flex items-center gap-[6px] px-[16px] py-[10px] bg-[var(--color-brand-accent)] text-white rounded-[50px] text-[0.875rem] font-semibold hover:opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer">
 				<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
 				{{ regenerating ? 'Rigenerazione...' : 'Rigenera Etichetta' }}
 			</button>

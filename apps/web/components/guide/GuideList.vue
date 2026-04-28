@@ -1,5 +1,5 @@
 <script setup>
-import '~/assets/css/components/sf-guide.css';
+import '~/assets/css/content.css';
 
 defineProps({
 	featuredGuide: { type: Object, default: null },

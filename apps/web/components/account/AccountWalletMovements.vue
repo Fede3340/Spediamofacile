@@ -75,8 +75,7 @@ const getMovementSvg = (mov) => {
 		<div class="mb-[16px] flex flex-col gap-[10px] sm:flex-row sm:items-start sm:justify-between desktop:mb-[16px]">
 			<div class="flex items-start gap-[12px]">
 				<div class="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-[#EDF7F8]">
-					<svg
-aria-hidden="true"
+					<svg aria-hidden="true"
 						width="20"
 						height="20"
 						viewBox="0 0 24 24"
@@ -114,20 +113,19 @@ aria-hidden="true"
 		<div v-if="isLoadingMovements && !hasMovements" class="space-y-[10px] py-[4px]">
 			<div v-for="index in 4" :key="index" class="animate-pulse rounded-[16px] border border-[#EEF1F3] p-[12px]">
 				<div class="flex items-start gap-[12px]">
-					<div class="h-[38px] w-[38px] rounded-full bg-[#F5F7F8]"/>
+					<div class="h-[38px] w-[38px] rounded-full bg-[#F5F7F8]"></div>
 					<div class="min-w-0 flex-1 space-y-[8px]">
-						<div class="h-[14px] w-[220px] max-w-full rounded-full bg-[var(--color-brand-border)]"/>
-						<div class="h-[12px] w-[160px] rounded-full bg-[#F0F0F0]"/>
+						<div class="h-[14px] w-[220px] max-w-full rounded-full bg-[var(--color-brand-border)]"></div>
+						<div class="h-[12px] w-[160px] rounded-full bg-[#F0F0F0]"></div>
 					</div>
-					<div class="h-[14px] w-[74px] rounded-full bg-[var(--color-brand-border)]"/>
+					<div class="h-[14px] w-[74px] rounded-full bg-[var(--color-brand-border)]"></div>
 				</div>
 			</div>
 		</div>
 
 		<div v-else-if="hasBlockingError" class="py-[32px] text-center">
 			<div class="mx-auto mb-[16px] flex h-[56px] w-[56px] items-center justify-center rounded-full bg-[#FEF2F2]">
-				<svg
-aria-hidden="true"
+				<svg aria-hidden="true"
 					width="24"
 					height="24"
 					viewBox="0 0 24 24"
@@ -163,8 +161,7 @@ aria-hidden="true"
 
 		<div v-else-if="!hasMovements" class="py-[32px] text-center">
 			<div class="mx-auto mb-[16px] flex h-[56px] w-[56px] items-center justify-center rounded-full bg-[#F5F6F9]">
-				<svg
-aria-hidden="true"
+				<svg aria-hidden="true"
 					width="24"
 					height="24"
 					viewBox="0 0 24 24"
@@ -184,8 +181,7 @@ aria-hidden="true"
 				I movimenti appariranno qui dopo la prima ricarica o il primo pagamento con il portafoglio.
 			</p>
 			<NuxtLink to="/preventivo" class="btn-primary btn-compact mt-[16px] inline-flex items-center gap-[6px]">
-				<svg
-aria-hidden="true"
+				<svg aria-hidden="true"
 					width="17"
 					height="17"
 					viewBox="0 0 24 24"
@@ -216,8 +212,7 @@ aria-hidden="true"
 							? 'bg-[#E8F9EE] ring-[#22C55E]/20'
 							: 'bg-[#FEF2F2] ring-[#EF4444]/20',
 					]">
-					<svg
-aria-hidden="true"
+					<svg aria-hidden="true"
 						width="18"
 						height="18"
 						viewBox="0 0 24 24"

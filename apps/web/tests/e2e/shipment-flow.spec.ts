@@ -62,7 +62,7 @@ const installShipmentFlowMocks = async (
 	let csrfRequestCount = 0;
 	let firstStepRequestCount = 0;
 	let secondStepRequestCount = 0;
-	const createdOrderId = 987;
+	let createdOrderId = 987;
 	let createdOrderPayload: Record<string, any> | null = null;
 	const mockedLocations = [
 		{

@@ -35,11 +35,11 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 						class="relative flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-[10px] transition-all hover:bg-[rgba(9,88,102,0.04)]"
 						aria-label="Apri menu account"
 						@click="emit('toggle')">
-						<svg v-if="mobileOpen" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[20px] w-[20px] text-[var(--color-brand-text)]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+						<svg aria-hidden="true" v-if="mobileOpen" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[20px] w-[20px] text-[var(--color-brand-text)]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
 							<path d="M6 6l12 12" />
 							<path d="M18 6 6 18" />
 						</svg>
-						<svg v-else aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[20px] w-[20px] text-[var(--color-brand-text-muted)]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+						<svg aria-hidden="true" v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[20px] w-[20px] text-[var(--color-brand-text-muted)]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
 							<path d="M4 7h16" />
 							<path d="M4 12h16" />
 							<path d="M4 17h16" />
@@ -61,10 +61,10 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 								? 'account-route-shell__cta-primary--admin'
 								: 'bg-[#E44203] hover:bg-[#c73600] shadow-[0_3px_10px_rgba(228,66,3,0.22)]',
 						]">
-						<svg v-if="isAdmin" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[13px] w-[13px]" fill="currentColor">
+						<svg aria-hidden="true" v-if="isAdmin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[13px] w-[13px]" fill="currentColor">
 							<path d="M12 2 4 5v6c0 5.55 3.84 10.74 8 11 4.16-.26 8-5.45 8-11V5l-8-3Z" />
 						</svg>
-						<svg v-else aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[14px] w-[14px]" fill="currentColor" stroke-width="2">
+						<svg aria-hidden="true" v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[14px] w-[14px]" fill="currentColor" stroke-width="2">
 							<path d="M12 5L19 12L17.59 13.41L13 8.83V20H11V8.83L6.41 13.41L5 12L12 5Z" />
 						</svg>
 						<span class="hidden sm:inline">{{ isAdmin ? 'Console' : 'Spedisci' }}</span>

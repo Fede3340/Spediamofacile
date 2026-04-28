@@ -82,15 +82,14 @@ const readingPills = computed(() => {
 const firstSections = computed(() => guideSections.value.slice(0, 2));
 const remainingSections = computed(() => guideSections.value.slice(2));
 
-const runtimeConfig = useRuntimeConfig();
-const siteUrl = String(runtimeConfig.public?.siteUrl || 'https://spediamofacile.it').replace(/\/+$/, '');
-
 useSeoMeta({
 	title: () => (guide.value?.title ?? 'Guida'),
+	ogTitle: () => (guide.value?.title ?? 'Guida'),
 	description: () => guideMetaDescription.value,
+	ogDescription: () => guideMetaDescription.value,
 	ogType: 'article',
-	ogImage: () => guide.value?.featured_image || `${siteUrl}/og/default.png`,
-	twitterImage: () => guide.value?.featured_image || `${siteUrl}/og/default.png`,
+	ogImage: () => guide.value?.featured_image || 'https://spediamofacile.it/og/default.png',
+	twitterImage: () => guide.value?.featured_image || 'https://spediamofacile.it/og/default.png',
 	articlePublishedTime: () => guide.value?.created_at || undefined,
 	articleModifiedTime: () => guide.value?.updated_at || guide.value?.created_at || undefined,
 	articleSection: 'Guide',
@@ -120,23 +119,23 @@ useHead(() => {
 					inLanguage: 'it-IT',
 					mainEntityOfPage: {
 						'@type': 'WebPage',
-						'@id': `${siteUrl}/guide/${slug.value}`,
+						'@id': `https://spediamofacile.it/guide/${slug.value}`,
 					},
-					image: guide.value.featured_image || `${siteUrl}/og-image.jpg`,
+					image: guide.value.featured_image || 'https://spediamofacile.it/og-image.jpg',
 					datePublished: guide.value.created_at || undefined,
 					dateModified: guide.value.updated_at || guide.value.created_at || undefined,
 					author: {
 						'@type': 'Organization',
 						name: 'SpediamoFacile',
-						url: siteUrl,
+						url: 'https://spediamofacile.it',
 					},
 					publisher: {
 						'@type': 'Organization',
 						name: 'SpediamoFacile',
-						url: siteUrl,
+						url: 'https://spediamofacile.it',
 						logo: {
 							'@type': 'ImageObject',
-							url: `${siteUrl}/img/logo-spediamofacile.png`,
+							url: 'https://spediamofacile.it/img/logo-spedizionefacile.png',
 						},
 					},
 				}),
@@ -148,7 +147,7 @@ useHead(() => {
 
 <template>
 	<section v-if="pending" class="flex min-h-[420px] items-center justify-center">
-		<div class="h-[40px] w-[40px] rounded-full border-3 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)] animate-spin"/>
+		<div class="h-[40px] w-[40px] rounded-full border-3 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)] animate-spin"></div>
 	</section>
 
 	<section v-else-if="guide" class="guide-detail-shell min-h-screen py-[20px] desktop:py-[24px]">

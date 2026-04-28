@@ -1,6 +1,5 @@
 <script setup>
-import '~/assets/css/components/sf-page-header.css';
-import { formatEuro } from '~/utils/price.js';
+import '~/assets/css/layout.css';
 
 const route = useRoute();
 
@@ -17,6 +16,7 @@ const { isHomepageHeroRoute, heroImageUrl, heroImageStyle, prefetchHero } = useC
 
 // Fasce prezzo per badge hero
 const { loadPriceBands, getMinPrice, promoSettings } = usePriceBands();
+import { formatEuro } from '~/utils/price.js';
 
 // Caricamento NON bloccante: il hero si renderizza subito con fallback,
 // poi si aggiorna quando i dati arrivano
@@ -94,7 +94,7 @@ function scrollToPreventivo() {
 					<span
 						:style="{ backgroundColor: promoSettings.label_color || 'var(--color-brand-accent)' }"
 						class="inline-flex items-center gap-[6px] px-[10px] py-[4px] rounded-full text-white text-[0.75rem] font-bold tracking-wide shadow-sm">
-						<img v-if="promoSettings.label_image" :src="promoSettings.label_image" alt="" decoding="async" width="40" height="16" class="h-[16px] w-auto shrink-0" >
+						<img v-if="promoSettings.label_image" :src="promoSettings.label_image" alt="" decoding="async" width="40" height="16" class="h-[16px] w-auto shrink-0" />
 						{{ promoSettings.label_text }}
 					</span>
 				</div>
@@ -162,7 +162,7 @@ function scrollToPreventivo() {
 							height="900"
 							loading="eager"
 							fetchpriority="high"
-							decoding="async" >
+							decoding="async" />
 					</div>
 				</div>
 			</div>
@@ -186,8 +186,8 @@ function scrollToPreventivo() {
 
 	<!-- Servizi - pagamento alla consegna -->
 	<div
-		v-if="route.path.includes('pagamento-alla-consegna')"
-		class="relative z-2 flex flex-col items-start justify-center h-[calc(100%-30px)] desktop:h-[calc(100%-48px)] tablet:h-[calc(100%-42px)]">
+		class="relative z-2 flex flex-col items-start justify-center h-[calc(100%-30px)] desktop:h-[calc(100%-48px)] tablet:h-[calc(100%-42px)]"
+		v-if="route.path.includes('pagamento-alla-consegna')">
 		<div class="w-full">
 			<h1 class="font-montserrat text-[1.5rem] desktop:text-[3rem] desktop-xl:text-[5.5rem] leading-[110%] tracking-[-0.576px] desktop:tracking-[-2.2112px] font-[800] text-[var(--color-brand-text)] text-left tablet:max-w-[360px] desktop-xl:max-w-[1056px] max-w-[200px] desktop:max-w-full">
 				Pagamento alla consegna
@@ -200,8 +200,8 @@ function scrollToPreventivo() {
 
 	<!-- Contatti -->
 	<div
-		v-if="route.path === '/contatti'"
-		class="relative z-2 flex flex-col items-start justify-center h-[calc(100%-30px)] desktop:h-[calc(100%-48px)] tablet:h-[calc(100%-42px)]">
+		class="relative z-2 flex flex-col items-start justify-center h-[calc(100%-30px)] desktop:h-[calc(100%-48px)] tablet:h-[calc(100%-42px)]"
+		v-if="route.path === '/contatti'">
 		<div class="w-full max-w-[640px]">
 			<h1 class="font-montserrat text-[var(--color-brand-text)] font-[800] leading-[105%] tracking-[-0.8px] text-[1.75rem] tablet:text-[2.25rem] desktop:text-[2.75rem]">
 				Contatti
@@ -214,8 +214,8 @@ function scrollToPreventivo() {
 
 	<!-- Chi siamo -->
 	<div
-		v-if="route.path === '/chi-siamo'"
-		class="relative z-2 flex flex-col items-center justify-center h-[calc(100%-30px)] desktop:h-[calc(100%-48px)] tablet:h-[calc(100%-42px)]">
+		class="relative z-2 flex flex-col items-center justify-center h-[calc(100%-30px)] desktop:h-[calc(100%-48px)] tablet:h-[calc(100%-42px)]"
+		v-if="route.path === '/chi-siamo'">
 		<div class="w-full max-w-[760px]">
 			<h1 class="content-header-title text-center tablet:max-w-[360px] desktop-xl:max-w-[1056px] max-w-[320px] desktop:max-w-[620px] mx-auto">
 				Spedizioni chiare, veloci e senza stress
@@ -228,8 +228,8 @@ function scrollToPreventivo() {
 
 	<!-- Guide -->
 	<div
-		v-if="route.path.startsWith('/guide')"
-		class="relative z-2 flex flex-col items-center justify-between h-[calc(100%-30px)] desktop:h-[calc(100%-48px)] tablet:h-[calc(100%-42px)]">
+		class="relative z-2 flex flex-col items-center justify-between h-[calc(100%-30px)] desktop:h-[calc(100%-48px)] tablet:h-[calc(100%-42px)]"
+		v-if="route.path.startsWith('/guide')">
 		<div class="mt-[34px] mid-desktop:mt-[18px] desktop:mt-[50px]">
 			<h1 class="content-header-title text-center tablet:max-w-[360px] desktop-xl:max-w-[1056px] max-w-[320px] desktop:max-w-[620px] mx-auto">
 				Guide pratiche per spedire meglio
@@ -241,7 +241,7 @@ function scrollToPreventivo() {
 	</div>
 
 	<!-- FAQ -->
-	<div v-if="route.path === '/faq'" class="relative z-2 flex flex-col items-center justify-between h-[calc(100%-38px)] desktop:h-[calc(100%-65px)] tablet:h-[calc(100%-50px)]">
+	<div class="relative z-2 flex flex-col items-center justify-between h-[calc(100%-38px)] desktop:h-[calc(100%-65px)] tablet:h-[calc(100%-50px)]" v-if="route.path === '/faq'">
 		<div class="mt-[34px] mid-desktop:mt-[18px] desktop:mt-[50px]">
 			<h1 class="content-header-title text-center tablet:max-w-[360px] desktop-xl:max-w-[1056px] max-w-[320px] desktop:max-w-[620px] mx-auto">
 				Risposte rapide alle domande comuni

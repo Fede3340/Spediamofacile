@@ -116,7 +116,7 @@ onMounted(() => { fetchArticle(); });
 
 			<!-- Loading -->
 			<div v-if="isLoading" class="py-[32px] flex justify-center">
-				<div class="w-[40px] h-[40px] border-3 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)] rounded-full animate-spin"/>
+				<div class="w-[40px] h-[40px] border-3 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)] rounded-full animate-spin"></div>
 			</div>
 
 			<template v-else>
@@ -129,19 +129,19 @@ onMounted(() => { fetchArticle(); });
 						<div class="space-y-[14px] max-w-[700px]">
 							<div>
 								<label class="block text-[0.75rem] font-medium text-[var(--color-brand-text)] mb-[5px]">Titolo</label>
-								<input v-model="form.title" type="text" class="form-input" placeholder="Titolo del servizio" @input="generateSlug" >
+								<input v-model="form.title" @input="generateSlug" type="text" class="form-input" placeholder="Titolo del servizio" />
 							</div>
 							<div>
 								<label class="block text-[0.75rem] font-medium text-[var(--color-brand-text)] mb-[5px]">Slug (URL)</label>
-								<input v-model="form.slug" type="text" class="form-input font-mono" placeholder="titolo-del-servizio" >
+								<input v-model="form.slug" type="text" class="form-input font-mono" placeholder="titolo-del-servizio" />
 							</div>
 							<div>
 								<label class="block text-[0.75rem] font-medium text-[var(--color-brand-text)] mb-[5px]">Meta description</label>
-								<textarea v-model="form.meta_description" rows="2" class="form-input resize-none" placeholder="Descrizione per i motori di ricerca"/>
+								<textarea v-model="form.meta_description" rows="2" class="form-input resize-none" placeholder="Descrizione per i motori di ricerca"></textarea>
 							</div>
 							<div>
 								<label class="block text-[0.75rem] font-medium text-[var(--color-brand-text)] mb-[5px]">Introduzione</label>
-								<textarea v-model="form.intro" rows="3" class="form-input resize-none" placeholder="Paragrafo introduttivo del servizio"/>
+								<textarea v-model="form.intro" rows="3" class="form-input resize-none" placeholder="Paragrafo introduttivo del servizio"></textarea>
 							</div>
 							<div class="flex items-center gap-[10px]">
 								<button
@@ -149,8 +149,8 @@ onMounted(() => { fetchArticle(); });
 									role="switch"
 									:aria-checked="form.is_published ? 'true' : 'false'"
 									aria-label="Pubblica o salva come bozza"
-									:class="['sf-toggle', form.is_published && 'is-active']"
-									@click="form.is_published = !form.is_published">
+									@click="form.is_published = !form.is_published"
+									:class="['sf-toggle', form.is_published && 'is-active']">
 									<span class="sf-toggle__thumb" />
 								</button>
 								<span class="text-[0.8125rem] text-[var(--color-brand-text)]">{{ form.is_published ? 'Pubblicato' : 'Bozza (non visibile)' }}</span>
@@ -166,13 +166,13 @@ onMounted(() => { fetchArticle(); });
 						<div class="max-w-[700px]">
 							<div v-if="form.image_url" class="mb-[14px]">
 								<!-- width/height intrinseche per prevenire CLS (preview servizio). -->
-								<img :src="form.image_url" alt="Immagine servizio" loading="lazy" decoding="async" width="320" height="180" class="max-w-full max-h-[180px] rounded-[12px] object-cover" >
+								<img :src="form.image_url" alt="Immagine servizio" loading="lazy" decoding="async" width="320" height="180" class="max-w-full max-h-[180px] rounded-[12px] object-cover" />
 							</div>
 							<label class="btn-secondary btn-compact inline-flex items-center gap-[6px] cursor-pointer">
-								<svg v-if="uploading" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[16px] h-[16px] animate-spin" fill="currentColor"><path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/></svg>
-								<svg v-else aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[16px] h-[16px]" fill="currentColor"><path d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z"/></svg>
+								<svg aria-hidden="true" v-if="uploading" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[16px] h-[16px] animate-spin" fill="currentColor"><path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/></svg>
+								<svg aria-hidden="true" v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[16px] h-[16px]" fill="currentColor"><path d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z"/></svg>
 								{{ uploading ? 'Caricamento...' : 'Carica immagine' }}
-								<input type="file" accept="image/*" class="hidden" :disabled="uploading" @change="uploadImage" >
+								<input type="file" accept="image/*" @change="uploadImage" class="hidden" :disabled="uploading" />
 							</label>
 						</div>
 					</div>
@@ -183,7 +183,7 @@ onMounted(() => { fetchArticle(); });
 							<h2 class="text-[1rem] font-bold text-[var(--color-brand-text)] flex items-center gap-[8px]">
 								<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-[var(--color-brand-primary)]" fill="currentColor"><path d="M7,5H21V7H7V5M7,13V11H21V13H7M4,4.5A1.5,1.5 0 0,1 5.5,6A1.5,1.5 0 0,1 4,7.5A1.5,1.5 0 0,1 2.5,6A1.5,1.5 0 0,1 4,4.5M4,10.5A1.5,1.5 0 0,1 5.5,12A1.5,1.5 0 0,1 4,13.5A1.5,1.5 0 0,1 2.5,12A1.5,1.5 0 0,1 4,10.5M7,19V17H21V19H7M4,16.5A1.5,1.5 0 0,1 5.5,18A1.5,1.5 0 0,1 4,19.5A1.5,1.5 0 0,1 2.5,18A1.5,1.5 0 0,1 4,16.5Z"/></svg> Sezioni
 							</h2>
-							<button type="button" class="btn-secondary btn-compact inline-flex items-center gap-[4px]" @click="addSection">
+							<button type="button" @click="addSection" class="btn-secondary btn-compact inline-flex items-center gap-[4px]">
 								<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[14px] h-[14px]" fill="currentColor"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> Aggiungi
 							</button>
 						</div>
@@ -191,13 +191,13 @@ onMounted(() => { fetchArticle(); });
 							<div v-for="(section, idx) in form.sections" :key="idx" class="p-[14px] rounded-[12px] bg-[#F7FAFC]">
 								<div class="flex items-center justify-between mb-[10px]">
 									<span class="text-[0.75rem] font-semibold text-[var(--color-brand-text)]">Sezione {{ idx + 1 }}</span>
-									<button v-if="form.sections.length > 1" type="button" class="btn-danger btn-compact inline-flex items-center justify-center !px-0 !py-0 !w-[28px] !h-[28px]" @click="removeSection(idx)">
+									<button v-if="form.sections.length > 1" type="button" @click="removeSection(idx)" class="btn-danger btn-compact inline-flex items-center justify-center !px-0 !py-0 !w-[28px] !h-[28px]">
 										<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[14px] h-[14px]" fill="currentColor"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>
 									</button>
 								</div>
 								<div class="space-y-[8px]">
-									<input v-model="section.heading" type="text" class="form-input" placeholder="Titolo sezione" >
-									<textarea v-model="section.text" rows="4" class="form-input resize-none" placeholder="Contenuto della sezione"/>
+									<input v-model="section.heading" type="text" class="form-input" placeholder="Titolo sezione" />
+									<textarea v-model="section.text" rows="4" class="form-input resize-none" placeholder="Contenuto della sezione"></textarea>
 								</div>
 							</div>
 						</div>
@@ -209,7 +209,7 @@ onMounted(() => { fetchArticle(); });
 							<h2 class="text-[1rem] font-bold text-[var(--color-brand-text)] flex items-center gap-[8px]">
 								<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[18px] h-[18px] text-[var(--color-brand-primary)]" fill="currentColor"><path d="M18,15H6L2,19V3A1,1 0 0,1 3,2H18A1,1 0 0,1 19,3V14A1,1 0 0,1 18,15M23,9V23L19,19H8A1,1 0 0,1 7,18V17H21V8H22A1,1 0 0,1 23,9Z"/></svg> FAQ
 							</h2>
-							<button type="button" class="btn-secondary btn-compact inline-flex items-center gap-[4px]" @click="addFaq">
+							<button type="button" @click="addFaq" class="btn-secondary btn-compact inline-flex items-center gap-[4px]">
 								<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[14px] h-[14px]" fill="currentColor"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> Aggiungi
 							</button>
 						</div>
@@ -217,13 +217,13 @@ onMounted(() => { fetchArticle(); });
 							<div v-for="(faq, idx) in form.faqs" :key="idx" class="p-[14px] rounded-[12px] bg-[#F7FAFC]">
 								<div class="flex items-center justify-between mb-[10px]">
 									<span class="text-[0.75rem] font-semibold text-[var(--color-brand-text)]">FAQ {{ idx + 1 }}</span>
-									<button v-if="form.faqs.length > 1" type="button" class="btn-danger btn-compact inline-flex items-center justify-center !px-0 !py-0 !w-[28px] !h-[28px]" @click="removeFaq(idx)">
+									<button v-if="form.faqs.length > 1" type="button" @click="removeFaq(idx)" class="btn-danger btn-compact inline-flex items-center justify-center !px-0 !py-0 !w-[28px] !h-[28px]">
 										<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[14px] h-[14px]" fill="currentColor"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>
 									</button>
 								</div>
 								<div class="space-y-[8px]">
-									<input v-model="faq.title" type="text" class="form-input" placeholder="Domanda" >
-									<textarea v-model="faq.text" rows="3" class="form-input resize-none" placeholder="Risposta"/>
+									<input v-model="faq.title" type="text" class="form-input" placeholder="Domanda" />
+									<textarea v-model="faq.text" rows="3" class="form-input resize-none" placeholder="Risposta"></textarea>
 								</div>
 							</div>
 						</div>
@@ -231,9 +231,9 @@ onMounted(() => { fetchArticle(); });
 
 					<!-- Save -->
 					<div class="flex justify-end">
-						<button type="button" :disabled="saving" class="btn-cta btn-compact inline-flex items-center gap-[6px] disabled:opacity-50" @click="saveService">
-							<svg v-if="saving" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[16px] h-[16px] animate-spin" fill="currentColor"><path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/></svg>
-							<svg v-else aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[16px] h-[16px]" fill="currentColor"><path d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/></svg>
+						<button type="button" @click="saveService" :disabled="saving" class="btn-cta btn-compact inline-flex items-center gap-[6px] disabled:opacity-50">
+							<svg aria-hidden="true" v-if="saving" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[16px] h-[16px] animate-spin" fill="currentColor"><path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/></svg>
+							<svg aria-hidden="true" v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[16px] h-[16px]" fill="currentColor"><path d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/></svg>
 							{{ saving ? "Salvataggio..." : "Salva modifiche" }}
 						</button>
 					</div>

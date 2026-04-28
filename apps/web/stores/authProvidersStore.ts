@@ -5,51 +5,42 @@
  * unico ispezionabile in Vue DevTools. Il composable useAuthProviders() resta come
  * thin wrapper retro-compat per gli 8+ caller esistenti.
  */
-import { defineStore } from 'pinia'
-
-export interface AuthProviders {
-	google: boolean
-	facebook: boolean
-	apple: boolean
-}
-
-const defaultProviders = (): AuthProviders => ({
-	google: false,
-	facebook: false,
-	apple: false,
-})
-
+import { defineStore } from 'pinia';
+const defaultProviders = () => ({
+    google: false,
+    facebook: false,
+    apple: false,
+});
 export const useAuthProvidersStore = defineStore('authProviders', () => {
-	const providers = ref<AuthProviders>(defaultProviders())
-	const loaded = ref(false)
-	const loading = ref(false)
-
-	async function refresh(): Promise<AuthProviders> {
-		if (loading.value) return providers.value
-
-		loading.value = true
-		try {
-			const response = await $fetch<Partial<AuthProviders>>('/api/auth/providers')
-			providers.value = {
-				...defaultProviders(),
-				...response,
-			}
-			loaded.value = true
-		} catch {
-			if (!loaded.value) {
-				providers.value = defaultProviders()
-			}
-		} finally {
-			loading.value = false
-		}
-
-		return providers.value
-	}
-
-	return {
-		providers,
-		loaded,
-		loading,
-		refresh,
-	}
-})
+    const providers = ref(defaultProviders());
+    const loaded = ref(false);
+    const loading = ref(false);
+    async function refresh() {
+        if (loading.value)
+            return providers.value;
+        loading.value = true;
+        try {
+            const response = await $fetch('/api/auth/providers');
+            providers.value = {
+                ...defaultProviders(),
+                ...response,
+            };
+            loaded.value = true;
+        }
+        catch {
+            if (!loaded.value) {
+                providers.value = defaultProviders();
+            }
+        }
+        finally {
+            loading.value = false;
+        }
+        return providers.value;
+    }
+    return {
+        providers,
+        loaded,
+        loading,
+        refresh,
+    };
+});

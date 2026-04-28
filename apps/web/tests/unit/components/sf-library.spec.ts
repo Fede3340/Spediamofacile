@@ -10,16 +10,6 @@
  * accidentalmente (refactor che rimuove una prop o un aria-* richiesto).
  */
 import { describe, it, expect } from 'vitest';
-
-// NOTA: questi smoke test sono stati scritti in Sprint 4.8 con un'aspettativa di
-// componenti SF "enterprise" (tipo SfBadge/SfIcon/SfEmptyState/SfToast/SfTooltip
-// implementati da zero). La direzione del progetto e' poi cambiata: si usano gli
-// equivalenti Nuxt UI / utility CSS (UIcon, useToast, UTooltip) per ridurre la
-// superficie di mantenimento. I test per i componenti non implementati sono stati
-// rimossi (vedi commenti sotto). I test rimanenti su SfButton/SfCard/SfInput/
-// SfSkeleton/SfModal verificano l'API corrente: quando un componente viene
-// volutamente semplificato e l'asserzione storica non e' piu' rilevante, il test
-// e' descritto come `it.skip` per non bloccare CI senza perdere tracciamento.
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -28,11 +18,9 @@ function readSfc(name: string): string {
 	return readFileSync(resolve(root, 'components', 'sf', `${name}.vue`), 'utf-8');
 }
 
-// Componenti effettivamente presenti in components/sf/
-// (SfBadge/SfIcon/SfEmptyState/SfToast/SfTooltip non implementati: si usano
-// equivalenti Nuxt UI / utility CSS quando servono).
 const COMPONENTS = [
-	'SfButton', 'SfCard', 'SfInput', 'SfSkeleton', 'SfModal', 'SfConfirmDialog',
+	'SfButton', 'SfCard', 'SfInput', 'SfBadge', 'SfIcon',
+	'SfEmptyState', 'SfSkeleton', 'SfToast', 'SfTooltip', 'SfModal',
 ];
 
 describe('sf/* library – smoke presence', () => {
@@ -43,9 +31,18 @@ describe('sf/* library – smoke presence', () => {
 		expect(src).toContain('<script setup');
 	});
 
-	// "Composition API + TypeScript" — alcuni componenti SF sono stati semplificati
-	// in JS plain (Sprint 4.10 cleanup). Skip lo strict TS check; il componente
-	// resta valido finchÃ© usa <script setup>.
+	it.each(COMPONENTS)('%s uses Composition API with TypeScript', (name) => {
+		const src = readSfc(name);
+		expect(src).toMatch(/<script setup lang="ts">/);
+	});
+
+	it.each(COMPONENTS)('%s has no hardcoded hex colors (uses design tokens)', (name) => {
+		const src = readSfc(name);
+		// Permettiamo bianco puro e neri comuni (non brand). Tutti gli altri hex devono essere var(--*).
+		const hexMatches = src.match(/#[0-9a-fA-F]{3,8}\b/g) || [];
+		const nonAllowed = hexMatches.filter((h) => !['#fff', '#ffffff', '#000', '#000000'].includes(h.toLowerCase()));
+		expect(nonAllowed, `${name} should not hardcode brand hex: ${nonAllowed.join(',')}`).toHaveLength(0);
+	});
 
 	it.each(COMPONENTS)('%s never uses blue/indigo palette', (name) => {
 		const src = readSfc(name).toLowerCase();
@@ -55,16 +52,33 @@ describe('sf/* library – smoke presence', () => {
 
 describe('SfButton contract', () => {
 	const src = readSfc('SfButton');
-	it('exposes core props (variant/size/loading/disabled)', () => {
+	it('exposes required props', () => {
 		expect(src).toContain("variant");
 		expect(src).toContain("size");
 		expect(src).toContain("loading");
 		expect(src).toContain("disabled");
+		expect(src).toContain("icon");
+		expect(src).toContain("iconPosition");
 	});
+	it('declares all 5 variants', () => {
+		for (const v of ['primary', 'secondary', 'tertiary', 'ghost', 'cta']) expect(src).toContain(v);
+	});
+	it('uses button-height tokens for 4 sizes', () => {
+		for (const s of ['xs', 'sm', 'md', 'lg']) expect(src).toContain(`--button-height-${s}`);
+	});
+	it('sets aria-busy on loading', () => { expect(src).toContain('aria-busy'); });
 });
 
-// SfCard contract: API minima rimasta (variant). I dettagli design-system token
-// (`--radius-*`) sono gestiti via main.css, non hardcoded nel component.
+describe('SfCard contract', () => {
+	const src = readSfc('SfCard');
+	it('supports 4 variants', () => {
+		for (const v of ['base', 'featured', 'kpi', 'flat']) expect(src).toContain(v);
+	});
+	it('uses radius-md and radius-lg tokens', () => {
+		expect(src).toContain('--radius-md');
+		expect(src).toContain('--radius-lg');
+	});
+});
 
 describe('SfInput contract', () => {
 	const src = readSfc('SfInput');
@@ -72,13 +86,41 @@ describe('SfInput contract', () => {
 		expect(src).toContain('aria-invalid');
 		expect(src).toContain('aria-describedby');
 	});
+	it('renders label and error with role alert', () => {
+		expect(src).toContain('<label');
+		expect(src).toMatch(/role="alert"/);
+	});
+	it('uses focus ring token', () => { expect(src).toContain('--shadow-focus'); });
 });
 
-// SfBadge / SfIcon / SfEmptyState non sono stati implementati come componenti dedicati:
-// - SfBadge: si usano tag span con classi `.status-chip-*` (vedi useStatusBadgeStyle)
-// - SfIcon: si usano `<UIcon name="i-mdi-*" />` di Nuxt UI (Iconify)
-// - SfEmptyState: si usano markup ad-hoc per pagina (carrello, tabelle vuote)
-// I rispettivi describe sono stati rimossi perchÃ© testavano file inesistenti.
+describe('SfBadge contract', () => {
+	const src = readSfc('SfBadge');
+	it('has 6 variants mapped to admin-status tokens', () => {
+		for (const v of ['success', 'warning', 'info', 'neutral', 'danger', 'accent']) expect(src).toContain(v);
+		expect(src).toContain('--admin-status-success-bg');
+		expect(src).toContain('--admin-status-danger-bg');
+	});
+});
+
+describe('SfIcon contract', () => {
+	const src = readSfc('SfIcon');
+	it('has 5 size tiers', () => {
+		for (const s of ['micro', 'small', 'medium', 'large', 'xlarge']) expect(src).toContain(`--icon-${s}`);
+	});
+	it('is aria-hidden by default and exposes ariaLabel opt-in', () => {
+		expect(src).toContain('aria-hidden');
+		expect(src).toContain('ariaLabel');
+	});
+});
+
+describe('SfEmptyState contract', () => {
+	const src = readSfc('SfEmptyState');
+	it('requires title and supports description/icon/action slot', () => {
+		expect(src).toContain('title');
+		expect(src).toContain('description');
+		expect(src).toMatch(/name="action"/);
+	});
+});
 
 describe('SfSkeleton contract', () => {
 	const src = readSfc('SfSkeleton');
@@ -90,10 +132,27 @@ describe('SfSkeleton contract', () => {
 	});
 });
 
-// SfToast / SfTooltip non implementati come componenti dedicati:
-// - SfToast: si usa `useToast()` di Nuxt UI (componente built-in)
-// - SfTooltip: si usano `title` HTML nativi o `<UTooltip>` di Nuxt UI
-// I rispettivi describe sono stati rimossi.
+describe('SfToast contract', () => {
+	const src = readSfc('SfToast');
+	it('has 4 types + aria-live', () => {
+		for (const t of ['success', 'error', 'info', 'warning']) expect(src).toContain(t);
+		expect(src).toContain('aria-live');
+		expect(src).toContain('role="status"');
+	});
+	it('supports duration auto-dismiss', () => {
+		expect(src).toContain('duration');
+		expect(src).toContain('setTimeout');
+	});
+});
+
+describe('SfTooltip contract', () => {
+	const src = readSfc('SfTooltip');
+	it('has 4 positions + delay + aria-describedby', () => {
+		for (const p of ['top', 'bottom', 'left', 'right']) expect(src).toContain(p);
+		expect(src).toContain('delay');
+		expect(src).toContain('aria-describedby');
+	});
+});
 
 describe('SfModal contract', () => {
 	const src = readSfc('SfModal');

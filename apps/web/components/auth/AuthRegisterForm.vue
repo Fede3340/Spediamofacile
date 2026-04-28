@@ -1,24 +1,16 @@
-<script setup lang="ts">
-// Form di registrazione (radio profilo + dati personali + password + privacy + Turnstile).
+<script setup>// Form di registrazione (radio profilo + dati personali + password + privacy + Turnstile).
 // La logica di handleRegister + gating CAPTCHA vive in useAuthOverlay / wrapper — qui solo presentazione.
-
 defineProps({
-  form: { type: Object, required: true },
-  isLoading: { type: Boolean, default: false },
-  showPassword: { type: Boolean, default: false },
-  showPasswordConfirm: { type: Boolean, default: false },
-  turnstile: { type: Object, required: true },
-})
-
-const emit = defineEmits<{
-  (e: 'submit'): void
-  (e: 'toggle-password'): void
-  (e: 'toggle-password-confirm'): void
-}>()
-
-const INPUT_CLS = 'w-full h-[46px] rounded-[12px] px-[14px] text-[14px] font-medium text-[#1d2738] bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[2.5px] focus:ring-[#095866]/50 placeholder:text-[#aaa] outline-none transition-all duration-200'
-const LABEL_CLS = 'text-[#777] text-[11px] uppercase tracking-[0.4px] font-bold block'
-const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex items-center justify-center gap-[10px] mt-[4px] cursor-pointer active:scale-[0.985] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[#E44203]/25 disabled:cursor-wait'
+    form: { type: Object, required: true },
+    isLoading: { type: Boolean, default: false },
+    showPassword: { type: Boolean, default: false },
+    showPasswordConfirm: { type: Boolean, default: false },
+    turnstile: { type: Object, required: true },
+});
+const emit = defineEmits();
+const INPUT_CLS = 'w-full h-[46px] rounded-[12px] px-[14px] text-[14px] font-medium text-[#1d2738] bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[2.5px] focus:ring-[#095866]/50 placeholder:text-[#aaa] outline-none transition-all duration-200';
+const LABEL_CLS = 'text-[#777] text-[11px] uppercase tracking-[0.4px] font-bold block';
+const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex items-center justify-center gap-[10px] mt-[4px] cursor-pointer active:scale-[0.985] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[#E44203]/25 disabled:cursor-wait';
 </script>
 
 <template>
@@ -31,12 +23,12 @@ const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex it
     <!-- Tipo profilo: radio inline compatti -->
     <fieldset class="auth-overlay-profile-radios" aria-label="Tipo profilo">
       <label class="auth-overlay-profile-radio">
-        <input v-model="form.user_type" type="radio" value="privato" class="auth-overlay-profile-radio__input" >
+        <input v-model="form.user_type" type="radio" value="privato" class="auth-overlay-profile-radio__input" />
         <span class="auth-overlay-profile-radio__dot" aria-hidden="true" />
         <span class="auth-overlay-profile-radio__label">Privato</span>
       </label>
       <label class="auth-overlay-profile-radio">
-        <input v-model="form.user_type" type="radio" value="commerciante" class="auth-overlay-profile-radio__input" >
+        <input v-model="form.user_type" type="radio" value="commerciante" class="auth-overlay-profile-radio__input" />
         <span class="auth-overlay-profile-radio__dot" aria-hidden="true" />
         <span class="auth-overlay-profile-radio__label">Azienda</span>
       </label>
@@ -46,11 +38,11 @@ const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex it
     <div class="grid grid-cols-1 md:grid-cols-2 gap-[8px]">
       <div class="flex flex-col gap-[5px]">
         <label :class="LABEL_CLS" for="auth-reg-name">Nome</label>
-        <input id="auth-reg-name" v-model="form.name" :class="INPUT_CLS" type="text" autocomplete="given-name" placeholder="Mario" required minlength="2" >
+        <input id="auth-reg-name" v-model="form.name" :class="INPUT_CLS" type="text" autocomplete="given-name" placeholder="Mario" />
       </div>
       <div class="flex flex-col gap-[5px]">
         <label :class="LABEL_CLS" for="auth-reg-surname">Cognome</label>
-        <input id="auth-reg-surname" v-model="form.surname" :class="INPUT_CLS" type="text" autocomplete="family-name" placeholder="Rossi" required minlength="2" >
+        <input id="auth-reg-surname" v-model="form.surname" :class="INPUT_CLS" type="text" autocomplete="family-name" placeholder="Rossi" />
       </div>
     </div>
 
@@ -58,11 +50,11 @@ const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex it
     <div class="grid grid-cols-1 md:grid-cols-2 gap-[8px]">
       <div class="flex flex-col gap-[5px]">
         <label :class="LABEL_CLS" for="auth-reg-email">Email</label>
-        <input id="auth-reg-email" v-model="form.email" :class="INPUT_CLS" type="email" autocomplete="email" placeholder="nome@email.com" required >
+        <input id="auth-reg-email" v-model="form.email" :class="INPUT_CLS" type="email" autocomplete="email" placeholder="nome@email.com" />
       </div>
       <div class="flex flex-col gap-[5px]">
         <label :class="LABEL_CLS" for="auth-reg-email-confirm">Conferma email</label>
-        <input id="auth-reg-email-confirm" v-model="form.email_confirmation" :class="INPUT_CLS" type="email" autocomplete="email" placeholder="Conferma email" required >
+        <input id="auth-reg-email-confirm" v-model="form.email_confirmation" :class="INPUT_CLS" type="email" autocomplete="email" placeholder="Conferma email" />
       </div>
     </div>
 
@@ -77,7 +69,7 @@ const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex it
       </div>
       <div class="flex flex-col gap-[5px]">
         <label :class="LABEL_CLS" for="auth-reg-phone">Telefono</label>
-        <input id="auth-reg-phone" v-model="form.telephone_number" :class="INPUT_CLS" type="tel" autocomplete="tel" placeholder="Numero di telefono" required pattern="[0-9 +\-]{6,}" >
+        <input id="auth-reg-phone" v-model="form.telephone_number" :class="INPUT_CLS" type="tel" autocomplete="tel" placeholder="Numero di telefono" />
       </div>
     </div>
 
@@ -93,9 +85,7 @@ const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex it
             :type="showPassword ? 'text' : 'password'"
             autocomplete="new-password"
             placeholder="Min. 8 caratteri"
-            required
-            minlength="8"
-          >
+          />
           <button
             type="button"
             :aria-label="showPassword ? 'Nascondi password' : 'Mostra password'"
@@ -118,9 +108,7 @@ const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex it
             :type="showPasswordConfirm ? 'text' : 'password'"
             autocomplete="new-password"
             placeholder="Ripeti password"
-            required
-            minlength="8"
-          >
+          />
           <button
             type="button"
             :aria-label="showPasswordConfirm ? 'Nascondi conferma password' : 'Mostra conferma password'"
@@ -143,7 +131,7 @@ const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex it
         v-model="form.privacy_accepted"
         type="checkbox"
         class="mt-[1px] h-[16px] w-[16px] shrink-0 accent-[#095866]"
-      >
+      />
       <span class="text-[11px] leading-[1.55] text-[#667085]">
         Accetto la
         <NuxtLink to="/privacy-policy" class="font-semibold text-[#095866] underline underline-offset-2 hover:text-[#0a7489]">

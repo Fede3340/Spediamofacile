@@ -52,10 +52,10 @@ const emit = defineEmits(['approve', 'reject']);
 					</div>
 
 					<div v-if="pr.status === 'pending'" class="flex flex-col gap-[8px] shrink-0 tablet:flex-row desktop:min-w-[220px] desktop:justify-end">
-						<button :disabled="actionLoading === `pro-${pr.id}`" class="inline-flex min-h-[42px] items-center justify-center gap-[4px] px-[16px] py-[8px] bg-[#095866] hover:bg-[#07404a] text-white rounded-[16px] text-[0.8125rem] font-medium transition-colors cursor-pointer disabled:opacity-50" @click="emit('approve', pr.id)">
+						<button @click="emit('approve', pr.id)" :disabled="actionLoading === `pro-${pr.id}`" class="inline-flex min-h-[42px] items-center justify-center gap-[4px] px-[16px] py-[8px] bg-[#095866] hover:bg-[#07404a] text-white rounded-[16px] text-[0.8125rem] font-medium transition-colors cursor-pointer disabled:opacity-50">
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[16px] h-[16px]" fill="currentColor"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg> {{ actionLoading === `pro-${pr.id}` ? '...' : 'Approva' }}
 						</button>
-						<button :disabled="actionLoading === `pro-${pr.id}`" class="inline-flex min-h-[42px] items-center justify-center px-[16px] py-[8px] bg-red-50 hover:bg-red-100 text-red-700 rounded-[16px] text-[0.8125rem] font-medium transition-colors cursor-pointer border border-red-200 disabled:opacity-50" @click="emit('reject', pr.id)">
+						<button @click="emit('reject', pr.id)" :disabled="actionLoading === `pro-${pr.id}`" class="inline-flex min-h-[42px] items-center justify-center px-[16px] py-[8px] bg-red-50 hover:bg-red-100 text-red-700 rounded-[16px] text-[0.8125rem] font-medium transition-colors cursor-pointer border border-red-200 disabled:opacity-50">
 							Rifiuta
 						</button>
 					</div>

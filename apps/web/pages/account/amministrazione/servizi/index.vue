@@ -176,7 +176,7 @@ onMounted(() => {
 			</div>
 
 			<div v-if="isLoading" class="py-[32px] flex justify-center">
-				<div class="w-[40px] h-[40px] border-3 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)] rounded-full animate-spin"/>
+				<div class="w-[40px] h-[40px] border-3 border-[var(--color-brand-border)] border-t-[var(--color-brand-primary)] rounded-full animate-spin"></div>
 			</div>
 
 			<div
@@ -208,7 +208,7 @@ onMounted(() => {
 								v-model="searchQuery"
 								type="text"
 								placeholder="Cerca per nome, slug o descrizione..."
-								class="w-full h-[44px] pl-[40px] pr-[14px] rounded-[14px] border border-[#DFE2E7] bg-white text-[0.875rem] text-[#1d2738] placeholder-[#94A3B8] outline-none transition focus:border-[#095866] focus:ring-[3px] focus:ring-[#095866]/10" >
+								class="w-full h-[44px] pl-[40px] pr-[14px] rounded-[14px] border border-[#DFE2E7] bg-white text-[0.875rem] text-[#1d2738] placeholder-[#94A3B8] outline-none transition focus:border-[#095866] focus:ring-[3px] focus:ring-[#095866]/10" />
 						</label>
 
 						<div class="flex flex-wrap items-center gap-[8px]">

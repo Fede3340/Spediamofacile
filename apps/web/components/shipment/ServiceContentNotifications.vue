@@ -25,7 +25,7 @@ defineEmits(['update:content-description', 'update:content-error', 'update:sms-e
 		</div>
 
 		<!-- Divider -->
-		<div class="h-[1px] bg-[#D5D9E0] mb-[14px]"/>
+		<div class="h-[1px] bg-[#D5D9E0] mb-[14px]"></div>
 
 		<!-- Grid -->
 		<div class="grid grid-cols-1 sm:grid-cols-2 gap-[10px]">
@@ -39,9 +39,13 @@ defineEmits(['update:content-description', 'update:content-error', 'update:sms-e
 				</label>
 				<div class="service-content-field__control">
 					<input
-						id="content_description"
 						type="text"
+						id="content_description"
 						:value="contentDescription"
+						@input="
+							$emit('update:content-description', $event.target.value);
+							$emit('update:content-error', null);
+						"
 						placeholder="Abbigliamento, documenti..."
 						maxlength="255"
 						:class="[
@@ -49,11 +53,7 @@ defineEmits(['update:content-description', 'update:content-error', 'update:sms-e
 							contentError
 								? 'ring-[2px] ring-[#ef4444]'
 								: 'ring-[1.5px] ring-[#DFE2E7] focus:ring-[3px] focus:ring-[#095866]/60'
-						]"
-						@input="
-							$emit('update:content-description', $event.target.value);
-							$emit('update:content-error', null);
-						" >
+						]" />
 				</div>
 				<div class="service-content-field__feedback">
 					<p v-if="contentError" class="text-[0.8125rem] font-[600] text-[#c85a1a]">

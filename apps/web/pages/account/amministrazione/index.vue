@@ -1,5 +1,5 @@
 <script setup>
-import '~/assets/css/pages/admin.css';
+import '~/assets/css/admin.css';
 definePageMeta({
 	middleware: ['app-auth', 'admin'],
 });

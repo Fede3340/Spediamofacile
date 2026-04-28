@@ -175,8 +175,8 @@ function scrollToTop() {
 				<main id="lp-content" class="lp-content" tabindex="-1">
 					<article
 						v-for="s in sections"
-						:id="s.id"
 						:key="s.id"
+						:id="s.id"
 						class="lp-section"
 						:aria-labelledby="`${s.id}-h`"
 					>

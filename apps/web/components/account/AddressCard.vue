@@ -1,6 +1,6 @@
 <!-- COMPONENTE: AddressCard -->
 <script setup>
-import '~/assets/css/components/sf-address.css';
+import '~/assets/css/account.css';
 
 const props = defineProps({
 	address: { type: Object, required: true },

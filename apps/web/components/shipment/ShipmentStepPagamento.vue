@@ -129,13 +129,27 @@ const repairVisibleText = (value) => String(value ?? '')
 	.replace(/â‚¬/g, '\u20AC')
 	.replace(/Â·/g, '\u00B7')
 	.replace(/Ã¨/g, 'è')
-	.replace(/Ã\xA0/g, 'à')
+	.replace(/Ã /g, 'à')
 	.replace(/Ã²/g, 'ò')
 	.replace(/â€”/g, '\u2014');
 
-const displayTotalText = computed(() =>
-	repairVisibleText(props.finalTotalFormatted || props.summaryTotalPrice || 'Da definire'),
-);
+// Estrae l'importo numerico da una stringa formato "11,90 €" / "0,00 €" / "0,00  €"
+// per decidere se ci si puo' fidare di `finalTotalFormatted` (carrello/ordine reale)
+// oppure occorre fallback su `summaryTotalPrice` (preventivo in corso, mai aggiunto al carrello).
+const parseFormattedAmount = (raw) => {
+	const n = Number.parseFloat(String(raw ?? '').replace(/[^\d,.-]/g, '').replace(',', '.'));
+	return Number.isFinite(n) ? n : 0;
+};
+const displayTotalText = computed(() => {
+	const finalAmount = parseFormattedAmount(props.finalTotalFormatted);
+	if (finalAmount > 0 && props.finalTotalFormatted) {
+		return repairVisibleText(props.finalTotalFormatted);
+	}
+	if (props.summaryTotalPrice && parseFormattedAmount(props.summaryTotalPrice) > 0) {
+		return repairVisibleText(props.summaryTotalPrice);
+	}
+	return repairVisibleText(props.finalTotalFormatted || props.summaryTotalPrice || 'Da definire');
+});
 
 const collapsedPaymentSummary = computed(() =>
 	props.paymentSuccess
@@ -626,7 +640,7 @@ const resolvedBillingShippingFullAddress = computed(() => {
 											type="text"
 											placeholder="Inserisci il codice"
 											class="flex-1 h-[46px] rounded-[16px] border border-[#D9E1EA] bg-[#F8F9FB] px-[16px] text-[15px] text-[#1d2738] outline-none focus:border-[#0b7d92] focus:ring-[3px] focus:ring-[rgba(11,125,146,0.12)]"
-											@input="$emit('update:couponCode', ($event.target).value)" >
+											@input="$emit('update:couponCode', ($event.target).value)" />
 										<SfButton
 											v-if="!couponApplied"
 											size="lg"

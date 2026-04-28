@@ -161,8 +161,8 @@ const inlineVisibleSubmitError = computed(() => {
 								<button
 									type="button"
 									class="sf-flow-cta sf-flow-cta--secondary"
-									aria-label="Torna ai servizi"
-									@click="$emit('back')">
+									@click="$emit('back')"
+									aria-label="Torna ai servizi">
 									<span class="sf-flow-cta__arrow sf-flow-cta__arrow--leading">
 										<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 											<path d="M19 12H5M12 19l-7-7 7-7" />
@@ -174,8 +174,8 @@ const inlineVisibleSubmitError = computed(() => {
 									type="button"
 									class="sf-flow-cta sf-flow-cta--secondary"
 									:disabled="isSubmitting || isProceedingToPayment || isAddingToCart || isSavingConfigured || !canAdvanceFromAddresses"
-									aria-label="Aggiungi la spedizione al carrello"
-									@click="$emit('add-to-cart')">
+									@click="$emit('add-to-cart')"
+									aria-label="Aggiungi la spedizione al carrello">
 									<span class="sf-flow-cta__icon">
 										<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 											<circle cx="9" cy="21" r="1" />
@@ -190,8 +190,8 @@ const inlineVisibleSubmitError = computed(() => {
 									class="sf-flow-cta sf-flow-cta--primary"
 									:disabled="isSubmitting || isProceedingToPayment || isAddingToCart || isSavingConfigured || !canAdvanceFromAddresses"
 									:title="!canAdvanceFromAddresses ? 'Completa i campi indirizzo obbligatori per procedere' : ''"
-									aria-label="Vai al pagamento"
-									@click="$emit('confirm')">
+									@click="$emit('confirm')"
+									aria-label="Vai al pagamento">
 									<span>{{ (isSubmitting || isProceedingToPayment) ? 'Apertura...' : 'Vai al pagamento' }}</span>
 									<span class="sf-flow-cta__arrow">
 										<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -214,8 +214,8 @@ const inlineVisibleSubmitError = computed(() => {
 							<button
 								type="button"
 								class="shipment-stage-error__dismiss"
-								aria-label="Chiudi messaggio di errore"
-								@click="$emit('dismiss-error')">
+								@click="$emit('dismiss-error')"
+								aria-label="Chiudi messaggio di errore">
 								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 									<line x1="18" y1="6" x2="6" y2="18" />
 									<line x1="6" y1="6" x2="18" y2="18" />

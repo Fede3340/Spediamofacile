@@ -1,4 +1,7 @@
+<!-- Verifica Email — landing post-click link email. ?status ∈ verified|invalid_signature|already_verified.
+     Nessun status → redirect homepage. -->
 <script setup>
+import '~/assets/css/autenticazione.css';
 import { buildAuthOverlayLocation } from '~/utils/auth';
 
 useSeoMeta({
@@ -59,16 +62,16 @@ if (!statusState.value) {
 </script>
 
 <template>
-	<section class="auth-page-shell">
-		<div class="my-container relative z-[1] mx-auto max-w-[1280px] px-[14px] sm:px-[40px]">
-			<div class="mx-auto grid w-full max-w-[40rem] gap-5">
-				<header class="grid justify-items-center gap-2 text-center">
-					<div class="inline-flex h-[3.25rem] w-[3.25rem] items-center justify-center rounded-full text-white shadow-[0_10px_24px_rgba(9,88,102,0.18)] bg-[linear-gradient(135deg,var(--color-brand-primary)_0%,var(--color-teal-400)_100%)]" aria-hidden="true">
+	<section class="auth-shell">
+		<div class="my-container">
+			<div class="auth-shell-frame">
+				<header class="auth-shell-head">
+					<div class="auth-shell-avatar" aria-hidden="true">
 						<svg
 							v-if="statusState?.icon === 'check'"
 							xmlns="http://www.w3.org/2000/svg"
 							viewBox="0 0 24 24"
-							class="h-[1.35rem] w-[1.35rem]"
+							class="auth-shell-avatar__icon"
 							fill="none"
 							stroke="currentColor"
 							stroke-width="2"
@@ -80,7 +83,7 @@ if (!statusState.value) {
 							v-else
 							xmlns="http://www.w3.org/2000/svg"
 							viewBox="0 0 24 24"
-							class="h-[1.35rem] w-[1.35rem]"
+							class="auth-shell-avatar__icon"
 							fill="none"
 							stroke="currentColor"
 							stroke-width="2"
@@ -91,17 +94,12 @@ if (!statusState.value) {
 							<circle cx="12" cy="12" r="9" />
 						</svg>
 					</div>
-					<h1 class="max-w-[15ch] font-extrabold leading-[1.2] text-[18px] text-[var(--color-brand-text)] font-[var(--font-montserrat)]">{{ statusState?.title }}</h1>
-					<p class="max-w-[32rem] text-base leading-[1.55] text-[var(--color-brand-text-secondary)]">{{ statusState?.copy }}</p>
+					<h1 class="auth-shell-title">{{ statusState?.title }}</h1>
+					<p class="auth-shell-copy">{{ statusState?.copy }}</p>
 				</header>
 
-				<div class="auth-page-card relative grid gap-4 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white px-6 py-7 shadow-[0_2px_8px_rgba(9,88,102,0.05),0_0_0_1px_rgba(9,88,102,0.04)] max-sm:p-4">
-					<div class="auth-page-card__bar" aria-hidden="true" />
-					<div
-						class="rounded-2xl px-3 py-[0.62rem] text-sm leading-[1.5]"
-						:class="statusState?.tone === 'error'
-							? 'border border-[var(--color-error-border)] bg-[var(--surface-accent-wash)] text-[var(--color-error-text)]'
-							: 'border border-[var(--color-success-border)] bg-[var(--color-success-bg)] text-[var(--color-success-text-strong)]'">
+				<div class="auth-page-body auth-page-stack">
+					<div class="auth-feedback" :class="statusState?.tone === 'error' ? 'auth-feedback--error' : 'auth-feedback--success'">
 						{{ statusState?.copy }}
 					</div>
 					<SfButton :to="loginOverlayLocation" variant="primary" block>Vai al login</SfButton>
@@ -110,42 +108,3 @@ if (!statusState.value) {
 		</div>
 	</section>
 </template>
-
-<style scoped>
-.auth-page-shell {
-	position: relative;
-	overflow: clip;
-	min-height: calc(100vh - 80px);
-	padding: clamp(20px, 3vw, 28px) 0 clamp(32px, 5vh, 48px);
-	background: linear-gradient(180deg, var(--surface-page) 0%, var(--surface-page-end) 100%);
-}
-.auth-page-shell::before,
-.auth-page-shell::after {
-	content: '';
-	position: absolute;
-	border-radius: 999px;
-	pointer-events: none;
-}
-.auth-page-shell::before {
-	top: 4.5rem;
-	right: -7rem;
-	width: 15rem;
-	height: 15rem;
-	background: radial-gradient(circle, rgba(9, 88, 102, 0.06) 0%, rgba(9, 88, 102, 0) 68%);
-}
-.auth-page-shell::after {
-	bottom: 1rem;
-	left: -6rem;
-	width: 13rem;
-	height: 13rem;
-	background: radial-gradient(circle, rgba(9, 88, 102, 0.04) 0%, rgba(9, 88, 102, 0) 70%);
-}
-.auth-page-card__bar {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	height: 3px;
-	background: linear-gradient(90deg, var(--color-brand-primary), var(--color-teal-400));
-}
-</style>

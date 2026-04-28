@@ -2,8 +2,9 @@
 <script setup>
 useSeoMeta({
 	title: 'Privacy Policy',
+	ogTitle: 'Privacy Policy | SpedizioneFacile',
 	description:
-		'Informativa privacy SpediamoFacile ai sensi del GDPR (Reg. UE 2016/679) e CCPA. Trattamento dati per servizi di intermediazione spedizioni con corriere BRT.',
+		'Informativa privacy SpedizioneFacile ai sensi del GDPR (Reg. UE 2016/679) e CCPA. Trattamento dati per servizi di intermediazione spedizioni con corriere BRT.',
 });
 
 const lastUpdate = '18/04/2026';
@@ -191,8 +192,8 @@ function scrollToTop() {
 				<main id="lp-content" class="lp-content" tabindex="-1">
 					<article
 						v-for="s in sections"
-						:id="s.id"
 						:key="s.id"
+						:id="s.id"
 						class="lp-section"
 						:aria-labelledby="`${s.id}-h`"
 					>

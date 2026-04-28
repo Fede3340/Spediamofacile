@@ -1,20 +1,23 @@
 <!-- COMPONENTE: SiteFooter (components/layout/SiteFooter.vue) -->
 <script setup>
-import '~/assets/css/components/sf-site-footer.css';
+import '~/assets/css/layout.css';
 
 const currentYear = 2026;
+
+// Legge i dati legali da app.config: se sono placeholder ([INSERIRE_*])
+// li nasconde dal footer pubblico per non mostrarli all'utente finale.
 const appConfig = useAppConfig();
-const legal = appConfig.legal || {};
-// Placeholder noti: [INSERIRE_*], stringhe di soli 0/X o vuote.
-const isPlaceholderText = (value) => {
-	const s = String(value || '').trim();
-	if (!s) return true;
-	if (/\[INSERIRE_/i.test(s)) return true;
-	if (/^[0X]+$/i.test(s)) return true;
-	return false;
-};
-const hasVatInfo = !isPlaceholderText(legal.vatNumber);
-const hasSdiInfo = !isPlaceholderText(legal.sdiCode);
+const legal = computed(() => appConfig?.legal || {});
+const isPlaceholder = (value) => !value || /^\[INSERIRE_/i.test(String(value)) || /^0+$/.test(String(value)) || /^X+$/i.test(String(value));
+const piva = computed(() => isPlaceholder(legal.value.vatNumber) ? '' : legal.value.vatNumber);
+const sdi = computed(() => isPlaceholder(legal.value.sdi) ? '' : legal.value.sdi);
+const legalLine = computed(() => {
+	const parts = [];
+	if (piva.value) parts.push(`P.IVA ${piva.value}`);
+	if (sdi.value) parts.push(`SDI ${sdi.value}`);
+	parts.push(`© ${currentYear} SpediamoFacile. Tutti i diritti riservati.`);
+	return parts.join(' · ');
+});
 
 // Riapri il banner cookie via state condiviso (stesso pattern del vecchio Footer.vue)
 const reopenCookieBanner = useState('reopenCookieBanner', () => false);
@@ -27,12 +30,14 @@ const linkColumns = [
 	{
 		title: 'Servizi',
 		links: [
-			{ label: 'Italia', to: '/servizi/italia' },
-			{ label: 'Europa', to: '/servizi/europa' },
-			{ label: 'PUDO', to: '/servizi/pudo' },
+			// Slug devono esistere in /api/public/services. Le voci "concettuali"
+			// (Italia/Europa/PUDO) erano broken (404) — le sostituisco con slug reali.
+			{ label: 'Tutti i servizi', to: '/servizi' },
 			{ label: 'Pro business', to: '/account/account-pro' },
-			{ label: 'Contrassegno', to: '/servizi/contrassegno' },
-			{ label: 'Assicurazione', to: '/servizi/assicurazione' },
+			{ label: 'Contrassegno', to: '/servizi/pagamento-alla-consegna' },
+			{ label: 'Senza etichetta', to: '/servizi/spedizione-senza-etichetta' },
+			{ label: 'Assicurazione', to: '/servizi/assicurazione-spedizione' },
+			{ label: 'Ritiro a domicilio', to: '/servizi/ritiro-a-domicilio' },
 		],
 	},
 	{
@@ -199,9 +204,7 @@ const socials = [
 		<div class="site-footer__bottom">
 			<div class="site-footer__bottom-shell">
 				<p class="site-footer__legal">
-					<template v-if="hasVatInfo">P.IVA {{ legal.vatNumber }} &middot; </template>
-					<template v-if="hasSdiInfo">SDI {{ legal.sdiCode }} &middot; </template>
-					&copy; {{ currentYear }} SpediamoFacile. Tutti i diritti riservati.
+					{{ legalLine }}
 				</p>
 				<button
 					type="button"

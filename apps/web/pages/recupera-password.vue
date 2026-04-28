@@ -1,4 +1,5 @@
-<script setup lang="ts">
+<script setup>
+import '~/assets/css/autenticazione.css';
 import { buildLegacyAuthOverlayRedirect } from '~/utils/auth';
 
 definePageMeta({

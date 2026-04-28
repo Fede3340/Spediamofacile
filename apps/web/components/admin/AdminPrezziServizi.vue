@@ -65,9 +65,9 @@ const props = defineProps({
 						role="switch"
 						:aria-checked="entry.rule.enabled ? 'true' : 'false'"
 						:aria-label="`Attiva regola ${entry.rule.name || 'servizio'}`"
+						@click="entry.rule.enabled = !entry.rule.enabled"
 						:class="entry.rule.enabled ? 'bg-[var(--color-brand-primary)]' : 'bg-[#C8CCD0]'"
-						class="relative inline-flex h-[32px] w-[56px] items-center rounded-full transition-colors cursor-pointer shrink-0"
-						@click="entry.rule.enabled = !entry.rule.enabled">
+						class="relative inline-flex h-[32px] w-[56px] items-center rounded-full transition-colors cursor-pointer shrink-0">
 						<span
 							:class="entry.rule.enabled ? 'translate-x-[28px]' : 'translate-x-[2px]'"
 							class="inline-block h-[26px] w-[26px] transform rounded-full bg-white transition-transform shadow-sm" />
@@ -78,7 +78,7 @@ const props = defineProps({
 				<div class="mt-[16px] grid grid-cols-1 desktop:grid-cols-2 gap-[16px]">
 					<label v-if="entry.rule.pricing_type === 'fixed' || entry.rule.price_cents != null" class="text-[0.75rem] text-[var(--color-brand-text-secondary)]">
 						Prezzo / fee (&euro;)
-						<input :value="keyedRuleAmountToEuro(entry.rule)" type="text" class="mt-[4px] w-full h-[42px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.875rem] text-[var(--color-brand-text)]" @input="updateKeyedRuleAmountFromEuro(entry.rule, $event.target.value)">
+						<input :value="keyedRuleAmountToEuro(entry.rule)" @input="updateKeyedRuleAmountFromEuro(entry.rule, $event.target.value)" type="text" class="mt-[4px] w-full h-[42px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.875rem] text-[var(--color-brand-text)]">
 					</label>
 					<label v-if="entry.rule.pricing_type === 'threshold_percentage'" class="text-[0.75rem] text-[var(--color-brand-text-secondary)]">
 						Soglia (&euro;)
@@ -86,7 +86,7 @@ const props = defineProps({
 					</label>
 					<label v-if="entry.rule.pricing_type === 'threshold_percentage'" class="text-[0.75rem] text-[var(--color-brand-text-secondary)]">
 						Minimo fisso (&euro;)
-						<input :value="keyedRuleMinFeeToEuro(entry.rule)" type="text" class="mt-[4px] w-full h-[42px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.875rem] text-[var(--color-brand-text)]" @input="updateKeyedRuleMinFeeFromEuro(entry.rule, $event.target.value)">
+						<input :value="keyedRuleMinFeeToEuro(entry.rule)" @input="updateKeyedRuleMinFeeFromEuro(entry.rule, $event.target.value)" type="text" class="mt-[4px] w-full h-[42px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.875rem] text-[var(--color-brand-text)]">
 					</label>
 					<label v-if="entry.rule.pricing_type === 'threshold_percentage'" class="text-[0.75rem] text-[var(--color-brand-text-secondary)]">
 						Percentuale (%)
@@ -132,7 +132,7 @@ const props = defineProps({
 							</label>
 							<label class="text-[0.75rem] text-[var(--color-brand-text-secondary)]">
 								Prezzo (&euro;)
-								<input :value="formatEuro(toEuros(tier.price_cents || 0))" type="text" class="mt-[4px] w-full h-[40px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.8125rem] text-[var(--color-brand-text)]" @input="tier.price_cents = euroToCents($event.target.value) || 0">
+								<input :value="formatEuro(toEuros(tier.price_cents || 0))" @input="tier.price_cents = euroToCents($event.target.value) || 0" type="text" class="mt-[4px] w-full h-[40px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.8125rem] text-[var(--color-brand-text)]">
 							</label>
 							<button type="button" class="h-[40px] px-[12px] rounded-[16px] border border-red-200 text-red-600 text-[0.75rem] font-medium hover:bg-red-50 cursor-pointer" @click="removeTierRow(entry.rule, tierIndex)">Rimuovi</button>
 						</div>
@@ -140,32 +140,32 @@ const props = defineProps({
 				</div>
 
 				<!-- Array fields for automatic supplements -->
-				<div v-if="entry.section === 'automatic_supplements'" class="mt-[16px] grid grid-cols-1 desktop:grid-cols-2 gap-[16px]">
+				<div class="mt-[16px] grid grid-cols-1 desktop:grid-cols-2 gap-[16px]" v-if="entry.section === 'automatic_supplements'">
 					<label v-if="entry.rule.province_codes?.length || entry.key === 'calabria_sardegna_sicilia' || entry.key === 'brt_point_csi'" class="text-[0.75rem] text-[var(--color-brand-text-secondary)]">
 						Province
-						<input :value="(entry.rule.province_codes || []).join(', ')" type="text" class="mt-[4px] w-full h-[42px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.8125rem] text-[var(--color-brand-text)]" @input="updateArrayField(entry.rule, 'province_codes', $event.target.value, { uppercase: true })">
+						<input :value="(entry.rule.province_codes || []).join(', ')" @input="updateArrayField(entry.rule, 'province_codes', $event.target.value, { uppercase: true })" type="text" class="mt-[4px] w-full h-[42px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.8125rem] text-[var(--color-brand-text)]">
 					</label>
 					<label v-if="entry.rule.country_codes?.length" class="text-[0.75rem] text-[var(--color-brand-text-secondary)]">
 						Paesi
-						<input :value="(entry.rule.country_codes || []).join(', ')" type="text" class="mt-[4px] w-full h-[42px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.8125rem] text-[var(--color-brand-text)]" @input="updateArrayField(entry.rule, 'country_codes', $event.target.value, { uppercase: true })">
+						<input :value="(entry.rule.country_codes || []).join(', ')" @input="updateArrayField(entry.rule, 'country_codes', $event.target.value, { uppercase: true })" type="text" class="mt-[4px] w-full h-[42px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.8125rem] text-[var(--color-brand-text)]">
 					</label>
 					<label v-if="entry.rule.keyword_list?.length" class="text-[0.75rem] text-[var(--color-brand-text-secondary)] desktop:col-span-2">
 						Keyword località
-						<input :value="(entry.rule.keyword_list || []).join(', ')" type="text" class="mt-[4px] w-full h-[42px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.8125rem] text-[var(--color-brand-text)]" @input="updateArrayField(entry.rule, 'keyword_list', $event.target.value)">
+						<input :value="(entry.rule.keyword_list || []).join(', ')" @input="updateArrayField(entry.rule, 'keyword_list', $event.target.value)" type="text" class="mt-[4px] w-full h-[42px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.8125rem] text-[var(--color-brand-text)]">
 					</label>
 					<label v-if="entry.rule.flag_keys?.length" class="text-[0.75rem] text-[var(--color-brand-text-secondary)]">
 						Flag chiave
-						<input :value="(entry.rule.flag_keys || []).join(', ')" type="text" class="mt-[4px] w-full h-[42px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.8125rem] text-[var(--color-brand-text)]" @input="updateArrayField(entry.rule, 'flag_keys', $event.target.value)">
+						<input :value="(entry.rule.flag_keys || []).join(', ')" @input="updateArrayField(entry.rule, 'flag_keys', $event.target.value)" type="text" class="mt-[4px] w-full h-[42px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.8125rem] text-[var(--color-brand-text)]">
 					</label>
 					<label v-if="entry.rule.delivery_modes?.length" class="text-[0.75rem] text-[var(--color-brand-text-secondary)]">
 						Delivery mode
-						<input :value="(entry.rule.delivery_modes || []).join(', ')" type="text" class="mt-[4px] w-full h-[42px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.8125rem] text-[var(--color-brand-text)]" @input="updateArrayField(entry.rule, 'delivery_modes', $event.target.value)">
+						<input :value="(entry.rule.delivery_modes || []).join(', ')" @input="updateArrayField(entry.rule, 'delivery_modes', $event.target.value)" type="text" class="mt-[4px] w-full h-[42px] px-[12px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.8125rem] text-[var(--color-brand-text)]">
 					</label>
 				</div>
 
 				<label class="block mt-[16px] text-[0.75rem] text-[var(--color-brand-text-secondary)]">
 					Nota operativa
-					<textarea v-model="entry.rule.note" rows="2" class="mt-[4px] w-full px-[12px] py-[10px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.8125rem] text-[var(--color-brand-text)] resize-y"/>
+					<textarea v-model="entry.rule.note" rows="2" class="mt-[4px] w-full px-[12px] py-[10px] rounded-[12px] border border-[#DFE2E7] bg-white text-[0.8125rem] text-[var(--color-brand-text)] resize-y"></textarea>
 				</label>
 			</div>
 		</div>

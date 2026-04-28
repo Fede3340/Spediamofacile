@@ -7,7 +7,7 @@
  * Mantiene gli stili .service-* scoped qui e in deep per i figli senza
  * necessità di stili duplicati (stylesheet ereditato tramite classi comuni).
  */
-import '~/assets/css/components/sf-service-card.css';
+import '~/assets/css/servizi.css';
 import ServiceCardFeatured from './ServiceCardFeatured.vue';
 import ServiceCardRegular from './ServiceCardRegular.vue';
 
@@ -39,8 +39,6 @@ const emit = defineEmits([
 // 250ms basta a evitare doppi click — 820ms faceva pensare "rotto" (P8 audit).
 const INTERACTION_LOCK_MS = 250;
 const interactionLocks = reactive({});
-// Track dei timer di unlock per cleanup su unmount (evita callback zombie su componente smontato).
-const interactionLockTimers = new Map();
 
 const withInteractionLock = (lockKey, callback) => {
 	if (!lockKey || interactionLocks[lockKey]) return;
@@ -49,22 +47,11 @@ const withInteractionLock = (lockKey, callback) => {
 	try {
 		callback();
 	} finally {
-		const existing = interactionLockTimers.get(lockKey);
-		if (existing) clearTimeout(existing);
-		const timer = setTimeout(() => {
+		setTimeout(() => {
 			interactionLocks[lockKey] = false;
-			interactionLockTimers.delete(lockKey);
 		}, INTERACTION_LOCK_MS);
-		interactionLockTimers.set(lockKey, timer);
 	}
 };
-
-onBeforeUnmount(() => {
-	for (const timer of interactionLockTimers.values()) {
-		clearTimeout(timer);
-	}
-	interactionLockTimers.clear();
-});
 
 const handleToggleFeatured = () => {
 	withInteractionLock('featured-service', () => {

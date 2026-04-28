@@ -1,5 +1,5 @@
 <script setup>
-import '~/assets/css/components/sf-logo.css';
+import '~/assets/css/layout.css';
 
 const props = defineProps({
 	isNavbar: Boolean,

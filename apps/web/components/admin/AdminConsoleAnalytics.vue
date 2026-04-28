@@ -1,17 +1,19 @@
 <script setup>
 /** AdminConsoleAnalytics.vue (orchestrator) */
 import { computed, ref, onMounted } from 'vue';
-import {
-	chartToNumber as toNumber,
-	formatCurrencyShort as formatEurShort,
-	formatPercentage as formatPercent,
-	formatInteger,
-	computeSegments,
-} from '~/utils/chart';
+import { useChartLogic } from '~/composables/useChartLogic';
 import AdminChartOrders from '~/components/admin/AdminChartOrders.vue';
 import AdminChartRevenue from '~/components/admin/AdminChartRevenue.vue';
 import AdminChartStatus from '~/components/admin/AdminChartStatus.vue';
-import '~/assets/css/components/sf-admin-analytics.css';
+import '~/assets/css/admin.css';
+
+const {
+	toNumber,
+	formatCurrencyShort: formatEurShort,
+	formatPercentage: formatPercent,
+	formatInteger,
+	computeSegments,
+} = useChartLogic();
 
 const props = defineProps({
 	days: {
@@ -78,7 +80,7 @@ const statusDotColors = {
 	consegnato: 'var(--admin-status-success)',
 	consegnati: 'var(--admin-status-success)',
 	delivered: 'var(--admin-status-success)',
-	payed: 'var(--admin-status-success)',
+	paid: 'var(--admin-status-success)',
 	pagato: 'var(--admin-status-success)',
 	completed: 'var(--admin-status-success)',
 	completato: 'var(--admin-status-success)',

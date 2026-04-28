@@ -1,3 +1,6 @@
+/**
+ * @file useAdminUserDetail — Composable useAdminUserDetail.
+ */
 import { ref, computed, onBeforeUnmount } from 'vue';
 
 /**
@@ -5,31 +8,31 @@ import { ref, computed, onBeforeUnmount } from 'vue';
  * Centralizza fetch del singolo utente, salvataggio profilo, ban/unban,
  * reset password, cambio email e impersonate.
  */
-export function useAdminUserDetail(emit: (e: 'updated' | 'impersonate', payload?: unknown) => void) {
+export function useAdminUserDetail(emit: (e: 'updated' | 'impersonate', payload?) => void) {
 	const sanctum = useSanctumClient();
 	const { showSuccess, showError } = useAdmin();
 
 	const loading = ref(false);
 	const saving = ref(false);
-	const user = ref<any>(null);
-	const orders = ref<any[]>([]);
-	const addresses = ref<any[]>([]);
-	const walletTx = ref<any[]>([]);
-	const auditLog = ref<any[]>([]);
+	const user = ref(null);
+	const orders = ref([]);
+	const addresses = ref([]);
+	const walletTx = ref([]);
+	const auditLog = ref([]);
 
 	const form = ref({
 		role: 'User',
 		status: 'active',
-		is_pro: false,
+		is_pro,
 	});
 
 	const isBanned = computed(() => form.value.status === 'banned');
 
-	const fetchDetail = async (userId: number | string | null) => {
+	const fetchDetail = async (userId) => {
 		if (!userId) return;
 		loading.value = true;
 		try {
-			const res: any = await sanctum(`/api/admin/users/${userId}`);
+			const res = await sanctum(`/api/admin/users/${userId}`);
 			const data = res?.data ?? res ?? null;
 			user.value = data;
 			form.value = {
@@ -103,7 +106,7 @@ export function useAdminUserDetail(emit: (e: 'updated' | 'impersonate', payload?
 		}
 	};
 
-	const changeEmail = async (newEmail: string) => {
+	const changeEmail = async (newEmail) => {
 		if (!user.value || !newEmail) return false;
 		saving.value = true;
 		try {
@@ -125,7 +128,7 @@ export function useAdminUserDetail(emit: (e: 'updated' | 'impersonate', payload?
 
 	// Track del timer di redirect post-impersonate per cleanup su unmount
 	// (se l'utente naviga via prima del redirect, evita callback "zombie").
-	let impersonateRedirectTimer: ReturnType<typeof setTimeout> | null = null;
+	let impersonateRedirectTimer | null = null;
 
 	const impersonate = async () => {
 		if (!user.value) return false;

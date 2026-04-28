@@ -203,10 +203,10 @@ const formDescription = computed(() => {
 							id="pro_company_name"
 							:value="proRequestForm.company_name"
 							:disabled="isLocked"
+							@input="updateField('company_name', $event.target.value)"
 							type="text"
 							placeholder="Nome azienda"
-							class="form-input min-h-[48px]"
-							@input="updateField('company_name', $event.target.value)" >
+							class="form-input min-h-[48px]" />
 					</div>
 					<div>
 						<label class="block text-[0.8125rem] font-semibold text-[var(--color-brand-text)] mb-[6px]" for="pro_vat_number">Partita IVA</label>
@@ -214,10 +214,10 @@ const formDescription = computed(() => {
 							id="pro_vat_number"
 							:value="proRequestForm.vat_number"
 							:disabled="isLocked"
+							@input="updateField('vat_number', $event.target.value)"
 							type="text"
 							placeholder="Partita IVA"
-							class="form-input min-h-[48px]"
-							@input="updateField('vat_number', $event.target.value)" >
+							class="form-input min-h-[48px]" />
 					</div>
 					<div>
 						<label class="block text-[0.8125rem] font-semibold text-[var(--color-brand-text)] mb-[6px]" for="pro_message">Messaggio</label>
@@ -225,17 +225,17 @@ const formDescription = computed(() => {
 							id="pro_message"
 							:value="proRequestForm.message"
 							:disabled="isLocked"
+							@input="updateField('message', $event.target.value)"
 							rows="4"
 							placeholder="Breve nota facoltativa"
-							class="form-input min-h-[120px] resize-none"
-							@input="updateField('message', $event.target.value)"/>
+							class="form-input min-h-[120px] resize-none"></textarea>
 					</div>
 				</div>
 
 				<button
+					@click="emit('submit')"
 					:disabled="submitDisabled"
-					class="btn-primary btn-compact w-full inline-flex items-center justify-center gap-[8px]"
-					@click="emit('submit')">
+					class="btn-primary btn-compact w-full inline-flex items-center justify-center gap-[8px]">
 					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
 					</svg>

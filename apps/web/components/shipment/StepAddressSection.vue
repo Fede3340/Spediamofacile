@@ -244,8 +244,7 @@ const showDestActions = computed(() => props.deliveryMode !== 'pudo' && (canUseD
 	justify-content: flex-start;
 	gap: 12px;
 	padding-bottom: 14px;
-	padding-right: 220px; /* spazio per i bottoni Rubrica + Salva absolute */
-	border-bottom: none;
+	border-bottom: 1px solid rgba(9, 88, 102, 0.08);
 }
 
 .address-entry-card__header-menu {
@@ -286,36 +285,27 @@ const showDestActions = computed(() => props.deliveryMode !== 'pudo' && (canUseD
 
 .address-entry-card__actions {
 	display: flex;
-	flex-wrap: nowrap;
+	flex-wrap: wrap;
 	align-items: center;
 	justify-content: flex-end;
 	gap: 6px;
 	position: relative;
+	padding: 4px 5px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.78);
+	border: 1px solid rgba(9, 88, 102, 0.09);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52);
 }
 
 .address-entry-card__actions--footer {
 	justify-content: flex-end;
 }
 
-/* Sposta il blocco azioni in alto a destra del card senza modificare il template */
 .address-entry-card__footer--actions-only {
-	position: absolute;
-	top: 18px;
-	right: 22px;
-	padding-top: 0;
-	z-index: 3;
-}
-
-.address-entry-card {
 	position: relative;
-}
-
-/* La "linea sopra i bottoni" era il border-top del card stesso (in shipment-step.css
-   il card ha border 1.5px solid). Lo nascondiamo solo qui per evitare la linea
-   visibile dietro i bottoni absolute. */
-.address-stage-shell .address-entry-card {
-	border-top-color: transparent !important;
-	border-top-width: 0 !important;
+	grid-template-columns: minmax(0, 1fr);
+	justify-items: end;
+	padding-top: 4px;
 }
 
 .address-entry-card__mode {
@@ -325,8 +315,7 @@ const showDestActions = computed(() => props.deliveryMode !== 'pudo' && (canUseD
 }
 
 .address-entry-card__mode-shell {
-	width: auto;
-	max-width: 320px;
+	width: min(100%, 360px);
 	justify-self: start;
 }
 

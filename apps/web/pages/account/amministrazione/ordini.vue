@@ -1,5 +1,5 @@
 <script setup>
-import '~/assets/css/pages/admin.css';
+import '~/assets/css/admin.css';
 import { ref, computed, onMounted } from 'vue';
 
 definePageMeta({
@@ -87,7 +87,7 @@ const fetchKpi = async () => {
 	} catch (e) {
 		// silenzioso: i KPI sono "nice to have", non bloccare la pagina
 		// log lato console solo per diagnostica
-		 
+		// eslint-disable-next-line no-console
 		console.warn('[admin/ordini] KPI dashboard non disponibile:', e?.message || e);
 	} finally {
 		kpiLoading.value = false;
@@ -286,7 +286,7 @@ const exportCsv = async () => {
 				pkg?.originAddress?.city || pkg?.origin_city || '',
 				pkg?.destinationAddress?.city || pkg?.destination_city || '',
 				o.status,
-				formatEuro(Number(subAmount) / 100),
+				(Number(subAmount) / 100).toFixed(2).replace('.', ','),
 				o.brt_parcel_id || '',
 			]);
 		}
@@ -450,7 +450,7 @@ onMounted(async () => {
 			<!-- TABELLA / CARDS ----------------------------------------- -->
 			<div class="m6-results">
 				<div v-if="loading" class="m6-state m6-state--loading">
-					<div class="m6-spinner" aria-hidden="true"/>
+					<div class="m6-spinner" aria-hidden="true"></div>
 					<p>Caricamento ordini…</p>
 				</div>
 

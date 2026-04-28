@@ -1,6 +1,6 @@
 <!-- COMPONENTE: AddressFormModal -->
 <script setup>
-import '~/assets/css/components/sf-address.css';
+import '~/assets/css/account.css';
 import { provinceList } from '~/utils/provinceList';
 
 const props = defineProps({
@@ -78,7 +78,7 @@ const validate = () => {
 	if (isCompany.value) {
 		if (!f.company_name?.trim()) err.company_name = 'Inserisci la ragione sociale';
 		if (!f.vat_number?.trim()) err.vat_number = 'Inserisci la Partita IVA';
-		else if (!/^[A-Z]{0,2}\d{11}$/i.test(f.vat_number.replace(/\s/g, ''))) err.vat_number = 'Partita IVA non valida (11 cifre)';
+		else if (!/^[A-Z]{0,2}[0-9]{11}$/i.test(f.vat_number.replace(/\s/g, ''))) err.vat_number = 'Partita IVA non valida (11 cifre)';
 	} else {
 		if (!f.first_name?.trim()) err.first_name = 'Inserisci il nome';
 		if (!f.last_name?.trim()) err.last_name = 'Inserisci il cognome';
@@ -96,7 +96,7 @@ const validate = () => {
 	if (!f.telephone_number?.trim()) err.telephone_number = 'Inserisci un numero di telefono';
 	else if (!/^[+\d\s().-]{6,}$/.test(f.telephone_number)) err.telephone_number = 'Numero di telefono non valido';
 
-	if (f.email && !/^[^\s@]+@[^\s@][^\s.@]*\.[^\s@]+$/.test(f.email)) err.email = 'Email non valida';
+	if (f.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) err.email = 'Email non valida';
 
 	errors.value = err;
 	return Object.keys(err).length === 0;
@@ -167,14 +167,14 @@ const submitLabel = computed(() => {
 </script>
 
 <template>
-	<SfModal :model-value="modelValue" :title="titleText" size="lg" :persistent="submitting" @update:model-value="(v) => emit('update:modelValue', v)">
-		<form class="sf-addr-form" novalidate @submit.prevent="onSubmit">
+	<SfModal :model-value="modelValue" @update:model-value="(v) => emit('update:modelValue', v)" :title="titleText" size="lg" :persistent="submitting">
+		<form class="sf-addr-form" @submit.prevent="onSubmit" novalidate>
 			<!-- TIPO INDIRIZZO -->
 			<fieldset class="sf-addr-fieldset">
 				<legend class="sf-addr-legend">Tipo di indirizzo</legend>
 				<div class="sf-addr-radio-group">
 					<label :class="['sf-addr-radio', form.type === 'origin' ? 'sf-addr-radio--active sf-addr-radio--origin' : '']">
-						<input v-model="form.type" type="radio" value="origin" >
+						<input v-model="form.type" type="radio" value="origin" />
 						<span class="sf-addr-radio__icon">
 							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
 								<path d="M12,2A7,7 0 0,1 19,9C19,14.25 12,22 12,22C12,22 5,14.25 5,9A7,7 0 0,1 12,2M12,4A5,5 0 0,0 7,9C7,10 7,12 12,18.71C17,12 17,10 17,9A5,5 0 0,0 12,4M12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5Z" />
@@ -186,7 +186,7 @@ const submitLabel = computed(() => {
 						</div>
 					</label>
 					<label :class="['sf-addr-radio', form.type === 'destination' ? 'sf-addr-radio--active sf-addr-radio--dest' : '']">
-						<input v-model="form.type" type="radio" value="destination" >
+						<input v-model="form.type" type="radio" value="destination" />
 						<span class="sf-addr-radio__icon">
 							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
 								<path d="M12,2L4.5,20.29L5.21,21L12,18L18.79,21L19.5,20.29L12,2Z" />
@@ -212,7 +212,7 @@ const submitLabel = computed(() => {
 						placeholder="Es. Casa, Ufficio, Magazzino"
 						maxlength="40"
 						:aria-invalid="errors.label ? 'true' : 'false'"
-					>
+					/>
 					<span v-if="errors.label" class="sf-addr-error">{{ errors.label }}</span>
 				</label>
 			</div>
@@ -222,11 +222,11 @@ const submitLabel = computed(() => {
 				<legend class="sf-addr-legend">Profilo</legend>
 				<div class="sf-addr-radio-group sf-addr-radio-group--compact">
 					<label :class="['sf-addr-radio sf-addr-radio--mini', form.profile === 'private' ? 'sf-addr-radio--active' : '']">
-						<input v-model="form.profile" type="radio" value="private" >
+						<input v-model="form.profile" type="radio" value="private" />
 						<span>Privato</span>
 					</label>
 					<label :class="['sf-addr-radio sf-addr-radio--mini', form.profile === 'company' ? 'sf-addr-radio--active' : '']">
-						<input v-model="form.profile" type="radio" value="company" >
+						<input v-model="form.profile" type="radio" value="company" />
 						<span>Azienda</span>
 					</label>
 				</div>
@@ -236,28 +236,28 @@ const submitLabel = computed(() => {
 			<div v-if="isCompany" class="sf-addr-row sf-addr-row--triple">
 				<label class="sf-addr-field">
 					<span class="sf-addr-field__label">Ragione sociale *</span>
-					<input v-model="form.company_name" type="text" class="sf-addr-input" placeholder="Acme S.r.l." >
+					<input v-model="form.company_name" type="text" class="sf-addr-input" placeholder="Acme S.r.l." />
 					<span v-if="errors.company_name" class="sf-addr-error">{{ errors.company_name }}</span>
 				</label>
 				<label class="sf-addr-field">
 					<span class="sf-addr-field__label">Partita IVA *</span>
-					<input v-model="form.vat_number" type="text" class="sf-addr-input" placeholder="12345678901" maxlength="13" >
+					<input v-model="form.vat_number" type="text" class="sf-addr-input" placeholder="12345678901" maxlength="13" />
 					<span v-if="errors.vat_number" class="sf-addr-error">{{ errors.vat_number }}</span>
 				</label>
 				<label class="sf-addr-field">
 					<span class="sf-addr-field__label">Codice SDI</span>
-					<input v-model="form.sdi_code" type="text" class="sf-addr-input" placeholder="XXXXXXX" maxlength="7" >
+					<input v-model="form.sdi_code" type="text" class="sf-addr-input" placeholder="XXXXXXX" maxlength="7" />
 				</label>
 			</div>
 			<div v-else class="sf-addr-row sf-addr-row--double">
 				<label class="sf-addr-field">
 					<span class="sf-addr-field__label">Nome *</span>
-					<input v-model="form.first_name" type="text" class="sf-addr-input" placeholder="Mario" >
+					<input v-model="form.first_name" type="text" class="sf-addr-input" placeholder="Mario" />
 					<span v-if="errors.first_name" class="sf-addr-error">{{ errors.first_name }}</span>
 				</label>
 				<label class="sf-addr-field">
 					<span class="sf-addr-field__label">Cognome *</span>
-					<input v-model="form.last_name" type="text" class="sf-addr-input" placeholder="Rossi" >
+					<input v-model="form.last_name" type="text" class="sf-addr-input" placeholder="Rossi" />
 					<span v-if="errors.last_name" class="sf-addr-error">{{ errors.last_name }}</span>
 				</label>
 			</div>
@@ -266,12 +266,12 @@ const submitLabel = computed(() => {
 			<div class="sf-addr-row sf-addr-row--street">
 				<label class="sf-addr-field">
 					<span class="sf-addr-field__label">Indirizzo *</span>
-					<input v-model="form.address" type="text" class="sf-addr-input" placeholder="Via Roma" >
+					<input v-model="form.address" type="text" class="sf-addr-input" placeholder="Via Roma" />
 					<span v-if="errors.address" class="sf-addr-error">{{ errors.address }}</span>
 				</label>
 				<label class="sf-addr-field">
 					<span class="sf-addr-field__label">Civico *</span>
-					<input v-model="form.address_number" type="text" class="sf-addr-input" placeholder="10" >
+					<input v-model="form.address_number" type="text" class="sf-addr-input" placeholder="10" />
 					<span v-if="errors.address_number" class="sf-addr-error">{{ errors.address_number }}</span>
 				</label>
 			</div>
@@ -282,19 +282,19 @@ const submitLabel = computed(() => {
 					<span class="sf-addr-field__label">CAP *</span>
 					<input
 						:value="form.postal_code"
+						@input="onPostalCodeInput"
 						type="text"
 						class="sf-addr-input"
 						placeholder="00100"
 						maxlength="5"
 						inputmode="numeric"
 						pattern="[0-9]{5}"
-						@input="onPostalCodeInput"
-					>
+					/>
 					<span v-if="errors.postal_code" class="sf-addr-error">{{ errors.postal_code }}</span>
 				</label>
 				<label class="sf-addr-field">
 					<span class="sf-addr-field__label">Città *</span>
-					<input v-model="form.city" type="text" class="sf-addr-input" placeholder="Roma" >
+					<input v-model="form.city" type="text" class="sf-addr-input" placeholder="Roma" />
 					<span v-if="errors.city" class="sf-addr-error">{{ errors.city }}</span>
 				</label>
 				<label class="sf-addr-field">
@@ -311,12 +311,12 @@ const submitLabel = computed(() => {
 			<div class="sf-addr-row sf-addr-row--double">
 				<label class="sf-addr-field">
 					<span class="sf-addr-field__label">Telefono *</span>
-					<input v-model="form.telephone_number" type="tel" class="sf-addr-input" placeholder="+39 333 0000000" inputmode="tel" >
+					<input v-model="form.telephone_number" type="tel" class="sf-addr-input" placeholder="+39 333 0000000" inputmode="tel" />
 					<span v-if="errors.telephone_number" class="sf-addr-error">{{ errors.telephone_number }}</span>
 				</label>
 				<label class="sf-addr-field">
 					<span class="sf-addr-field__label">Email</span>
-					<input v-model="form.email" type="email" class="sf-addr-input" placeholder="mario@esempio.it" >
+					<input v-model="form.email" type="email" class="sf-addr-input" placeholder="mario@esempio.it" />
 					<span v-if="errors.email" class="sf-addr-error">{{ errors.email }}</span>
 				</label>
 			</div>
@@ -324,12 +324,12 @@ const submitLabel = computed(() => {
 			<!-- INFO AGGIUNTIVE -->
 			<label class="sf-addr-field">
 				<span class="sf-addr-field__label">Note aggiuntive <small>(scala, piano, citofono…)</small></span>
-				<input v-model="form.additional_information" type="text" class="sf-addr-input" placeholder="Es. Scala B, piano 3, citofono Rossi" >
+				<input v-model="form.additional_information" type="text" class="sf-addr-input" placeholder="Es. Scala B, piano 3, citofono Rossi" />
 			</label>
 
 			<!-- DEFAULT -->
 			<label class="sf-addr-checkbox">
-				<input v-model="form.default" type="checkbox" >
+				<input v-model="form.default" type="checkbox" />
 				<span>Imposta come predefinito</span>
 			</label>
 

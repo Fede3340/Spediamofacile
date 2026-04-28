@@ -15,7 +15,7 @@ const joinPath = (base: string, prefix: string, suffix?: string) => {
 const resolveDirectBackendBase = (apiBase: string) => {
   try {
     const url = new URL(apiBase)
-    if (!['127.0.0.1', 'localhost', '[::1]', '::1'].includes(url.hostname)) return null
+    if (!['127.0.0.1', 'localhost'].includes(url.hostname)) return null
     if (url.port !== '8787') return null
     url.port = '8000'
     return normalizeBase(url.toString())

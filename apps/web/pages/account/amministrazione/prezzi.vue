@@ -1,6 +1,6 @@
 <script setup>
 // CSS split route-specific: admin-prezzi.css usato solo qui.
-import '~/assets/css/admin-prezzi.css';
+import '~/assets/css/admin.css';
 
 definePageMeta({
 	middleware: ['app-auth', 'admin'],
@@ -80,7 +80,7 @@ const {
 	savePriceBands,
 	savePromo,
 	uploadPromoImage,
-} = useAdminPrezzi();
+} = useAdminPricing();
 
 const nationalBandCount = computed(() => (weightBands.value?.length || 0) + (volumeBands.value?.length || 0));
 const europeCountryCount = computed(() =>
@@ -167,13 +167,13 @@ onMounted(() => {
 							]"
 							:key="view.id"
 							type="button"
+							@click="adminView = view.id"
 							:class="
 								adminView === view.id
 									? 'bg-[var(--color-brand-primary)] text-white border-transparent shadow-[0_2px_8px_rgba(9,88,102,0.25)]'
 									: 'bg-transparent text-[#425466] border-[#D8E3E8] hover:border-[var(--color-brand-primary)] hover:text-[var(--color-brand-primary)]'
 							"
 							class="admin-prezzi-tab-btn"
-							@click="adminView = view.id"
 						>
 							{{ view.label }}
 						</button>
@@ -191,7 +191,7 @@ onMounted(() => {
 							v-if="adminView === 'europa'"
 							class="grid w-full grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-[minmax(0,1fr)_160px_160px_180px_auto] gap-[10px]"
 						>
-							<input v-model="europeSearch" type="text" placeholder="Cerca paese o codice..." aria-label="Cerca paese o codice Europa" class="admin-prezzi-input" >
+							<input v-model="europeSearch" type="text" placeholder="Cerca paese o codice..." aria-label="Cerca paese o codice Europa" class="admin-prezzi-input" />
 							<select v-model="europeStatusFilter" aria-label="Filtra per stato tariffa Europa" class="admin-prezzi-input">
 								<option value="all">Tutti</option>
 								<option value="active">Prezzo attivo</option>
@@ -207,7 +207,7 @@ onMounted(() => {
 								<option value="status">Per stato</option>
 							</select>
 							<label class="inline-flex min-h-[42px] items-center gap-[8px] whitespace-nowrap text-[0.8125rem] text-[#4F5D75] desktop:justify-self-end">
-								<input v-model="compactEuropeView" type="checkbox" class="rounded border-[#E9EBEC] text-[var(--color-brand-primary)] focus:ring-[var(--color-brand-primary)]" >
+								<input v-model="compactEuropeView" type="checkbox" class="rounded border-[#E9EBEC] text-[var(--color-brand-primary)] focus:ring-[var(--color-brand-primary)]" />
 								Vista compatta
 							</label>
 						</div>
@@ -216,7 +216,7 @@ onMounted(() => {
 							v-else-if="adminView === 'servizi'"
 							class="grid w-full grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-[minmax(0,1fr)_190px_auto] gap-[10px]"
 						>
-							<input v-model="serviceSearch" type="text" placeholder="Cerca regola o supplemento..." aria-label="Cerca regola o supplemento" class="admin-prezzi-input" >
+							<input v-model="serviceSearch" type="text" placeholder="Cerca regola o supplemento..." aria-label="Cerca regola o supplemento" class="admin-prezzi-input" />
 							<select v-model="serviceFilter" aria-label="Filtra per sezione servizi" class="admin-prezzi-input">
 								<option value="all">Tutte le sezioni</option>
 								<option value="service_pricing">Servizi utente</option>
@@ -256,14 +256,13 @@ onMounted(() => {
 			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
 
 			<div v-if="isLoading" class="py-[32px] flex justify-center">
-				<div class="w-[40px] h-[40px] border-3 border-[#E9EBEC] border-t-[var(--color-brand-primary)] rounded-full animate-spin"/>
+				<div class="w-[40px] h-[40px] border-3 border-[#E9EBEC] border-t-[var(--color-brand-primary)] rounded-full animate-spin"></div>
 			</div>
 
 			<template v-else>
 				<div class="space-y-[24px]">
 					<AdminPrezziNazionale
 						v-if="adminView === 'nazionale'"
-						v-model:edit-value="editValue"
 						:weight-bands="weightBands"
 						:volume-bands="volumeBands"
 						:extra-rules="extraRules"
@@ -271,6 +270,7 @@ onMounted(() => {
 						:bands-from-db="bandsFromDb"
 						:seeding="seeding"
 						:editing-cell="editingCell"
+						v-model:edit-value="editValue"
 						:extra-rule-examples="extraRuleExamples"
 						:pricing-preview-cases="pricingPreviewCases"
 						:cents-to-euro="centsToEuro"
@@ -336,7 +336,7 @@ onMounted(() => {
 								Modifiche non salvate
 							</span>
 						</div>
-						<button type="button" :disabled="saving || !hasChanges" class="admin-prezzi-save-btn" @click="savePriceBands">
+						<button type="button" @click="savePriceBands" :disabled="saving || !hasChanges" class="admin-prezzi-save-btn">
 							<svg v-if="saving" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[18px] h-[18px] animate-spin" fill="currentColor">
 								<path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
 							</svg>

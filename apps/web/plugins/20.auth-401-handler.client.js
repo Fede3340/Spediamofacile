@@ -21,8 +21,9 @@ export default defineNuxtPlugin((nuxtApp) => {
 		if (status !== 401 && status !== 419) return
 
 		// Evita reopen ripetuti se l'overlay è già aperto.
-		const { isOpen, openAuthModal } = useAuthModal()
-		if (isOpen.value) return
+		const authModal = useAuthModalStore()
+		if (authModal.isOpen) return
+		const { openAuthModal } = authModal
 
 		const route = useRoute()
 		// Salva la rotta corrente come redirect post-login così l'utente

@@ -16,8 +16,6 @@ useSeoMeta({
 // Organization + WebSite schema sono iniettati globalmente da app.vue via useSiteSchema().
 // Qui aggiungiamo solo WebApplication schema, specifico della homepage.
 // (P9: ex useSchemaOrg wrapper inline — 3 righe, non serve composable.)
-const runtimeConfig = useRuntimeConfig();
-const siteUrl = String(runtimeConfig.public?.siteUrl || 'https://spediamofacile.it').replace(/\/+$/, '');
 useHead({
 	script: [{
 		key: 'home-webapp-schema',
@@ -25,9 +23,9 @@ useHead({
 		innerHTML: JSON.stringify({
 			'@context': 'https://schema.org',
 			'@type': 'WebApplication',
-			'@id': `${siteUrl}/#webapp`,
+			'@id': 'https://spediamofacile.it/#webapp',
 			name: 'SpediamoFacile',
-			url: siteUrl,
+			url: 'https://spediamofacile.it',
 			applicationCategory: 'BusinessApplication',
 			applicationSubCategory: 'Shipping',
 			operatingSystem: 'Any (web-based)',
@@ -39,7 +37,7 @@ useHead({
 				priceCurrency: 'EUR',
 				description: 'Registrazione e preventivo gratuiti. Paghi solo le spedizioni effettive.',
 			},
-			publisher: { '@id': `${siteUrl}/#organization` },
+			publisher: { '@id': 'https://spediamofacile.it/#organization' },
 		}),
 	}],
 });
@@ -47,7 +45,7 @@ useHead({
 // Il preventivo rapido è il componente <Preventivo /> (hero della homepage).
 // Gestisce origine/destinazione, pacchi, peso e 3 dimensioni, e continua
 // direttamente nel ventaglio funnel via continueToNextStep().
-// Vedi components/Preventivo.vue + composables/usePreventivo.ts.
+// Vedi components/Preventivo.vue + composables/useQuote.ts.
 
 // ───────────────── FAQ accordion ─────────────────
 const faqs = [
@@ -98,7 +96,7 @@ onBeforeUnmount(() => observer?.disconnect());
 
 <template>
 	<div class="home">
-		<!-- H1 visibile "Spedisci in tutta Italia" gia' presente nel componente <Preventivo />: uno solo per pagina (audit a11y). -->
+		<!-- H1 visibile "Spedisci in tutta Italia" in ContenutoHeader.vue:74 — uno solo per pagina. -->
 		<p class="sr-only">SpediamoFacile — Preventivo rapido per spedizioni BRT con ritiro a domicilio.</p>
 		<!-- ═══════════════════ PREVENTIVO RAPIDO (collegato al ventaglio) ═══════════════════ -->
 		<!-- ClientOnly: il form preventivo e' interattivo e richiede JS. Evita
@@ -106,7 +104,7 @@ onBeforeUnmount(() => observer?.disconnect());
 		<ClientOnly>
 			<Preventivo />
 			<template #fallback>
-				<div aria-hidden="true" style="min-height:460px"/>
+				<div aria-hidden="true" style="min-height:460px"></div>
 			</template>
 		</ClientOnly>
 
@@ -364,11 +362,11 @@ onBeforeUnmount(() => observer?.disconnect());
 						data-reveal
 					>
 						<button
-							:id="`faq-trigger-${i}`"
 							type="button"
 							class="faq__q"
 							:aria-expanded="isFaqOpen(i)"
 							:aria-controls="`faq-panel-${i}`"
+							:id="`faq-trigger-${i}`"
 							@click="toggleFaq(i)"
 						>
 							<span>{{ item.q }}</span>

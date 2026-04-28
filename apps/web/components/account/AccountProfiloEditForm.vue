@@ -33,7 +33,7 @@ const accountTypeOptions = [
 	  diretto: le <section class="sf-account-panel"> riempiono tutta la larghezza
 	  dell'area content e mantengono spacing uniforme con space-y-[16px] (~16px gap).
 	-->
-	<form class="sf-account-profile-edit w-full space-y-[16px]" aria-labelledby="sf-profilo-form-title" @submit.prevent="emit('submit')">
+	<form @submit.prevent="emit('submit')" class="sf-account-profile-edit w-full space-y-[16px]" aria-labelledby="sf-profilo-form-title">
 				<h2 id="sf-profilo-form-title" class="sr-only">Modifica profilo</h2>
 				<section class="sf-account-panel rounded-[16px] px-[16px] py-[16px] tablet:px-[20px] tablet:py-[18px]" aria-labelledby="sf-profilo-tipo">
 					<div class="grid gap-[16px]">
@@ -67,8 +67,8 @@ const accountTypeOptions = [
 									type="radio"
 									:value="opt.value"
 									:checked="modelValue.user_type === opt.value"
-									class="sr-only"
-									@change="updateField('user_type', opt.value)" >
+									@change="updateField('user_type', opt.value)"
+									class="sr-only" />
 								{{ opt.label }}
 							</label>
 						</div>
@@ -92,15 +92,15 @@ const accountTypeOptions = [
 					<div class="grid grid-cols-1 tablet:grid-cols-2 gap-[16px]">
 						<div>
 							<label for="sf-profilo-name" class="form-label">Nome *</label>
-							<input id="sf-profilo-name" type="text" autocomplete="given-name" :value="modelValue.name" :class="inputClass" required @input="updateField('name', $event.target.value)" >
+							<input id="sf-profilo-name" type="text" autocomplete="given-name" :value="modelValue.name" @input="updateField('name', $event.target.value)" :class="inputClass" required />
 						</div>
 						<div>
 							<label for="sf-profilo-surname" class="form-label">Cognome</label>
-							<input id="sf-profilo-surname" type="text" autocomplete="family-name" :value="modelValue.surname" :class="inputClass" @input="updateField('surname', $event.target.value)" >
+							<input id="sf-profilo-surname" type="text" autocomplete="family-name" :value="modelValue.surname" @input="updateField('surname', $event.target.value)" :class="inputClass" />
 						</div>
 						<div>
 							<label for="sf-profilo-email" class="form-label">Email *</label>
-							<input id="sf-profilo-email" type="email" autocomplete="email" :value="modelValue.email" :class="inputClass" required @input="updateField('email', $event.target.value)" >
+							<input id="sf-profilo-email" type="email" autocomplete="email" :value="modelValue.email" @input="updateField('email', $event.target.value)" :class="inputClass" required />
 						</div>
 						<div>
 							<label for="sf-profilo-tel" class="form-label">Telefono</label>
@@ -110,8 +110,8 @@ const accountTypeOptions = [
 								autocomplete="tel"
 								inputmode="tel"
 								:value="modelValue.telephone_number"
-								:class="inputClass"
-								@input="updateField('telephone_number', $event.target.value)" >
+								@input="updateField('telephone_number', $event.target.value)"
+								:class="inputClass" />
 						</div>
 					</div>
 				</section>
@@ -144,9 +144,9 @@ const accountTypeOptions = [
 									type="text"
 									autocomplete="organization"
 									:value="modelValue.company_name"
+									@input="updateField('company_name', $event.target.value)"
 									placeholder="Nome azienda"
-									:class="inputClass"
-									@input="updateField('company_name', $event.target.value)" >
+									:class="inputClass" />
 							</div>
 							<div>
 								<label for="sf-profilo-vat" class="form-label">Partita IVA</label>
@@ -154,9 +154,9 @@ const accountTypeOptions = [
 									id="sf-profilo-vat"
 									type="text"
 									:value="modelValue.vat_number"
+									@input="updateField('vat_number', $event.target.value)"
 									placeholder="IT12345678901"
-									:class="inputClass"
-									@input="updateField('vat_number', $event.target.value)" >
+									:class="inputClass" />
 							</div>
 							<div>
 								<label for="sf-profilo-cf" class="form-label">Codice Fiscale</label>
@@ -164,9 +164,9 @@ const accountTypeOptions = [
 									id="sf-profilo-cf"
 									type="text"
 									:value="modelValue.fiscal_code"
+									@input="updateField('fiscal_code', $event.target.value)"
 									placeholder="RSSMRA80A01H501U"
-									:class="inputClass"
-									@input="updateField('fiscal_code', $event.target.value)" >
+									:class="inputClass" />
 							</div>
 							<div>
 								<label for="sf-profilo-pec" class="form-label">PEC</label>
@@ -174,9 +174,9 @@ const accountTypeOptions = [
 									id="sf-profilo-pec"
 									type="email"
 									:value="modelValue.pec"
+									@input="updateField('pec', $event.target.value)"
 									placeholder="azienda@pec.it"
-									:class="inputClass"
-									@input="updateField('pec', $event.target.value)" >
+									:class="inputClass" />
 							</div>
 						</div>
 						<div class="max-w-[240px]">
@@ -185,10 +185,10 @@ const accountTypeOptions = [
 								id="sf-profilo-sdi"
 								type="text"
 								:value="modelValue.sdi_code"
+								@input="updateField('sdi_code', $event.target.value)"
 								placeholder="0000000"
 								maxlength="7"
-								:class="inputClass"
-								@input="updateField('sdi_code', $event.target.value)" >
+								:class="inputClass" />
 						</div>
 					</div>
 
@@ -216,7 +216,7 @@ const accountTypeOptions = [
 					</div>
 
 					<label class="inline-flex items-center gap-[10px] cursor-pointer mb-[16px]">
-						<input v-model="billingSameAsShipping" type="checkbox" class="w-[18px] h-[18px] accent-[var(--color-brand-primary)] cursor-pointer rounded-[4px]" >
+						<input type="checkbox" v-model="billingSameAsShipping" class="w-[18px] h-[18px] accent-[var(--color-brand-primary)] cursor-pointer rounded-[4px]" />
 						<span class="text-[13px] font-[600] text-[var(--color-brand-text)]">Uguale ai dati di spedizione</span>
 					</label>
 
@@ -229,9 +229,9 @@ const accountTypeOptions = [
 									type="text"
 									autocomplete="billing name"
 									:value="modelValue.billing_name"
+									@input="updateField('billing_name', $event.target.value)"
 									placeholder="Nome o Ragione Sociale"
-									:class="inputClass"
-									@input="updateField('billing_name', $event.target.value)" >
+									:class="inputClass" />
 							</div>
 							<div class="tablet:col-span-2">
 								<label for="sf-profilo-billaddr" class="form-label">Indirizzo fatturazione</label>
@@ -240,9 +240,9 @@ const accountTypeOptions = [
 									type="text"
 									autocomplete="billing street-address"
 									:value="modelValue.billing_address"
+									@input="updateField('billing_address', $event.target.value)"
 									placeholder="Via Roma 10"
-									:class="inputClass"
-									@input="updateField('billing_address', $event.target.value)" >
+									:class="inputClass" />
 							</div>
 							<div>
 								<label for="sf-profilo-billcity" class="form-label">Citta</label>
@@ -251,9 +251,9 @@ const accountTypeOptions = [
 									type="text"
 									autocomplete="billing address-level2"
 									:value="modelValue.billing_city"
+									@input="updateField('billing_city', $event.target.value)"
 									placeholder="Roma"
-									:class="inputClass"
-									@input="updateField('billing_city', $event.target.value)" >
+									:class="inputClass" />
 							</div>
 							<div class="grid grid-cols-2 gap-[16px]">
 								<div>
@@ -264,9 +264,9 @@ const accountTypeOptions = [
 										autocomplete="billing postal-code"
 										inputmode="numeric"
 										:value="modelValue.billing_postal_code"
+										@input="updateField('billing_postal_code', $event.target.value)"
 										placeholder="00100"
-										:class="inputClass"
-										@input="updateField('billing_postal_code', $event.target.value)" >
+										:class="inputClass" />
 								</div>
 								<div>
 									<label for="sf-profilo-billprov" class="form-label">Provincia</label>
@@ -276,9 +276,9 @@ const accountTypeOptions = [
 										autocomplete="billing address-level1"
 										maxlength="2"
 										:value="modelValue.billing_province"
+										@input="updateField('billing_province', $event.target.value)"
 										placeholder="RM"
-										:class="inputClass"
-										@input="updateField('billing_province', $event.target.value)" >
+										:class="inputClass" />
 								</div>
 							</div>
 						</div>
@@ -308,12 +308,12 @@ const accountTypeOptions = [
 								autocomplete="new-password"
 								aria-describedby="sf-profilo-pwd-help"
 								:value="modelValue.password"
+								@input="updateField('password', $event.target.value)"
 								placeholder="Lascia vuoto per mantenere"
 								minlength="8"
 								pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$"
 								title="Minimo 8 caratteri, almeno una maiuscola, una minuscola e un numero"
-								:class="inputClass"
-								@input="updateField('password', $event.target.value)" >
+								:class="inputClass" />
 							<p id="sf-profilo-pwd-help" class="mt-[4px] text-[11px] text-[var(--color-brand-text-muted)]">
 								Minimo 8 caratteri, con almeno una maiuscola, una minuscola e un numero.
 							</p>
@@ -325,10 +325,10 @@ const accountTypeOptions = [
 								type="password"
 								autocomplete="new-password"
 								:value="modelValue.password_confirmation"
+								@input="updateField('password_confirmation', $event.target.value)"
 								placeholder="Conferma"
 								minlength="8"
-								:class="inputClass"
-								@input="updateField('password_confirmation', $event.target.value)" >
+								:class="inputClass" />
 						</div>
 					</div>
 				</section>
@@ -336,11 +336,10 @@ const accountTypeOptions = [
 				<div class="flex flex-col-reverse gap-[12px] tablet:flex-row tablet:justify-end pt-[8px]">
 					<button
 						type="button"
+						@click.prevent="emit('cancel')"
 						:disabled="!!loading"
-						class="sf-flow-cta sf-flow-cta--secondary sf-flow-cta--compact disabled:opacity-60 disabled:cursor-not-allowed tablet:min-w-[160px]"
-						@click.prevent="emit('cancel')">
-						<svg
-aria-hidden="true"
+						class="sf-flow-cta sf-flow-cta--secondary sf-flow-cta--compact disabled:opacity-60 disabled:cursor-not-allowed tablet:min-w-[160px]">
+						<svg aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							width="16"
 							height="16"
@@ -357,8 +356,7 @@ aria-hidden="true"
 						type="submit"
 						:disabled="!!loading"
 						class="sf-flow-cta sf-flow-cta--primary sf-flow-cta--compact disabled:opacity-60 disabled:cursor-not-allowed tablet:min-w-[200px]">
-						<svg
-aria-hidden="true"
+						<svg aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							width="16"
 							height="16"

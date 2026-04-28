@@ -1,33 +1,10 @@
 <script setup>
-import { storeToRefs } from 'pinia';
 import ShipmentStepColli from '~/components/shipment/ShipmentStepColli.vue';
 import ShipmentStepServizi from '~/components/shipment/ShipmentStepServizi.vue';
 import ShipmentStepIndirizzi from '~/components/shipment/ShipmentStepIndirizzi.vue';
 import ShipmentStepPagamento from '~/components/shipment/ShipmentStepPagamento.vue';
 import PublicPageHeader from '~/components/layout/PublicPageHeader.vue';
-import {
-	buildSecondStepPayload,
-	deriveShipmentFlowStateFromUserStore,
-	pickMostAdvancedShipmentFlowState,
-	resolveShipmentFlowState,
-	readClientSubmissionId,
-} from '~/utils/shipment';
-import { formatEuroAmount } from '~/utils/cartHelpers';
-import {
-	buildDiscountOrderContext,
-	parseEuroAmount,
-} from '~/utils/discountPreview';
-import { useCheckoutPromoPreview } from '~/features/wallet-referral/useCheckoutPromoPreview';
-import { useCartStore } from '~/stores/cartStore';
-import { usePaymentStore, PAYMENT_METHOD_OPTIONS, clearPendingPayment } from '~/stores/paymentStore';
-import {
-	buildCheckoutSubmissionContext,
-	buildCheckoutSubmissionSignature,
-	readPendingShipmentDraft,
-	syncPendingShipmentSubmissionId,
-} from '~/utils/checkoutSubmissionContext';
-import { buildCheckoutSuccessQuery, translateStripeError } from '~/utils/checkout';
-import { callWithAuthRetry as runCallWithAuthRetry, detectInsufficientFunds, STRIPE_CARD_STYLE } from '~/utils/paymentHelpers';
+import { buildSecondStepPayload } from '~/composables/useShipmentStepDraftPayload';
 
 const debugCheckpoint = (label) => {
 	if (!import.meta.client) return;
@@ -44,7 +21,7 @@ onMounted(() => {
 const shipmentFlowStore = useShipmentFlowStore();
 const route = useRoute();
 const router = useRouter();
-const { openAuthModal } = useAuthModal();
+const { openAuthModal } = useAuthModalStore();
 const authUi = useAuthUiState();
 const isAuthenticated = authUi.isAuthenticatedForUi;
 definePageMeta({ middleware: ['shipment-validation'] });
@@ -356,7 +333,6 @@ const {
 	dateError,
 	deliveryMode,
 	destinationAddress,
-	originAddress,
 	focusContentDescriptionField,
 	focusPickupDateSection,
 	normalizeLocationText,
@@ -475,181 +451,39 @@ const handleUpdatePackageType = (pack, packageType) => {
 	updatePackageType(pack, packageType);
 };
 
-// =====================================================================
-// CHECKOUT — boundary cart + pagamento (Stripe / wallet / bonifico).
-// Stato condiviso: cartStore + paymentStore (Pinia). Logica route-aware,
-// auth-retry, bootstrap Stripe e dispatch metodo pagamento qui sotto.
-// =====================================================================
+const cart = useCart();
+const pay = usePayment(cart);
+debugCheckpoint('cart + payment ready');
 
-const { user, isAuthenticated: sanctumIsAuthenticated, refreshIdentity } = useSanctumAuth();
-const { authCookie } = useAuthUiSnapshotPersistence();
-
-const cartStore = useCartStore();
+// Destructure da cart (nomi identici, tranne pageReady -> checkoutPageReady
+// per mantenere il nome usato nel template e nell'orchestration composable).
 const {
-	cart: cartState,
 	pageReady: checkoutPageReady,
+	existingOrderId,
 	existingOrder,
+	displayPackages,
+	initCheckoutPage,
+	loadPriceBands,
+	totalPackages,
+	getNumberTotal,
+	finalTotalFormatted,
 	fatturazioneType,
 	invoiceSubjectType,
 	fatturaData,
-	walletBalance,
-	displayPackages,
-	getTotal,
-	totalPackages,
-	contentDescription: checkoutContentDescription,
-	addressGroups: cartAddressGroups,
-	hasMultipleGroups: cartHasMultipleGroups,
-	mergeGroupsCount: cartMergeGroupsCount,
-	existingOrderPayableTotal,
-	existingOrderDiscountPreview,
-	existingOrderCanAcceptDiscount,
 	billingShippingFullAddress,
-	billingPayload,
 	walletFormatted,
 	walletLoaded,
-} = storeToRefs(cartStore);
-
-const { loadPriceBands, priceBands: checkoutPriceBands, promoSettings: checkoutPromoSettings } = usePriceBands();
-
-// ID ordine letto da `?order_id=...` (recupero ordine creato in step precedente).
-const existingOrderId = computed(() => {
-	const raw = Array.isArray(route.query.order_id) ? route.query.order_id[0] : route.query.order_id;
-	return raw ? String(raw) : null;
-});
-
-// Fallback route quando il funnel non ha contesto valido salvato.
-const fallbackFlowRoute = computed(() => {
-	const remoteFlowState = resolveShipmentFlowState(session.value?.data || {});
-	const localFlowState = deriveShipmentFlowStateFromUserStore(shipmentFlowStore);
-	return pickMostAdvancedShipmentFlowState(remoteFlowState, localFlowState).last_valid_route
-		|| '/preventivo';
-});
-
-const getNumberTotal = computed(() => parseEuroAmount(getTotal.value));
-
-async function loadWalletBalance() {
-	if (cartStore.walletLoaded) return;
-	try {
-		const result = await sanctumClient('/api/wallet/balance');
-		cartStore.setWalletBalance(Number(result?.balance ?? 0), true);
-	} catch {
-		cartStore.setWalletBalance(0, true);
-	}
-}
-
-async function refreshCart() {
-	try {
-		const res = await sanctumClient('/api/cart');
-		if (res?.data) {
-			cartStore.setCart({ data: res.data, meta: res.meta || {} });
-		} else if (res) {
-			cartStore.setCart(res);
-		}
-	} catch {
-		// cart precedente mantenuto.
-	}
-}
-
-async function initCheckoutPage() {
-	cartStore.setExistingOrder(null);
-
-	if (existingOrderId.value) {
-		try {
-			const res = await sanctumClient(`/api/orders/${existingOrderId.value}`);
-			cartStore.setExistingOrder(res?.data ?? res ?? null);
-			cartStore.setPageReady(true);
-			return true;
-		} catch {
-			cartStore.setExistingOrder(null);
-			cartStore.setPageReady(false);
-			return false;
-		}
-	}
-
-	if (!sanctumIsAuthenticated.value || !user.value) {
-		cartStore.setPageReady(false);
-		return false;
-	}
-
-	await refreshCart();
-	const hasItems = Array.isArray(cartState.value?.data) && cartState.value.data.length > 0;
-	cartStore.setPageReady(hasItems);
-	return hasItems;
-}
-
-// Watchers billing: sincronizzano dati spedizione → fattura quando il subject_type cambia.
-watch([invoiceSubjectType, () => cartStore.billingShippingSource], () => {
-	cartStore.applyShippingDataToBilling();
-}, { immediate: true });
-
-watch(invoiceSubjectType, (subjectType) => {
-	if (subjectType === 'privato') cartStore.clearInvoiceCompanyFields();
-	cartStore.applyShippingDataToBilling();
-});
-
-watch(fatturazioneType, (type) => {
-	if (type === 'fattura') cartStore.applyShippingDataToBilling();
-});
-
-// --- Coupon / referral preview ---
-const {
-	autoApplyReferral,
-	couponApplied: rawCouponApplied,
+	walletSufficient,
 	couponCode,
-	couponError,
 	couponLoading,
+	couponError,
+	couponApplied,
 	couponPanelOpen,
-	discountedTotal,
-	removeCoupon: rawRemoveCoupon,
-	validateCoupon: rawValidateCoupon,
-} = useCheckoutPromoPreview({
-	sanctum: sanctumClient,
-	total: getNumberTotal,
-});
-
-const couponApplied = computed(
-	() => existingOrderDiscountPreview.value || rawCouponApplied.value,
-);
-
-function validateCoupon() {
-	if (existingOrder.value && !existingOrderCanAcceptDiscount.value) {
-		couponError.value = 'Il totale di questo ordine e\' gia\' bloccato. Crea un nuovo preventivo per usare un altro codice.';
-		return undefined;
-	}
-	return rawValidateCoupon();
-}
-
-function removeCoupon() {
-	if (existingOrderDiscountPreview.value) return;
-	rawRemoveCoupon();
-}
-
-// --- Totali finali (post coupon) ---
-const finalTotal = computed(() => {
-	if (existingOrderDiscountPreview.value) return existingOrderPayableTotal.value;
-	if (existingOrder.value && rawCouponApplied.value) return discountedTotal.value;
-	if (existingOrder.value) return existingOrderPayableTotal.value;
-	return discountedTotal.value;
-});
-
-const finalTotalFormatted = computed(() => {
-	if (existingOrder.value?.payable_total && !rawCouponApplied.value) {
-		return existingOrder.value.payable_total;
-	}
-	return Number(finalTotal.value).toFixed(2).replace('.', ',') + '\u00A0\u20AC';
-});
-
-const walletSufficient = computed(() => walletBalance.value >= finalTotal.value);
-
-const discountContext = computed(() =>
-	buildDiscountOrderContext({
-		preview: couponApplied.value,
-		subtotal: getNumberTotal.value,
-		finalTotal: finalTotal.value,
-	}),
-);
-
-debugCheckpoint('cart ready');
+	validateCoupon,
+	removeCoupon,
+	autoApplyReferral,
+	contentDescription: checkoutContentDescription,
+} = cart;
 
 const cleanPaymentSummaryText = (value) => {
 	const normalized = String(value ?? '').replace(/\s+/g, ' ').trim();
@@ -1130,6 +964,9 @@ const {
 });
 </script>
 
+<style src="~/assets/css/shipment-flow.css"></style>
+<style src="~/assets/css/shipment-flow.css"></style>
+
 <template>
 	<section class="pb-[64px] md:pb-[88px]" style="background: var(--gradient-page-surface)">
 		<div v-if="false" class="w-full max-w-[1280px] mx-auto px-[14px] sm:px-[40px] py-[40px]">
@@ -1400,6 +1237,3 @@ const {
 		</div>
 	</section>
 </template>
-<style src="~/assets/css/preventivo.css"></style>
-
-<style src="~/assets/css/shipment-step.css"></style>

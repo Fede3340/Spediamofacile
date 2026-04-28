@@ -1,6 +1,6 @@
 <!-- AdminUserTable.vue — Tabella utenti admin (mobile cards + desktop table) -->
 <script setup>
-import '~/assets/css/components/sf-admin-tables.css';
+import '~/assets/css/admin.css';
 import AdminTableLayout from './AdminTableLayout.vue';
 import AdminStatusBadge from './AdminStatusBadge.vue';
 

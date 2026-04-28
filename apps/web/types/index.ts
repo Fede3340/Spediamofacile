@@ -302,7 +302,7 @@ export type OrderStatusRaw =
   | 'label_generated'
   | 'completed'
   | 'payment_failed'
-  | 'payed'
+  | 'paid'
   | 'cancelled'
   | 'refunded'
   | 'in_transit'

@@ -1,8 +1,9 @@
 <script setup>
 useSeoMeta({
 	title: 'Cookie Policy',
+	ogTitle: 'Cookie Policy | SpedizioneFacile',
 	description:
-		'Cookie Policy di SpediamoFacile: tipologie, finalità, durata e modalità di gestione delle preferenze. Conforme al Provvedimento Garante 10/06/2021.',
+		'Cookie Policy di SpedizioneFacile: tipologie, finalità, durata e modalità di gestione delle preferenze. Conforme al Provvedimento Garante 10/06/2021.',
 });
 
 const lastUpdate = '18/04/2026';
@@ -219,8 +220,8 @@ function scrollToTop() {
 				<main id="lp-content" class="lp-content" tabindex="-1">
 					<article
 						v-for="s in sections"
-						:id="s.id"
 						:key="s.id"
+						:id="s.id"
 						class="lp-section"
 						:aria-labelledby="`${s.id}-h`"
 					>

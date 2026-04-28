@@ -5,6 +5,9 @@
   API: GET /api/public/services — con fallback hardcoded.
 -->
 <script setup>
+// CSS split route-specific: servizi.css usato solo in /servizi/* + /chi-siamo.
+import '~/assets/css/servizi.css';
+
 useSeoMeta({
 	title: 'Servizi di Spedizione',
 	ogTitle: 'Servizi di Spedizione',
@@ -124,7 +127,7 @@ const toggleFaq = (index) => { faqItems.value[index].open = !faqItems.value[inde
 </script>
 
 <template>
-	<div class="min-h-screen bg-[var(--surface-muted,#f5f6f9)]">
+	<div class="sv-page">
 		<PublicPageHeader
 			:crumbs="[{ label: 'Home', to: '/' }, { label: 'Servizi' }]"
 			eyebrow="Servizi di spedizione"
@@ -148,3 +151,10 @@ const toggleFaq = (index) => { faqItems.value[index].open = !faqItems.value[inde
 		<ServizioFaq :items="faqItems" @toggle="toggleFaq" />
 	</div>
 </template>
+
+<style scoped>
+.sv-page {
+	min-height: 100vh;
+	background: var(--surface-muted, #f5f6f9);
+}
+</style>

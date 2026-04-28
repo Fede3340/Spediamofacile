@@ -313,4 +313,4 @@ onBeforeUnmount(() => {
 	</div>
 </template>
 
-<\!-- CSS in assets/css/shipment-step.css (PUDO markers section) -->
+<\!-- CSS in assets/css/shipment-flow.css (PUDO markers section) -->

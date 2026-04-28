@@ -1,7 +1,7 @@
 <!-- PAGINA: /account/fatture — storico fatture PDF per l'utente loggato -->
 <script setup>
-import '~/assets/css/account-shell.css';
-import '~/assets/css/components/sf-fatture.css';
+import '~/assets/css/account.css';
+import '~/assets/css/account.css';
 import { formatPriceSafe as formatPrice } from '~/utils/price.js';
 import { formatDateIt } from '~/utils/date.js';
 
@@ -104,7 +104,7 @@ const empty = computed(() => !loading.value && !loadError.value && orders.value.
 
 			<!-- LOADING -->
 			<div v-if="loading" class="sf-fatture__skeleton" aria-busy="true">
-				<div v-for="n in 4" :key="n" class="sf-fatture__skel-row"/>
+				<div v-for="n in 4" :key="n" class="sf-fatture__skel-row"></div>
 			</div>
 
 			<!-- ERRORE -->

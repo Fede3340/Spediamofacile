@@ -1,7 +1,7 @@
 <script setup>
 /** AdminChartOrders.vue */
 import { computed, ref } from 'vue';
-import { chartToNumber as toNumber, formatInteger, formatDateShort as shortDate, formatDate as fullDate } from '~/utils/chart';
+import { useChartLogic } from '~/composables/useChartLogic';
 
 const props = defineProps({
 	ordersData: {
@@ -15,6 +15,8 @@ const props = defineProps({
 		validator: (v) => ['7d', '30d', '90d'].includes(v),
 	},
 });
+
+const { toNumber, formatInteger, formatDateShort: shortDate, formatDate: fullDate } = useChartLogic();
 
 const hoveredIndex = ref(-1);
 
@@ -239,7 +241,7 @@ const hasData = computed(() => primaryPoints.value.length > 0);
 	</div>
 
 	<div v-else class="admin-console-analytics__empty">
-		<div class="admin-console-analytics__empty-dot"/>
+		<div class="admin-console-analytics__empty-dot"></div>
 		<p>Nessun dato ordini disponibile per il periodo selezionato.</p>
 	</div>
 </template>

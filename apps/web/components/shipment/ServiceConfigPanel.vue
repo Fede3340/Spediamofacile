@@ -26,7 +26,7 @@ const showContrassegnoRimborso = computed(() => props.serviceData?.contrassegno?
 
 <template>
 	<div class="service-panel">
-		<div class="service-panel__divider"/>
+		<div class="service-panel__divider"></div>
 
 		<div v-if="service.key === 'contrassegno'" class="service-panel__content service-panel__content--contrassegno">
 			<div class="service-panel__grid service-panel__grid--two service-panel__grid--contrassegno">
@@ -44,7 +44,7 @@ const showContrassegnoRimborso = computed(() => props.serviceData?.contrassegno?
 							@input="
 								serviceData.contrassegno.importo = normalizeCurrencyInput($event.target.value);
 								serviceCardErrors.contrassegnoImporto = '';
-							" >
+							" />
 						<span class="service-panel__suffix">&euro;</span>
 					</div>
 					<p v-if="serviceCardErrors.contrassegnoImporto" class="service-panel__error">{{ serviceCardErrors.contrassegnoImporto }}</p>
@@ -58,7 +58,7 @@ const showContrassegnoRimborso = computed(() => props.serviceData?.contrassegno?
 						type="text"
 						class="service-panel__input"
 						placeholder="IT60X054281110..."
-						@input="serviceCardErrors.contrassegnoDettaglio = ''" >
+						@input="serviceCardErrors.contrassegnoDettaglio = ''" />
 					<p v-if="serviceCardErrors.contrassegnoDettaglio" class="service-panel__error">{{ serviceCardErrors.contrassegnoDettaglio }}</p>
 					<p class="service-panel__meta">Conto su cui accreditiamo l'importo incassato se scegli rimborso tramite bonifico.</p>
 				</div>
@@ -153,7 +153,7 @@ const showContrassegnoRimborso = computed(() => props.serviceData?.contrassegno?
 						@input="
 							serviceData.assicurazione[indexPopup] = normalizeCurrencyInput($event.target.value);
 							serviceCardErrors.assicurazione[indexPopup] = '';
-						" >
+						" />
 					<span class="service-panel__suffix">&euro;</span>
 				</div>
 				<p v-if="serviceCardErrors.assicurazione[indexPopup]" class="service-panel__error">{{ serviceCardErrors.assicurazione[indexPopup] }}</p>

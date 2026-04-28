@@ -1,6 +1,6 @@
 <!-- COMPONENTE: AdminOrderTable.vue -->
 <script setup>
-import '~/assets/css/components/sf-admin-tables.css';
+import '~/assets/css/admin.css';
 import { computed } from 'vue';
 import { getBrtTrackingLabel, getBrtTrackingUrl } from '~/utils/brtTracking';
 
