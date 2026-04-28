@@ -283,13 +283,6 @@
 	font-weight: 600;
 	color: var(--color-brand-primary);
 }
-
-.admin-prezzi-status-pill--warning {
-	border-color: var(--color-accent-400);
-	background: var(--color-accent-50);
-	color: var(--color-warning-text-strong);
-}
-
 .admin-prezzi-guidelines {
 	display: grid;
 	grid-template-columns: repeat(1, minmax(0, 1fr));

@@ -49,33 +49,11 @@ html:not(.is-hydrated) *::after {
  * Copre ~90% dei casi: button, link, card, nav item.
  * Hover colore, press scale leggero, focus ring teal.
  * ──────────────────────────────────────────────────────── */
-.sf-interactive {
-	transition:
-		color var(--sf-t1) var(--sf-ease),
-		background-color var(--sf-t1) var(--sf-ease),
-		border-color var(--sf-t1) var(--sf-ease),
-		box-shadow var(--sf-t1) var(--sf-ease),
-		transform var(--sf-t1) var(--sf-ease);
-}
-
-.sf-interactive:active {
-	transform: scale(0.98);
-}
-
-.sf-interactive:focus-visible {
-	outline: none;
-	box-shadow: 0 0 0 3px rgba(9, 88, 102, 0.25);
-}
-
 /* ────────────────────────────────────────────────────────
  * PRIMITIVA 2 — sf-reveal
  * Entrata di modal, toast, popover, tooltip.
  * Fade + traslazione morbida 6px.
  * ──────────────────────────────────────────────────────── */
-.sf-reveal {
-	animation: sf-reveal var(--sf-t2) var(--sf-ease) both;
-}
-
 @keyframes sf-reveal {
 	from {
 		opacity: 0;
@@ -91,10 +69,6 @@ html:not(.is-hydrated) *::after {
  * PRIMITIVA 3 — sf-spin
  * UNICA animazione infinita del sito. Solo per loader/spinner.
  * ──────────────────────────────────────────────────────── */
-.sf-spin {
-	animation: sf-spin 700ms linear infinite;
-}
-
 @keyframes sf-spin {
 	to {
 		transform: rotate(360deg);

@@ -284,12 +284,6 @@
 	background: #F5F6F9;
 	border-color: #E2E8EE;
 }
-
-.sf-account-meta-pill--admin {
-	background: var(--color-brand-primary);
-	border-color: var(--color-brand-primary);
-	color: #ffffff;
-}
 .sf-account-section {
 	position: relative;
 	overflow: hidden;
@@ -782,15 +776,6 @@
    ══════════════════════════════════════════════════════════════════ */
 /* Movement row: nessun accent laterale, differenziazione via colore del
    segno +/− del numero e tipografia. */
-.sf-movement-row {
-	position: relative;
-	transition: background var(--sf-t1) var(--sf-ease);
-}
-
-.sf-movement-row:hover {
-	background: rgba(9, 88, 102, 0.03);
-}
-
 /* ══════════════════════════════════════════════════════════════════
    HORIZONTAL OVERFLOW PREVENTION — Global guards for account/admin
    ══════════════════════════════════════════════════════════════════ */
@@ -1983,17 +1968,6 @@
 	background: rgba(9, 88, 102, 0.05);
 	box-shadow: 0 0 0 3px rgba(9, 88, 102, 0.12);
 }
-
-.sf-addr-radio--origin.sf-addr-radio--active {
-	border-color: #095866;
-}
-
-.sf-addr-radio--dest.sf-addr-radio--active {
-	border-color: #E44203;
-	background: rgba(228, 66, 3, 0.05);
-	box-shadow: 0 0 0 3px rgba(228, 66, 3, 0.12);
-}
-
 .sf-addr-radio__icon {
 	display: inline-flex;
 	align-items: center;
@@ -2005,9 +1979,6 @@
 	color: #095866;
 	flex-shrink: 0;
 }
-
-.sf-addr-radio--dest .sf-addr-radio__icon { background: rgba(228, 66, 3, 0.1); color: #E44203; }
-
 .sf-addr-radio strong {
 	display: block;
 	font-size: 0.875rem;
@@ -2022,15 +1993,6 @@
 	font-size: 0.75rem;
 	color: #5A656C;
 }
-
-.sf-addr-radio--mini {
-	padding: 8px 14px;
-	gap: 6px;
-	font-size: 0.875rem;
-	font-weight: 600;
-	color: #2E3940;
-}
-
 .sf-addr-row {
 	display: grid;
 	grid-template-columns: 1fr;

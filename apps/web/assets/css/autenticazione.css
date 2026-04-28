@@ -166,11 +166,6 @@
 	line-height: 1.35;
 	color: var(--color-brand-text-muted);
 }
-
-.auth-password-checklist__item--good {
-	color: var(--color-success-text);
-}
-
 .auth-feedback {
 	margin-top: 0;
 	padding: 0.62rem 0.74rem;
@@ -411,12 +406,7 @@
 	.auth-shell-message__action {
 		width: 100%;
 	}
-.auth-segmented-row {
-		width: 100%;
-		max-width: 280px;
-	}
-
-	.auth-register-segmented--role {
+.auth-register-segmented--role {
 		max-width: 100%;
 	}
 
