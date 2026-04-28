@@ -1,37 +1,19 @@
 # =============================================================================
-# CADDYFILE - Reverse Proxy per sviluppo locale
+# CADDYFILE — Reverse proxy locale (post-rewrite v2)
 # =============================================================================
 #
-# SCOPO: Caddy fa da "smistatore" (reverse proxy) che riceve TUTTE le richieste
-#        sulla porta 8787 e le smista al backend o al frontend giusto.
+# Sito monolite Laravel + Inertia: tutto passa da Laravel su :8000.
+# Caddy mantiene :8787 come endpoint storico locale per compat (URL preferito utente).
 #
-# COME FUNZIONA:
-#   Browser → Caddy (:8787) → Laravel (:8000) per le API
-#                            → Nuxt (:3001) per le pagine web
+#   Browser → Caddy (:8787) → Laravel + Inertia (:8000)
 #
-# PERCHE' SERVE:
-#   Senza Caddy, il frontend (porta 3001) e il backend (porta 8000) sarebbero
-#   su porte diverse = "origini" diverse per il browser. Questo causerebbe problemi
-#   con i cookie di sessione (cross-origin). Con Caddy, tutto passa dalla porta 8787
-#   e il browser vede un'unica origine = i cookie funzionano perfettamente.
-#
-# HEADER IMPORTANTI:
-#   - X-Forwarded-Host: dice al backend qual era l'hostname originale della richiesta
-#   - X-Forwarded-Proto: dice al backend se il client usava HTTP o HTTPS
-#     (Caddy riceve in HTTP, ma se c'e' Cloudflare davanti, il client usava HTTPS)
-#
-# FILE CORRELATI:
-#   - Caddyfile.trycloudflare — versione per Cloudflare tunnel (forza HTTPS)
-#   - bootstrap/app.php — trustProxies che fa leggere a Laravel questi header
+# Vite HMR (in dev) gira separatamente su :5173 e si auto-inietta nelle pagine
+# blade Inertia tramite @vite blade directive (nessun proxy necessario).
 # =============================================================================
 
 :8787 {
-  # Comprime le risposte con gzip per velocizzare il caricamento
   encode gzip
 
-  # Intestazioni di sicurezza per TUTTE le risposte (frontend + backend).
-  # Il backend Laravel aggiunge le proprie via SecurityHeaders middleware,
-  # ma le pagine Nuxt non passano da Laravel: Caddy le protegge qui.
   header {
     X-Content-Type-Options "nosniff"
     X-Frame-Options "SAMEORIGIN"
@@ -40,24 +22,11 @@
     Permissions-Policy "camera=(), microphone=(), geolocation=(self)"
   }
 
-  # Definisce quali percorsi vanno al backend Laravel (API, autenticazione, file)
-  # Tutto cio' che inizia con /api/, /sanctum/, /storage/ o /auth/ va a Laravel
-  @api path /api/* /sanctum/* /storage/* /auth/*
-
-  # Richieste API → Laravel (porta 8000)
-  # L'upstream e' configurabile via env per supportare anche i casi in cui
-  # Nuxt/Laravel siano raggiungibili dal gateway WSL invece che da 127.0.0.1.
-  # Inoltra gli header del proxy cosi' Laravel sa l'host e il protocollo originali
-  reverse_proxy @api {$SF_BACKEND_PROXY_TARGET:127.0.0.1:8000} {
-    header_up X-Forwarded-Host "{http.request.host}"
-    header_up X-Forwarded-Proto "{http.request.scheme}"
-  }
-
-  # Tutto il resto → Nuxt frontend (porta 3001)
-  # Host "localhost:3001" serve a Nuxt per riconoscere la richiesta come valida
-  reverse_proxy {$SF_FRONTEND_PROXY_TARGET:127.0.0.1:3001} {
-    header_up Host "localhost:3001"
-    header_up X-Forwarded-Host "{http.request.host}"
+  # Tutto il sito (HTML Inertia + API + asset) → Laravel
+  reverse_proxy {$SF_BACKEND_PROXY_TARGET:127.0.0.1:8000} {
+    header_up Host "127.0.0.1:8787"
+    header_up X-Forwarded-Host "127.0.0.1:8787"
+    header_up X-Forwarded-Port "8787"
     header_up X-Forwarded-Proto "{http.request.scheme}"
   }
 }

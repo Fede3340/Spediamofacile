@@ -9,6 +9,13 @@
 			"autoPort": false
 		},
 		{
+			"name": "caddy-proxy",
+			"runtimeExecutable": "caddy",
+			"runtimeArgs": ["run", "--config", "infra/caddy/Caddyfile"],
+			"port": 8787,
+			"autoPort": false
+		},
+		{
 			"name": "vite-dev",
 			"runtimeExecutable": "npm",
 			"runtimeArgs": ["run", "dev"],
