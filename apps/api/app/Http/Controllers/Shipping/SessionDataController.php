@@ -299,6 +299,37 @@ class SessionDataController extends Controller
     }
 
     /**
+     * Mostra lo stato corrente della sessione preventivo (post-rewrite v2).
+     * Mantiene la struttura "data.*" per compat con test esistenti.
+     */
+    public function show(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
+    {
+        return response()->json([
+            'data' => [
+                'shipment_details' => session('shipment_details'),
+                'packages' => session('packages'),
+                'total_price' => session('total_price'),
+                'step' => session('step'),
+                'client_submission_id' => session('client_submission_id'),
+                'pricing_signature' => session('pricing_signature'),
+                'pricing_snapshot_version' => session('pricing_snapshot_version'),
+                'pricing_snapshot' => session('pricing_snapshot'),
+                'services' => session('services'),
+                'content_description' => session('content_description'),
+                'pickup_date' => session('pickup_date'),
+                'sms_email_notification' => session('sms_email_notification'),
+                'service_data' => session('service_data'),
+                'origin_address' => session('origin_address'),
+                'destination_address' => session('destination_address'),
+                'delivery_mode' => session('delivery_mode'),
+                'selected_pudo' => session('selected_pudo'),
+            ],
+            'authenticated' => $request->user() !== null,
+            'user' => $request->user(),
+        ]);
+    }
+
+    /**
      * Reset COMPLETO della sessione preventivo. Da chiamare dopo che
      * il pagamento e' andato a buon fine: cosi' un nuovo preventivo
      * parte completamente pulito senza dati dell'ordine precedente.

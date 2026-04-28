@@ -98,6 +98,7 @@ Route::middleware('auth')->group(function () {
 Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle']);
 Route::post('/webhooks/brt/tracking', [BrtWebhookController::class, 'handleTrackingUpdate'])->middleware('throttle:60,1');
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+Route::get('/api/auth/google/redirect', [GoogleController::class, 'redirectToGoogle']);
 
 /* ────── Sanctum CSRF (per richieste AJAX da pages Inertia) ────── */
 Route::middleware(['web', 'throttle:30,1'])

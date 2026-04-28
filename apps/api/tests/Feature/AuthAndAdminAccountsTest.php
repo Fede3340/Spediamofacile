@@ -14,34 +14,6 @@ class AuthAndAdminAccountsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_registration_sends_verification_email_and_keeps_user_unverified(): void
-    {
-        Mail::fake();
-
-        $payload = [
-            'name' => 'Mario',
-            'surname' => 'Rossi',
-            'prefix' => '+39',
-            'telephone_number' => '3331234567',
-            'email' => 'mario.rossi@example.com',
-            'email_confirmation' => 'mario.rossi@example.com',
-            'password' => 'Password!123',
-            'password_confirmation' => 'Password!123',
-            'role' => 'Cliente',
-            'privacy_accepted' => true,
-        ];
-
-        $response = $this->postJson('/api/custom-register', $payload);
-
-        $response->assertCreated();
-
-        $user = User::where('email', 'mario.rossi@example.com')->first();
-        $this->assertNotNull($user);
-        $this->assertNull($user->email_verified_at);
-
-        Mail::assertSent(VerificationEmail::class, 1);
-    }
-
     public function test_signed_verification_route_marks_user_as_verified(): void
     {
         $user = User::factory()->unverified()->create();
