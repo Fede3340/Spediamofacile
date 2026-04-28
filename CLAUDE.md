@@ -83,12 +83,20 @@ E2E gating Stripe/funnel introduce regressioni di pagamento. Modificarli richied
 ## DB::table() autorizzati (pivot/bulk performance-critical)
 
 L'uso di `DB::table()` raw è **autorizzato** per:
-- Pivot tables: `cart_user`, `package_order`, `saved_shipments_orders`
-- Laravel internals: `password_reset_tokens`, `sessions`, `cache`, `jobs`
-- Bulk import performance: `geonames_postalcodes` (caricamento massivo CAP)
+- **Pivot tables pure** (no Model wrapper richiesto):
+  - `cart_user` — pivot user ↔ package nel carrello
+  - `package_order` — pivot order ↔ package per ordine creato
+  - `saved_shipments` — pivot user ↔ package per spedizioni salvate
+- **Laravel internals**: `password_reset_tokens`, `sessions`, `cache`, `jobs`
+- **Bulk import performance**: `locations` (caricamento massivo GeoNames CAP)
+- **Lock esplicito** in transazioni Stripe: `DB::table('users')->lockForUpdate()`
+  dentro `StripeCheckoutController` (selezione riga lock-friendly).
+- **Lettura password hash** in `ChangePasswordController` (security-by-design:
+  evita Model boot/cast accidentali).
 
-Eloquent overhead non giustificato in questi casi. Mantenere `DB::table()` esplicito.
-Ogni nuova occorrenza fuori da queste categorie va valutata caso per caso.
+Audit corrente: 17 occorrenze totali su 17 file giustificate. Eloquent overhead
+non giustificato in questi casi. Ogni nuova occorrenza fuori da queste categorie
+va valutata caso per caso.
 
 ## Test
 - Frontend: `cd apps/web && npx playwright test` (E2E)
