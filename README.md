@@ -4,18 +4,18 @@ Monorepo della piattaforma **SpediamoFacile**: intermediazione spedizioni BRT co
 
 ## Stack
 
-- **Frontend**: Nuxt 4.1 + Vue 3.5 + Pinia 3 + Tailwind CSS 4 + Nuxt UI 4
-- **Backend**: Laravel 11 + Sanctum 4 + PostgreSQL + Redis
+- **Frontend**: Nuxt 4.1 + Vue 3.5 (JavaScript + JSDoc) + Pinia 3 + Tailwind CSS 4 + Nuxt UI 4
+- **Backend**: Laravel 11 + Sanctum 4 + SQLite (dev) / Postgres (prod) + Redis
 - **Pagamenti**: Stripe 18 (carta, 3DS), bonifico, wallet
 - **Spedizioni**: integrazione BRT REST 3.x (etichette, tracking, PUDO)
-- **Test**: Playwright + Vitest (frontend), Pest/PHPUnit (backend)
+- **Test**: Playwright + Vitest (frontend), PHPUnit (backend)
 
 ## Struttura repo
 
 ```
 .
-├── nuxt-spedizionefacile-master/   Frontend Nuxt 4.1
-├── laravel-spedizionefacile-main/  Backend Laravel 11
+├── apps/web/   Frontend Nuxt 4.1
+├── apps/api/  Backend Laravel 11
 ├── docs/                           Documentazione canonica
 ├── infra/                          Configurazioni infrastruttura
 ├── scripts/                        Tooling locale
@@ -34,13 +34,13 @@ cd spedizionefacile
 npm install
 
 # 2. Frontend
-cd nuxt-spedizionefacile-master
+cd apps/web
 npm install
 cp .env.example .env
 npm run dev   # http://localhost:3000
 
 # 3. Backend (in altro terminale)
-cd laravel-spedizionefacile-main
+cd apps/api
 composer install
 cp .env.example .env
 php artisan key:generate
@@ -48,20 +48,18 @@ php artisan migrate --seed
 php artisan serve   # http://localhost:8000
 ```
 
-Setup dettagliato: [`docs/QUICKSTART.md`](docs/QUICKSTART.md).
-
 ## Documentazione
 
 Partire da [`docs/README.md`](docs/README.md) per l'indice completo. Documenti chiave:
 
-- [`docs/QUICKSTART.md`](docs/QUICKSTART.md) — setup locale step-by-step
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — panoramica di sistema
-- [`docs/FRONTEND_STRUCTURE.md`](docs/FRONTEND_STRUCTURE.md) — struttura Nuxt
-- [`docs/BACKEND_STRUCTURE.md`](docs/BACKEND_STRUCTURE.md) — struttura Laravel
-- [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md) — grammatica UI
-- [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) — convenzioni di sviluppo
-- [`docs/legal/SECURITY.md`](docs/legal/SECURITY.md) — security baseline
+- [`docs/ONBOARDING.md`](docs/ONBOARDING.md) — setup e percorso per nuovi dev
 - [`docs/operations/DEPLOY.md`](docs/operations/DEPLOY.md) — procedure di deploy
+- [`docs/operations/GOLIVE_CHECKLIST.md`](docs/operations/GOLIVE_CHECKLIST.md) — checklist go-live
+- [`docs/reference/API_CONTRACT.md`](docs/reference/API_CONTRACT.md) — contratto API
+- [`docs/legal/SECURITY.md`](docs/legal/SECURITY.md) — security baseline
+- [`docs/legal/GDPR_COMPLETO.md`](docs/legal/GDPR_COMPLETO.md) — compliance GDPR
+- [`docs/adr/`](docs/adr/) — Architecture Decision Records
 
 ## Quality gates
 

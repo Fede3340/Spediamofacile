@@ -5,14 +5,16 @@
 > sessioni AI sulla repo.
 
 ## Stack
-- Frontend: `nuxt-spedizionefacile-master/` (Nuxt 4.1 + Vue 3.5 + Pinia 3 + Tailwind 4 + Nuxt UI 4)
-- Backend: `laravel-spedizionefacile-main/` (Laravel 11 + Sanctum 4 + Stripe 18 + BRT REST 3.x)
-- Docs essenziali: `docs/` (22 docs + 3 ADR + ARCHITECTURE_MAP.md per overview visiva)
+- Frontend: `apps/web/` (Nuxt 4.1 + Vue 3.5 + Pinia 3 + Tailwind 4 + Nuxt UI 4)
+  - Linguaggio: **TypeScript** canonico per `composables/`, `stores/`, `utils/`, `server/`, configs. Vue components in `<script setup>` plain (JS+JSDoc) o `<script setup lang="ts">` indifferentemente — ambedue accettati. JSDoc resta valido come `@typedef` import-style.
+- Backend: `apps/api/` (Laravel 11 + Sanctum 4 + Stripe 18 + BRT REST 3.x)
+  - **Struttura standard Laravel**: controller raggruppati per dominio in `app/Http/Controllers/<Dominio>/` (Auth, Catalog, Cart, Checkout, Shipping, Account, Admin, Gdpr, Communication). Niente `app/Modules/`.
+  - Schema baseline in `database/schema/sqlite-schema.sql` (richiede sqlite3 CLI per `migrate:fresh`).
+- Docs essenziali: `docs/` (4 doc canonici + ADR + operations + reference + legal)
 
 ## Quickstart
-- Setup completo: `docs/QUICKSTART.md` (15 min)
-- Onboarding dev: `docs/ONBOARDING.md` (30 min)
-- Mappa visuale: `docs/ARCHITECTURE_MAP.md`
+- Onboarding dev (~30 min): `docs/ONBOARDING.md`
+- Architettura: `docs/ARCHITECTURE.md`
 
 ## Convenzioni codice
 - **Prezzi**: backend in cents (`MyMoney` / moneyphp). Frontend usa `formatPrice()` che divide per 100.
@@ -21,6 +23,8 @@
 - **Componenti**: configurato `pathPrefix: false` — componenti accessibili col loro nome file (es. `<ServizioGrid>`, non `<ServiziServizioGrid>`).
 - **Palette**: teal `#095866` + arancione `#E44203` + neutri. **Mai blu** (no `blue-*`, `indigo-*`, `sky-*`, `slate-*` Tailwind).
 - **Tokens CSS**: in `assets/css/main.css` (vedi `--color-brand-*`). Preferire `var(--token, #fallback)` a hex hardcoded.
+- **TypeScript** lato frontend: composables/utils/stores/server/configs in `.ts`. Vue components in `<script setup>` plain (defineProps runtime) **oppure** `<script setup lang="ts">` (defineProps generico). JSDoc resta accettato come complemento.
+- **Backend domain grouping**: nuovi controller di dominio vanno in `app/Http/Controllers/<Dominio>/`, namespace `App\Http\Controllers\<Dominio>`.
 
 ## CSS architecture (importante — evita bug visivi)
 Alcuni CSS sono caricati SOLO da pagine/componenti specifici (code-splitting route-specific):
@@ -38,10 +42,32 @@ Esempio vissuto: `.sf-shared-segment*` era solo in `shipment-step.css` → il se
 
 **Come capire se una classe va globale**: grep il nome della classe fuori dal suo CSS di definizione. Se è usata in `components/` NON del dominio del CSS (es. classe in `shipment-step.css` usata da `auth/`), va spostata in globale.
 
+## File critici (intoccabili senza test verdi)
+
+Questi file gestiscono **soldi reali, idempotency, integrazioni esterne**. Modificarli senza test verdi puo' causare doppi addebiti o ordini fantasma.
+
+- `apps/api/app/Http/Controllers/Checkout/StripeWebhookController.php` — verifica firma, idempotency
+- `apps/api/app/Http/Controllers/Checkout/StripeCheckoutController.php` — PaymentIntent
+- `apps/api/app/Services/StripePaymentService.php` — client Stripe + idempotency-key
+- `apps/api/app/Services/OrderCreationService.php` — Carrello → Order
+- `apps/api/app/Services/WalletOrderPaymentService.php` / `WalletOrderLinkService.php` — lock saldo wallet
+- `apps/api/app/Http/Controllers/Wallet/WalletController.php` — top-up + pagamento saldo
+- `apps/api/app/Models/Order.php` — `payableTotalCents()` autorita' fatturazione
+- `apps/api/app/Http/Controllers/Shipping/BrtWebhookController.php` — HMAC tracking
+- `apps/api/app/Http/Controllers/Shipping/BrtController.php` — etichette BRT pagate
+- `apps/api/bootstrap/app.php` — esclusioni CSRF webhook, trustProxies
+
+## Limiti dimensionali
+
+- File runtime ≤ 400 LOC (eccezione documentata in commento iniziale).
+- Composable ≤ 300 LOC (oltre, splitta o sposta utility puri in `~/utils/`).
+- Componente Vue ≤ 500 LOC (template + script).
+- Page Vue ≤ 400 LOC (orchestratore, non ospite di logica).
+
 ## Test
-- Frontend: `npx playwright test tests/e2e/*.spec.ts` (28 specs)
-- Backend: `php artisan test` (52 test files)
-- Build: `npm run build` deve essere verde
+- Frontend: `cd apps/web && npx playwright test` (E2E)
+- Backend: `cd apps/api && php artisan test` (Feature + Unit)
+- Build: `cd apps/web && npm run build` deve essere verde
 
 ## Regole AI
 - Mai `git commit` senza permesso esplicito utente
@@ -52,6 +78,6 @@ Esempio vissuto: `.sf-shared-segment*` era solo in `shipment-step.css` → il se
 
 ## Riferimenti
 - `docs/README.md` — indice navigabile completo
-- `docs/SECURITY.md` — baseline OWASP
-- `docs/GOLIVE_CHECKLIST.md` — checklist deploy
-- `docs/GDPR_COMPLETO.md` — compliance GDPR
+- `docs/legal/SECURITY.md` — baseline OWASP
+- `docs/operations/GOLIVE_CHECKLIST.md` — checklist deploy
+- `docs/legal/GDPR_COMPLETO.md` — compliance GDPR

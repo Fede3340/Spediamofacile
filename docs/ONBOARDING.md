@@ -10,13 +10,13 @@ Checklist sequenziale pensata per ~90 minuti totali. Segui l'ordine: ogni step a
 - [ ] **Verifica prerequisiti** — PHP 8.3, Node 22, Composer 2, PostgreSQL 15, Redis 7 installati (vedi [QUICKSTART.md](./QUICKSTART.md))
 - [ ] **Root setup** — `cd spedizionefacile && npm install` (hook Husky si registrano)
 - [ ] **Backend** —
-  - [ ] `cd laravel-spedizionefacile-main`
+  - [ ] `cd apps/api`
   - [ ] `cp .env.example .env` + `php artisan key:generate`
   - [ ] `composer install`
   - [ ] `php artisan migrate:fresh --seed`
   - [ ] `php artisan serve --port=8000` (lascia aperto)
 - [ ] **Frontend** —
-  - [ ] `cd nuxt-spedizionefacile-master`
+  - [ ] `cd apps/web`
   - [ ] `cp .env.example .env` + `npm ci`
   - [ ] `npm run dev` (lascia aperto su porta 8787)
 - [ ] **Smoke locale** —
@@ -39,7 +39,7 @@ Checklist sequenziale pensata per ~90 minuti totali. Segui l'ordine: ogni step a
 
 ## Fase 3 — Esplorazione guidata (~15 min)
 
-- [ ] Apri `pages/la-tua-spedizione/[step].vue` e `utils/shipment.ts`.
+- [ ] Apri `pages/la-tua-spedizione/[step].vue` e `utils/shipment.js`.
 - [ ] Verifica quali sono le route canoniche del funnel:
   - [ ] `/la-tua-spedizione/2?step=colli`
   - [ ] `/la-tua-spedizione/2?step=servizi`
@@ -57,9 +57,9 @@ Checklist sequenziale pensata per ~90 minuti totali. Segui l'ordine: ogni step a
 
 ## Fase 4 — Test smoke (~5 min)
 
-- [ ] `cd nuxt-spedizionefacile-master`
+- [ ] `cd apps/web`
 - [ ] `npm run test:e2e -- --grep @smoke` -> tutti pass
-- [ ] `cd ../laravel-spedizionefacile-main`
+- [ ] `cd ../apps/api`
 - [ ] `php artisan test --testsuite=Unit --stop-on-failure` -> tutti pass
 
 Se uno fallisce: non ignorare, apri issue con log output.
@@ -101,8 +101,8 @@ Piccola modifica a basso rischio per validare l'intero workflow end-to-end.
 
 ## Domande frequenti
 
-**"Posso usare TypeScript anche nei composable .js esistenti?"**
-Si: rinomina `.js` -> `.ts`, aggiungi i tipi. Fallo in PR dedicato, non mescolato a feature.
+**"Posso usare TypeScript nei composable o nei componenti?"**
+No: il frontend e' tutto JavaScript per essere accessibile a junior. Usa JSDoc (`@param`, `@returns`, `@typedef`) per type hints. Vue components in `<script setup>` (no `lang="ts"`).
 
 **"Come aggiungo uno scope commitlint nuovo?"**
 Aggiorna `commitlint.config.js` nello stesso PR che introduce lo scope. Non usare scope generici.

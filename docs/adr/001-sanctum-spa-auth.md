@@ -26,6 +26,6 @@ Sanctum SPA cookie-based con cookie `spediamofacile_session` + header `X-XSRF-TO
 - Session storage Redis in produzione (scalabilità orizzontale).
 
 ## Riferimenti
-- `laravel-spedizionefacile-main/config/sanctum.php`
-- `nuxt-spedizionefacile-master/nuxt.config.ts` (sanctum block)
+- `apps/api/config/sanctum.php`
+- `apps/web/nuxt.config.ts` (sanctum block)
 - `docs/API_CONTRACT.md` (sezione Auth)

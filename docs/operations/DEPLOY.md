@@ -19,19 +19,19 @@ curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && sudo apt in
 
 ```bash
 # Backend
-cp laravel-spedizionefacile-main/.env.production.example laravel-spedizionefacile-main/.env
-nano laravel-spedizionefacile-main/.env   # compila DB_*, MAIL_*, STRIPE_*, BRT_*
-cd laravel-spedizionefacile-main && php artisan key:generate
+cp apps/api/.env.production.example apps/api/.env
+nano apps/api/.env   # compila DB_*, MAIL_*, STRIPE_*, BRT_*
+cd apps/api && php artisan key:generate
 
 # Frontend
-cp nuxt-spedizionefacile-master/.env.production.example nuxt-spedizionefacile-master/.env
-nano nuxt-spedizionefacile-master/.env   # compila API_BASE e STRIPE_KEY
+cp apps/web/.env.production.example apps/web/.env
+nano apps/web/.env   # compila API_BASE e STRIPE_KEY
 ```
 
 ## 3. Deploy backend (Laravel)
 
 ```bash
-cd laravel-spedizionefacile-main
+cd apps/api
 composer install --no-dev --optimize-autoloader
 php artisan migrate --force
 php artisan config:cache && php artisan route:cache && php artisan view:cache
@@ -41,7 +41,7 @@ php artisan storage:link
 ## 4. Deploy frontend (Nuxt)
 
 ```bash
-cd nuxt-spedizionefacile-master
+cd apps/web
 npm ci && npm run build
 # Avvia con PM2 per restart automatico
 npm install -g pm2
@@ -60,7 +60,7 @@ sudo systemctl reload caddy
 Crea `/etc/supervisor/conf.d/spediamofacile-worker.conf`:
 ```ini
 [program:spediamofacile-worker]
-command=php /percorso/laravel-spedizionefacile-main/artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
+command=php /percorso/apps/api/artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
 autostart=true
 autorestart=true
 user=www-data
@@ -82,16 +82,16 @@ redis-cli ping                              # PONG
 ## 7. Comandi utili per debug
 
 ```bash
-tail -f laravel-spedizionefacile-main/storage/logs/laravel.log  # log Laravel
+tail -f apps/api/storage/logs/laravel.log  # log Laravel
 tail -f /var/log/caddy/spediamofacile.log                       # log Caddy
 pm2 logs spediamofacile-nuxt                                    # log Nuxt
 sudo systemctl status caddy redis mysql                         # stato servizi
 
 # Dopo modifiche .env
-cd laravel-spedizionefacile-main && php artisan config:clear && php artisan config:cache
+cd apps/api && php artisan config:clear && php artisan config:cache
 
 # Aggiornamento completo
-cd laravel-spedizionefacile-main && php artisan migrate --force && php artisan config:cache
-cd nuxt-spedizionefacile-master && npm run build && pm2 restart spediamofacile-nuxt
+cd apps/api && php artisan migrate --force && php artisan config:cache
+cd apps/web && npm run build && pm2 restart spediamofacile-nuxt
 sudo supervisorctl restart spediamofacile-worker
 ```

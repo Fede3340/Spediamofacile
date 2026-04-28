@@ -27,18 +27,18 @@ Formato: [Keep a Changelog](https://keepachangelog.com/).
 - Health check endpoint `/api/health` (4 services)
 - CI/CD GitHub Actions (workflow ci.yml + deploy.yml)
 - Husky pre-commit + commit-msg Conventional Commits
-- Visual regression Playwright (baseline in `nuxt-spedizionefacile-master/tests/visual/`)
+- Visual regression Playwright (baseline in `apps/web/tests/visual/`)
 - Unit tests backend (75 test / 353 assertion passati sui servizi pagamento/wallet/coupon/referral/BRT/pickup/documenti)
 - E2E tests frontend Playwright (~10 spec, 20 passati / 5 falliti al 24/4 per label mismatch funnel)
 - **3 componenti Sf\* canonici** in `components/sf/`: `SfConfirmDialog`, `SfModal`, `SfSkeleton`. Gli altri 7 (SfButton, SfCard, SfInput, SfBadge, SfIcon, SfEmptyState, SfToast, SfTooltip) sono stati creati e successivamente archiviati come orfani in `_archive/frontend-simplification-2026-04-20/components-orfani/sf/`.
-- **178 design tokens** in `nuxt-spedizionefacile-master/assets/css/main.css:root`
+- **178 design tokens** in `apps/web/assets/css/main.css:root`
 - TrustBadges + NewsletterSignup components in `components/layout/`
 - 4 error pages Laravel custom (404/500/503/403)
 - Feedback widget beta (FeedbackWidget.vue)
 - Beta whitelist middleware
 - **29 docs canonici attivi**: README, QUICKSTART, ARCHITECTURE, ARCHITECTURE_MAP, FEATURE_BOUNDARIES, FRONTEND_STRUCTURE, BACKEND_STRUCTURE, API_CONTRACT, CONTRIBUTING, ONBOARDING, DEBUGGING, DESIGN_SYSTEM, GLOSSARIO, FAQ_DEV, ROADMAP, SECURITY, GDPR_COMPLETO, LEGAL_GOLIVE_CHECKLIST, GOLIVE_CHECKLIST, STRIPE_LIVE_SETUP, BRT_PRODUCTION_SETUP, PUDO_FALLBACK_SETUP, DEPLOY, VISUAL_REGRESSION + 3 ADR (001-sanctum, 002-moneyphp-cents, 003-brt-direct)
 - Print CSS ordini/fatture/bordero
-- Layer di dominio `nuxt-spedizionefacile-master/features/`:
+- Layer di dominio `apps/web/features/`:
   - `shipment-flow/` (7 file, usati da `composables/useShipmentStepPageOrchestration.js`)
   - `wallet-referral/` (2 file, usati da `composables/useCart.js`)
 

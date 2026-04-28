@@ -6,14 +6,14 @@ Panoramica ad alto livello del sistema: tech stack, flussi dati, autenticazione,
 
 ## Stack tecnologico
 
-**Frontend** (`nuxt-spedizionefacile-master/`)
+**Frontend** (`apps/web/`)
 - Nuxt 4.1 (Vue 3.5) SPA + SSR ibrido
 - Pinia 3 — store unico attivo `shipmentFlowStore` (state funnel preventivo). Altri composables di stato (`useAuth`, `useCart`, `usePayment`, `useFunnel`, ecc.) sono in fase di migrazione progressiva a store Pinia dedicati.
 - Nuxt UI 4 (componenti), Tailwind CSS 4, CSS route-specific in `assets/css/`
 - `nuxt-auth-sanctum` per cookie-based auth
 - Plugin `20.auth-401-handler.client.js` riapre l'overlay login automaticamente su 401/419
 
-**Backend** (`laravel-spedizionefacile-main/`)
+**Backend** (`apps/api/`)
 - Laravel 11 (PHP 8.3+)
 - Sanctum 4 (SPA cookie-auth + API tokens)
 - PostgreSQL 15 (Eloquent ORM)
@@ -58,7 +58,7 @@ Panoramica ad alto livello del sistema: tech stack, flussi dati, autenticazione,
 ## Auth flow — Sanctum SPA cookie
 
 1. Browser visita `http://localhost:8787` (Nuxt).
-2. Plugin `01.sanctum-bootstrap.client.ts` esegue `GET /sanctum/csrf-cookie` -> riceve cookie `XSRF-TOKEN` + `laravel_session`.
+2. Plugin `10.bootstrap.client.js` esegue `GET /sanctum/csrf-cookie` -> riceve cookie `XSRF-TOKEN` + `laravel_session`.
 3. Form login `POST /api/custom-login` con email/password e header `X-XSRF-TOKEN`.
 4. Laravel valida, avvia sessione, setta cookie `spediamofacile_session` (SameSite=Lax, HttpOnly, Secure in prod).
 5. Richieste successive protette (`middleware('auth:sanctum')`) leggono il cookie -> `$request->user()`.
@@ -191,7 +191,7 @@ Avvio worker locale: `php artisan queue:work --queue=webhooks,emails,default`
 | Staging   | staging.spediamofacile.it  | develop      | auto push      |
 | Prod      | spediamofacile.it          | main         | manual + tag   |
 
-Variabili env: vedi `laravel-spedizionefacile-main/.env.example` e `nuxt-spedizionefacile-master/.env.example`. Segreti prod vivono in Render dashboard (cifrati, non in repo).
+Variabili env: vedi `apps/api/.env.example` e `apps/web/.env.example`. Segreti prod vivono in Render dashboard (cifrati, non in repo).
 
 ## Riferimenti
 

@@ -26,6 +26,6 @@ Tutti gli importi sono memorizzati e manipolati come **interi in centesimi** (EU
 - PR review: segnalare qualunque `float` sui prezzi come bug bloccante.
 
 ## Riferimenti
-- `laravel-spedizionefacile-main/app/Support/MyMoney.php`
-- `nuxt-spedizionefacile-master/utils/formatPrice.js`
+- `apps/api/app/Support/MyMoney.php`
+- `apps/web/utils/formatPrice.js`
 - Memoria utente: «Backend stores single_price in cents (multiply by 100); frontend formatPrice must divide by 100 before display».

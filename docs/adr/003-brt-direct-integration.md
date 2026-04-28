@@ -27,7 +27,7 @@ Integrazione diretta con API REST BRT (`https://api.brt.it/rest/v1/`) usando cre
 - Webhook BRT tracking -> endpoint `/webhooks/brt/tracking` (rotta in `routes/web.php`, NO prefix `/api`) con IP whitelist + secret HMAC-SHA256.
 
 ## Riferimenti
-- `laravel-spedizionefacile-main/app/Services/Brt/`
+- `apps/api/app/Services/Brt/`
 - `docs/BRT_PRODUCTION_SETUP.md` (post-move)
 - `docs/GOLIVE_CHECKLIST.md` (sezione BRT)
 - Business context: «Site is BRT intermediary, must control ALL business account options via API».

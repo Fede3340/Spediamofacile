@@ -1,0 +1,991 @@
+
+> build
+> node --max-old-space-size=6144 ./node_modules/@nuxt/cli/bin/nuxi.mjs build
+
+┌  [36mBuilding Nuxt for production...[39m
+│
+●  [32mNuxt [1m4.4.2[22m[39m[90m (with [39m[90mNitro [1m2.13.2[22m[39m[90m, Vite [1m7.3.1[22m[39m[90m and Vue [1m3.5.30[22m[39m[90m)[39m
+[90m[[90mnuxt-auth-sanctum[90m][39m [36mℹ[39m Sanctum module initialized w/o global middleware
+[32m✔[39m Nuxt Icon discovered local-installed 1 collections: mdi
+│
+●  Nitro preset: [36mnode-server[39m
+
+[43m[30m WARN [39m[49m Duplicated imports "toInt", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "toNumber", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeDecimal", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeBandArray", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "escapeHtml", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/useFaqs.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/html.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeIncrementLadder", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeBandArray", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeExtraRules", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeSupplements", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeEuropePricing", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeKeyedPricingGroup", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "effectivePriceCents", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "ceilByResolution", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "findBand", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "computeExtraPriceCents", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "getBandPriceCents", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "getBandInfo", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "getExtraBandInfo", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "calcCapSupplementCents", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "calcEuropeQuote", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "EPSILON", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "toNumber", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "toInt", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeDecimal", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "FALLBACK_WEIGHT_BANDS", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "FALLBACK_VOLUME_BANDS", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "DEFAULT_EXTRA_RULES", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "DEFAULT_SUPPLEMENTS", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "DEFAULT_PROMO", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "DEFAULT_EUROPE_PRICING", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "DEFAULT_SERVICE_PRICING", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "DEFAULT_AUTOMATIC_SUPPLEMENTS", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "DEFAULT_OPERATIONAL_FEES", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "loadPendingPayment", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePayment.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/stores/paymentStore.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "clearPendingPayment", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePayment.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/stores/paymentStore.js" is used
+
+[36mℹ[39m Nuxt Icon client bundle consist of [36m13[39m icons with [36m3.88KB[39m(uncompressed) in size
+
+[43m[30m WARN [39m[49m Duplicated imports "toInt", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "toNumber", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeDecimal", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeBandArray", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "escapeHtml", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/useFaqs.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/html.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeIncrementLadder", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeBandArray", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeExtraRules", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeSupplements", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeEuropePricing", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeKeyedPricingGroup", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "effectivePriceCents", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "ceilByResolution", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "findBand", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "computeExtraPriceCents", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "getBandPriceCents", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "getBandInfo", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "getExtraBandInfo", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "calcCapSupplementCents", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "calcEuropeQuote", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsCalc.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsCalc.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "EPSILON", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "toNumber", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "toInt", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "normalizeDecimal", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/adminPrezziHelpers.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "FALLBACK_WEIGHT_BANDS", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "FALLBACK_VOLUME_BANDS", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "DEFAULT_EXTRA_RULES", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "DEFAULT_SUPPLEMENTS", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "DEFAULT_PROMO", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "DEFAULT_EUROPE_PRICING", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "DEFAULT_SERVICE_PRICING", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "DEFAULT_AUTOMATIC_SUPPLEMENTS", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "DEFAULT_OPERATIONAL_FEES", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePriceBandsDefaults.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/utils/priceBandsConstants.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "loadPendingPayment", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePayment.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/stores/paymentStore.js" is used
+
+
+[43m[30m WARN [39m[49m Duplicated imports "clearPendingPayment", the one from "C:/Users/Feder/Desktop/spedizionefacile/apps/web/composables/usePayment.js" has been ignored and "C:/Users/Feder/Desktop/spedizionefacile/apps/web/stores/paymentStore.js" is used
+
+[36mℹ[39m Building client...
+[36mℹ[39m [36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:module-preload-polyfill] Sourcemap is likely to be incorrect: a plugin (nuxt:module-preload-polyfill) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m
+
+[36mℹ[39m transforming...
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x2)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x3)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x4)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x5)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x6)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x7)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x8)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x9)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x10)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x11)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x12)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x13)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x14)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x15)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x16)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x17)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x18)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x19)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x20)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x21)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x22)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x23)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x24)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x25)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x26)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x27)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x28)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x29)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x30)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x31)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x32)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x33)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x34)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x35)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x36)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x37)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x38)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x39)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x40)[22m
+
+[36mℹ[39m [32m✓[39m 1199 modules transformed.
+
+[43m[30m WARN [39m[49m [33m[lightningcss minify] 'deep' is not recognized as a valid pseudo-class. Did you mean '::deep' (pseudo-element) or is this a typo?
+1  |  ...cted);box-shadow:var(--admin-focus-ring);outline:none}:deep(.sf-admin-console-header .sf-account-page-header__surf...
+   |                                                                 ^[39m
+
+
+[43m[30m WARN [39m[49m [33m[lightningcss minify] 'deep' is not recognized as a valid pseudo-class. Did you mean '::deep' (pseudo-element) or is this a typo?
+1  |  ....sf-account-page-header__surface){padding-bottom:16px}:deep(.sf-admin-console-header .sf-account-page-header__body...
+   |                                                                 ^[39m
+
+
+[43m[30m WARN [39m[49m [33m[lightningcss minify] 'deep' is not recognized as a valid pseudo-class. Did you mean '::deep' (pseudo-element) or is this a typo?
+1  |  ...e;transform:translateY(-1px)}@media (min-width:768px){:deep(.sf-admin-console-header .sf-account-page-header__surf...
+   |                                                                 ^[39m
+
+
+[43m[30m WARN [39m[49m [33m[lightningcss minify] 'deep' is not recognized as a valid pseudo-class. Did you mean '::deep' (pseudo-element) or is this a typo?
+1  |  ...e-notice{padding:16px 18px}}@media (min-width:1280px){:deep(.sf-admin-console-header .sf-account-page-header__body...
+   |                                                                 ^[39m
+
+[36mℹ[39m rendering chunks...
+[36mℹ[39m computing gzip size...
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[32mmanifest.json                           [39m[1m[2m 30.68 kB[22m[1m[22m[2m │ gzip:  3.69 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/index.JwU_B31h.css                [39m[1m[2m  0.09 kB[22m[1m[22m[2m │ gzip:  0.11 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/pudo.B_SxmX0e.css                 [39m[1m[2m  0.16 kB[22m[1m[22m[2m │ gzip:  0.13 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/_slug_.DmV7f2JG.css               [39m[1m[2m  0.28 kB[22m[1m[22m[2m │ gzip:  0.19 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/PudoMap.BkWys26d.css              [39m[1m[2m  0.29 kB[22m[1m[22m[2m │ gzip:  0.19 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/portafoglio.CEhBbI4I.css          [39m[1m[2m  0.35 kB[22m[1m[22m[2m │ gzip:  0.22 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/index.CQvubHBd.css                [39m[1m[2m  0.53 kB[22m[1m[22m[2m │ gzip:  0.26 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/_slug_.BAvn-Y15.css               [39m[1m[2m  0.54 kB[22m[1m[22m[2m │ gzip:  0.28 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/SfSkeleton.BSI7LnfW.css           [39m[1m[2m  0.70 kB[22m[1m[22m[2m │ gzip:  0.33 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/AdminOrdersViewTabs.CD2XOluU.css  [39m[1m[2m  1.20 kB[22m[1m[22m[2m │ gzip:  0.46 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/default.z3IrpF6c.css              [39m[1m[2m  1.30 kB[22m[1m[22m[2m │ gzip:  0.47 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/servizi.DV7lAjhX.css              [39m[1m[2m  3.78 kB[22m[1m[22m[2m │ gzip:  1.03 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/_tracking_.6YaV1KiD.css           [39m[1m[2m  4.96 kB[22m[1m[22m[2m │ gzip:  1.34 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/CookieBanner.X5EScuyb.css         [39m[1m[2m  5.08 kB[22m[1m[22m[2m │ gzip:  1.33 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/index.DRzHZSFS.css                [39m[1m[2m 10.01 kB[22m[1m[22m[2m │ gzip:  2.42 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/utenti.Q9QCwKAG.css               [39m[1m[2m 10.92 kB[22m[1m[22m[2m │ gzip:  2.02 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/autenticazione.ByXkfQLK.css       [39m[1m[2m 13.09 kB[22m[1m[22m[2m │ gzip:  2.93 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/vendor-leaflet.BoYey6xp.css       [39m[1m[2m 14.84 kB[22m[1m[22m[2m │ gzip:  6.35 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/content.BiHq2tvy.css              [39m[1m[2m 15.43 kB[22m[1m[22m[2m │ gzip:  3.19 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/account.BXz5a8KR.css              [39m[1m[2m 52.24 kB[22m[1m[22m[2m │ gzip:  8.92 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/shipment-flow.D8sVC7Uu.css        [39m[1m[2m102.22 kB[22m[1m[22m[2m │ gzip: 15.98 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/_step_.56vRPGwo.css               [39m[1m[2m128.26 kB[22m[1m[22m[2m │ gzip: 19.56 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[35m_nuxt/entry.BIsI02TM.css                [39m[1m[2m572.90 kB[22m[1m[22m[2m │ gzip: 87.12 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/C9_15Jeg.js                       [39m[1m[2m  0.14 kB[22m[1m[22m[2m │ gzip:  0.15 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/hh5YljvN.js                       [39m[1m[2m  0.15 kB[22m[1m[22m[2m │ gzip:  0.15 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CNLY3Q4b.js                       [39m[1m[2m  0.15 kB[22m[1m[22m[2m │ gzip:  0.11 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/Bsk1uFVe.js                       [39m[1m[2m  0.34 kB[22m[1m[22m[2m │ gzip:  0.24 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CCTqNb-P.js                       [39m[1m[2m  0.34 kB[22m[1m[22m[2m │ gzip:  0.25 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DSvC7Ela.js                       [39m[1m[2m  0.35 kB[22m[1m[22m[2m │ gzip:  0.26 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BOoI8cE_.js                       [39m[1m[2m  0.39 kB[22m[1m[22m[2m │ gzip:  0.29 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BMHNfRSD.js                       [39m[1m[2m  0.40 kB[22m[1m[22m[2m │ gzip:  0.29 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DB2rS1Ro.js                       [39m[1m[2m  0.43 kB[22m[1m[22m[2m │ gzip:  0.31 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CNghuget.js                       [39m[1m[2m  0.44 kB[22m[1m[22m[2m │ gzip:  0.33 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BmlWUtN6.js                       [39m[1m[2m  0.44 kB[22m[1m[22m[2m │ gzip:  0.33 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CF7LYRsy.js                       [39m[1m[2m  0.45 kB[22m[1m[22m[2m │ gzip:  0.32 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CtnRBT_C.js                       [39m[1m[2m  0.48 kB[22m[1m[22m[2m │ gzip:  0.34 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BhjGv29z.js                       [39m[1m[2m  0.58 kB[22m[1m[22m[2m │ gzip:  0.38 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DqKwCK86.js                       [39m[1m[2m  0.60 kB[22m[1m[22m[2m │ gzip:  0.43 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CRn53yee.js                       [39m[1m[2m  0.61 kB[22m[1m[22m[2m │ gzip:  0.40 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DvT6RqyJ.js                       [39m[1m[2m  0.61 kB[22m[1m[22m[2m │ gzip:  0.31 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BEKMjfXh.js                       [39m[1m[2m  0.62 kB[22m[1m[22m[2m │ gzip:  0.41 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DNSdZOkE.js                       [39m[1m[2m  0.69 kB[22m[1m[22m[2m │ gzip:  0.45 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BxezLdDL.js                       [39m[1m[2m  0.86 kB[22m[1m[22m[2m │ gzip:  0.44 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CfulOwII.js                       [39m[1m[2m  0.95 kB[22m[1m[22m[2m │ gzip:  0.56 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BX1iipAd.js                       [39m[1m[2m  0.96 kB[22m[1m[22m[2m │ gzip:  0.57 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/D3BC6tLr.js                       [39m[1m[2m  1.29 kB[22m[1m[22m[2m │ gzip:  0.66 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/D8j3CrcQ.js                       [39m[1m[2m  1.38 kB[22m[1m[22m[2m │ gzip:  0.63 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/LjTOuwjM.js                       [39m[1m[2m  1.83 kB[22m[1m[22m[2m │ gzip:  0.81 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/D6OVVTkZ.js                       [39m[1m[2m  1.89 kB[22m[1m[22m[2m │ gzip:  0.74 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BIWXUIq-.js                       [39m[1m[2m  2.08 kB[22m[1m[22m[2m │ gzip:  0.88 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/3m7Yt_Wz.js                       [39m[1m[2m  2.29 kB[22m[1m[22m[2m │ gzip:  1.16 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CSU4cBSH.js                       [39m[1m[2m  2.36 kB[22m[1m[22m[2m │ gzip:  1.11 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CavDtJr7.js                       [39m[1m[2m  2.38 kB[22m[1m[22m[2m │ gzip:  1.11 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/3ZS5GRz9.js                       [39m[1m[2m  2.73 kB[22m[1m[22m[2m │ gzip:  1.25 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/Ca8sXeVv.js                       [39m[1m[2m  3.01 kB[22m[1m[22m[2m │ gzip:  1.35 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DvagJDfz.js                       [39m[1m[2m  3.11 kB[22m[1m[22m[2m │ gzip:  1.23 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/9Tujnwfg.js                       [39m[1m[2m  3.41 kB[22m[1m[22m[2m │ gzip:  1.31 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DqcuRg3K.js                       [39m[1m[2m  3.60 kB[22m[1m[22m[2m │ gzip:  1.44 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BiReesAN.js                       [39m[1m[2m  3.80 kB[22m[1m[22m[2m │ gzip:  1.86 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/By68aAJA.js                       [39m[1m[2m  3.93 kB[22m[1m[22m[2m │ gzip:  1.36 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BeXSUuKF.js                       [39m[1m[2m  4.34 kB[22m[1m[22m[2m │ gzip:  2.25 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/C8JNPxu7.js                       [39m[1m[2m  4.82 kB[22m[1m[22m[2m │ gzip:  1.83 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BaGDnHAI.js                       [39m[1m[2m  6.11 kB[22m[1m[22m[2m │ gzip:  2.81 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CXbBHqmr.js                       [39m[1m[2m  6.74 kB[22m[1m[22m[2m │ gzip:  2.78 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BprQvUm8.js                       [39m[1m[2m  8.78 kB[22m[1m[22m[2m │ gzip:  2.73 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DM5qhduF.js                       [39m[1m[2m  8.83 kB[22m[1m[22m[2m │ gzip:  3.10 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BJLJkzJi.js                       [39m[1m[2m  9.34 kB[22m[1m[22m[2m │ gzip:  2.98 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CaiaMOtg.js                       [39m[1m[2m  9.57 kB[22m[1m[22m[2m │ gzip:  3.53 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BUsxz3eR.js                       [39m[1m[2m  9.65 kB[22m[1m[22m[2m │ gzip:  3.80 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CspDk5iQ.js                       [39m[1m[2m 10.21 kB[22m[1m[22m[2m │ gzip:  3.59 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/Cmv7Pajf.js                       [39m[1m[2m 10.23 kB[22m[1m[22m[2m │ gzip:  3.23 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BgQiv5EF.js                       [39m[1m[2m 10.27 kB[22m[1m[22m[2m │ gzip:  3.42 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BWuDdaMw.js                       [39m[1m[2m 10.63 kB[22m[1m[22m[2m │ gzip:  4.08 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BVB3R3MM.js                       [39m[1m[2m 10.75 kB[22m[1m[22m[2m │ gzip:  4.12 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BR-mELrS.js                       [39m[1m[2m 11.39 kB[22m[1m[22m[2m │ gzip:  4.54 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/Bzz0EXYg.js                       [39m[1m[2m 11.45 kB[22m[1m[22m[2m │ gzip:  4.50 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DC5iM56U.js                       [39m[1m[2m 12.18 kB[22m[1m[22m[2m │ gzip:  4.11 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DD1k4jt4.js                       [39m[1m[2m 12.56 kB[22m[1m[22m[2m │ gzip:  3.71 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/xVhYGMZa.js                       [39m[1m[2m 12.81 kB[22m[1m[22m[2m │ gzip:  5.07 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/Z8_iOTi3.js                       [39m[1m[2m 14.15 kB[22m[1m[22m[2m │ gzip:  5.28 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CET9qKZh.js                       [39m[1m[2m 14.70 kB[22m[1m[22m[2m │ gzip:  4.89 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CYW7NkYS.js                       [39m[1m[2m 14.89 kB[22m[1m[22m[2m │ gzip:  5.86 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/zNFA5T0J.js                       [39m[1m[2m 15.28 kB[22m[1m[22m[2m │ gzip:  5.01 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CaBFhsiH.js                       [39m[1m[2m 15.33 kB[22m[1m[22m[2m │ gzip:  5.42 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CU0KxpMf.js                       [39m[1m[2m 15.96 kB[22m[1m[22m[2m │ gzip:  5.25 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/Bds6vk41.js                       [39m[1m[2m 16.11 kB[22m[1m[22m[2m │ gzip:  5.53 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/B6Dm06RL.js                       [39m[1m[2m 16.64 kB[22m[1m[22m[2m │ gzip:  5.28 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BkezpM2X.js                       [39m[1m[2m 17.81 kB[22m[1m[22m[2m │ gzip:  5.38 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/ByFy52qZ.js                       [39m[1m[2m 18.03 kB[22m[1m[22m[2m │ gzip:  5.60 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BZzV4zq3.js                       [39m[1m[2m 18.31 kB[22m[1m[22m[2m │ gzip:  6.18 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/Dlvdp8QG.js                       [39m[1m[2m 19.01 kB[22m[1m[22m[2m │ gzip:  5.04 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BdU6-NAz.js                       [39m[1m[2m 19.01 kB[22m[1m[22m[2m │ gzip:  5.82 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/D9iL7XqY.js                       [39m[1m[2m 19.10 kB[22m[1m[22m[2m │ gzip:  5.61 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BpNbxJZt.js                       [39m[1m[2m 19.12 kB[22m[1m[22m[2m │ gzip:  5.93 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/D4npUdBJ.js                       [39m[1m[2m 23.17 kB[22m[1m[22m[2m │ gzip:  9.00 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/C0ck8F-o.js                       [39m[1m[2m 23.39 kB[22m[1m[22m[2m │ gzip:  7.32 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DlFV0UDn.js                       [39m[1m[2m 25.04 kB[22m[1m[22m[2m │ gzip:  7.09 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/JcDQlA3F.js                       [39m[1m[2m 26.93 kB[22m[1m[22m[2m │ gzip:  7.46 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/Q4y305w2.js                       [39m[1m[2m 28.92 kB[22m[1m[22m[2m │ gzip:  8.65 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/B_SPCDyO.js                       [39m[1m[2m 29.02 kB[22m[1m[22m[2m │ gzip:  9.05 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/XI6MZFAI.js                       [39m[1m[2m 31.07 kB[22m[1m[22m[2m │ gzip:  8.91 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DWZhmrek.js                       [39m[1m[2m 32.25 kB[22m[1m[22m[2m │ gzip:  8.86 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/WeQbQAh4.js                       [39m[1m[2m 34.45 kB[22m[1m[22m[2m │ gzip:  8.41 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CtEqjqrV.js                       [39m[1m[2m 34.93 kB[22m[1m[22m[2m │ gzip:  8.88 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CYPoM72S.js                       [39m[1m[2m 35.96 kB[22m[1m[22m[2m │ gzip: 11.26 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CMkaoEvG.js                       [39m[1m[2m 36.95 kB[22m[1m[22m[2m │ gzip: 11.07 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DKPxUqEO.js                       [39m[1m[2m 40.64 kB[22m[1m[22m[2m │ gzip: 11.88 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DkBUbmhJ.js                       [39m[1m[2m 60.06 kB[22m[1m[22m[2m │ gzip: 17.04 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/3OvFTsDZ.js                       [39m[1m[2m 62.37 kB[22m[1m[22m[2m │ gzip: 15.64 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/RxPRephc.js                       [39m[1m[2m100.90 kB[22m[1m[22m[2m │ gzip: 24.41 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/BVi8LTPq.js                       [39m[1m[2m149.41 kB[22m[1m[22m[2m │ gzip: 43.28 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/CBPOuCFP.js                       [39m[1m[2m203.60 kB[22m[1m[22m[2m │ gzip: 77.13 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/hhN2Ui77.js                       [39m[1m[2m281.45 kB[22m[1m[22m[2m │ gzip: 90.91 kB[22m
+[36mℹ[39m [2mnode_modules/.cache/nuxt/.nuxt/dist/client/[22m[36m_nuxt/DSByqDQU.js                       [39m[1m[2m295.22 kB[22m[1m[22m[2m │ gzip: 77.09 kB[22m
+[36mℹ[39m [32m✓ built in 10.23s[39m
+[32m✔[39m Client built in 10245ms
+[36mℹ[39m Building server...
+[36mℹ[39m [36mvite v7.3.1 [32mbuilding ssr environment for production...[36m[39m
+[36mℹ[39m transforming...
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x2)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x3)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x4)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x2)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x3)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x4)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x5)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x6)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x7)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x8)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x2)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x3)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x2)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x3)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x4)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x5)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x2)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x3)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x4)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x5)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x6)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x7)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x8)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x9)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x10)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x11)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x12)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x13)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x14)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x15)[22m
+
+
+[43m[30m WARN [39m[49m [33m[lightningcss minify] 'deep' is not recognized as a valid pseudo-class. Did you mean '::deep' (pseudo-element) or is this a typo?
+1  |  ...cted);box-shadow:var(--admin-focus-ring);outline:none}:deep(.sf-admin-console-header .sf-account-page-header__surf...
+   |                                                                 ^[39m
+
+
+[43m[30m WARN [39m[49m [33m[lightningcss minify] 'deep' is not recognized as a valid pseudo-class. Did you mean '::deep' (pseudo-element) or is this a typo?
+1  |  ....sf-account-page-header__surface){padding-bottom:16px}:deep(.sf-admin-console-header .sf-account-page-header__body...
+   |                                                                 ^[39m
+
+
+[43m[30m WARN [39m[49m [33m[lightningcss minify] 'deep' is not recognized as a valid pseudo-class. Did you mean '::deep' (pseudo-element) or is this a typo?
+1  |  ...e;transform:translateY(-1px)}@media (min-width:768px){:deep(.sf-admin-console-header .sf-account-page-header__surf...
+   |                                                                 ^[39m
+
+
+[43m[30m WARN [39m[49m [33m[lightningcss minify] 'deep' is not recognized as a valid pseudo-class. Did you mean '::deep' (pseudo-element) or is this a typo?
+1  |  ...e-notice{padding:16px 18px}}@media (min-width:1280px){:deep(.sf-admin-console-header .sf-account-page-header__body...
+   |                                                                 ^[39m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x2)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x3)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x4)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x5)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x6)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x7)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x8)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x9)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x10)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x11)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x12)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x13)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x14)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x15)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x16)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x17)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x18)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x19)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x20)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x21)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x22)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x23)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x24)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x25)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x26)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x27)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x28)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x29)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x30)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x31)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x32)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x33)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x2)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x3)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x4)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x5)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x6)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x7)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin nuxt:vue-async-context] Sourcemap is likely to be incorrect: a plugin (nuxt:vue-async-context) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x8)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x2)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x3)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x4)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x5)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x6)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x7)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x8)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x9)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x10)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x11)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x12)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x13)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x14)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x15)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x16)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x17)[22m
+
+
+[43m[30m WARN [39m[49m [33m[plugin @tailwindcss/vite:generate:build] Sourcemap is likely to be incorrect: a plugin (@tailwindcss/vite:generate:build) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help[39m[2m (x18)[22m
+
+[36mℹ[39m [32m✓[39m 546 modules transformed.
+
+[43m[30m WARN [39m[49m [33m[lightningcss minify] 'deep' is not recognized as a valid pseudo-class. Did you mean '::deep' (pseudo-element) or is this a typo?
+1  |  ...cted);box-shadow:var(--admin-focus-ring);outline:none}:deep(.sf-admin-console-header .sf-account-page-header__surf...
+   |                                                                 ^[39m
+
+
+[43m[30m WARN [39m[49m [33m[lightningcss minify] 'deep' is not recognized as a valid pseudo-class. Did you mean '::deep' (pseudo-element) or is this a typo?
+1  |  ....sf-account-page-header__surface){padding-bottom:16px}:deep(.sf-admin-console-header .sf-account-page-header__body...
+   |                                                                 ^[39m
+
+
+[43m[30m WARN [39m[49m [33m[lightningcss minify] 'deep' is not recognized as a valid pseudo-class. Did you mean '::deep' (pseudo-element) or is this a typo?
+1  |  ...e;transform:translateY(-1px)}@media (min-width:768px){:deep(.sf-admin-console-header .sf-account-page-header__surf...
+   |                                                                 ^[39m
+
+
+[43m[30m WARN [39m[49m [33m[lightningcss minify] 'deep' is not recognized as a valid pseudo-class. Did you mean '::deep' (pseudo-element) or is this a typo?
+1  |  ...e-notice{padding:16px 18px}}@media (min-width:1280px){:deep(.sf-admin-console-header .sf-account-page-header__body...
+   |                                                                 ^[39m
+
+[36mℹ[39m rendering chunks...
+[36mℹ[39m [32m✓ built in 6.36s[39m
+[32m✔[39m Server built in 6376ms
+[90m[[90m@nuxt/scripts[90m][39m [90m⚙[39m [bundle-script-transformer] No scripts to bundle...
+[90m[[90mnitro[90m][39m [36mℹ[39m Initializing prerenderer
+
+[43m[30m WARN [39m[49m "file:///C:/Users/Feder/Desktop/spedizionefacile/apps/web/node_modules/@nuxt/nitro-server/dist/runtime/utils/cache-driver.js" is imported by " virtual:#nitro-internal-virtual/storage", but could not be resolved – treating it as an external dependency.
+
+[90m[[90mnitro[90m][39m [36mℹ[39m Prerendering 6 routes
+[90m[[90mnitro[90m][39m [90m  ├─ /privacy-policy (1651ms)[39m
+[90m[[90mnitro[90m][39m [90m  ├─ /cookie-policy (1652ms)[39m
+[90m[[90mnitro[90m][39m [90m  ├─ /termini-e-condizioni (1653ms)[39m
+[90m[[90mnitro[90m][39m [90m  ├─ /chi-siamo (1655ms)[39m
+[90m[[90mnitro[90m][39m [90m  ├─ /faq (1654ms)[39m
+[90m[[90mnitro[90m][39m [90m  ├─ /contatti (1655ms)[39m
+[90m[[90mnitro[90m][39m [36mℹ[39m Prerendered 6 routes in 12.478 seconds
+[90m[[90mnitro[90m][39m [32m✔[39m Generated public [36m.output/public[39m
+[90m[[90mnitro[90m][39m [36mℹ[39m Building Nuxt Nitro server (preset: [36mnode-server[39m, compatibility date: [36m2024-04-03[39m)
+(node:45340) [DEP0155] DeprecationWarning: Use of deprecated trailing slash pattern mapping "./" in the "exports" field module resolution of the package at C:\Users\Feder\Desktop\spedizionefacile\apps\web\node_modules\@iconify\utils\package.json imported from C:\Users\Feder\Desktop\spedizionefacile\apps\web\node_modules\@nuxt\icon\dist\runtime\server\api.js. Mapping specifiers ending in "/" is no longer supported.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:45340) [DEP0155] DeprecationWarning: Use of deprecated trailing slash pattern mapping "./" in the "exports" field module resolution of the package at C:\Users\Feder\Desktop\spedizionefacile\apps\web\node_modules\@vue\shared\package.json imported from C:\Users\Feder\Desktop\spedizionefacile\apps\web\node_modules\@nuxt\nitro-server\dist\runtime\templates\error-500.mjs. Mapping specifiers ending in "/" is no longer supported.
+(node:45340) [DEP0155] DeprecationWarning: Use of deprecated trailing slash pattern mapping "./" in the "exports" field module resolution of the package at C:\Users\Feder\Desktop\spedizionefacile\apps\web\node_modules\@vueuse\core\package.json imported from C:\Users\Feder\Desktop\spedizionefacile\apps\web\node_modules\.cache\nuxt\.nuxt\dist\server\server.mjs. Mapping specifiers ending in "/" is no longer supported.
+(node:45340) [DEP0155] DeprecationWarning: Use of deprecated trailing slash pattern mapping "./" in the "exports" field module resolution of the package at C:\Users\Feder\Desktop\spedizionefacile\apps\web\node_modules\@vueuse\shared\package.json imported from C:\Users\Feder\Desktop\spedizionefacile\apps\web\node_modules\@vueuse\core\dist\index.js. Mapping specifiers ending in "/" is no longer supported.
+[90m[[90mnitro[90m][39m [32m✔[39m Nuxt Nitro server built
+[90m  ├─ .output/server/chunks/_/error-500.mjs (4.79 kB)[39m[90m (1.98 kB gzip)[39m
+[90m  ├─ .output/server/chunks/_/icons.mjs (2.86 MB)[39m[90m (724 kB gzip)[39m
+[90m  ├─ .output/server/chunks/_/nitro.mjs (240 kB)[39m[90m (78.7 kB gzip)[39m
+[90m  ├─ .output/server/chunks/_/prompt.mjs (40.8 kB)[39m[90m (11.6 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/_...slug_-CKq8a2Qe.mjs (3.94 kB)[39m[90m (1.63 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/_id_-BymcvSf2.mjs (62.9 kB)[39m[90m (14.6 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/_id_-DwacZgjw.mjs (10.6 kB)[39m[90m (2.98 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/_slug_-Bhywfe-u.mjs (12.5 kB)[39m[90m (3.56 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/_slug_-Doo8aNKw.mjs (12.4 kB)[39m[90m (3.69 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/_slug_-styles-1.mjs-CHe25uiz.mjs (306 B)[39m[90m (215 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/_slug_-styles-2.mjs-DqiFSbUK.mjs (3.81 kB)[39m[90m (1.05 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/_slug_-styles.B2p9YQ_t.mjs (574 B)[39m[90m (302 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/_slug_-styles.COXArTl5.mjs (146 B)[39m[90m (126 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/_slug_-styles.Cq3EUGLE.mjs (89 B)[39m[90m (102 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/_step_-C58h7ynh.mjs (311 kB)[39m[90m (74.8 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/_step_-styles.DkXaOXq8.mjs (205 kB)[39m[90m (30.7 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/_tracking_-DrZWnl73.mjs (32.4 kB)[39m[90m (8.33 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/_tracking_-styles.Cp9SSmnr.mjs (4.99 kB)[39m[90m (1.37 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/account-B_Iokinp.mjs (11.3 kB)[39m[90m (3.45 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/account-BGNgA-zc.mjs (23.1 kB)[39m[90m (5.5 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/account-pro-CumaQDd0.mjs (27.4 kB)[39m[90m (7.19 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/AccountConfirmDialog-tp9OMyu2.mjs (20.9 kB)[39m[90m (4.3 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/AccountPageHeader-y3JPkCrP.mjs (3.85 kB)[39m[90m (1.43 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/AccountWalletNewCardForm-styles.DIgn6qCF.mjs (385 B)[39m[90m (243 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/AddressFormFields-styles.D3cQabZS.mjs (2.6 kB)[39m[90m (664 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/AddressPudoSection-styles.hWKV3Tq5.mjs (1.83 kB)[39m[90m (604 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/admin-CCT1JeFs.mjs (1.15 kB)[39m[90m (544 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/AdminActionBanner-C5vLhmeV.mjs (1.37 kB)[39m[90m (711 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/AdminConsoleAnalytics-D-g5i-gs.mjs (18.2 kB)[39m[90m (5.09 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/AdminOrdersViewTabs-Dc_WLLM5.mjs (3.1 kB)[39m[90m (1.04 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/AdminOrdersViewTabs-styles.C0O_kJG3.mjs (1.23 kB)[39m[90m (486 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/AdminStatusBadge-DaKJZZ10.mjs (3.97 kB)[39m[90m (1.46 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/AdminUserDetailDrawer-styles.sc9Gsi6k.mjs (10.9 kB)[39m[90m (2.02 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/aggiorna-password-9sURJq0V.mjs (8.65 kB)[39m[90m (2.53 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/aggiorna-password-styles.DPtSnQGf.mjs (13.1 kB)[39m[90m (2.95 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/app-auth-B_yQC01Y.mjs (1.23 kB)[39m[90m (572 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/assistenza-sYXBcKYK.mjs (13.7 kB)[39m[90m (4.23 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/asyncContext-CxVRszfX.mjs (206 B)[39m[90m (156 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/autenticazione-BOK1VgAD.mjs (1.41 kB)[39m[90m (679 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/auth-BoUzaR3-.mjs (1.97 kB)[39m[90m (968 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/bonifici-CbMcGDMN.mjs (12.6 kB)[39m[90m (4.65 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/brtTracking-AQnR-hWE.mjs (852 B)[39m[90m (359 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/carrello-DnOI4npp.mjs (35.6 kB)[39m[90m (8.06 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/carte-BUuTre47.mjs (28.2 kB)[39m[90m (7.68 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/CartTotals-styles.CGSmjcZP.mjs (102 kB)[39m[90m (15.9 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/checkout-DTzzSMWh.mjs (1.46 kB)[39m[90m (717 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/chi-siamo-C35kYBAT.mjs (11.7 kB)[39m[90m (4.23 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/chi-siamo-styles.BzDavmjP.mjs (15.5 kB)[39m[90m (3.21 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/client.precomputed.mjs (62.7 kB)[39m[90m (6.39 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/ConfirmModal-styles.DcOgeE4e.mjs (131 B)[39m[90m (126 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/contatti-BDGLFqNp.mjs (20.9 kB)[39m[90m (7.37 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/cookie-policy-DF3s-gCN.mjs (12.5 kB)[39m[90m (4.74 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/cookieTokenStorage-BQ6qUYIv.mjs (1.11 kB)[39m[90m (497 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/date-BJIUrQbN.mjs (1.01 kB)[39m[90m (476 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/default-Bo-JjSgW.mjs (30 kB)[39m[90m (9.27 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/default-styles.0O2SFrfO.mjs (1.05 kB)[39m[90m (370 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/email-verification-BMfTteyZ.mjs (916 B)[39m[90m (395 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/error-styles.DN-WgqKm.mjs (2.26 kB)[39m[90m (811 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/faq-CSceOu0h.mjs (25.3 kB)[39m[90m (9.39 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/fatture-CHkC_lFD.mjs (8.59 kB)[39m[90m (3.12 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/fatture-styles.CNO3UF8K.mjs (52.3 kB)[39m[90m (8.88 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/guest-auth-CA8S-bRk.mjs (853 B)[39m[90m (348 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/Header-styles.I8M_yBl1.mjs (319 B)[39m[90m (233 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/impostazioni-D5zk03kq.mjs (9.77 kB)[39m[90m (3.36 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/index-BC16qiGN.mjs (25.8 kB)[39m[90m (6.49 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/index-BXSu1LOF.mjs (19.9 kB)[39m[90m (5.64 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/index-cUA6COwr.mjs (20.8 kB)[39m[90m (5.73 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/index-DXP9aRvS.mjs (14.7 kB)[39m[90m (4.33 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/index-dzoxSIJI.mjs (12.5 kB)[39m[90m (4.09 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/index-nQUjcfXd.mjs (19.3 kB)[39m[90m (5.54 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/index-ptqncHXf.mjs (11.8 kB)[39m[90m (4.18 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/index-styles-1.mjs-D5N88EQE.mjs (110 B)[39m[90m (126 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/index-styles.BswxTDdN.mjs (10 kB)[39m[90m (2.43 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/index-styles.CQRvih6P.mjs (145 B)[39m[90m (132 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/index-styles.DeMyMycN.mjs (121 B)[39m[90m (134 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/index-styles.DuI9WjLr.mjs (88 B)[39m[90m (101 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/index-Te2E9bV_.mjs (18.8 kB)[39m[90m (5.32 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/indirizzi-CpgC_01A.mjs (38.8 kB)[39m[90m (9.8 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/login-CnsBwuMQ.mjs (1.42 kB)[39m[90m (693 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/MapPudo.client-CpGsHG2G.mjs (2.33 kB)[39m[90m (1.12 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/nuovo-styles.C3ZYB2h4.mjs (70.2 kB)[39m[90m (11 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/nuovo-vuEe2y2X.mjs (15.3 kB)[39m[90m (4.79 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/ordini-mt5P4qFT.mjs (26.8 kB)[39m[90m (7.64 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/pagamenti-ydGBHSTY.mjs (5.46 kB)[39m[90m (2 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/portafoglio-DB7tkpBe.mjs (41.9 kB)[39m[90m (11.4 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/preventivo-1u3sBaLq.mjs (1.45 kB)[39m[90m (717 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/prezzi-CmXy5gCW.mjs (95.4 kB)[39m[90m (21.7 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/price-BybUZzu3.mjs (429 B)[39m[90m (274 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/privacy-policy-B5LjBi7z.mjs (13.9 kB)[39m[90m (5.43 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/profilo-B9NoAxz9.mjs (30.2 kB)[39m[90m (7.66 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/PublicPageHeader-CsUBckwI.mjs (2.42 kB)[39m[90m (984 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/PublicPageHeader-styles.DR4MdIt5.mjs (18 kB)[39m[90m (3.65 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/pudo-Dg9sNhgG.mjs (25.6 kB)[39m[90m (6.58 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/pudo-styles.C72pe1qV.mjs (191 B)[39m[90m (157 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/recupera-password-DT31VoEn.mjs (1.4 kB)[39m[90m (669 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/registrazione-WHyvauQU.mjs (1.44 kB)[39m[90m (705 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/sanctum.auth-BBwo8Zql.mjs (1.23 kB)[39m[90m (584 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/sanctum.guest-BR21GNrl.mjs (1.1 kB)[39m[90m (498 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/server.mjs (230 kB)[39m[90m (66.9 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/ServiceContentNotifications-styles.D6rkhEqm.mjs (219 B)[39m[90m (171 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/ServizioCard-styles.BpFaH-sq.mjs (84 B)[39m[90m (98 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/ServizioGrid-styles.Br6vUHwC.mjs (480 B)[39m[90m (227 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/SfButton-styles.b7A22pRx.mjs (262 B)[39m[90m (204 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/SfConfirmDialog-styles.ij7h3Ss2.mjs (3.78 kB)[39m[90m (1.06 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/SfModal-styles.BRIcVtZp.mjs (2.17 kB)[39m[90m (700 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/SfSkeleton-CioW1qOf.mjs (2.21 kB)[39m[90m (852 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/SfSkeleton-styles.CdJJ7OzO.mjs (730 B)[39m[90m (348 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/shipment-validation-lYNgkC2V.mjs (1.92 kB)[39m[90m (882 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/ShipmentFlowAdminGateModal-styles.BD3EPrWY.mjs (293 B)[39m[90m (241 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/ShipmentStepIndirizzi-styles.Dgz_DIxN.mjs (284 B)[39m[90m (165 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/ShipmentStepProgress-styles.CKjmL0KO.mjs (2.79 kB)[39m[90m (758 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/spedizioni-iM_DrQ0J.mjs (23.8 kB)[39m[90m (6.16 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/StepAddressSection-styles.Bey8GA2e.mjs (2.73 kB)[39m[90m (832 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/StepPackagesSection-styles.DNeSL14_.mjs (1.9 kB)[39m[90m (631 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/styles.mjs (12.2 kB)[39m[90m (1.81 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/termini-e-condizioni-CH4DnrN8.mjs (15.9 kB)[39m[90m (6.2 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/update-password-ChpmCjSR.mjs (924 B)[39m[90m (395 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/useAdmin-B95Wlpkc.mjs (4.03 kB)[39m[90m (1.37 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/useAuth-ms1-MhXs.mjs (1.65 kB)[39m[90m (683 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/useAuthModal-DWQTog2Z.mjs (1.09 kB)[39m[90m (509 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/useBreadcrumbSchema-DGrnhAD1.mjs (631 B)[39m[90m (434 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/useCanonical-DpWnklqd.mjs (1.03 kB)[39m[90m (573 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/useCart-CFFKwhaX.mjs (15.4 kB)[39m[90m (5.23 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/useCartFetch-Bk-JV7ye.mjs (627 B)[39m[90m (406 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/useOrdersList-BgOSucPJ.mjs (9.31 kB)[39m[90m (3.09 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/usePriceBands-Cv-zexVT.mjs (20.2 kB)[39m[90m (5.58 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/usePudo-DHn5OnFP.mjs (18.5 kB)[39m[90m (5.99 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/useStatusBadge-CL090Iw9.mjs (1.41 kB)[39m[90m (642 B gzip)[39m
+[90m  ├─ .output/server/chunks/build/utenti-DojxJzgL.mjs (45.1 kB)[39m[90m (11.1 kB gzip)[39m
+[90m  ├─ .output/server/chunks/build/verifica-email-BHVunF_A.mjs (3.25 kB)[39m[90m (1.42 kB gzip)[39m
+[90m  ├─ .output/server/chunks/raw/headers.mjs (14.8 kB)[39m[90m (2.38 kB gzip)[39m
+[90m  ├─ .output/server/chunks/routes/__sitemap__/guide.mjs (539 B)[39m[90m (301 B gzip)[39m
+[90m  ├─ .output/server/chunks/routes/__sitemap__/servizi.mjs (543 B)[39m[90m (302 B gzip)[39m
+[90m  ├─ .output/server/chunks/routes/api/_...path_.mjs (412 B)[39m[90m (218 B gzip)[39m
+[90m  ├─ .output/server/chunks/routes/auth/_...path_.mjs (413 B)[39m[90m (219 B gzip)[39m
+[90m  ├─ .output/server/chunks/routes/renderer.mjs (8.8 kB)[39m[90m (3.66 kB gzip)[39m
+[90m  ├─ .output/server/chunks/routes/sanctum/_...path_.mjs (416 B)[39m[90m (221 B gzip)[39m
+[90m  ├─ .output/server/chunks/routes/sitemap.xml.mjs (1.78 kB)[39m[90m (794 B gzip)[39m
+[90m  ├─ .output/server/chunks/virtual/_virtual_spa-template.mjs (34 B)[39m[90m (54 B gzip)[39m
+[90m  ├─ .output/server/chunks/virtual/child-sources.mjs (33 B)[39m[90m (53 B gzip)[39m
+[90m  ├─ .output/server/chunks/virtual/global-sources.mjs (1.49 kB)[39m[90m (488 B gzip)[39m
+[90m  ├─ .output/server/index.mjs (1.12 kB)[39m[90m (621 B gzip)[39m
+[90m  └─ .output/server/package.json (2.69 kB)[39m[90m (963 B gzip)[39m
+[36mΣ Total size:[39m 34.3 MB (12.3 MB gzip)
+[90m[[90m@nuxt/image[90m][39m [36mℹ[39m [36msharp[39m binaries have been included in your build for [36mwin32-x64[39m. Make sure you deploy to the same architecture.
+[90m[[90mnitro[90m][39m [32m✔[39m You can preview this build using [36mnode .output/server/index.mjs[39m
+│
+└  ✨ Build complete!
