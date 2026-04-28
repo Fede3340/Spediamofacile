@@ -33,13 +33,6 @@
 	text-decoration: none;
 }
 .lp-skiplink:focus { left: 16px; top: 16px; }
-
-.lp-hero__metaLabel {
-	font-weight: 600;
-	color: var(--color-brand-text-secondary, #5A6474);
-	margin-right: 6px;
-}
-
 .lp-layout {
 	display: grid;
 	grid-template-columns: 1fr;

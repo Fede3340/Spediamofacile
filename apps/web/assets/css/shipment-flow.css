@@ -945,19 +945,6 @@
 /* ── Transition overrides (instant, no flicker) ─────────────── */
 /* Cleanup 2026-04-25: rimossi selettori .package-selector-* e .add-package-btn-fade-*
    (transition Vue mai usate). Mantenuti solo .dimensions-section-* (transition viva). */
-
-.dimensions-section-enter-active,
-.dimensions-section-leave-active {
-	transition: none;
-}
-
-.dimensions-section-enter-from,
-.dimensions-section-enter-to,
-.dimensions-section-leave-from,
-.dimensions-section-leave-to {
-	opacity: 1;
-}
-
 /* ── Tablet (640px+) ────────────────────────────────────────── */
 
 @media (min-width: 640px) {
@@ -1285,15 +1272,6 @@
 }
 
 /* ── Transition: payment-panel ── */
-.payment-panel-enter-active,
-.payment-panel-leave-active {
-  transition: opacity var(--sf-t1) var(--sf-ease);
-}
-.payment-panel-enter-from,
-.payment-panel-leave-to {
-  opacity: 0;
-}
-
 /* ── Layout ── */
 .payment-panel-shell {
   min-height: 0;
@@ -2662,11 +2640,6 @@
 
 /* DS: feedback divs hidden when empty */
 .field-gentle-error:empty,
-.service-inline-field__error:empty,
-.service-details-field__error:empty {
-	display: none;
-}
-
 /* Errore cliccabile con suggerimento auto-fill (arancione brand soft) */
 
 .field-assist-chip {
@@ -2694,9 +2667,6 @@
 
 /* Fix 9 — Spring-back sobrio su click: previene rimbalzo elastico */
 .service-card,
-.pickup-date-card {
-	transition: transform var(--sf-t1) var(--sf-ease);
-}
 /* .btn-compact definito in assets/css/shipment-flow.css (globale) */
 
 /* ==========================================================
@@ -2997,11 +2967,6 @@
 	gap: 8px;
 	margin-bottom: 0;
 }
-
-.address-entry-card--active .address-entry-card__head {
-	padding-bottom: 0;
-}
-
 .address-entry-card__title-stack {
 	display: inline-flex;
 	align-items: center;
@@ -3176,26 +3141,6 @@
 /* ==========================================================
    Date picker
    ========================================================== */
-
-.pickup-date-option.is-selected {
-	background: rgba(9, 88, 102, 0.04);
-	box-shadow: 0 0 0 2px var(--color-brand-primary);
-}
-
-.pickup-date-option.is-selected .pickup-date-option__weekday {
-	background: transparent;
-	color: var(--color-brand-primary);
-}
-
-.pickup-date-option.is-selected .pickup-date-option__body {
-	background: transparent;
-}
-
-.pickup-date-option.is-selected .pickup-date-option__day,
-.pickup-date-option.is-selected .pickup-date-option__month {
-	color: var(--color-brand-primary);
-}
-
 @media (min-width: 640px) {
 	
 
@@ -3203,30 +3148,6 @@
 }
 
 /* Active address card refinement */
-
-.address-entry-card--active .address-entry-card__head {
-	align-items: flex-start;
-	gap: 8px;
-}
-
-.address-entry-card--active .address-entry-card__title-stack {
-	gap: 8px;
-}
-
-.address-entry-card--active .address-entry-card__actions {
-	gap: 8px;
-}
-
-.address-entry-card--active .address-entry-card__mode,
-.address-entry-card--active .address-form-shell,
-.address-entry-card--active .address-form-block {
-	gap: 8px;
-}
-
-.address-entry-card--active .address-stage-menu--card {
-	top: calc(100% + 6px);
-}
-
 /* ==========================================================
    Responsive / media queries
    ========================================================== */
@@ -3359,22 +3280,6 @@
 /* ==========================================================
    Helpers: service option structure (unique to this section)
    ========================================================== */
-
-.service-inline-panel__submit.btn-cta {
-	min-height: 38px;
-	padding: 0 16px;
-	border-radius: 999px;
-	box-shadow: none;
-}
-
-.service-inline-panel__dismiss.btn-secondary {
-	min-height: 34px;
-	padding: 0 12px;
-	border-radius: 999px;
-	box-shadow: none;
-	background: var(--color-brand-card);
-}
-
 /* ==========================================================
    Address cards (unique to address flow)
    ========================================================== */
@@ -3412,13 +3317,6 @@
 	font-weight: 700;
 	letter-spacing: 0.01em;
 }
-
-.address-entry-card__summary-line {
-	font-size: 1rem;
-	line-height: 1.35;
-	color: var(--color-brand-text-secondary);
-}
-
 .address-stage-menu,
 .address-field-menu {
 	border-radius: 16px;
@@ -3434,37 +3332,11 @@
 /* ==========================================================
    Unique helpers (support panels, address cards)
    ========================================================== */
-
-.service-group-shell__header {
-	display: none;
-}
-
-.service-support-shell__header-copy {
-	display: grid;
-	gap: 4px;
-	min-width: 0;
-}
-
-.service-support-shell__text {
-	margin: 0;
-	max-width: 40rem;
-	font-size: 0.875rem;
-	line-height: 1.45;
-	color: var(--color-brand-text-secondary);
-}
-
 /* label--notification and notification-text overrides removed: unified flat layout */
 
 .address-stage-shell {
 	gap: 8px;
 }
-
-.address-stage-shell__header-copy {
-	display: grid;
-	gap: 8px;
-	min-width: 0;
-}
-
 .address-entry-card {
 	position: relative;
 	overflow: hidden;
@@ -3475,27 +3347,6 @@
 	background: var(--color-brand-card);
 	box-shadow: 0 4px 16px rgba(20, 37, 48, 0.04);
 }
-
-.address-entry-card--active {
-	border-color: rgba(11, 89, 101, 0.28);
-	box-shadow:
-		0 0 0 2px rgba(9, 88, 102, 0.35),
-		0 3px 16px rgba(9, 88, 102, 0.12);
-	background: rgba(9, 88, 102, 0.04);
-}
-
-.address-entry-card--compact {
-	min-height: 60px;
-	padding: 16px 20px;
-	background: var(--surface-subtle);
-}
-
-.address-entry-card--compact:hover,
-.address-entry-card--compact:focus-visible {
-	border-color: rgba(9, 88, 102, 0.3);
-	box-shadow: 0 0 0 1.5px rgba(9, 88, 102, 0.2);
-}
-
 .address-entry-card__head {
 	align-items: flex-start;
 	gap: 8px;
@@ -3534,53 +3385,10 @@
 	background: var(--surface-teal-tint);
 	color: var(--color-brand-primary);
 }
-
-.address-entry-card__summary {
-	gap: 8px;
-}
-
-.address-entry-card--compact .address-entry-card__summary::after {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 26px;
-	height: 26px;
-	border-radius: 999px;
-	border: 1.5px solid var(--color-border-teal-faint);
-	background: var(--color-brand-card);
-	color: var(--color-brand-text-muted);
-}
-
-.address-entry-card__summary-line {
-	font-size: 1rem;
-	color: var(--color-brand-text-secondary);
-}
-
 .address-delivery-shell {
 	gap: 8px;
 	padding-top: 8px;
 }
-
-.address-delivery-shell__choices {
-	padding: 4px;
-	border: 1.5px solid var(--color-border-strong);
-	border-radius: 16px;
-	background: var(--surface-page);
-}
-
-.address-delivery-choice {
-	min-height: 44px;
-	padding: 8px 16px;
-	border-radius: 16px;
-}
-
-.address-delivery-choice__icon-shell {
-	width: 36px;
-	height: 36px;
-	flex: 0 0 36px;
-	border-radius: 16px;
-}
-
 .address-pudo-selected {
 	padding: 16px;
 	border: 1.5px solid var(--color-border-teal-faint);
@@ -3592,18 +3400,9 @@
 	.address-entry-card {
 		padding: 16px;
 	}
-
-	.address-entry-card--compact {
-		padding: 16px;
-	}
-
-	.address-entry-card__link-action {
+.address-entry-card__link-action {
 		width: 100%;
 		justify-content: center;
-	}
-
-	.address-delivery-shell__choices {
-		grid-template-columns: 1fr;
 	}
 }
 
@@ -3612,15 +3411,6 @@
    ========================================================== */
 
 /* Step navigation: flex space-between, 24px gap from content */
-.shipment-step-nav {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 8px;
-	margin-top: 24px;
-}
-
 /* service-support-panel__input — Figma-aligned definition is above (line ~2003) */
 
 /* ============================================================
@@ -3695,13 +3485,6 @@
    Prototype-aligned CTA buttons (pill style)
    ========================================================== */
 /* .sf-flow-cta — CTA funnel allineato alla scala .btn-lg (48px default) / .btn (40px compact) */
-
-.shipment-step-nav {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-}
-
 /* ==========================================================
    Accessibility: reduced motion
    ========================================================== */
@@ -3728,14 +3511,7 @@
 		padding-inline: 2px;
 		gap: 8px;
 	}
-
-	.pickup-date-option {
-		flex: 0 0 68px;
-		width: 68px;
-		min-height: 82px;
-	}
-
-	.pickup-date-option__day {
+.pickup-date-option__day {
 		font-size: 1.125rem;
 	}
 
@@ -3768,25 +3544,11 @@
 	}
 
 	/* Delivery choices: full-width stack on tiny screens */
-	.address-delivery-shell__choices {
-		grid-template-columns: 1fr;
-		gap: 8px;
-	}
-
-	.address-delivery-choice {
-		min-height: 44px;
-	}
-
-	/* Ensure address entry cards have adequate padding */
+/* Ensure address entry cards have adequate padding */
 	.address-entry-card {
 		padding: 16px;
 	}
-
-	.address-entry-card--active {
-		padding: 16px;
-	}
-
-	/* PUDO selected: don't overflow */
+/* PUDO selected: don't overflow */
 	.address-pudo-selected {
 		padding: 8px 16px;
 	}
@@ -3809,39 +3571,9 @@
 	border-radius: 16px;
 	box-shadow: inset 0 1px 2px rgba(9, 88, 102, 0.06);
 }
-
-.address-entry-card--active {
-	background: var(--color-border-soft);
-	border: none;
-	box-shadow:
-		inset 0 1px 2px rgba(9, 88, 102, 0.06),
-		0 0 0 1.5px rgba(9, 88, 102, 0.18);
-}
-
 .address-entry-card__head {
 	gap: 10px;
 }
-
-.address-entry-card__caption {
-	max-width: 44ch;
-}
-
-.address-entry-card__tools,
-.address-entry-card__actions {
-	gap: 8px;
-}
-
-.address-entry-card__country-chip {
-	min-width: 5.75rem;
-	height: 36px;
-	min-height: 36px;
-	padding: 0 1.5rem 0 0.75rem;
-	border-radius: 10px;
-	border: 1.5px solid var(--color-border);
-	background: var(--color-brand-card);
-	box-shadow: none;
-}
-
 .address-entry-card__link-action,
 .address-entry-card__link-action.btn-cta,
 .address-entry-card__link-action.btn-secondary {
@@ -3917,23 +3649,6 @@
 }
 
 /* Icon turned pure white when type is active (bg teal var(--color-brand-primary)) */
-.package-type-switcher__button--active .package-type-switcher__icon-image,
-.package-type-switcher__button.sf-shared-segment--active .package-type-switcher__icon-image {
-	filter: brightness(0) invert(1) !important;
-}
-
-.package-type-switcher__button--active svg,
-.package-type-switcher__button--active svg path,
-.package-type-switcher__button--active svg line,
-.package-type-switcher__button--active svg circle,
-.package-type-switcher__button--active svg rect,
-.package-type-switcher__button.sf-shared-segment--active svg,
-.package-type-switcher__button.sf-shared-segment--active svg path {
-	stroke: #ffffff !important;
-	fill: none;
-	color: #ffffff !important;
-}
-
 .sf-shared-segment--compact.sf-shared-segment--active .sf-shared-segment__badge {
 	background: rgba(255, 255, 255, 0.16);
 }
@@ -4489,29 +4204,6 @@
 }
 
 /* ========================================================== */
-.sf-selection {
-	position: relative;
-	border-radius: 16px;
-	transition: border-color var(--sf-t1) var(--sf-ease), background-color var(--sf-t1) var(--sf-ease), box-shadow var(--sf-t1) var(--sf-ease);
-}
-
-.sf-selection--primary {
-	border: 2px solid var(--color-brand-primary);
-	background: rgba(9, 88, 102, 0.06);
-	box-shadow: 0 4px 16px rgba(9, 88, 102, 0.12);
-}
-
-.sf-selection--secondary {
-	border: 1px solid rgba(9, 88, 102, 0.32);
-	background: #ffffff;
-	box-shadow: 0 2px 10px rgba(9, 88, 102, 0.04);
-}
-
-.sf-selection--secondary:hover {
-	border-color: rgba(9, 88, 102, 0.55);
-	background: rgba(9, 88, 102, 0.03);
-}
-
 /* ========================================================================= */
 
 .shipment-stage-actions {
@@ -4529,32 +4221,6 @@
 		0 1px 2px rgba(15, 23, 42, 0.02),
 		0 10px 28px rgba(9, 88, 102, 0.05);
 }
-
-.shipment-stage-actions__copy {
-	flex: 1 1 260px;
-	min-width: 0;
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-}
-
-.shipment-stage-actions__eyebrow {
-	margin: 0;
-	font-size: 11px;
-	font-weight: 800;
-	letter-spacing: 0.14em;
-	text-transform: uppercase;
-	color: var(--color-brand-primary);
-}
-
-.shipment-stage-actions__lead {
-	margin: 0;
-	font-size: 13.5px;
-	line-height: 1.5;
-	color: var(--color-brand-text-muted, #5F6773);
-	font-weight: 500;
-}
-
 .shipment-stage-actions__buttons {
 	flex: 0 0 auto;
 	display: inline-flex;
@@ -4872,12 +4538,7 @@
 /* ============================================================ */
 @media (max-width: 768px) {
   /* Address delivery choice card */
-  .address-delivery-choice {
-    min-height: 56px;
-    padding: 12px 16px;
-  }
-
-  /* Bottoni navigazione mese del date picker pickup */
+/* Bottoni navigazione mese del date picker pickup */
   .pickup-date-card__nav-button {
     width: 44px;
     height: 44px;
@@ -4906,12 +4567,7 @@
   }
 
   /* CTA inline submit / dismiss del pannello servizio */
-  .service-inline-panel__submit.btn-cta,
-  .service-inline-panel__dismiss.btn-secondary {
-    min-height: 44px;
-  }
-
-  /* Link-action delle entry card indirizzo */
+/* Link-action delle entry card indirizzo */
   .address-entry-card__link-action,
   .address-entry-card__link-action.btn-cta,
   .address-entry-card__link-action.btn-secondary {
@@ -4919,12 +4575,7 @@
   }
 
   /* Country-chip: input dropdown */
-  .address-entry-card__country-chip {
-    height: auto;
-    min-height: 44px;
-  }
-
-  /* CTA flusso compatta — il default e' gia' 44 ma compact era 40 */
+/* CTA flusso compatta — il default e' gia' 44 ma compact era 40 */
   .sf-flow-cta--compact {
     height: auto;
     min-height: 44px;

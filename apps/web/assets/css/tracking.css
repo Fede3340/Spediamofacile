@@ -59,73 +59,7 @@
 /* ============================================================
    TRACKING ACTIONS BAR — sf-tracking-actions-bar
    ============================================================ */
-
-.action-btn {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	padding: 10px 16px;
-	border-radius: 12px;
-	font-size: 13px;
-	font-weight: 600;
-	line-height: 1;
-	transition: transform var(--sf-t1) var(--sf-ease), box-shadow var(--sf-t1) var(--sf-ease), background-color var(--sf-t1) var(--sf-ease), border-color var(--sf-t1) var(--sf-ease);
-	text-decoration: none;
-	cursor: pointer;
-	border: 1.5px solid transparent;
-	white-space: nowrap;
-}
-
-.action-btn:hover {
-	transform: translateY(-1px);
-}
-
-.action-btn:active {
-	transform: translateY(0);
-}
-
-.action-btn:focus-visible {
-	outline: 2px solid #095866;
-	outline-offset: 2px;
-}
-
-.action-primary {
-	background: #095866;
-	color: #ffffff;
-	box-shadow: 0 4px 10px rgba(9, 88, 102, 0.18);
-}
-.action-primary:hover {
-	background: #074a56;
-	box-shadow: 0 6px 14px rgba(9, 88, 102, 0.24);
-}
-
-.action-secondary {
-	background: #ffffff;
-	color: #1d2738;
-	border-color: #DFE2E7;
-}
-.action-secondary:hover {
-	border-color: #095866;
-	color: #095866;
-}
-
-.action-warn {
-	background: #ffffff;
-	color: #E44203;
-	border-color: #f5c8b1;
-}
-.action-warn:hover {
-	background: #fff5ef;
-	border-color: #E44203;
-}
-
 @media (prefers-reduced-motion: reduce) {
-	.action-btn {
-		transition: none;
-	}
-	.action-btn:hover {
-		transform: none;
-	}
 }
 
 /* ============================================================
@@ -335,30 +269,5 @@
  * Estratto da components/pudo/PudoDetailPanel.vue.
  * Mobile: slide from bottom. Tablet+ (≥768px): slide from right.
  */
-
-.pudo-panel-enter-active,
-.pudo-panel-leave-active {
-	transition: opacity 0.2s ease;
-}
-
-.pudo-panel-enter-active > div,
-.pudo-panel-leave-active > div {
-	transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.pudo-panel-enter-from,
-.pudo-panel-leave-to {
-	opacity: 0;
-}
-
-.pudo-panel-enter-from > div,
-.pudo-panel-leave-to > div {
-	transform: translateY(20px);
-}
-
 @media (min-width: 768px) {
-	.pudo-panel-enter-from > div,
-	.pudo-panel-leave-to > div {
-		transform: translateX(20px);
-	}
 }

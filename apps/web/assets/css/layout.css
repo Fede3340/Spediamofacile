@@ -350,37 +350,9 @@
    MOBILE MENU: TRANSITIONS
    Prototype: fade+slide, duration 0.25s, ease [0.25,1,0.5,1]
    ============================================================ */
-.mobile-slide-enter-active {
-  transition: opacity var(--sf-t2) var(--sf-ease), transform var(--sf-t2) var(--sf-ease);
-}
-
-.mobile-slide-leave-active {
-  transition: opacity var(--sf-t1) var(--sf-ease), transform var(--sf-t1) var(--sf-ease);
-}
-
-.mobile-slide-enter-from {
-  opacity: 0;
-  transform: translateY(-8px) scale(0.98);
-}
-
-.mobile-slide-leave-to {
-  opacity: 0;
-  transform: translateY(-8px) scale(0.98);
-}
-
 /* ============================================================
    BACKDROP FADE
    ============================================================ */
-.backdrop-fade-enter-active,
-.backdrop-fade-leave-active {
-  transition: opacity var(--sf-t1) var(--sf-ease);
-}
-
-.backdrop-fade-enter-from,
-.backdrop-fade-leave-to {
-  opacity: 0;
-}
-
 /* ============================================================
    RESPONSIVE OVERRIDES
    ============================================================ */

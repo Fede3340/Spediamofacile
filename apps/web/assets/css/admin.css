@@ -107,18 +107,6 @@
 	background: var(--admin-surface-hover);
 	border-color: var(--admin-border-hover);
 }
-
-.admin-row--selected {
-	background: var(--admin-surface-selected);
-	border-color: var(--admin-border-selected);
-}
-
-.admin-row--disabled {
-	background: var(--admin-surface-disabled);
-	opacity: 0.65;
-	pointer-events: none;
-}
-
 .admin-card {
 	min-height: var(--admin-card-min-height);
 	background: var(--admin-surface);
@@ -146,11 +134,6 @@
 }
 
 /* Focus visibile admin (accessibilità AA) */
-.admin-focusable:focus-visible {
-	outline: none;
-	box-shadow: var(--admin-focus-ring);
-	border-color: var(--admin-border-selected);
-}
 /**
  * CSS: admin-prezzi.css
  * SCOPO: Stili per il pannello admin prezzi (/account/amministrazione/prezzi).
@@ -178,30 +161,9 @@
 }
 
 /* ── Breadcrumb ─────────────────────────────────── */
-.admin-prezzi-breadcrumb {
-	margin-bottom: 12px;
-	font-size: 0.875rem;
-	color: var(--color-brand-text-secondary);
-}
-
 /* ── Titolo e sottotitolo ────────────────────────── */
-.admin-prezzi-title {
-	font-size: 1.375rem;
-	font-weight: 700;
-	color: var(--color-brand-text);
-	margin-bottom: 8px;
-}
 @media (min-width: 720px) {
-	.admin-prezzi-title {
-		font-size: 1.75rem;
-	}
 }
-.admin-prezzi-subtitle {
-	font-size: 0.875rem;
-	color: var(--color-brand-text-secondary);
-	margin-bottom: 20px;
-}
-
 /* ── Card tab e filtri ───────────────────────────── */
 .admin-prezzi-tabs-card {
 	border-radius: 16px;
@@ -364,31 +326,10 @@
 }
 
 /* ── Info box (calcolatore) ──────────────────────── */
-.admin-prezzi-info-box {
-	background-color: var(--surface-muted);
-	border-radius: 16px;
-	padding: 20px;
-	margin-bottom: 28px;
-	box-shadow: 0 2px 12px rgba(9, 88, 102, 0.08);
-}
 @media (min-width: 720px) {
-	.admin-prezzi-info-box {
-		padding: 16px;
-	}
 }
 
 /* ── Messaggio azione ────────────────────────────── */
-.admin-prezzi-message {
-	margin-bottom: 20px;
-	padding: 16px;
-	border-radius: 16px;
-	font-size: 0.875rem;
-	font-weight: 500;
-	display: flex;
-	align-items: center;
-	gap: 8px;
-}
-
 /* ── Barra salvataggio ───────────────────────────── */
 .admin-prezzi-save-bar {
 	display: flex;
@@ -443,12 +384,7 @@
 		padding-top: 16px;
 		padding-bottom: 16px;
 	}
-
-	.admin-prezzi-title {
-		font-size: 1.25rem;
-	}
-
-	.admin-prezzi-tabs-card {
+.admin-prezzi-tabs-card {
 		padding: 14px;
 		border-radius: 14px;
 		margin-bottom: 16px;
@@ -471,14 +407,7 @@
 		padding-left: 12px;
 		padding-right: 12px;
 	}
-
-	.admin-prezzi-info-box {
-		padding: 14px;
-		border-radius: 14px;
-		margin-bottom: 16px;
-	}
-
-	.admin-prezzi-save-bar {
+.admin-prezzi-save-bar {
 		padding: 14px;
 	}
 
@@ -1355,16 +1284,6 @@
 }
 
 /* ---- Chart fade transition ---- */
-.chart-fade-enter-active,
-.chart-fade-leave-active {
-	transition: opacity 0.2s ease;
-}
-
-.chart-fade-enter-from,
-.chart-fade-leave-to {
-	opacity: 0;
-}
-
 /* ---- Animations ---- */
 @keyframes admin-analytics-line-draw {
 	to {
@@ -1765,12 +1684,6 @@
 	transition: var(--admin-transition-fast);
 	white-space: nowrap;
 }
-
-.admin-filter-bar--sm .admin-filter-bar__pill {
-	padding: 6px 12px;
-	font-size: 0.75rem;
-}
-
 .admin-filter-bar__pill:hover:not(.admin-filter-bar__pill--active) {
 	background: var(--admin-surface-hover);
 	color: var(--admin-text-primary);
@@ -2067,15 +1980,6 @@
 }
 
 /* Transitions */
-.m6-fade-enter-active,
-.m6-fade-leave-active {
-	transition: opacity 180ms ease, transform 180ms ease;
-}
-.m6-fade-enter-from,
-.m6-fade-leave-to {
-	opacity: 0;
-	transform: translateY(-4px);
-}
 /*
  * sf-admin-spedizioni.css — Stili dominio "spedizioni admin"
  *
@@ -2646,31 +2550,6 @@
 	letter-spacing: 0.1px;
 	white-space: nowrap;
 }
-
-.admin-status-badge--success {
-	color: var(--admin-status-success-text);
-	background: var(--admin-status-success-bg);
-}
-
-.admin-status-badge--warning {
-	color: var(--admin-status-warning-text);
-	background: var(--admin-status-warning-bg);
-}
-
-.admin-status-badge--info {
-	color: var(--admin-status-info-text);
-	background: var(--admin-status-info-bg);
-}
-
-.admin-status-badge--neutral {
-	color: var(--admin-status-neutral-text);
-	background: var(--admin-status-neutral-bg);
-}
-
-.admin-status-badge--danger {
-	color: var(--admin-status-danger-text);
-	background: var(--admin-status-danger-bg);
-}
 /* sf-admin-order-table.css — stili componente AdminOrderTable (tabella ordini admin). */
 .m6-order-table-wrap { width: 100%; }
 
@@ -3124,22 +3003,6 @@
 	line-height: 1.2;
 	white-space: nowrap;
 }
-
-.admin-user-chip--success {
-	color: var(--admin-status-success-text);
-	background: var(--admin-status-success-bg);
-}
-
-.admin-user-chip--warning {
-	color: var(--admin-status-warning-text, #b45309);
-	background: var(--admin-status-warning-bg, rgba(245, 158, 11, 0.12));
-}
-
-.admin-user-chip--danger {
-	color: var(--admin-status-danger-text, #b91c1c);
-	background: var(--admin-status-danger-bg, rgba(220, 38, 38, 0.1));
-}
-
 .admin-user-chip--neutral {
 	color: var(--admin-text-secondary);
 	background: var(--admin-surface-muted);
@@ -3270,63 +3133,6 @@
 :deep(.sf-admin-console-header .sf-account-page-header__body) {
 	gap: 6px;
 }
-
-.sf-admin-console-surface {
-	border-radius: 20px;
-	border: 1px solid rgba(9, 88, 102, 0.12);
-	background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(247, 250, 251, 0.995) 100%);
-	box-shadow: 0 18px 40px rgba(12, 27, 34, 0.08), 0 2px 6px rgba(12, 27, 34, 0.04);
-	padding: 18px;
-}
-
-.sf-admin-console-surface--hub {
-	display: grid;
-	gap: 16px;
-}
-
-.sf-admin-console-surface__intro {
-	display: flex;
-	align-items: flex-start;
-	justify-content: space-between;
-	gap: 14px 18px;
-	flex-wrap: wrap;
-}
-
-.sf-admin-console-surface__eyebrow {
-	margin: 0;
-	font-size: 0.72rem;
-	font-weight: 800;
-	letter-spacing: 0.14em;
-	text-transform: uppercase;
-	color: var(--color-brand-text-muted);
-}
-
-.sf-admin-console-surface__intro-badges {
-	display: flex;
-	align-items: center;
-	justify-content: flex-end;
-	gap: 8px;
-	flex-wrap: wrap;
-}
-
-.sf-admin-console-surface__badge {
-	display: inline-flex;
-	align-items: center;
-	min-height: 28px;
-	padding: 0 11px;
-	border-radius: 999px;
-	background: rgba(9, 88, 102, 0.07);
-	color: var(--color-brand-primary);
-	font-size: 0.72rem;
-	font-weight: 800;
-	letter-spacing: 0.02em;
-}
-
-.sf-admin-console-surface__badge--accent {
-	background: rgba(228, 66, 3, 0.08);
-	color: var(--color-brand-accent);
-}
-
 .sf-admin-console-notice {
 	display: grid;
 	gap: 8px;
@@ -3447,16 +3253,7 @@
 	:deep(.sf-admin-console-header .sf-account-page-header__surface) {
 		padding-bottom: 18px;
 	}
-
-	.sf-admin-console-surface {
-		padding: 20px;
-	}
-
-	.sf-admin-console-surface__intro {
-		align-items: center;
-	}
-
-	.sf-admin-console-notice {
+.sf-admin-console-notice {
 		padding: 16px 18px;
 	}
 }
@@ -3465,18 +3262,10 @@
 	:deep(.sf-admin-console-header .sf-account-page-header__body) {
 		align-items: start;
 	}
-
-	.sf-admin-console-surface__intro {
-		align-items: flex-end;
-	}
 }
 
 @media (max-width: 767px) {
-	.sf-admin-console-surface {
-		padding: 16px;
-	}
-
-	.sf-admin-console-notice__actions {
+.sf-admin-console-notice__actions {
 		width: 100%;
 	}
 }

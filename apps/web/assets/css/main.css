@@ -18,12 +18,6 @@ input[type="number"] {
 	-moz-appearance: textfield;
 	appearance: textfield;
 }
-
-.riepilogo-page {
-	min-height: 600px;
-	background: var(--color-brand-bg);
-}
-
 @font-face {
 	font-family: "Inter";
 	font-style: normal;
@@ -1995,29 +1989,7 @@ input[type="number"] {
 
 /* Route transitions intentionally disabled:
    il cambio pagina deve restare immediato e stabile, senza flash/fade globali. */
-.page-enter-active,
-.page-leave-active,
-.layout-enter-active,
-.layout-leave-active {
-	transition: none !important;
-}
-
-.page-enter-from,
-.page-leave-to,
-.layout-enter-from,
-.layout-leave-to {
-	opacity: 1 !important;
-	transform: none !important;
-}
-
 /* Hardening stepper: evita conflitti colore/sfondo sul primo render */
-.steps-figma-item--active {
-	background-color: var(--color-brand-primary) !important;
-	color: var(--color-brand-bg) !important;
-}
-
-
-
 /*
  * Unlayered: ensures my-container is never overridden by CSS layers.
  * Unlayered styles always beat layered styles in Tailwind v4 / Nuxt UI.
@@ -2145,11 +2117,6 @@ input[type="number"] {
 	color: var(--color-brand-text);
 	font-weight: 700;
 }
-
-.page-breadcrumb__separator {
-	color: var(--color-border-hover);
-}
-
 @media (min-width: 48rem) {
 	.page-breadcrumb {
 		margin-top: 20px;

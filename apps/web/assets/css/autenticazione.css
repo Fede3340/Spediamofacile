@@ -23,18 +23,6 @@
 .auth-overlay-segment-strip .auth-overlay-segment.sf-shared-segment--active:hover {
 	color: #ffffff;
 }
-
-.auth-overlay-profile-strip {
-	width: fit-content;
-	max-width: 100%;
-	margin-top: 10px;
-}
-
-.auth-overlay-profile-strip .auth-overlay-profile-segment {
-	min-height: 42px;
-	padding-inline: 16px;
-}
-
 /* Radio inline Privato/Azienda — versione compatta (sostituisce segmented switch). */
 .auth-overlay-profile-radios {
 	display: flex;
@@ -103,43 +91,6 @@
 }
 
 /* ── Form container ──────────────────────────────────────── */
-
-.auth-page-form {
-	display: grid;
-	gap: 18px;
-}
-
-.auth-panel-title {
-	font-family: var(--font-inter);
-	font-size: 1.125rem;
-	font-weight: 600;
-	color: var(--color-brand-text);
-}
-
-.auth-panel-copy {
-	margin-top: 0.25rem;
-	font-size: 0.84rem;
-	line-height: 1.45;
-	color: var(--color-brand-text-secondary);
-}
-
-.auth-panel-copy--accent {
-	color: var(--color-brand-primary);
-}
-
-.auth-login-resend__copy {
-	font-size: 1rem;
-	font-weight: 600;
-	color: var(--color-brand-text);
-}
-
-.auth-login-status {
-	margin-top: 10px;
-	text-align: center;
-	font-size: 0.875rem;
-	color: var(--color-brand-primary);
-}
-
 .auth-field-group {
 	display: flex;
 	flex-direction: column;
@@ -154,56 +105,9 @@
 	color: var(--color-brand-text-muted);
 	line-height: 1;
 }
-
-.auth-field-select {
-	padding-right: 2.25rem;
-}
-
-.verification-digit {
-	width: 2.75rem;
-	height: 3rem;
-	border-radius: 16px;
-	border: 1.5px solid var(--color-border);
-	background: var(--surface-page);
-	text-align: center;
-	font-size: 1rem;
-	font-weight: 700;
-	transition: border-color var(--sf-t1) var(--sf-ease), box-shadow var(--sf-t1) var(--sf-ease), background-color var(--sf-t1) var(--sf-ease);
-}
-
-.verification-digit:focus {
-	outline: none;
-	border-color: var(--color-brand-primary);
-	box-shadow: 0 0 0 3px rgba(9, 88, 102, 0.1);
-	background: #fff;
-}
-
 .auth-field-input--password {
 	padding-right: 2.55rem;
 }
-
-.auth-field-input--with-icon {
-	padding-left: 2.6rem;
-}
-
-.auth-input-wrap {
-	position: relative;
-}
-
-.auth-input-icon {
-	position: absolute;
-	top: 50%;
-	left: 0.9rem;
-	width: 1rem;
-	height: 1rem;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	color: var(--color-brand-text-muted);
-	transform: translateY(-50%);
-	pointer-events: none;
-}
-
 .auth-password-wrap {
 	position: relative;
 }
@@ -221,28 +125,6 @@
 	color: var(--color-brand-text-muted);
 	cursor: pointer;
 }
-
-.auth-checkbox-row {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.55rem;
-	font-size: 0.84rem;
-	color: var(--color-brand-text-secondary);
-	cursor: pointer;
-	margin-top: 0.1rem;
-}
-
-.auth-checkbox {
-	width: 1rem;
-	height: 1rem;
-	accent-color: var(--color-brand-primary);
-}
-
-.auth-text-link:disabled {
-	opacity: 0.62;
-	cursor: not-allowed;
-}
-
 .auth-password-meter {
 	display: flex;
 	gap: 4px;
@@ -308,99 +190,12 @@
 	background: var(--color-success-bg);
 	border: 1px solid var(--color-success-border);
 }
-
-.auth-feedback--muted {
-	color: var(--color-brand-text-secondary);
-	background: var(--surface-inner);
-	border: 1px solid var(--color-border-teal-faint);
-}
-
-.auth-grid-two {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 0.75rem 0.85rem;
-}
-
-.auth-grid-phone {
-	display: grid;
-	grid-template-columns: 108px minmax(0, 1fr);
-	gap: 0.75rem 0.85rem;
-}
-
-.auth-privacy-consent {
-	display: flex;
-	align-items: flex-start;
-	gap: 10px;
-	margin-top: 2px;
-	padding: 8px 10px;
-	border-radius: 14px;
-	background: rgba(255, 255, 255, 0.72);
-	box-shadow: inset 0 0 0 1px rgba(223, 226, 231, 0.92);
-}
-
-.auth-privacy-consent__check {
-	width: 16px;
-	height: 16px;
-	margin-top: 2px;
-	accent-color: var(--color-brand-primary);
-	flex: 0 0 16px;
-}
-
-.auth-privacy-consent__text {
-	font-size: 12px;
-	line-height: 1.42;
-	color: var(--color-brand-text-secondary);
-}
-
-.auth-privacy-consent__link {
-	color: var(--color-brand-primary);
-	font-weight: 700;
-	text-decoration: none;
-}
-
-.auth-privacy-consent__link:hover,
-.auth-privacy-consent__link:focus-visible {
-	text-decoration: underline;
-}
-
-.auth-text-link {
-	color: var(--color-brand-primary);
-	font-weight: 500;
-	font-size: 0.875rem;
-	cursor: pointer;
-	transition: color var(--sf-t1) var(--sf-ease);
-	text-decoration: none;
-}
-
-.auth-text-link:hover {
-	color: var(--color-brand-primary);
-}
-
-.auth-login-actions {
-	display: flex;
-	justify-content: flex-end;
-	margin-top: -0.05rem;
-}
-
-.auth-text-link--muted {
-	color: var(--color-brand-text-secondary);
-}
-
-.auth-text-link--muted:hover {
-	color: var(--color-brand-text);
-}
-
 @media (max-width: 47.99rem) {
 	.auth-password-checklist {
 		grid-template-columns: 1fr;
 	}
 
 	/* Verification digits: mobile touch targets */
-	.verification-digit {
-		width: 2.75rem;
-		height: 3rem;
-		font-size: 1rem;
-	}
 }
 
 /* ── Full-page auth shell ─────────────────────────────────── */
@@ -533,64 +328,6 @@
 	height: 3px;
 	background: linear-gradient(90deg, var(--color-brand-primary), var(--color-teal-400));
 }
-
-.auth-page-body__header {
-	padding: 0;
-}
-
-.auth-page-body__content {
-	gap: 16px;
-}
-
-.auth-page-tabs {
-	display: flex;
-	width: 100%;
-	max-width: 380px;
-	margin-inline: auto;
-	padding: 3px;
-	background: var(--color-border-strong);
-	border-radius: 999px;
-	box-shadow: inset 0 1px 2px rgba(9, 88, 102, 0.06);
-}
-
-.auth-page-tab {
-	flex: 1 1 0;
-	height: 48px;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	padding: 0 18px;
-	border: none;
-	border-radius: 999px;
-	font-size: 15px;
-	font-weight: 600;
-	color: var(--color-brand-text-muted);
-	background: transparent;
-	cursor: pointer;
-	transition: background-color var(--sf-t1) var(--sf-ease), color var(--sf-t1) var(--sf-ease), box-shadow var(--sf-t1) var(--sf-ease), font-weight var(--sf-t1) var(--sf-ease);
-}
-
-.auth-page-tab:hover {
-	color: var(--color-brand-text);
-}
-.auth-page-tab:focus-visible {
-	outline: 3px solid rgba(9, 88, 102, 0.45);
-	outline-offset: 2px;
-	color: var(--color-brand-text);
-}
-
-.auth-page-tab--active {
-	background: #fff;
-	color: var(--color-brand-text);
-	font-weight: 700;
-	box-shadow: 0 2px 8px rgba(9, 88, 102, 0.06), 0 0 0 1px rgba(9, 88, 102, 0.04);
-}
-
-.auth-page-tab--active:hover,
-.auth-page-tab--active:focus-visible {
-	color: var(--color-brand-text);
-}
-
 .auth-shell-message {
 	width: 100%;
 	flex-wrap: wrap;
@@ -646,108 +383,10 @@
 /* (Blocco "auth-demo / auth-demo-card" eliminato 2026-04-25: classi tutte dead nei template.) */
 
 /* ── White card container for forms ─────────────────────── */
-
-.auth-page-card {
-	background: #ffffff;
-	border-radius: 16px;
-	padding: 32px 28px;
-	border: 1px solid var(--color-border);
-	box-shadow: 0 2px 8px rgba(9, 88, 102, 0.05), 0 0 0 1px rgba(9, 88, 102, 0.04);
-	position: relative;
-	overflow: hidden;
-}
-
-.auth-page-card::before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	height: 3px;
-	background: linear-gradient(90deg, var(--color-brand-primary), var(--color-teal-400));
-}
-
 /* ── Auth-specific input overrides ───────────────────────── */
-
-.auth-page-card .form-input,
-.auth-page-body .form-input,
-.auth-page-verify .form-input {
-	min-height: 46px;
-	border-radius: 12px;
-	border: none;
-	outline: none;
-	box-shadow: inset 0 0 0 1.5px var(--color-border);
-	background: #fff;
-	font-size: 15px;
-	color: var(--color-brand-text);
-}
-
-.auth-page-card .form-input:focus,
-.auth-page-body .form-input:focus,
-.auth-page-verify .form-input:focus {
-	box-shadow: inset 0 0 0 2px rgba(9, 88, 102, 0.25);
-	background: #fff;
-}
-
 /* Compact form-input inside overlay/page auth forms */
-.auth-overlay-form .form-input,
-.auth-page-form .form-input {
-	min-height: 44px;
-	height: 44px;
-	border-radius: 12px;
-	font-size: 14px;
-	padding: 0 13px;
-}
-
 /* ── Auth-specific CTA button overrides ──────────────────── */
-
-.auth-page-card .btn-cta,
-.auth-page-body .btn-cta,
-.auth-page-verify .btn-cta,
-.auth-shell-message .btn-cta {
-	min-height: 48px;
-	border-radius: 999px;
-	background: linear-gradient(135deg, var(--color-brand-accent) 0%, var(--color-accent-dark) 100%);
-	font-size: 14px;
-	font-weight: 700;
-	border: none;
-	box-shadow: 0 8px 20px rgba(228, 66, 3, 0.2);
-}
-
-.auth-page-card .btn-cta:hover,
-.auth-page-body .btn-cta:hover,
-.auth-page-verify .btn-cta:hover,
-.auth-shell-message .btn-cta:hover {
-	background: linear-gradient(135deg, var(--color-accent-dark) 0%, var(--color-accent-700) 100%);
-	box-shadow: 0 10px 24px rgba(228, 66, 3, 0.28);
-}
-
 /* ── "oppure" divider with lines ─────────────────────────── */
-
-.auth-divider-oppure {
-	position: relative;
-	display: flex;
-	align-items: center;
-	gap: 16px;
-	margin: 4px 0;
-}
-
-.auth-divider-oppure::before,
-.auth-divider-oppure::after {
-	content: '';
-	flex: 1 1 0;
-	height: 1px;
-	background: var(--color-border);
-}
-
-.auth-divider-oppure span {
-	flex: 0 0 auto;
-	font-size: 0.875rem;
-	font-weight: 600;
-	color: var(--color-brand-text-secondary);
-	text-transform: lowercase;
-}
-
 @media (max-width: 47.99rem) {
 	.auth-shell {
 		padding: 20px 0 28px;
@@ -756,13 +395,7 @@
 	.auth-shell-frame {
 		width: 100%;
 	}
-
-	.auth-page-card {
-		padding: 20px 16px;
-		border-radius: 16px;
-	}
-
-	.auth-page-body {
+.auth-page-body {
 		padding: 16px;
 	}
 
@@ -778,12 +411,7 @@
 	.auth-shell-message__action {
 		width: 100%;
 	}
-
-	.auth-page-tabs {
-		max-width: 100%;
-	}
-
-	.auth-segmented-row {
+.auth-segmented-row {
 		width: 100%;
 		max-width: 280px;
 	}
@@ -802,12 +430,5 @@
 }
 
 /* ── Demo card caption ──────────────────────────────────── */
-
-.auth-demo-card__caption {
-	font-size: 0.75rem;
-	color: var(--color-brand-text-secondary);
-	line-height: 1.3;
-}
-
 /* (Blocchi "auth-choice-group / auth-segmented-row / auth-segment / auth-choice-radio"
    eliminati 2026-04-25: classi tutte dead nei template Vue.) */
