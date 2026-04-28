@@ -44,8 +44,13 @@ Route::post('/la-tua-spedizione/inizia', [InertiaShipmentController::class, 'ini
 Route::get('/la-tua-spedizione/{step}', [InertiaShipmentController::class, 'step']);
 Route::post('/la-tua-spedizione/{step}', [InertiaShipmentController::class, 'saveStep']);
 
-/* ────── Carrello + Checkout ────── */
+/* ────── Carrello + Checkout (Stripe hosted) ────── */
 Route::get('/carrello', [InertiaCheckoutController::class, 'carrello']);
+Route::middleware('auth')->group(function () {
+    Route::post('/checkout/stripe', [InertiaCheckoutController::class, 'startStripeCheckout'])->middleware('throttle:10,1');
+});
+Route::get('/checkout/return', [InertiaCheckoutController::class, 'return']);
+Route::get('/checkout/cancel', [InertiaCheckoutController::class, 'cancel']);
 Route::get('/checkout/success', [InertiaCheckoutController::class, 'success']);
 
 /* ────── Auth (Inertia) ────── */
