@@ -4,7 +4,7 @@
     {
       "name": "caddy-proxy",
       "runtimeExecutable": "caddy",
-      "runtimeArgs": ["run", "--config", "Caddyfile"],
+      "runtimeArgs": ["run", "--config", "infra/caddy/Caddyfile"],
       "port": 8787,
       "autoPort": false,
       "env": {
@@ -17,7 +17,7 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["nuxi", "dev", "--host", "127.0.0.1", "--port", "3001"],
       "port": 3001,
-      "cwd": "nuxt-spedizionefacile-master",
+      "cwd": "apps/web",
       "autoPort": false
     },
     {
@@ -25,7 +25,7 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["nuxi", "dev", "--host", "127.0.0.1", "--port", "3002"],
       "port": 3002,
-      "cwd": "nuxt-spedizionefacile-master",
+      "cwd": "apps/web",
       "autoPort": false
     },
     {
@@ -33,7 +33,7 @@
       "runtimeExecutable": "php",
       "runtimeArgs": ["artisan", "serve", "--host=127.0.0.1", "--port=8000"],
       "port": 8000,
-      "cwd": "laravel-spedizionefacile-main",
+      "cwd": "apps/api",
       "autoPort": false
     }
   ]
