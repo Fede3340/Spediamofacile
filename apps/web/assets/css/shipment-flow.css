@@ -3928,6 +3928,157 @@
 	--funnel-card-active-shadow: 0 2px 8px rgba(9, 88, 102, 0.08);
 }
 
+/* ============================================================
+ *  service-surface BASE LAYOUT (card servizio funnel)
+ *  Mancanti dal CSS storico — aggiunte 2026-04-28 dopo segnalazione
+ *  utente di card stackate verticalmente senza struttura.
+ * ============================================================ */
+
+.service-stage-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.service-stage-section {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.service-stage-section__header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 4px;
+}
+
+.service-stage-section__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 8px;
+	background: rgba(9, 88, 102, 0.08);
+	flex-shrink: 0;
+}
+
+.service-stage-section__title {
+	font-size: 0.95rem;
+	font-weight: 700;
+	color: var(--color-brand-text);
+	margin: 0;
+}
+
+.service-surface {
+	display: block;
+	position: relative;
+	border-radius: 14px;
+	background: #ffffff;
+	overflow: hidden;
+	transition: outline-color 200ms ease, box-shadow 200ms ease, background 200ms ease;
+}
+
+.service-surface__row {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	align-items: center;
+	gap: 14px;
+	padding: 14px 16px;
+	cursor: pointer;
+	user-select: none;
+}
+
+.service-surface__row--locked {
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+
+.service-surface__media {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 10px;
+	flex-shrink: 0;
+}
+
+.service-surface__media-icon {
+	display: block;
+}
+
+.service-surface__copy {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+
+.service-surface__headline {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.service-surface__name {
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: var(--color-brand-text);
+	margin: 0;
+}
+
+.service-surface__badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 2px 8px;
+	font-size: 0.7rem;
+	font-weight: 700;
+	color: var(--color-brand-primary);
+	background: rgba(9, 88, 102, 0.1);
+	border-radius: 999px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.service-surface__text {
+	font-size: 0.825rem;
+	color: var(--color-brand-text-muted, #5f6470);
+	line-height: 1.4;
+	margin: 0;
+}
+
+.service-surface__text-emphasis {
+	font-weight: 600;
+	color: var(--color-brand-text);
+}
+
+.service-surface__aside {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 6px;
+	flex-shrink: 0;
+}
+
+@media (max-width: 540px) {
+	.service-surface__row {
+		grid-template-columns: auto 1fr;
+		grid-template-areas:
+			"media copy"
+			"aside aside";
+		gap: 10px;
+	}
+	.service-surface__media { grid-area: media; }
+	.service-surface__copy { grid-area: copy; }
+	.service-surface__aside {
+		grid-area: aside;
+		align-items: stretch;
+	}
+}
+
 .service-stage-shell--funnel-standard .service-surface {
 	border: none;
 	outline: 1.5px solid var(--funnel-card-idle-outline);
