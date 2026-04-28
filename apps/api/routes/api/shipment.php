@@ -8,14 +8,14 @@
  */
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LocationController;
-use App\Http\Controllers\AuthSessionController;
-use App\Http\Controllers\SessionDataController;
-use App\Http\Controllers\BrtController;
+use App\Http\Controllers\Catalog\LocationController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Shipping\SessionDataController;
+use App\Http\Controllers\Shipping\BrtController;
 
 /* ===== SESSIONE PREVENTIVO ===== */
 
-Route::get('/session', [AuthSessionController::class, 'show']);
+Route::get('/session', [LoginController::class, 'session']);
 Route::post('/session/first-step', [SessionDataController::class, 'firstStep']);
 Route::post('/session/second-step', [SessionDataController::class, 'secondStep']);
 Route::middleware(['throttle:10,1'])->post('/session/reset', [SessionDataController::class, 'reset']);

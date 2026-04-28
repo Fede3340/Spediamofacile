@@ -1,31 +1,4 @@
 <?php
-/**
- * FILE: SendShipmentStatusEmail.php
- * SCOPO: Listener che invia email di notifica quando lo stato di una spedizione cambia.
- *
- * DOVE SI USA:
- *   - EventServiceProvider — registrato come listener di ShipmentStatusChanged
- *
- * DATI IN INGRESSO:
- *   - ShipmentStatusChanged event con order, oldStatus, newStatus
- *
- * DATI IN USCITA:
- *   - Nessun ritorno (void), invia email all'utente
- *
- * VINCOLI:
- *   - L'ordine deve avere un utente con email valida
- *   - Non invia email se vecchio e nuovo stato sono uguali
- *   - Non invia per transizioni interne non rilevanti per l'utente (pending -> processing)
- *     perche' quel caso e' gia' gestito da OrderConfirmationMail
- *
- * ERRORI TIPICI:
- *   - Email fallita: non blocca, l'errore viene solo loggato
- *
- * COLLEGAMENTI:
- *   - app/Events/ShipmentStatusChanged.php — evento che scatena questo listener
- *   - app/Mail/ShipmentStatusUpdateMail.php — Mailable inviata
- */
-
 namespace App\Listeners;
 
 use App\Events\ShipmentStatusChanged;

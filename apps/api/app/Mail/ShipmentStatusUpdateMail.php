@@ -1,26 +1,4 @@
 <?php
-
-/**
- * EMAIL: AGGIORNAMENTO STATO SPEDIZIONE
- *
- * Questa classe rappresenta l'email inviata all'utente quando lo stato
- * della sua spedizione cambia (es. in_transit, delivered, in_giacenza, completed).
- *
- * L'email contiene:
- * - Numero ordine e nuovo stato tradotto in italiano
- * - Stato precedente per contesto
- * - Link tracking BRT (se disponibile)
- * - Footer con info contatto
- *
- * DOVE SI USA:
- *   - SendShipmentStatusEmail.php — listener dell'evento ShipmentStatusChanged
- *
- * COLLEGAMENTI:
- *   - app/Events/ShipmentStatusChanged.php — evento che scatena l'invio
- *   - app/Listeners/SendShipmentStatusEmail.php — listener che invia l'email
- *   - resources/views/emails/shipment-status.blade.php — template HTML
- */
-
 namespace App\Mail;
 
 use App\Models\Order;
@@ -106,7 +84,7 @@ class ShipmentStatusUpdateMail extends Mailable implements ShouldQueue
             'label_generated' => 'Etichetta generata',
             'completed' => 'Completato',
             'payment_failed' => 'Pagamento fallito',
-            'payed' => 'Pagato',
+            'paid' => 'Pagato',
             'cancelled' => 'Annullato',
             'refunded' => 'Rimborsato',
             'in_transit' => 'In transito',

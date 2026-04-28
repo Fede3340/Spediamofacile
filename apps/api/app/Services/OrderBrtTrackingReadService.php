@@ -21,7 +21,7 @@ class OrderBrtTrackingReadService
         Order::RETURNED => ['label' => 'Reso', 'description' => 'Il pacco e\' stato reso al mittente.'],
         Order::REFUSED => ['label' => 'Rifiutato', 'description' => 'Il pacco e\' stato rifiutato dal destinatario.'],
         Order::REFUNDED => ['label' => 'Rimborsato', 'description' => 'L\'ordine e\' stato rimborsato.'],
-        'payed' => ['label' => 'Pagato', 'description' => 'Il pagamento e\' stato confermato.'],
+        'paid' => ['label' => 'Pagato', 'description' => 'Il pagamento e\' stato confermato.'],
     ];
 
     public function __construct(

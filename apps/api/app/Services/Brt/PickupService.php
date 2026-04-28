@@ -1,22 +1,4 @@
 <?php
-
-/**
- * FILE: Brt/PickupService.php
- * SCOPO: Richiede il ritiro a domicilio tramite API BRT.
- *
- * DOVE SI USA:
- *   - BrtService.php — delegato da requestHomePickup()
- *   - ShipmentExecutionService.php — flusso automatico post-etichetta
- *
- * Il ritiro e' un boundary contrattuale BRT: in produzione va chiamato
- * solo se BRT abilita un endpoint esplicito sul contratto cliente.
- * Se non e' configurato, l'ordine resta trasparente come manual_required.
- *
- * COLLEGAMENTI:
- *   - BrtConfig.php — configurazione e client HTTP
- *   - ShipmentService.php — pattern di riferimento per le chiamate HTTP
- */
-
 namespace App\Services\Brt;
 
 use App\Models\Order;

@@ -1,22 +1,4 @@
 <?php
-
-/**
- * FILE: StripeWebhookEvent.php
- * SCOPO: Modello per tracciare gli eventi Stripe webhook gia' processati (idempotenza).
- *
- * DOVE SI USA:
- *   - StripeWebhookController.php -- per verificare se un evento e' gia' stato processato
- *
- * DATI IN INGRESSO:
- *   - stripe_event_id: l'ID univoco dell'evento Stripe (es. evt_1234...)
- *   - event_type: tipo di evento (es. payment_intent.succeeded)
- *   Esempio: StripeWebhookEvent::create(['stripe_event_id' => 'evt_123', 'event_type' => 'payment_intent.succeeded'])
- *
- * VINCOLI:
- *   - stripe_event_id ha un indice UNIQUE: il database stesso impedisce duplicati
- *   - La tabella va pulita periodicamente (eventi piu' vecchi di 7 giorni)
- */
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

@@ -8,10 +8,10 @@
  */
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PublicArticleController;
-use App\Http\Controllers\PublicPriceBandController;
+use App\Http\Controllers\Catalog\PublicArticleController;
+use App\Http\Controllers\Catalog\PublicPriceBandController;
 use App\Http\Controllers\Admin\HomepageImageController;
-use App\Http\Controllers\GdprController;
+use App\Http\Controllers\Gdpr\GdprController;
 use App\Http\Controllers\HealthController;
 
 /* ===== HEALTH CHECK (Sprint 7.2) ===== */

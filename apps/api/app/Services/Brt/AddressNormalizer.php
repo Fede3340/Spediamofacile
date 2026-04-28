@@ -1,16 +1,4 @@
 <?php
-/**
- * FILE: Brt/AddressNormalizer.php
- * SCOPO: Normalizza indirizzi italiani per il formato richiesto dal routing BRT.
- *
- * DOVE SI USA:
- *   - ShipmentService.php — normalizzazione prima di inviare a createShipment
- *
- * PERCHE': BRT rifiuta indirizzi non normalizzati con errore -63 (routing fallito).
- *   Senza normalizzazione, "S. Giovanni Lupatoto" fallirebbe perche' BRT vuole
- *   "SAN GIOVANNI LUPATOTO". Stessa cosa per CAP senza zero iniziale o provincia estesa.
- */
-
 namespace App\Services\Brt;
 
 use App\Models\Location;

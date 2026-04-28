@@ -1,28 +1,4 @@
 <?php
-
-/**
- * EMAIL: CONFERMA ORDINE
- *
- * Questa classe rappresenta l'email di conferma ordine inviata
- * all'utente immediatamente dopo il pagamento riuscito.
- *
- * L'email contiene:
- * - Numero ordine e data
- * - Importo totale pagato
- * - Lista pacchi con peso e dimensioni
- * - Indirizzi mittente e destinatario
- * - Link tracking BRT (se gia' disponibile)
- * - Footer con info contatto
- *
- * DOVE SI USA:
- *   - MarkOrderProcessing.php — inviata subito dopo che l'ordine passa a "processing"
- *
- * COLLEGAMENTI:
- *   - app/Listeners/MarkOrderProcessing.php — listener che scatena l'invio
- *   - app/Models/Order.php — dati ordine
- *   - resources/views/emails/order-confirmation.blade.php — template HTML
- */
-
 namespace App\Mail;
 
 use App\Models\Order;

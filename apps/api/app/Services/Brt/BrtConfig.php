@@ -1,11 +1,4 @@
 <?php
-/**
- * FILE: Brt/BrtConfig.php
- * SCOPO: Configurazione centralizzata e factory HTTP client per le API BRT.
- *
- * Tutti i servizi Brt/* usano questa classe per ottenere credenziali, URL e client HTTP.
- */
-
 namespace App\Services\Brt;
 
 use Illuminate\Support\Facades\Http;

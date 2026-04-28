@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\Catalog\ArticleController;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**

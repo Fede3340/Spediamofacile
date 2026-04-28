@@ -1,29 +1,4 @@
 <?php
-/**
- * FILE: OrderPaymentFailed.php
- * SCOPO: Evento emesso quando il pagamento di un ordine fallisce (carta rifiutata, fondi insufficienti).
- *
- * COSA ENTRA:
- *   - Order $order (l'ordine con pagamento fallito)
- *
- * COSA ESCE:
- *   - Proprieta' pubblica $order accessibile dai listener
- *
- * CHIAMATO DA:
- *   - StripeWebhookController.php — dopo ricezione webhook payment_intent.payment_failed
- *
- * EFFETTI COLLATERALI:
- *   - Scatena i listener registrati in EventServiceProvider:
- *     - MarkOrderPaymentFailed — cambia stato ordine a "payment_failed"
- *
- * ERRORI TIPICI:
- *   - Nessuno (evento semplice, contiene solo dati)
- *
- * DOCUMENTI CORRELATI:
- *   - app/Listeners/MarkOrderPaymentFailed.php — cambia stato a payment_failed
- *   - app/Providers/EventServiceProvider.php — registrazione evento-listener
- */
-
 namespace App\Events;
 
 use App\Models\Order;

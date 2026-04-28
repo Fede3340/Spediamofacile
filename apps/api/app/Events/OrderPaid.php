@@ -1,32 +1,4 @@
 <?php
-/**
- * FILE: OrderPaid.php
- * SCOPO: Evento emesso quando un ordine viene pagato con successo (evento piu' importante del flusso).
- *
- * COSA ENTRA:
- *   - Order $order (l'ordine pagato), $transaction (dati della transazione Stripe)
- *
- * COSA ESCE:
- *   - Proprieta' pubbliche $order e $transaction accessibili dai listener
- *
- * CHIAMATO DA:
- *   - StripeController.php — orderPaid() dopo conferma pagamento Stripe
- *   - StripeWebhookController.php — dopo ricezione webhook payment_intent.succeeded
- *
- * EFFETTI COLLATERALI:
- *   - Scatena i listener registrati in EventServiceProvider:
- *     - MarkOrderProcessing — cambia stato ordine a "processing"
- *     - GenerateBrtLabel — genera etichetta BRT e invia email (cambia stato a "in_transit")
- *
- * ERRORI TIPICI:
- *   - Nessuno (evento semplice, contiene solo dati)
- *
- * DOCUMENTI CORRELATI:
- *   - app/Listeners/MarkOrderProcessing.php — primo listener (stato processing)
- *   - app/Listeners/GenerateBrtLabel.php — secondo listener (etichetta BRT + email)
- *   - app/Providers/EventServiceProvider.php — ordine di esecuzione dei listener
- */
-
 namespace App\Events;
 
 use App\Models\Order;

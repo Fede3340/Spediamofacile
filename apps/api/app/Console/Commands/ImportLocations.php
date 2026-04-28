@@ -47,10 +47,10 @@ class ImportLocations extends Command
             $this->info('Table truncated.');
         }
 
-        // Directory dei file GeoNames: spostata fuori dal repo per non gonfiare il codice
-        // (era database/, ora _data/geonames-postalcodes/ a livello repository root).
-        // Fallback a database/ per retrocompatibilita'.
+        // Directory file GeoNames: dataset offline tenuto FUORI dal repo (vedi docs/operations/DEPLOY.md).
+        // Cerca prima in spedizionefacile-offline-data (sibling repo), poi _data/ (legacy), poi database/.
         $dataDirs = [
+            base_path('../../spedizionefacile-offline-data/geonames-postalcodes'),
             base_path('../_data/geonames-postalcodes'),
             database_path(),
         ];

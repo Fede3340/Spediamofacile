@@ -1,47 +1,4 @@
 <?php
-/**
- * FILE: PriceBand.php
- * SCOPO: Modello fascia di prezzo per peso e volume, con supporto sconti/promozioni.
- *
- * DOVE SI USA:
- *   - PriceBandController.php — CRUD admin con aggiornamento massivo
- *   - PublicPriceBandController.php — lettura pubblica con cache 60 minuti
- *   - SessionController.php — calcolo prezzo nel preventivo (firstStep)
- *   - nuxt: composables/usePriceBands.js — caricamento fasce nel frontend
- *
- * DATI IN INGRESSO:
- *   - type (weight/volume), min_value, max_value (range della fascia)
- *   - base_price (prezzo pieno in centesimi), discount_price (prezzo scontato, opzionale)
- *   - show_discount (se mostrare il badge sconto), sort_order
- *   Esempio: PriceBand::create(['type' => 'weight', 'min_value' => 0, 'max_value' => 3, 'base_price' => 890])
- *
- * DATI IN USCITA:
- *   - Attributi calcolati: effective_price (prezzo effettivo), discount_percent (% sconto)
- *   - Scope: weight(), volume() per filtrare per tipo
- *   Esempio: PriceBand::weight()->orderBy('sort_order')->get() — tutte le fasce peso ordinate
- *
- * VINCOLI:
- *   - I prezzi (base_price, discount_price) sono in CENTESIMI (es. 890 = 8,90 euro)
- *   - min_value e max_value sono in kg (peso) o m3 (volume) con 4 decimali
- *   - effective_price ritorna discount_price se presente, altrimenti base_price
- *   - Le 7 fasce standard: 8.90, 11.90, 14.90, 19.90, 29.90, 39.90, 49.90 EUR
- *
- * ERRORI TIPICI:
- *   - Passare prezzi in euro invece che centesimi: 8.90 invece di 890
- *   - Dimenticare che effective_price e' un attributo calcolato ($appends), non un campo DB
- *
- * PUNTI DI MODIFICA SICURI:
- *   - Per aggiungere una fascia: creare un nuovo record con type, min_value, max_value, base_price
- *   - Per cambiare i prezzi: usare il pannello admin (PriceBandController.bulkUpdate)
- *   - Per aggiungere un nuovo tipo di fascia: aggiungere scope e aggiornare frontend
- *
- * COLLEGAMENTI:
- *   - app/Http/Controllers/PriceBandController.php — gestione admin delle fasce
- *   - app/Http/Controllers/PublicPriceBandController.php — endpoint pubblico con cache
- *   - app/Http/Controllers/SessionController.php — uso delle fasce per calcolo preventivo
- *   - database/seeders/PriceBandSeeder.php — valori iniziali delle 7 fasce
- */
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

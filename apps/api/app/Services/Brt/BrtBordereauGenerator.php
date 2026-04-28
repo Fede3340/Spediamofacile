@@ -1,35 +1,4 @@
 <?php
-
-/**
- * FILE: BrtBordereauGenerator.php
- *
- * SCOPO:
- *   Genera due tipologie di documenti PDF necessari all'operativita' giornaliera
- *   del flusso di ritiro con BRT:
- *
- *     1. Bordereau (distinta) di ritiro giornaliero — A4 landscape, una o piu'
- *        pagine con tabella ordini ritirati alla data X.
- *     2. Etichette di spedizione 10x15 cm — una pagina per ogni collo di un
- *        ordine, con barcode Code128 del tracking, indirizzi grandi e leggibili.
- *
- * DIPENDENZE:
- *   Nessuna libreria esterna obbligatoria (PDF puro 1.4, font Helvetica core).
- *   Se in futuro venissero aggiunti `barryvdh/laravel-dompdf` e `milon/barcode`
- *   il render delle viste Blade `bordereau/pdf.blade.php` e `bordereau/label.blade.php`
- *   sara' preferito automaticamente dal `BordereauController`.
- *
- * USO:
- *   $generator = app(BrtBordereauGenerator::class);
- *   $pdf = $generator->buildDailyBordereau($pickupDate, $orders, $senderInfo);
- *   $pdf = $generator->buildOrderLabels($order);
- *
- * CONVENZIONI:
- *   - Tutti i testi vengono normalizzati ASCII (font core PDF non gestiscono
- *     accentate senza CMap dedicate).
- *   - Palette: solo neutri, teal (#095866) e arancione (#E44203). MAI BLU.
- *   - Etichetta singola: 10 cm x 15 cm (283.46 pt x 425.20 pt).
- */
-
 namespace App\Services\Brt;
 
 use App\Models\Order;

@@ -15,7 +15,7 @@
 
 namespace Tests\Feature\Payments;
 
-use App\Http\Controllers\StripeWebhookController;
+use App\Http\Controllers\Checkout\StripeWebhookController;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Crypt;
@@ -141,6 +141,12 @@ class StripeAccountEncryptionTest extends TestCase
     /** @test */
     public function backfill_migration_encrypts_legacy_plaintext_and_is_reversible(): void
     {
+        // Skip post FASE 10 squash: la migration di backfill e' stata applicata e
+        // poi rimossa dal disco (schema:dump --prune). Lo schema baseline include
+        // gia' le colonne cifrate, quindi questo test caratterizza un comportamento
+        // storico non piu' riproducibile in test.
+        $this->markTestSkipped('Migration squashed nello schema baseline (FASE 10 squash 2026-04-27).');
+
         // Creiamo due utenti e scriviamo i valori in plaintext RAW (simulando dati legacy
         // presenti prima dell'aggiunta del cast 'encrypted').
         $plaintextAccount = 'acct_1LegacyPlaintext12345';
@@ -194,14 +200,6 @@ class StripeAccountEncryptionTest extends TestCase
     /** @test */
     public function backfill_skips_null_values(): void
     {
-        // Utente senza Stripe → deve rimanere NULL, migration non deve fallire.
-        $user = User::factory()->create();
-        $this->assertNull(DB::table('users')->where('id', $user->id)->value('stripe_account_id'));
-
-        $migration = require database_path('migrations/2026_04_20_000000_encrypt_existing_stripe_account_ids.php');
-        $migration->up();
-
-        $this->assertNull(DB::table('users')->where('id', $user->id)->value('stripe_account_id'));
-        $this->assertNull(DB::table('users')->where('id', $user->id)->value('customer_id'));
+        $this->markTestSkipped('Migration squashed nello schema baseline (FASE 10 squash 2026-04-27).');
     }
 }

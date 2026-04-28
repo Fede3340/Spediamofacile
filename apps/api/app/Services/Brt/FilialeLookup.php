@@ -1,26 +1,4 @@
 <?php
-
-/**
- * FILE: Brt/FilialeLookup.php
- * SCOPO: Risolve il codice filiale BRT di partenza dal CAP del mittente.
- *
- * DOVE SI USA:
- *   - ShipmentService.php — per determinare departureDepot automaticamente
- *   - BrtPayloadBuilder.php — per i test con mittente specificato
- *
- * STRATEGIA DI LOOKUP (dal piu' specifico al piu' generico):
- *   1. Match esatto sulle prime 5 cifre del CAP
- *   2. Match sulle prime 3 cifre (stessa sottozona postale)
- *   3. Match sulle prime 2 cifre (stessa provincia postale)
- *   4. null → il chiamante usa il fallback da BRT_DEPARTURE_DEPOT
- *
- * DATI: config/brt_filiali.php (~180 filiali con codice e CAP di riferimento)
- *
- * COLLEGAMENTI:
- *   - config/brt_filiali.php — database filiali BRT
- *   - BrtConfig.php — fallback departureDepot
- */
-
 namespace App\Services\Brt;
 
 class FilialeLookup

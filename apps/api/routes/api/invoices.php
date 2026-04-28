@@ -17,8 +17,8 @@
  * NB: questo file e' caricato da routes/api.php tramite require.
  */
 
-use App\Http\Controllers\InvoiceListController;
-use App\Http\Controllers\InvoicePdfController;
+use App\Http\Controllers\Account\InvoiceListController;
+use App\Http\Controllers\Account\InvoicePdfController;
 use App\Http\Middleware\CheckAdmin;
 use Illuminate\Support\Facades\Route;
 

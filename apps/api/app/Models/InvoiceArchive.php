@@ -1,28 +1,4 @@
 <?php
-
-/**
- * FILE: InvoiceArchive.php
- * SCOPO: Record di conservazione decennale dei documenti fiscali (XML SDI, PDF ricevute).
- *
- * REGOLA DI LEGGE:
- *   DM 17/06/2014: i documenti fiscali elettronici devono essere conservati
- *   per 10 anni. Questa tabella ne tiene l'inventario con hash di integrità,
- *   percorso storage e scadenza retention.
- *
- * DOVE SI USA:
- *   - SdiService::archive() crea un record al termine del ciclo SDI
- *   - Command invoices:archive (futuro) per migrare file fisici verso provider esterni
- *
- * CAMPI:
- *   - order_id: FK ordine (nullOnDelete per mantenere l'archivio se ordine cancellato)
- *   - document_type: fattura_sdi | ricevuta_cortesia | nota_credito
- *   - file_path: path relativo in disco "local" (storage/app/...)
- *   - sha256_hash: impronta per verifica integrità
- *   - invoice_number / invoice_date: chiavi di ricerca legali
- *   - archive_status: pending | archived | migrated
- *   - retain_until: data oltre la quale il doc può essere (eventualmente) purgato
- */
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

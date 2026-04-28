@@ -1,18 +1,4 @@
 <?php
-
-/**
- * FILE: BrtWebhookEvent.php
- * SCOPO: Traccia i webhook BRT gia' processati per garantire idempotenza.
- *
- * A differenza di Stripe (che fornisce evt_... univoco), BRT non espone un
- * event_id nativo. Usiamo un fingerprint SHA256(parcelId|status|timestamp)
- * come chiave univoca: se un evento arriva due volte (retry di rete, doppio
- * invio BRT) la UNIQUE constraint sul fingerprint blocca il duplicato.
- *
- * DOVE SI USA:
- *   - BrtWebhookController::handleTrackingUpdate — check prima di aggiornare ordine
- */
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

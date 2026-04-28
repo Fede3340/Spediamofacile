@@ -1,19 +1,4 @@
 <?php
-/**
- * FILE: StripePaymentService.php
- * SCOPO: Logica di pagamento Stripe: creazione PaymentIntent, conferma pagamento,
- *   gestione carte salvate e profili cliente.
- *
- * Estratto da StripeController per separare la logica di business dal layer HTTP.
- *
- * DOVE SI USA:
- *   - StripeController.php -- per tutte le operazioni di pagamento
- *
- * VINCOLI:
- *   - Importi sempre in centesimi (minimo 50 centesimi per Stripe)
- *   - Le chiavi Stripe vengono da StripeConfigService (DB -> .env fallback)
- */
-
 namespace App\Services;
 
 use App\Models\Order;

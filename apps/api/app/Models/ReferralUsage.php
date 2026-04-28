@@ -1,41 +1,4 @@
 <?php
-/**
- * FILE: ReferralUsage.php
- * SCOPO: Modello utilizzo codice referral (registra sconto acquirente e commissione Partner Pro).
- *
- * DOVE SI USA:
- *   - ReferralController.php — apply() crea il record e accredita la commissione
- *   - User::commissionBalance() — somma commission_amount per calcolo saldo prelevabile
- *   - Admin/ReferralStatsController.php — referralStats() per statistiche admin
- *
- * DATI IN INGRESSO:
- *   - buyer_id, pro_user_id, referral_code, order_id
- *   - order_amount, discount_amount (5%), commission_amount (5%), status
- *   Esempio: ReferralUsage::create(['buyer_id' => 2, 'pro_user_id' => 1, 'commission_amount' => 0.50])
- *
- * DATI IN USCITA:
- *   - Relazioni: buyer (acquirente), proUser (Partner Pro), order
- *   Esempio: $usage->proUser->name — nome del Partner Pro che guadagna la commissione
- *
- * VINCOLI:
- *   - Importi in euro con 2 decimali (cast decimal:2), NON in centesimi
- *   - status: "confirmed" (confermato) o "pending" (in attesa)
- *   - Un ordine puo' avere al massimo un utilizzo referral
- *
- * ERRORI TIPICI:
- *   - Passare importi in centesimi: questo modello usa euro (diverso da Order.subtotal)
- *   - Dimenticare di filtrare per status='confirmed' nel calcolo commissioni
- *
- * PUNTI DI MODIFICA SICURI:
- *   - Per cambiare le percentuali sconto/commissione: modificare ReferralController.apply()
- *   - Per aggiungere uno stato: aggiornare le query in commissionBalance()
- *
- * COLLEGAMENTI:
- *   - app/Http/Controllers/ReferralController.php — logica di applicazione e calcolo commissioni
- *   - app/Models/WalletMovement.php — la commissione diventa un credit nel portafoglio Pro
- *   - app/Models/User.php — commissionBalance() usa questa tabella
- */
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

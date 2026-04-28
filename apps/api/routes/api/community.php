@@ -8,12 +8,12 @@
  */
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ReferralCodeController;
-use App\Http\Controllers\ReferralRewardController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\WithdrawalController;
-use App\Http\Controllers\ProRequestController;
-use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Account\ReferralCodeController;
+use App\Http\Controllers\Account\ReferralRewardController;
+use App\Http\Controllers\Communication\NotificationController;
+use App\Http\Controllers\Wallet\WithdrawalController;
+use App\Http\Controllers\Account\ProRequestController;
+use App\Http\Controllers\Communication\ContactController;
 
 /* ===== CONTATTACI (pubblico) ===== */
 

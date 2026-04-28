@@ -33,7 +33,7 @@ class PasswordResetRequestTest extends TestCase
             'email' => 'utente@example.com',
         ]);
 
-        Mail::assertSent(ResetPasswordEmail::class, 1);
+        Mail::assertQueued(ResetPasswordEmail::class, 1);
     }
 
     public function test_password_reset_request_returns_same_success_for_unknown_email_without_creating_token(): void
@@ -53,6 +53,6 @@ class PasswordResetRequestTest extends TestCase
             'email' => 'missing@example.com',
         ]);
 
-        Mail::assertNothingSent();
+        Mail::assertNothingQueued();
     }
 }

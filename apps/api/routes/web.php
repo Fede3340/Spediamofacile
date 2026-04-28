@@ -32,9 +32,9 @@
  */
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BrtWebhookController;
-use App\Http\Controllers\GoogleController;
-use App\Http\Controllers\StripeWebhookController;
+use App\Http\Controllers\Shipping\BrtWebhookController;
+use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Checkout\StripeWebhookController;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 // Pagina principale del backend Laravel (non usata dal frontend Nuxt)

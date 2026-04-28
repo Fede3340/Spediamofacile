@@ -1,52 +1,4 @@
 <?php
-
-/**
- * FILE: Order.php
- * SCOPO: Modello ordine di spedizione con stati, dati BRT, relazioni utente/pacchi/transazioni.
- *
- * DOVE SI USA:
- *   - OrderController.php — creazione ordini e gestione ciclo vita
- *   - StripeController.php — pagamento e transizione stato
- *   - BrtController.php — aggiornamento campi brt_* dopo creazione spedizione
- *   - Admin/OrderManagementController.php — lista ordini, cambio stato
- *   - GenerateBrtLabel.php — listener che aggiorna i dati BRT dopo pagamento
- *
- * DATI IN INGRESSO:
- *   - status, user_id, subtotal (centesimi), campi brt_* per spedizione, is_cod, cod_amount
- *   Esempio: Order::create(['user_id' => 1, 'subtotal' => 890, 'status' => 'pending'])
- *
- * DATI IN USCITA:
- *   - Relazioni: user, transactions, packages (many-to-many via package_order)
- *   - Accessor: subtotal convertito in oggetto MyMoney per formattazione
- *   - Metodo: getStatus($status) traduce stato in italiano
- *   Esempio: $order->user->name, $order->packages->count(), $order->getStatus('pending') => "In attesa"
- *
- * VINCOLI:
- *   - subtotal e' in centesimi (890 = 8,90 EUR), non in euro
- *   - brt_label_base64 e' un campo molto grande (PDF codificato), escluderlo dalle query per performance
- *   - Lo stato iniziale e' sempre "pending" (impostato nel boot)
- *   - Flusso stati: pending → processing → label_generated → in_transit → out_for_delivery → delivered
- *   - Stati collaterali: returned, refused, in_giacenza, cancelled, refunded
- *   - in_transit: NON rimborsabile (spedizione gia' partita)
- *
- * ERRORI TIPICI:
- *   - Passare subtotal in euro invece che centesimi: 8.90 invece di 890
- *   - Caricare brt_label_base64 nelle liste: usare select() per escluderlo
- *   - Confusione tra brt_parcel_id (dall'etichetta) e brt_tracking_number (dal routing)
- *
- * PUNTI DI MODIFICA SICURI:
- *   - Per aggiungere un nuovo stato: aggiungere costante e traduzione in getStatus()
- *   - Per aggiungere campi BRT: aggiungere in $fillable (prefisso brt_)
- *   - Per cambiare lo stato iniziale: modificare il boot creating
- *
- * COLLEGAMENTI:
- *   - app/Models/Transaction.php — transazioni di pagamento collegate all'ordine
- *   - app/Models/Package.php — pacchi contenuti nell'ordine (pivot package_order)
- *   - app/Events/OrderPaid.php — evento scatenato dopo pagamento riuscito
- *   - app/Listeners/GenerateBrtLabel.php — genera etichetta BRT in risposta a OrderPaid
- *   - app/Http/Controllers/RefundController.php — gestione rimborsi ordini
- */
-
 namespace App\Models;
 
 use App\Cart\MyMoney;
@@ -180,6 +132,8 @@ class Order extends Model
 
     const PROCESSING = 'processing';          // In lavorazione - il pagamento e' stato ricevuto
 
+    const PAID = 'paid';                      // Pagato - pagamento confermato (legacy/translation)
+
     const PAYMENT_FAILED = 'payment_failed';  // Pagamento fallito - qualcosa e' andato storto col pagamento
 
     const IN_TRANSIT = 'in_transit';          // In transito - pacco ritirato dal corriere, spedizione in corso
@@ -215,7 +169,7 @@ class Order extends Model
             'processing' => 'In lavorazione',
             'completed' => 'Completato',
             'payment_failed' => 'Fallito',
-            'payed' => 'Pagato',
+            'paid' => 'Pagato',
             'cancelled' => 'Annullato',
             'refunded' => 'Rimborsato',
             'label_generated' => 'Etichetta generata',

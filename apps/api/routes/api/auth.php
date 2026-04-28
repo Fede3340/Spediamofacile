@@ -10,14 +10,14 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\GoogleController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\VerificationController;
-use App\Http\Controllers\ChangePasswordController;
-use App\Http\Controllers\CustomRegisterController;
-use App\Http\Controllers\PasswordResetRequestController;
+use App\Http\Controllers\Account\UserController;
+use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\Auth\CustomRegisterController;
+use App\Http\Controllers\Auth\PasswordResetRequestController;
 use App\Http\Middleware\CheckAdmin;
 use App\Support\AuthUiCookie;
 
@@ -47,7 +47,7 @@ Route::post('/logout', function (Request $request) {
 
 /* ===== REGISTRAZIONE ===== */
 
-Route::middleware(['throttle:10,1'])->post('/custom-register', [CustomRegisterController::class, 'register']);
+Route::middleware(['throttle:10,1'])->post('/custom-register', [RegisterController::class, 'register']);
 
 /* ===== PROVIDER OAUTH ===== */
 

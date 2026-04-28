@@ -1,13 +1,4 @@
 <?php
-/**
- * FILE: Brt/TrackingService.php
- * SCOPO: Genera URL di tracking BRT e gestisce lo stato tracking.
- *
- * DOVE SI USA:
- *   - BrtController.php — per generare URL di tracking
- *   - SyncBrtTracking.php — per sincronizzazione automatica stato ordini
- */
-
 namespace App\Services\Brt;
 
 use App\Models\Order;

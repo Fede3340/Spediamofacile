@@ -1,39 +1,4 @@
 <?php
-
-/**
- * MIDDLEWARE: INTESTAZIONI DI SICUREZZA
- *
- * SCOPO: Aggiunge intestazioni (headers) di sicurezza a TUTTE le risposte del server.
- *
- * COSA FA:
- *   Le intestazioni di sicurezza dicono al browser dell'utente come comportarsi
- *   per proteggerlo da attacchi comuni. In pratica:
- *   - Impedisce che il sito venga caricato dentro un altro sito (clickjacking)
- *   - Protegge da attacchi XSS (script malevoli iniettati nella pagina)
- *   - Forza l'uso di HTTPS quando la richiesta arriva gia' via HTTPS (HSTS)
- *   - Blocca l'accesso a fotocamera, microfono e GPS
- *   - Definisce quali script e risorse possono essere caricati (CSP)
- *
- * COME FUNZIONA:
- *   1. La richiesta arriva e viene processata normalmente (genera la risposta)
- *   2. Prima di inviare la risposta al browser, questo middleware aggiunge
- *      le intestazioni di sicurezza nella risposta HTTP
- *   3. Il browser legge queste intestazioni e applica le regole di sicurezza
- *
- * COSA ENTRA: Request HTTP qualsiasi (tutte le rotte passano di qui)
- * COSA ESCE: La stessa Response con le intestazioni di sicurezza aggiunte
- *
- * REGISTRATO IN: bootstrap/app.php (middleware->append)
- *
- * NOTA IMPORTANTE:
- *   L'intestazione HSTS (Strict-Transport-Security) viene inviata SOLO se la
- *   richiesta arriva via HTTPS. Inviarla su HTTP causerebbe problemi perche'
- *   il browser poi tenterebbe di usare HTTPS anche in locale (dove non c'e').
- *   La funzione $request->secure() funziona correttamente grazie al middleware
- *   TrustProxies configurato in bootstrap/app.php, che fa si' che Laravel
- *   riconosca l'header X-Forwarded-Proto: https inviato da Cloudflare/Caddy.
- */
-
 namespace App\Http\Middleware;
 
 use Closure;

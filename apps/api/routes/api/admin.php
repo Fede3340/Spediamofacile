@@ -9,9 +9,9 @@
  */
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\PriceBandController;
-use App\Http\Controllers\ProRequestController;
+use App\Http\Controllers\Catalog\ArticleController;
+use App\Http\Controllers\Catalog\PriceBandController;
+use App\Http\Controllers\Account\ProRequestController;
 use App\Http\Controllers\Admin\ContentController as AdminContentController;
 use App\Http\Controllers\Admin\HomepageImageController;
 use App\Http\Controllers\Admin\CouponController as AdminCouponController;

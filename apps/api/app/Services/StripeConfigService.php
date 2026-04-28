@@ -1,24 +1,4 @@
 <?php
-/**
- * FILE: StripeConfigService.php
- * SCOPO: Centralizza il recupero delle chiavi Stripe (secret e public) da DB o .env.
- *
- * PERCHE': La logica getStripeSecret() era duplicata in StripeController, RefundController
- *   e WalletController con varianti leggermente diverse (alcuni controllano stripe_secret_key,
- *   altri no). Questo servizio unifica la logica con la versione piu' completa.
- *
- * CHIAMATO DA:
- *   - StripeController.php — pagamenti, carte, ordini
- *   - RefundController.php — rimborsi Stripe
- *   - WalletController.php — ricarica portafoglio via Stripe
- *   - SettingsController.php — configurazione chiavi (usa getPublicKey)
- *
- * VINCOLI:
- *   - Le chiavi vengono cercate prima nel DB (Setting), poi nel .env come fallback
- *   - Il DB ha due nomi legacy: stripe_secret e stripe_secret_key (entrambi validi)
- *   - La chiave pubblica ha due nomi legacy: stripe_key e stripe_public_key
- */
-
 namespace App\Services;
 
 use App\Models\Setting;

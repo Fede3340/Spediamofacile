@@ -65,7 +65,7 @@ class ForgotPasswordTest extends TestCase
         );
 
         // Effetto reale: email inviata SOLO per l'utente esistente.
-        Mail::assertSent(\App\Mail\ResetPasswordEmail::class, 1);
+        Mail::assertQueued(\App\Mail\ResetPasswordEmail::class, 1);
     }
 
     /**
@@ -73,7 +73,7 @@ class ForgotPasswordTest extends TestCase
      * al minuto per IP) — piu' stringente, copre il requisito. Dalla 6a
      * richiesta nello stesso decadimento ritorniamo 429.
      *
-     * Ref: laravel-spedizionefacile-main/routes/api/auth.php:104
+     * Ref: apps/api/routes/api/auth.php:104
      */
     public function test_rate_limit_5_per_5min(): void
     {

@@ -29,7 +29,7 @@ Per una mappa rapida delle route modulari backend:
 ## Setup rapido
 
 ```bash
-cd laravel-spedizionefacile-main
+cd apps/api
 composer install
 php artisan migrate
 php artisan serve --port=8000

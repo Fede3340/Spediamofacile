@@ -27,6 +27,7 @@ class RegisterTest extends TestCase
             'password' => 'Password1!',
             'password_confirmation' => 'Password1!',
             'role' => 'User',
+            'privacy_accepted' => true,
         ], $overrides);
     }
 
@@ -71,7 +72,7 @@ class RegisterTest extends TestCase
         $this->assertEquals(1, User::where('email', 'existing@example.com')->count());
 
         // Nessuna email di verifica inviata al duplicato
-        Mail::assertNothingSent();
+        Mail::assertNothingQueued();
     }
 
     // T11.1.5 - Password corta (meno di 8 caratteri)

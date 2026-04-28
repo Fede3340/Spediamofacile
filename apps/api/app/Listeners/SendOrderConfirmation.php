@@ -1,32 +1,4 @@
 <?php
-
-/**
- * FILE: SendOrderConfirmation.php
- * SCOPO: Listener che invia l'email di conferma ordine all'utente dopo il pagamento.
- *
- * DOVE SI USA:
- *   - EventServiceProvider — registrato come listener di OrderPaid
- *   - Scatenato quando un ordine viene pagato con successo
- *
- * DATI IN INGRESSO:
- *   - OrderPaid event con order (l'ordine appena pagato)
- *
- * DATI IN USCITA:
- *   - Nessun ritorno (void), invia email all'utente
- *
- * VINCOLI:
- *   - L'ordine deve avere un utente con email valida
- *   - L'email viene inviata in modo asincrono (queue) grazie a ShouldQueue sulla Mailable
- *
- * ERRORI TIPICI:
- *   - Email fallita: non blocca, l'errore viene solo loggato
- *
- * COLLEGAMENTI:
- *   - app/Events/OrderPaid.php — evento che scatena questo listener
- *   - app/Mail/OrderConfirmationMail.php — Mailable inviata
- *   - resources/views/emails/order-confirmation.blade.php — template HTML
- */
-
 namespace App\Listeners;
 
 use App\Events\OrderPaid;

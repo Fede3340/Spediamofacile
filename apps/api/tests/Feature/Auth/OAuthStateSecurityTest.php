@@ -65,16 +65,7 @@ class OAuthStateSecurityTest extends TestCase
 
     public function test_facebook_redirect_stores_state_in_session_not_in_cookie(): void
     {
-        $this->configureFacebook();
-
-        $response = $this->get('/api/auth/facebook/redirect?frontend=http://localhost:3000&redirect=/');
-
-        $response->assertRedirect();
-        $this->assertNotEmpty(session('oauth_state_facebook'));
-
-        foreach ($response->headers->getCookies() as $cookie) {
-            $this->assertNotEquals('frontend_social_state', $cookie->getName());
-        }
+        $this->markTestSkipped('Provider Facebook rimosso 2026-04 (solo Google OAuth attivo).');
     }
 
     /* ============ STATE MISMATCH ============ */
@@ -99,37 +90,12 @@ class OAuthStateSecurityTest extends TestCase
 
     public function test_facebook_callback_rejects_state_mismatch(): void
     {
-        $this->configureFacebook();
-
-        $response = $this
-            ->withCookie('frontend_redirect', 'http://localhost:3000')
-            ->withCookie('frontend_redirect_path', '/')
-            ->withSession([
-                'oauth_state_facebook' => 'legit-state',
-                'oauth_state_facebook_created_at' => now()->timestamp,
-            ])
-            ->get('/auth/facebook/callback?state=wrong&code=anything');
-
-        $response->assertRedirect();
-        $this->assertStringContainsString('auth_error=facebook_invalid_state', (string) $response->headers->get('Location'));
+        $this->markTestSkipped('Provider Facebook rimosso 2026-04.');
     }
 
     public function test_apple_callback_rejects_state_mismatch(): void
     {
-        $this->configureApple();
-
-        $response = $this
-            ->withCookie('frontend_redirect', 'http://localhost:3000')
-            ->withCookie('frontend_redirect_path', '/')
-            ->withSession([
-                'oauth_state_apple' => 'legit-state',
-                'oauth_state_apple_created_at' => now()->timestamp,
-                'oauth_nonce_apple' => 'n',
-            ])
-            ->post('/auth/apple/callback', ['state' => 'wrong', 'code' => 'c']);
-
-        $response->assertRedirect();
-        $this->assertStringContainsString('auth_error=apple_invalid_state', (string) $response->headers->get('Location'));
+        $this->markTestSkipped('Provider Apple rimosso 2026-04.');
     }
 
     /* ============ STATE EXPIRED ============ */

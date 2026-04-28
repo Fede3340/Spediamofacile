@@ -1,27 +1,4 @@
 <?php
-
-/**
- * FILE: BrtService.php
- * SCOPO: Facade sottile che delega alle sotto-classi Brt\ShipmentService, Brt\PudoService,
- *   Brt\TrackingService per spedizioni, punti PUDO e tracking.
- *
- * DOVE SI USA:
- *   - BrtController.php -- endpoint HTTP per operazioni BRT
- *   - GenerateBrtLabel.php -- listener che genera etichetta automaticamente dopo pagamento
- *   - Admin/OrderManagementController.php -- rigenerazione manuale admin
- *   - RefundController.php -- cancellazione spedizione in caso di rimborso
- *
- * VINCOLI:
- *   - Le credenziali BRT (client_id, password) devono essere configurate in config/services.php
- *   - Questo file NON contiene logica di business: delega tutto ai sub-service in Brt/
- *
- * COLLEGAMENTI:
- *   - app/Services/Brt/ShipmentService.php -- creazione, conferma, eliminazione spedizioni
- *   - app/Services/Brt/PudoService.php -- ricerca punti PUDO
- *   - app/Services/Brt/TrackingService.php -- tracking spedizioni
- *   - app/Services/Brt/BrtConfig.php -- configurazione centralizzata
- */
-
 namespace App\Services;
 
 use App\Models\Order;

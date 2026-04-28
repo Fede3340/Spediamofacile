@@ -1,38 +1,4 @@
 <?php
-/**
- * FILE: BillingAddress.php
- * SCOPO: Modello indirizzo di fatturazione (diverso da indirizzo spedizione).
- *
- * DOVE SI USA:
- *   - BillingAddressController.php — CRUD indirizzi di fatturazione
- *   - nuxt: pages/checkout.vue (selezione indirizzo fattura)
- *   - pages/account/profilo.vue (tab Fatturazione)
- *   - SdiService (legge vat_number / fiscal_code / sdi_code / pec_email)
- *
- * CAMPI FISCALI (aggiunti in F07 — fatturazione elettronica SDI):
- *   - is_business (bool): true per aziende, false per privati
- *   - company_name: ragione sociale (obbligatoria se is_business=true)
- *   - fiscal_code: codice fiscale (16 char — obbligatorio per privati)
- *   - vat_number: Partita IVA 11 cifre (obbligatoria per aziende)
- *   - sdi_code: codice destinatario SDI 7 char (default "0000000")
- *   - pec_email: indirizzo PEC alternativa a sdi_code
- *   - country: ISO alpha-2 (default "IT")
- *
- * VINCOLI (applicativi, vedi BillingAddressStoreRequest):
- *   - Aziende: company_name + vat_number OBBLIGATORI + (sdi_code o pec_email)
- *   - Privati: fiscal_code OBBLIGATORIO; sdi_code fallback "0000000"
- *
- * ERRORI TIPICI:
- *   - Confusione con UserAddress o PackageAddress: BillingAddress e' solo per la fatturazione
- *   - Passare P.IVA di 10 cifre (sbagliata): validazione checksum fallisce
- *
- * COLLEGAMENTI:
- *   - app/Http/Requests/BillingAddressStoreRequest.php — validazione request
- *   - app/Rules/ItalianVatNumber.php — checksum algoritmo ministeriale
- *   - app/Rules/ItalianFiscalCode.php — pattern CF
- *   - app/Services/Sdi/SdiService.php — usa questi dati per generare XML FatturaPA
- */
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

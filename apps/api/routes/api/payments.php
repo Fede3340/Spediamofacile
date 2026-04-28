@@ -8,11 +8,11 @@
  */
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\StripeCheckoutController;
-use App\Http\Controllers\StripeCustomerController;
-use App\Http\Controllers\StripeConnectController;
-use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\WalletController;
+use App\Http\Controllers\Checkout\StripeCheckoutController;
+use App\Http\Controllers\Checkout\StripeCustomerController;
+use App\Http\Controllers\Checkout\StripeConnectController;
+use App\Http\Controllers\Catalog\SettingsController;
+use App\Http\Controllers\Wallet\WalletController;
 use App\Http\Middleware\CheckCart;
 use App\Http\Middleware\CheckAdmin;
 

@@ -18,6 +18,9 @@ class SecurityHeadersTest extends TestCase
         $csp = (string) $response->headers->get('Content-Security-Policy');
 
         $this->assertStringNotContainsString("'unsafe-eval'", $csp);
-        $this->assertStringContainsString("script-src 'self' 'unsafe-inline' https://js.stripe.com", $csp);
+        // CSP irrigidita: rimosso 'unsafe-inline' da script-src per security best practice.
+        // Stripe e' whitelisted per integrazione checkout 3DS.
+        $this->assertStringContainsString("script-src 'self' https://js.stripe.com", $csp);
+        $this->assertStringNotContainsString("script-src 'self' 'unsafe-inline'", $csp);
     }
 }

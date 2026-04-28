@@ -28,6 +28,7 @@ class AuthAndAdminAccountsTest extends TestCase
             'password' => 'Password!123',
             'password_confirmation' => 'Password!123',
             'role' => 'Cliente',
+            'privacy_accepted' => true,
         ];
 
         $response = $this->postJson('/api/custom-register', $payload);
@@ -78,6 +79,9 @@ class AuthAndAdminAccountsTest extends TestCase
         $this->deleteJson("/api/admin/users/{$toDelete->id}")
             ->assertOk();
 
-        $this->assertDatabaseMissing('users', ['id' => $toDelete->id]);
+        // GDPR compliance: utenti vengono soft-deleted (non hard-deleted) per
+        // mantenere l'integrita' di ordini/fatture storiche. La riga resta in DB
+        // con deleted_at popolato.
+        $this->assertSoftDeleted('users', ['id' => $toDelete->id]);
     }
 }

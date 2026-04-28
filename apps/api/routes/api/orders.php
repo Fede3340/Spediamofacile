@@ -8,22 +8,22 @@
  */
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\OrderListController;
-use App\Http\Controllers\OrderDetailController;
-use App\Http\Controllers\OrderExportController;
-use App\Http\Controllers\CouponController;
-use App\Http\Controllers\BrtController;
-use App\Http\Controllers\RefundController;
-use App\Http\Controllers\SavedShipmentController;
-use App\Http\Controllers\ShipmentExecutionController;
+use App\Http\Controllers\Order\OrderListController;
+use App\Http\Controllers\Order\OrderDetailController;
+use App\Http\Controllers\Shipping\OrderExportController;
+use App\Http\Controllers\Catalog\CouponController;
+use App\Http\Controllers\Shipping\BrtController;
+use App\Http\Controllers\Checkout\RefundController;
+use App\Http\Controllers\Shipping\SavedShipmentController;
+use App\Http\Controllers\Shipping\ShipmentExecutionController;
 use App\Http\Middleware\CheckAdmin;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
     /* ===== INDIRIZZI DI SPEDIZIONE ===== */
 
-    Route::apiResource('addresses', \App\Http\Controllers\AddressController::class);
-    Route::apiResource('user-addresses', \App\Http\Controllers\UserAddressController::class);
+    Route::apiResource('addresses', \App\Http\Controllers\Account\AddressController::class);
+    Route::apiResource('user-addresses', \App\Http\Controllers\Account\UserAddressController::class);
 
     /* ===== ORDINI ===== */
 

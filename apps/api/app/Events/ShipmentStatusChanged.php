@@ -1,30 +1,4 @@
 <?php
-/**
- * FILE: ShipmentStatusChanged.php
- * SCOPO: Evento emesso quando lo stato di una spedizione/ordine cambia.
- *
- * COSA ENTRA:
- *   - Order $order (l'ordine il cui stato e' cambiato)
- *   - string $oldStatus (stato precedente)
- *   - string $newStatus (nuovo stato)
- *
- * COSA ESCE:
- *   - Proprieta' pubbliche accessibili dai listener
- *
- * CHIAMATO DA:
- *   - Admin/OrderManagementController.php — updateOrderStatus() dopo cambio stato manuale
- *   - BrtController.php — deleteShipment() quando resetta lo stato
- *
- * EFFETTI COLLATERALI:
- *   - Scatena i listener registrati in EventServiceProvider:
- *     - SendShipmentStatusEmail — invia notifica email all'utente
- *
- * DOCUMENTI CORRELATI:
- *   - app/Listeners/SendShipmentStatusEmail.php — invia email di notifica
- *   - app/Mail/ShipmentStatusUpdateMail.php — template Mailable
- *   - app/Providers/EventServiceProvider.php — registrazione evento-listener
- */
-
 namespace App\Events;
 
 use App\Models\Order;

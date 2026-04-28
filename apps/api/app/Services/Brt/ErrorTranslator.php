@@ -1,13 +1,4 @@
 <?php
-/**
- * FILE: Brt/ErrorTranslator.php
- * SCOPO: Traduce i codici di errore BRT REST API v1 in messaggi
- *        leggibili in italiano con azioni suggerite.
- *
- * DOVE SI USA:
- *   - ShipmentService.php — per tradurre errori della createShipment
- */
-
 namespace App\Services\Brt;
 
 class ErrorTranslator

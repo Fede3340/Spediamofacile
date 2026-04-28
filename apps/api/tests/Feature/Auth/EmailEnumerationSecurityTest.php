@@ -105,7 +105,7 @@ class EmailEnumerationSecurityTest extends TestCase
         );
 
         // Effetto reale: email inviata solo per l'account esistente
-        Mail::assertSent(ResetPasswordEmail::class, 1);
+        Mail::assertQueued(ResetPasswordEmail::class, 1);
     }
 
     public function test_forgot_password_same_timing_diff_less_than_50ms(): void

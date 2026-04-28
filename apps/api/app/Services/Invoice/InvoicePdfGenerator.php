@@ -1,36 +1,4 @@
 <?php
-
-/**
- * FILE: app/Services/Invoice/InvoicePdfGenerator.php
- * SCOPO: Genera e archivia il PDF della fattura/ricevuta per un Order.
- *
- *   Endpoint chiamanti:
- *     GET /api/orders/{order}/invoice.pdf       (utente proprietario)
- *     GET /api/admin/orders/{order}/invoice.pdf (admin override)
- *
- *   Output: path relativo (sul disk configurato in config/billing.storage.disk)
- *           del PDF salvato. Es. "invoices/2026/04/INV-2026-00042.pdf".
- *
- * MODALITA' DI RENDERING:
- *   1) Se installato, usa "barryvdh/laravel-dompdf" (Pdf::loadView) — PDF ricco
- *      con CSS/HTML completi (palette teal+arancione, tabelle, layout pulito).
- *   2) Fallback automatico al servizio raw "InvoicePdfService" gia' esistente
- *      (PDF di base, senza dompdf — usa solo PHP standard).
- *
- *   In entrambi i casi:
- *     - Numero progressivo annuale assegnato atomicamente da invoice_counters
- *       (UPDATE in transazione DB con lockForUpdate).
- *     - PDF salvato su Storage::disk(config('billing.storage.disk')).
- *     - Record creato in invoice_archive con sha256_hash + retain_until=+10 anni.
- *     - Idempotenza: se l'ordine ha gia' sdi_invoice_number e file presente, ritorna il path.
- *
- * DIPENDENZE OPZIONALI:
- *   composer require barryvdh/laravel-dompdf
- *   (senza dompdf il fallback raw funziona ma il layout e' minimale)
- *
- * AUTHOR: M10 (sessione fatturazione 2026-04-18)
- */
-
 namespace App\Services\Invoice;
 
 use App\Models\InvoiceArchive;

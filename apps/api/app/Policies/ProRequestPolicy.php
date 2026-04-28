@@ -42,6 +42,6 @@ class ProRequestPolicy
             return true;
         }
         // Owner può cancellare solo se ancora pending
-        return $request->user_id === $user->id && $request->status === 'pending';
+        return $request->user_id === $user->id && $request->status === ProRequest::STATUS_PENDING;
     }
 }

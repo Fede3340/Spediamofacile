@@ -1,41 +1,4 @@
 <?php
-/**
- * FILE: WithdrawalRequest.php
- * SCOPO: Modello richiesta di prelievo commissioni Partner Pro (con approvazione admin).
- *
- * DOVE SI USA:
- *   - WithdrawalController.php — index (lista), store (creazione con status pending)
- *   - Admin/WalletManagementController.php — withdrawals, approveWithdrawal, rejectWithdrawal
- *   - User::commissionBalance() — somma amount dove status in (approved, completed)
- *
- * DATI IN INGRESSO:
- *   - user_id, amount (euro), currency (EUR), status, admin_notes, reviewed_at, reviewed_by
- *   Esempio: WithdrawalRequest::create(['user_id' => 1, 'amount' => 50.00, 'status' => 'pending'])
- *
- * DATI IN USCITA:
- *   - Relazioni: user (Partner Pro richiedente), reviewer (admin che ha revisionato)
- *   Esempio: $withdrawal->user->name, $withdrawal->reviewer->name
- *
- * VINCOLI:
- *   - status: "pending", "approved", "rejected", "completed"
- *   - amount in euro con 2 decimali (cast decimal:2), NON in centesimi
- *   - Solo una richiesta pending alla volta per utente (controllato dal controller)
- *   - L'approvazione crea un debit in wallet_movements (fatto dal controller admin)
- *
- * ERRORI TIPICI:
- *   - Approvare senza creare il debit nel portafoglio: il saldo non si aggiorna
- *   - Passare amount in centesimi: qui si usa euro
- *
- * PUNTI DI MODIFICA SICURI:
- *   - Per aggiungere metodo di prelievo (IBAN, PayPal): aggiungere campo in $fillable
- *   - La logica di approvazione/rifiuto e' in Admin/WalletManagementController, non qui
- *
- * COLLEGAMENTI:
- *   - app/Http/Controllers/WithdrawalController.php — creazione richiesta lato utente
- *   - app/Http/Controllers/Admin/WalletManagementController.php — approvazione/rifiuto lato admin
- *   - app/Models/User.php — commissionBalance() sottrae i prelievi approvati
- */
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -43,6 +6,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class WithdrawalRequest extends Model
 {
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_APPROVED = 'approved';
+    public const STATUS_REJECTED = 'rejected';
+    public const STATUS_COMPLETED = 'completed';
+
     /**
      * Campi compilabili dall'esterno.
      */
