@@ -1,5 +1,9 @@
 <?php
 
+// CRITICAL: vedi CLAUDE.md "Eccezioni documentate" — non splittare senza E2E gating Stripe.
+// File 756 LOC: idempotency-key Stripe + PaymentIntent + 3DS confirm. Toccare solo
+// con DB snapshot pre/post + carta test 4242 4242 4242 4242 09/30 123 + rollback se diff.
+
 namespace App\Http\Controllers\Checkout;
 
 use App\Http\Controllers\Controller;

@@ -60,9 +60,35 @@ Questi file gestiscono **soldi reali, idempotency, integrazioni esterne**. Modif
 ## Limiti dimensionali
 
 - File runtime ≤ 400 LOC (eccezione documentata in commento iniziale).
-- Composable ≤ 300 LOC (oltre, splitta o sposta utility puri in `~/utils/`).
+- Composable ≤ 500 LOC (oltre, splitta o sposta utility puri in `~/utils/`).
+  Soglia ritoccata 2026-04-28: 300 era irrealistica per orchestratori reattivi.
 - Componente Vue ≤ 500 LOC (template + script).
 - Page Vue ≤ 400 LOC (orchestratore, non ospite di logica).
+
+## Eccezioni documentate (file ad alta densità logica)
+
+Questi 4 file superano i limiti per ragione tecnica esplicita. Splittarli senza
+E2E gating Stripe/funnel introduce regressioni di pagamento. Modificarli richiede:
+- browser MCP + carta test Stripe `4242 4242 4242 4242 09/30 123`
+- DB snapshot pre/post (orders + payments + brt_webhook_events)
+- rollback immediato se diff > 0 byte tra pre/post.
+
+| File | LOC | Motivo |
+|---|---|---|
+| `apps/web/pages/la-tua-spedizione/[step].vue` | 1239 | Orchestratore funnel 5 step + Stripe entry point |
+| `apps/web/components/shipment/AddressFormFields.vue` | 737 | Form multi-zona (pickup/delivery/common) con validazione cross-field |
+| `apps/web/components/shipment/ShipmentStepPagamento.vue` | 716 | Selezione metodo pagamento (Stripe/wallet/bonifico) + 3DS |
+| `apps/api/app/Http/Controllers/Checkout/StripeCheckoutController.php` | 756 | Idempotency-key Stripe + PaymentIntent + 3DS confirm |
+
+## DB::table() autorizzati (pivot/bulk performance-critical)
+
+L'uso di `DB::table()` raw è **autorizzato** per:
+- Pivot tables: `cart_user`, `package_order`, `saved_shipments_orders`
+- Laravel internals: `password_reset_tokens`, `sessions`, `cache`, `jobs`
+- Bulk import performance: `geonames_postalcodes` (caricamento massivo CAP)
+
+Eloquent overhead non giustificato in questi casi. Mantenere `DB::table()` esplicito.
+Ogni nuova occorrenza fuori da queste categorie va valutata caso per caso.
 
 ## Test
 - Frontend: `cd apps/web && npx playwright test` (E2E)

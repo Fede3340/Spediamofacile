@@ -1,4 +1,6 @@
 <script setup>
+// CRITICAL: vedi CLAUDE.md "Eccezioni documentate" — non splittare senza E2E gating Stripe.
+// File 716 LOC: selezione metodo pagamento (Stripe/wallet/bonifico) + 3DS + idempotency.
 import { computed } from 'vue';
 import CheckoutBilling from '~/components/checkout/Billing.vue';
 import CheckoutSuccess from '~/components/checkout/Success.vue';

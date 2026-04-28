@@ -1,4 +1,6 @@
 <script setup>
+// CRITICAL: vedi CLAUDE.md "Eccezioni documentate" — non splittare senza E2E gating Stripe.
+// File 1239 LOC: orchestratore funnel 5 step + entry point Stripe checkout.
 import ShipmentStepColli from '~/components/shipment/ShipmentStepColli.vue';
 import ShipmentStepServizi from '~/components/shipment/ShipmentStepServizi.vue';
 import ShipmentStepIndirizzi from '~/components/shipment/ShipmentStepIndirizzi.vue';
