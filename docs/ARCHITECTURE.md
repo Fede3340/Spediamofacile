@@ -193,10 +193,36 @@ Avvio worker locale: `php artisan queue:work --queue=webhooks,emails,default`
 
 Variabili env: vedi `apps/api/.env.example` e `apps/web/.env.example`. Segreti prod vivono in Render dashboard (cifrati, non in repo).
 
+## File critici (NON TOCCARE senza E2E gating Stripe)
+
+```
++--------------------------------------+    +-----------------------------------+
+|        FRONTEND CRITICI              |    |        BACKEND CRITICI            |
+|                                      |    |                                   |
+|  pages/la-tua-spedizione/[step].vue  |    |  Checkout/StripeCheckoutController|
+|        (1239 LOC, funnel 4 step)     |    |        (756 LOC, idempotency-key) |
+|                                      |    |                                   |
+|  components/shipment/                |    |  Checkout/StripeWebhookController |
+|    AddressFormFields.vue (737 LOC)   |    |        (firma + replay-protection)|
+|    ShipmentStepPagamento.vue (716)   |    |                                   |
+|                                      |    |  Services/StripePaymentService    |
+|  composables/usePayment.ts (682)     |    |  Services/OrderCreationService    |
+|                                      |    |  Services/WalletOrderPaymentSvc   |
+|  ----- TOCCALI SOLO CON ----->       |    |  Models/Order.payableTotalCents() |
+|  4242 4242 4242 4242 09/30 123       |    |  Wallet/WalletController          |
+|  + DB snapshot pre/post              |    |  Shipping/BrtWebhookController    |
+|  + rollback se diff                  |    |  Shipping/BrtController           |
++--------------------------------------+    +-----------------------------------+
+```
+
+Vedi `CLAUDE.md` sezione "Eccezioni documentate" per il protocollo completo.
+
 ## Riferimenti
 
-- [`FRONTEND_STRUCTURE.md`](./FRONTEND_STRUCTURE.md) — tour Nuxt
-- [`BACKEND_STRUCTURE.md`](./BACKEND_STRUCTURE.md) — tour Laravel
-- [`API_CONTRACT.md`](./API_CONTRACT.md) — contratto endpoint
-- [`DEPLOY.md`](../DEPLOY.md) — pipeline prod
-- [`DEBUGGING.md`](./DEBUGGING.md) — troubleshooting
+- [`ONBOARDING.md`](./ONBOARDING.md) — primo giorno dev (~30 min)
+- [`reference/API_CONTRACT.md`](./reference/API_CONTRACT.md) — contratto endpoint
+- [`operations/DEPLOY.md`](./operations/DEPLOY.md) — pipeline prod
+- [`operations/GOLIVE_CHECKLIST.md`](./operations/GOLIVE_CHECKLIST.md) — checklist deploy
+- [`legal/SECURITY.md`](./legal/SECURITY.md) — baseline OWASP
+- [`legal/GDPR_COMPLETO.md`](./legal/GDPR_COMPLETO.md) — compliance
+- [`adr/`](./adr/) — Architecture Decision Records (Sanctum, MyMoney, BRT)

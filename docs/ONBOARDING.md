@@ -1,134 +1,126 @@
 # Onboarding — Primo giorno dev su SpediamoFacile
 
-Checklist sequenziale pensata per ~90 minuti totali. Segui l'ordine: ogni step assume i precedenti completati.
+Checklist pensata per ~30 minuti totali. Segui l'ordine: ogni step assume i precedenti completati.
 
-> Se blocchi, chiedi subito in `#dev` (o apri issue) invece di perdere mezza giornata.
+> Se blocchi >15 min, chiedi al senior che ti ha onboardato invece di perdere mezza giornata.
 
-## Fase 1 — Setup ambiente (~30 min)
+## Mappa mentale del sito (1 min)
 
-- [ ] **Clone repo** — `git clone https://github.com/Boop91/spedizionefacile.git`
-- [ ] **Verifica prerequisiti** — PHP 8.3, Node 22, Composer 2, PostgreSQL 15, Redis 7 installati (vedi [QUICKSTART.md](./QUICKSTART.md))
-- [ ] **Root setup** — `cd spedizionefacile && npm install` (hook Husky si registrano)
+SpediamoFacile è un **intermediario BRT** per spedizioni Italia/EU: l'utente
+calcola un preventivo, sceglie servizi extra, inserisce indirizzi, paga (Stripe
+o bonifico o wallet) e BRT ritira/consegna. Stack:
+
+```
+[Browser] -> Caddy :8787 -> {Nuxt :3001 (frontend), Laravel :8000 (api)}
+                              |                          |
+                              |                          +-> PostgreSQL/SQLite
+                              |                          +-> Stripe API
+                              |                          +-> BRT REST API 3.x
+                              |                          +-> Redis (cache+queue)
+                              |
+                              +-> useSanctumClient (cookie SPA)
+```
+
+Funnel preventivo (cuore del sito):
+
+```
+[Home/Preventivo]
+     |  (compila Pacco/Pallet/Valigia + tratta + peso/misure)
+     v
+[/la-tua-spedizione/2?step=colli]   <- Step 1
+     |
+     v
+[/la-tua-spedizione/2?step=servizi] <- Step 2: data ritiro + servizi extra
+     |
+     v
+[/la-tua-spedizione/2?step=indirizzi] <- Step 3: pickup + delivery + PUDO opzionale
+     |
+     v
+[/la-tua-spedizione/2?step=pagamento] <- Step 4: Stripe / bonifico / wallet
+     |
+     v
+[/checkout/success] <- BRT label generata + email + tracking
+```
+
+## I 5 file da leggere PRIMA di scrivere codice (10 min)
+
+1. **`CLAUDE.md`** (root) — convenzioni, regole d'oro, file critici, eccezioni.
+2. **`docs/ARCHITECTURE.md`** — stack + boundary + flussi pagamento.
+3. **`apps/web/app.vue`** — entry point Nuxt, plugin order.
+4. **`apps/web/pages/la-tua-spedizione/[step].vue`** (HEADER) — non aprire tutto
+   (1239 LOC, file critico). Leggi solo le prime 50 righe per capire la struttura.
+5. **`apps/api/app/Http/Controllers/Checkout/StripeCheckoutController.php`**
+   (HEADER) — file critico Stripe + idempotency.
+
+## Setup locale (~15 min)
+
+- [ ] **Clone repo** — `git clone <url>` + `cd spedizionefacile`
+- [ ] **Prerequisiti** — PHP 8.3, Node 22, Composer 2, sqlite3 CLI
+- [ ] **Root** — `npm install` (registra hook Husky)
 - [ ] **Backend** —
-  - [ ] `cd apps/api`
-  - [ ] `cp .env.example .env` + `php artisan key:generate`
-  - [ ] `composer install`
-  - [ ] `php artisan migrate:fresh --seed`
-  - [ ] `php artisan serve --port=8000` (lascia aperto)
+  - `cd apps/api && cp .env.example .env && php artisan key:generate`
+  - `composer install`
+  - `php artisan migrate:fresh --seed`
+  - `php artisan serve --port=8000` (lascia aperto)
 - [ ] **Frontend** —
-  - [ ] `cd apps/web`
-  - [ ] `cp .env.example .env` + `npm ci`
-  - [ ] `npm run dev` (lascia aperto su porta 8787)
-- [ ] **Smoke locale** —
-  - [ ] Apri [http://localhost:8787](http://localhost:8787) -> home carica
-  - [ ] `curl http://localhost:8000/api/health` -> `{"status":"ok"}`
-- [ ] **Login test** — `cliente@spediamofacile.it` / `Cliente2026!` -> accedi e arriva dashboard
+  - `cd apps/web && cp .env.example .env && npm ci`
+  - `npm run dev` (lascia aperto su porta 3001)
+- [ ] **Caddy proxy** (in altro terminale) — `caddy run --config infra/caddy/Caddyfile`
+- [ ] **Smoke** — apri http://localhost:8787 → home carica + console pulita.
 
-**Criterio di riuscita**: tre utenti (admin/client/pro) funzionano, home renderizza, no errori in console.
+## Convenzioni vitali (5 min, NON SCORRERE VELOCE)
 
-## Fase 2 — Lettura docs (~35 min)
+- **TypeScript canonico**: composables/stores/utils/server in `.ts`. Vue components
+  ammettono `<script setup>` plain o `lang="ts"`.
+- **Prezzi**: backend in **cents** (MyMoney), frontend `formatPrice() / 100`.
+- **Auth**: SOLO `useSanctumClient()`, MAI `$fetch` raw.
+- **Routes API**: `/api/*` prefix automatico per `routes/api/*.php`.
+  Webhooks BRT su `/webhooks/brt/tracking` (web.php, NO `/api`).
+- **Palette**: teal `#095866` + arancione `#E44203` + neutri. **Mai blu**
+  (no `blue-*`, `indigo-*`, `sky-*`, `slate-*` Tailwind).
+- **Italiano** per stringhe utente, **English** per identifier.
+- **Limiti file**: ≤400 LOC runtime, ≤500 composable, ≤500 component, ≤400 page.
+  Le 4 eccezioni formali sono in `CLAUDE.md` "Eccezioni documentate".
 
-- [ ] [`ARCHITECTURE.md`](./ARCHITECTURE.md) — 20 minuti. Alla fine dovresti saper rispondere:
-  - Che cookie viene settato dopo login?
-  - Che succede quando Stripe invia `payment_intent.succeeded`?
-  - Dove finiscono i job lenti (invio email, create BRT shipment)?
-- [ ] [`FRONTEND_STRUCTURE.md`](./FRONTEND_STRUCTURE.md) — 8 minuti. Nota: prefisso componenti, autoimport composable, regola "un stato = un composable".
-- [ ] [`BACKEND_STRUCTURE.md`](./BACKEND_STRUCTURE.md) — 7 minuti. Nota: Controller thin, Service fat, FormRequest obbligatorio su endpoint sensibili.
-- [ ] [`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md) — scorri token colore (MAI blu), spacing, tipografia.
-- [ ] [`CONTRIBUTING.md`](./CONTRIBUTING.md) — Conventional Commits (type + scope).
+## I 5 errori che farai sicuramente
 
-## Fase 3 — Esplorazione guidata (~15 min)
-
-- [ ] Apri `pages/la-tua-spedizione/[step].vue` e `utils/shipment.js`.
-- [ ] Verifica quali sono le route canoniche del funnel:
-  - [ ] `/la-tua-spedizione/2?step=colli`
-  - [ ] `/la-tua-spedizione/2?step=servizi`
-  - [ ] `/la-tua-spedizione/2?step=indirizzi`
-  - [ ] `/la-tua-spedizione/2?step=pagamento`
-- [ ] Nota che `pages/preventivo.vue`, `pages/checkout.vue` e `pages/riepilogo.vue` sono route di compatibilita, non entrypoint canonici.
-- [ ] Apri `pages/account/spedizioni/index.vue` e `pages/account/spedizioni/[id].vue` come superfici canoniche cliente per lista + dettaglio.
-- [ ] Tratta `pages/account/ordini/[id].vue` come legacy/non canonica finche' non viene ripulita.
-- [ ] Apri `app/Services/OrderCreationService.php` e leggi `createFromCart()`.
-- [ ] Apri `app/Http/Controllers/StripeWebhookController.php` -> verifica come chiama `OrderCreationService`.
-- [ ] Apri DevTools -> Network mentre fai login: osserva:
-  - [ ] `GET /sanctum/csrf-cookie` (cookie XSRF settato)
-  - [ ] `POST /api/custom-login` con header `X-XSRF-TOKEN`
-  - [ ] `GET /api/user` dopo login (userStore hydrate)
-
-## Fase 4 — Test smoke (~5 min)
-
-- [ ] `cd apps/web`
-- [ ] `npm run test:e2e -- --grep @smoke` -> tutti pass
-- [ ] `cd ../apps/api`
-- [ ] `php artisan test --testsuite=Unit --stop-on-failure` -> tutti pass
-
-Se uno fallisce: non ignorare, apri issue con log output.
-
-## Fase 5 — Primo PR "hello world" (~15 min)
-
-Piccola modifica a basso rischio per validare l'intero workflow end-to-end.
-
-- [ ] `git checkout -b docs/<tuo-nome>-onboarding`
-- [ ] Aggiungi il tuo nome in `docs/TEAM.md` (se non esiste, crealo con lista semplice).
-- [ ] `git add docs/TEAM.md`
-- [ ] `git commit -m "docs(onboarding): aggiungi <nome> al team"` — pre-commit hook gira Pint/lint.
-- [ ] `git push -u origin docs/<tuo-nome>-onboarding` — pre-push lancia typecheck + unit test.
-- [ ] Apri PR su GitHub:
-  - [ ] Titolo segue conventional commits
-  - [ ] Descrizione: 2 righe ("primo PR onboarding")
-  - [ ] CI deve diventare verde (lint + typecheck + unit + e2e smoke)
-- [ ] Richiedi review a chi ti ha fatto onboarding.
-
-**Criterio di riuscita**: PR verde, merged entro fine giornata.
-
-## Fase 6 — Tooling consigliato (quando hai 10 min liberi)
-
-- [ ] **VS Code / Cursor** con estensioni: Vue (Volar), PHP Intelephense, Prettier, ESLint, Tailwind CSS IntelliSense, Laravel Extension Pack
-- [ ] **TablePlus / DBeaver** per ispezionare PostgreSQL locale
-- [ ] **RedisInsight** per ispezionare queue e cache
-- [ ] **Stripe CLI** (`stripe listen --forward-to localhost:8000/api/stripe/webhook`) per test webhook locali
-- [ ] **Postman / Bruno** con collection `docs/api/postman.json` (se presente)
-- [ ] **Sentry** — chiedi accesso progetto `spediamofacile`
-- [ ] **Plausible** — chiedi accesso dashboard analytics
-
-## Cosa NON fare il primo giorno
-
-- [ ] Non committare su `main` (protetto). Usa branch.
-- [ ] Non usare `git commit --no-verify` se non e' un incident reale.
-- [ ] Non toccare `.env` prod, Render dashboard, o segreti Sentry.
-- [ ] Non fare `git push --force` nemmeno su branch feature.
-- [ ] Non mergiare PR tue senza review.
+1. **Dimenticare `/100` sui prezzi**: backend ritorna 1190, devi mostrare 11,90 €.
+2. **Mockare il database nei test**: la repo usa SQLite locale + `RefreshDatabase`.
+   Test che mockano migrations sono falliti in produzione (incident 2026-Q1).
+3. **`blue-*` Tailwind**: la palette brand è teal+arancione. Lint pre-commit
+   blocca, ma se aggiri il lint il QA ti rimanda indietro.
+4. **Toccare i 4 file critici** senza E2E gating Stripe: vedi CLAUDE.md
+   "Eccezioni documentate". Carta test `4242 4242 4242 4242 09/30 123`.
+5. **Splittare `[step].vue` "perché grande"**: 1239 LOC sono *intenzionali*.
+   Splittare senza E2E browser causa regressioni di pagamento.
 
 ## Domande frequenti
 
-**"Posso usare TypeScript nei composable o nei componenti?"**
-No: il frontend e' tutto JavaScript per essere accessibile a junior. Usa JSDoc (`@param`, `@returns`, `@typedef`) per type hints. Vue components in `<script setup>` (no `lang="ts"`).
+**Posso usare TypeScript nei composable?**
+Sì, è la convenzione canonica. Vedi CLAUDE.md sezione "Convenzioni codice".
 
-**"Come aggiungo uno scope commitlint nuovo?"**
-Aggiorna `commitlint.config.js` nello stesso PR che introduce lo scope. Non usare scope generici.
+**Dove trovo le chiavi Stripe test?**
+`.env.example` ha `STRIPE_PUBLIC_KEY=pk_test_...` e `STRIPE_SECRET_KEY=sk_test_...`
+condivisi. Per webhook locale: `stripe listen --forward-to localhost:8000/api/stripe/webhook`.
 
-**"Dove trovo le chiavi Stripe test?"**
-`.env.example` ha `STRIPE_PUBLIC_KEY=pk_test_...` e `STRIPE_SECRET_KEY=sk_test_...` condivisi. Per Stripe webhook: lancia `stripe listen` e copia il `whsec_...` in `STRIPE_WEBHOOK_SECRET`.
+**Posso usare AI sul codice?**
+Sì. NON incollare segreti (chiavi API, DB credentials, dati reali utenti).
 
-**"Posso usare ChatGPT / Claude sul codice?"**
-Si. Non incollare segreti (chiavi API, DB credentials, dati reali utenti) nei prompt esterni.
+**Su quale branch lavorare?**
+`main`. Apri PR, mai commit diretti.
 
-**"Che branch devo forkare?"**
-`develop` se esiste, altrimenti `main`. Chiedi se non chiaro.
+## Riferimenti
 
-## Riferimenti rapidi
+| Ho bisogno di...        | Vai a                                                |
+|-------------------------|------------------------------------------------------|
+| Convenzioni AI + regole | [CLAUDE.md](../CLAUDE.md)                            |
+| Architettura sistema    | [ARCHITECTURE.md](./ARCHITECTURE.md)                 |
+| Endpoint API            | [reference/API_CONTRACT.md](./reference/API_CONTRACT.md) |
+| Deploy + Render         | [operations/DEPLOY.md](./operations/DEPLOY.md)       |
+| Checklist go-live       | [operations/GOLIVE_CHECKLIST.md](./operations/GOLIVE_CHECKLIST.md) |
+| GDPR                    | [legal/GDPR_COMPLETO.md](./legal/GDPR_COMPLETO.md)   |
+| Sicurezza OWASP         | [legal/SECURITY.md](./legal/SECURITY.md)             |
+| Decisioni tecniche      | [adr/](./adr/) (Sanctum, MyMoney, BRT direct)        |
+| Storia cleanup          | [CLEANUP_PLAN_AI.md](./CLEANUP_PLAN_AI.md)           |
 
-| Ho bisogno di...                | Vai a                                |
-|---------------------------------|--------------------------------------|
-| Setup locale                    | [QUICKSTART.md](./QUICKSTART.md)     |
-| Capire come funziona il sistema | [ARCHITECTURE.md](./ARCHITECTURE.md) |
-| Trovare un componente Vue       | [FRONTEND_STRUCTURE.md](./FRONTEND_STRUCTURE.md) |
-| Trovare un Service Laravel      | [BACKEND_STRUCTURE.md](./BACKEND_STRUCTURE.md) |
-| Elenco endpoint                 | [API_CONTRACT.md](./API_CONTRACT.md) |
-| Design tokens / stile           | [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) |
-| Convenzioni commit              | [CONTRIBUTING.md](./CONTRIBUTING.md) |
-| Errore strano                   | [DEBUGGING.md](./DEBUGGING.md)       |
-| Glossario termini business      | [GLOSSARIO-SEMPLICE.md](./GLOSSARIO-SEMPLICE.md) |
-| FAQ dev                         | `guide/` e `spiegazioni/` in docs    |
-
-Benvenuto nel team. Tempo totale stimato seguendo la checklist: **~90 minuti**. Se superi 3 ore senza aver chiuso Fase 2, chiedi aiuto.
+Benvenuto. Tempo totale stimato: **~30 minuti**. Se superi 1h senza aver fatto smoke, chiedi aiuto.
