@@ -53,6 +53,16 @@ class PagesController extends Controller
         return Inertia::render('Static/Traccia');
     }
 
+    /** Tracking pubblico: lookup BRT via OrderBrtTrackingReadService. */
+    public function tracciaShow(string $code, \App\Services\OrderBrtTrackingReadService $tracker): Response
+    {
+        $payload = $tracker->buildPublicTrackingPayload($code);
+        return Inertia::render('Static/TracciaDetail', [
+            'tracking' => $payload,
+            'notFound' => ! ($payload['found'] ?? false),
+        ]);
+    }
+
     public function guide(): Response
     {
         return Inertia::render('Static/Guide', [

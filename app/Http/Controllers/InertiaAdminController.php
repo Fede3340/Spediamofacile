@@ -104,4 +104,48 @@ class InertiaAdminController extends Controller
         }
         return back()->with('success', 'Impostazioni salvate.');
     }
+
+    /** Admin: cambia stato ordine. */
+    public function changeOrderStatus(Request $request, int $id): RedirectResponse
+    {
+        $data = $request->validate(['status' => 'required|string']);
+        $order = Order::findOrFail($id);
+        $order->update(['status' => $data['status']]);
+        return back()->with('success', "Stato ordine #{$id} aggiornato a {$data['status']}.");
+    }
+
+    /** Admin: conferma bonifico ricevuto → marca ordine come paid. */
+    public function confermaBonifico(Request $request, int $id): RedirectResponse
+    {
+        $order = Order::where('id', $id)->where('status', 'awaiting_bank_transfer')->firstOrFail();
+        $order->update(['status' => 'paid']);
+        event(new \App\Events\OrderPaid($order));
+        return back()->with('success', "Bonifico ordine #{$id} confermato.");
+    }
+
+    /** Admin: rigenera etichetta BRT per ordine pagato. */
+    public function regeneraEtichetta(Request $request, int $id, \App\Services\BrtClient $brt): RedirectResponse
+    {
+        $order = Order::findOrFail($id);
+        try {
+            $brt->generateLabel($order, 'pdf');
+            return back()->with('success', "Etichetta ordine #{$id} rigenerata.");
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Errore BRT: ' . $e->getMessage());
+        }
+    }
+
+    /** Admin: salva price bands. */
+    public function savePriceBands(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'bands' => 'required|array',
+            'bands.*.id' => 'required|integer|exists:price_bands,id',
+            'bands.*.base_price' => 'required|integer|min:0',
+        ]);
+        foreach ($data['bands'] as $b) {
+            PriceBand::where('id', $b['id'])->update(['base_price' => $b['base_price']]);
+        }
+        return back()->with('success', 'Prezzi aggiornati.');
+    }
 }

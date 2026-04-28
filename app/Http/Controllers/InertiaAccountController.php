@@ -81,6 +81,39 @@ class InertiaAccountController extends Controller
         ]);
     }
 
+    public function storeIndirizzo(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:120',
+            'address' => 'required|string|max:200',
+            'address_number' => 'required|string|max:20',
+            'postal_code' => 'required|string|size:5',
+            'city' => 'required|string|max:120',
+            'province' => 'required|string|size:2',
+            'telephone_number' => 'required|string|max:30',
+            'email' => 'nullable|email',
+            'type' => 'required|in:Partenza,Destinazione',
+        ]);
+        UserAddress::create(array_merge($data, ['user_id' => $request->user()->id, 'province' => strtoupper($data['province'])]));
+        return back()->with('success', 'Indirizzo salvato.');
+    }
+
+    public function deleteIndirizzo(Request $request, int $id): RedirectResponse
+    {
+        UserAddress::where('user_id', $request->user()->id)->where('id', $id)->delete();
+        return back()->with('success', 'Indirizzo rimosso.');
+    }
+
+    public function cancelOrder(Request $request, int $id): RedirectResponse
+    {
+        $order = $request->user()->orders()->where('id', $id)->firstOrFail();
+        if (! in_array($order->status, ['pending', 'awaiting_bank_transfer', 'paid'], true)) {
+            return back()->with('error', 'Ordine non annullabile in questo stato.');
+        }
+        $order->update(['status' => 'cancelled']);
+        return back()->with('success', "Ordine #{$order->id} annullato.");
+    }
+
     public function fatture(Request $request): Response
     {
         $invoices = $request->user()->orders()

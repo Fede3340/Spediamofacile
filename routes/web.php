@@ -31,6 +31,7 @@ Route::get('/privacy-policy', [PagesController::class, 'privacy']);
 Route::get('/cookie-policy', [PagesController::class, 'cookie']);
 Route::get('/termini-e-condizioni', [PagesController::class, 'termini']);
 Route::get('/traccia', [PagesController::class, 'tracciaForm']);
+Route::get('/traccia/{code}', [PagesController::class, 'tracciaShow'])->where('code', '[A-Za-z0-9\-]+');
 Route::get('/guide', [PagesController::class, 'guide']);
 
 /* ────── Servizi ────── */
@@ -77,9 +78,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/profilo', [InertiaAccountController::class, 'profilo']);
     Route::put('/account/profilo', [InertiaAccountController::class, 'updateProfilo']);
     Route::get('/account/indirizzi', [InertiaAccountController::class, 'indirizzi']);
+    Route::post('/account/indirizzi', [InertiaAccountController::class, 'storeIndirizzo']);
+    Route::delete('/account/indirizzi/{id}', [InertiaAccountController::class, 'deleteIndirizzo']);
     Route::get('/account/fatture', [InertiaAccountController::class, 'fatture']);
     Route::get('/account/portafoglio', [InertiaAccountController::class, 'portafoglio']);
     Route::get('/account/assistenza', [InertiaAccountController::class, 'assistenza']);
+    Route::post('/account/spedizioni/{id}/cancel', [InertiaAccountController::class, 'cancelOrder']);
 
     /* ────── Admin (auth + role check) ────── */
     Route::middleware([\App\Http\Middleware\CheckAdmin::class])->prefix('account/amministrazione')->group(function () {
@@ -91,6 +95,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/prezzi', [InertiaAdminController::class, 'prezzi']);
         Route::get('/impostazioni', [InertiaAdminController::class, 'impostazioni']);
         Route::put('/impostazioni', [InertiaAdminController::class, 'updateImpostazioni']);
+        Route::post('/ordini/{id}/status', [InertiaAdminController::class, 'changeOrderStatus']);
+        Route::post('/bonifici/{id}/conferma', [InertiaAdminController::class, 'confermaBonifico']);
+        Route::post('/ordini/{id}/etichetta', [InertiaAdminController::class, 'regeneraEtichetta']);
+        Route::put('/prezzi', [InertiaAdminController::class, 'savePriceBands']);
     });
 });
 
