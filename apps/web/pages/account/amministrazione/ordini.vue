@@ -1,6 +1,7 @@
 <script setup>
 import '~/assets/css/admin.css';
 import { ref, computed, onMounted } from 'vue';
+import { buildPaginationItems, paginationRange } from '~/utils/pagination';
 
 definePageMeta({
 	middleware: ['app-auth', 'admin'],
@@ -312,33 +313,11 @@ const exportCsv = async () => {
 	}
 };
 
-/* -----------------------------------------------------------------
-   PAGINAZIONE: lista numeri con ellipsis
------------------------------------------------------------------ */
-const pages = computed(() => {
-	const total = ordersData.value.last_page || 1;
-	const current = page.value;
-	const max = 5;
-	if (total <= max) return Array.from({ length: total }, (_, i) => i + 1);
-	const half = Math.floor(max / 2);
-	let start = Math.max(1, current - half);
-	const end = Math.min(total, start + max - 1);
-	start = Math.max(1, end - max + 1);
-	const items = [];
-	if (start > 1) {
-		items.push(1);
-		if (start > 2) items.push('…');
-	}
-	for (let i = start; i <= end; i++) items.push(i);
-	if (end < total) {
-		if (end < total - 1) items.push('…');
-		items.push(total);
-	}
-	return items;
-});
-
-const fromIdx = computed(() => ordersData.value.total === 0 ? 0 : (page.value - 1) * perPage.value + 1);
-const toIdx = computed(() => Math.min(page.value * perPage.value, ordersData.value.total));
+/* Paginazione: vedi utils/pagination.ts */
+const pages = computed(() => buildPaginationItems(page.value, ordersData.value.last_page || 1));
+const _range = computed(() => paginationRange(page.value, perPage.value, ordersData.value.total));
+const fromIdx = computed(() => _range.value.from);
+const toIdx = computed(() => _range.value.to);
 
 /* -----------------------------------------------------------------
    MOUNT
