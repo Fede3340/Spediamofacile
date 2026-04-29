@@ -62,6 +62,9 @@ const inlineVisibleSubmitError = computed(() => {
 		? ''
 		: message;
 });
+
+const mounted = ref(false);
+onMounted(() => { mounted.value = true; });
 </script>
 
 <template>
@@ -84,7 +87,7 @@ const inlineVisibleSubmitError = computed(() => {
 
 			<div class="shipment-stage-card__copy">
 				<h2 class="shipment-stage-card__title">Indirizzi</h2>
-				<p v-if="!isOpen" class="shipment-stage-card__summary">
+				<p v-if="!isOpen && mounted" class="shipment-stage-card__summary">
 					{{ summary }}
 				</p>
 			</div>

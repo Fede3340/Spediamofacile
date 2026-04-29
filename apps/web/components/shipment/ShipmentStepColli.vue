@@ -33,6 +33,10 @@ defineProps({
 });
 
 defineEmits(['open', 'confirm', 'dismiss-error']);
+
+// Hydration safe: il summary cambia tra SSR (state vuoto) e client (state idratato).
+const mounted = ref(false);
+onMounted(() => { mounted.value = true; });
 </script>
 
 <template>
@@ -54,7 +58,7 @@ defineEmits(['open', 'confirm', 'dismiss-error']);
 
 			<div class="shipment-stage-card__copy">
 				<h2 class="shipment-stage-card__title">Colli</h2>
-				<p v-if="!isOpen" class="shipment-stage-card__summary">
+				<p v-if="!isOpen && mounted" class="shipment-stage-card__summary">
 					{{ summary }}
 				</p>
 			</div>

@@ -27,6 +27,13 @@ const metrics = [
 	{ key: 'second_size', label: 'Larg.', unit: 'cm' },
 	{ key: 'third_size', label: 'Alt.', unit: 'cm' },
 ];
+
+// Hydration safe: la lista pacchi viene popolata solo lato client tramite
+// ensurePackagesIdentity() in onMounted. Renderizzare lato SSR un array
+// che diverge dal client genera mismatch (li vs comment). Lato server mostriamo
+// nulla, lato client mostriamo la lista reale.
+const mounted = ref(false);
+onMounted(() => { mounted.value = true; });
 </script>
 
 <template>
@@ -35,7 +42,7 @@ const metrics = [
 			{{ europeRestrictionMessage }}
 		</p>
 
-		<ul class="package-entry-list" role="list">
+		<ul v-if="mounted" class="package-entry-list" role="list">
 			<li
 				v-for="(pack, packIndex) in packages"
 				:key="pack._qid || packIndex"

@@ -30,8 +30,8 @@ import {
   extractAddressAndNumber,
 } from '~/utils/shipmentFormHelpers';
 
-// Re-export per retrocompat (caller esistenti)
-export { FIELD_ERROR_ORDER, FIELD_ERROR_LABELS, FIELD_ERROR_IDS, softenErrorMessage, buildEmailSuggestion, extractAddressAndNumber };
+// Re-export rimosso: i caller importano direttamente da utils/shipmentFormHelpers.
+// Nuxt auto-import preferisce comunque la versione utils/.
 
 /** Crea i computed di sintesi / raggruppamento / section hints da `sv.errors`. */
 export const useShipmentFormErrorSummary = ({ sv, contentError }) => {

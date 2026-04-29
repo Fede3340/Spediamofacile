@@ -159,6 +159,9 @@ const collapsedPaymentSummary = computed(() =>
 		: `${repairVisibleText(resolvedTrattaLabel.value)} \u00B7 ${displayTotalText.value}`,
 );
 
+const mounted = ref(false);
+onMounted(() => { mounted.value = true; });
+
 // Guard: empty state solo quando il bootstrap checkout ha davvero concluso
 // che non esiste un contesto pagabile. Prima questo ramo partiva troppo presto
 // e mascherava loading/errori/checkout ready durante l'apertura da order_id.
@@ -329,7 +332,7 @@ const resolvedBillingShippingFullAddress = computed(() => {
 
 			<div class="shipment-stage-card__copy">
 				<h2 class="shipment-stage-card__title">Pagamento</h2>
-				<p v-if="!isOpen" class="shipment-stage-card__summary">
+				<p v-if="!isOpen && mounted" class="shipment-stage-card__summary">
 					{{ collapsedPaymentSummary }}
 				</p>
 			</div>

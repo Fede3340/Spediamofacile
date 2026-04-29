@@ -47,6 +47,9 @@ defineProps({
 });
 
 defineEmits(['open', 'back', 'confirm', 'dismiss-error']);
+
+const mounted = ref(false);
+onMounted(() => { mounted.value = true; });
 </script>
 
 <template>
@@ -69,7 +72,7 @@ defineEmits(['open', 'back', 'confirm', 'dismiss-error']);
 
 			<div class="shipment-stage-card__copy">
 				<h2 class="shipment-stage-card__title">Servizi</h2>
-				<p v-if="!isOpen" class="shipment-stage-card__summary">
+				<p v-if="!isOpen && mounted" class="shipment-stage-card__summary">
 					{{ summary }}
 				</p>
 			</div>
