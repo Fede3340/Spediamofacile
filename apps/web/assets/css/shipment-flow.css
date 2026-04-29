@@ -4247,35 +4247,41 @@
 	gap: 12px;
 }
 
+/* Allineato a pattern .contact-field (contatti.css) per coerenza sitewide:
+   label 0.82rem 700 brand-text (no uppercase), input border 1.5px radius 12
+   min-height 48 padding 0/16. */
+
 .service-panel__field,
 .service-panel__field--choice {
-	display: flex;
-	flex-direction: column;
+	display: grid;
 	gap: 6px;
 }
 
 .service-panel__label {
-	font-size: 0.6875rem;
+	font-size: 0.82rem;
 	font-weight: 700;
-	color: var(--color-brand-text-muted, #7a8190);
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
+	color: var(--color-brand-text, #1d2738);
 	margin: 0;
+	letter-spacing: normal;
+	text-transform: none;
 }
 
 .service-panel__input-wrap {
 	display: flex;
 	align-items: center;
-	gap: 6px;
-	padding: 9px 12px;
+	gap: 8px;
+	width: 100%;
+	min-height: 48px;
+	padding: 0 16px;
 	background: #ffffff;
-	border-radius: 8px;
-	box-shadow: inset 0 0 0 1px rgba(9, 88, 102, 0.14);
-	transition: box-shadow 150ms ease;
+	border: 1.5px solid var(--color-border, #dfe4ea);
+	border-radius: 12px;
+	transition: border-color 150ms ease, box-shadow 150ms ease;
 }
 
 .service-panel__input-wrap:focus-within {
-	box-shadow: inset 0 0 0 2px var(--color-brand-primary);
+	border-color: var(--color-brand-primary);
+	box-shadow: 0 0 0 3px rgba(9, 88, 102, 0.12);
 }
 
 .service-panel__input {
@@ -4283,17 +4289,23 @@
 	border: none;
 	outline: none;
 	background: transparent;
-	font-size: 0.875rem;
-	font-weight: 600;
-	color: var(--color-brand-text);
+	font-size: 0.95rem;
+	font-weight: 500;
+	color: var(--color-brand-text, #1d2738);
 	min-width: 0;
 	padding: 0;
+	min-height: 48px;
+}
+
+.service-panel__input::placeholder {
+	color: var(--color-brand-text-muted, #7a8190);
+	opacity: 0.7;
 }
 
 .service-panel__suffix {
-	font-size: 0.875rem;
+	font-size: 0.95rem;
 	font-weight: 600;
-	color: var(--color-brand-text-muted, #7a8190);
+	color: var(--color-brand-text-secondary, #4a5563);
 	flex-shrink: 0;
 }
 
