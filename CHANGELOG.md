@@ -3,6 +3,45 @@
 Tutte le modifiche rilevanti al progetto sono documentate qui.
 Formato: [Keep a Changelog](https://keepachangelog.com/).
 
+## [2.6.2-audit-V5.1R4-loop-completo] — 2026-04-29 — Refactor agency-grade autonomo
+
+Loop autonomo: ridotti tutti i god-files non-CRITICAL sotto soglia, estratte
+trait + utility riutilizzabili, rimossi residui PayPal fantasma. Build prod
+verde, 333 test backend verdi, DOM funnel verde.
+
+### Refactor backend (PHP trait extraction)
+
+- **`app/Services/CartService.php`** (427 → 361 LOC, **-66**):
+  - `Concerns/CartDuplicateDetection` (45 LOC) — normalize/samePackageDimensions/sameAddress/isDuplicate.
+  - `Concerns/CartServiceSignatures` (52 LOC) — buildServiceSignatureFrom* + calculateGroupedSurcharge*.
+  - 9 CartServiceTest verdi. Commit `9f050b7`.
+
+- **`app/Models/Order.php`** (403 → 245 LOC, **-158**):
+  - `Concerns/OrderStatusHelpers` (112 LOC) — getStatus + 8 query scope.
+  - `Concerns/OrderPayableTotal` (81 LOC) — payableTotalCents (CRITICAL Stripe-gated).
+  - 70 test Order/Referral/SavedShipments verdi. Commit `ec41dbd`.
+
+### Refactor frontend (utility extraction)
+
+- **`apps/web/utils/pagination.ts`** (45 LOC nuovo): buildPaginationItems + paginationRange
+  riutilizzabili da liste paginate admin. Commit `e65f146`.
+- **`pages/account/amministrazione/ordini.vue`** (512 → 491 LOC).
+
+### Cleanup
+
+- **`app/Models/Transaction.php`**: rimosso PayPal fantasma dal mapping
+  `getPaymentMethod()` + commento `$fillable`. Il sito non gestisce PayPal
+  (confermato in FAQ). Sostituito con `wallet` (metodo realmente supportato).
+  Commit `c8ebf6d`.
+
+### Verified
+
+- Build Nuxt prod: verde (34.2 MB / 12.3 MB gzip).
+- Test PHP: 333 passed, 18 skipped.
+- DOM funnel: h1 "Preventivo" 52px, 4 stage card "Colli/Servizi/Indirizzi/Pagamento".
+
+---
+
 ## [2.6.1-audit-V5.1R4-fase4-5] — 2026-04-29 — Refactor frontend + docs junior
 
 Continuazione audit V5.1R4 (Fase 4 + Fase 5) con strategia chirurgica per non
