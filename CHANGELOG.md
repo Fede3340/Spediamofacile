@@ -3,6 +3,46 @@
 Tutte le modifiche rilevanti al progetto sono documentate qui.
 Formato: [Keep a Changelog](https://keepachangelog.com/).
 
+## [2.6.1-audit-V5.1R4-fase4-5] — 2026-04-29 — Refactor frontend + docs junior
+
+Continuazione audit V5.1R4 (Fase 4 + Fase 5) con strategia chirurgica per non
+toccare la grafica. Build prod verde. Score atteso ~62 → ~70/100.
+
+### Refactor (LOC ridotte)
+
+- **`pages/la-tua-spedizione/[step].vue`** (1240 → 1190 LOC, **-50**):
+  estratti 8 pure functions (`cleanPaymentSummaryText`, `formatExistingOrderDate`,
+  `buildEmptyPaymentAddress`, `normalizeExistingOrderAddress`,
+  `getExistingOrderPackage*`, `resolveApiError`) in
+  `apps/web/utils/shipmentStepHelpers.ts` (modulo TS testabile, zero deps Vue).
+  Commit `7254e4a`.
+- **`components/shipment/AddressFormFields.vue`** (739 → 615 LOC, **-124**):
+  8 blocchi feedback campo (errore + chip auto-fill) consolidati nel sotto-componente
+  `AddressFieldFeedback.vue` (41 LOC). Markup HTML output identico.
+  Commit `e52c58a`.
+
+### Added (docs junior-friendly)
+
+- **`docs/MODULES_MAP.md`**: mappa di 6 moduli (shipment-flow, checkout-payment,
+  wallet, coupon-referral, BRT-PUDO, account-admin). Per ogni modulo: cosa fa,
+  entry point, file CRITICAL da non toccare senza E2E. Commit `0938e1a`.
+
+### Skipped (motivato)
+
+- **Split `shipment-flow.css` (6008 LOC)**: rimandato — ordine di specificity
+  in produzione è alto rischio di rottura grafica. Da fare con DOM signature
+  per-rule pre/post + visual regression tests.
+- **`ShipmentStepPagamento.vue` + `usePayment.ts`**: CRITICAL Stripe-gated.
+  Da rifattorizzare solo con E2E `4242 4242 4242 4242 09/30 123`.
+
+### Verified
+
+- Build prod (`npm run build`): verde, 34.2 MB output (12.3 MB gzip).
+- DOM signature funnel `/la-tua-spedizione/colli`: 4 stage card, h1 "Preventivo"
+  52px, form preventivo presente, no nuovi runtime errors.
+
+---
+
 ## [2.3.1-deps-clean] — 2026-04-28 — Cleanup agency-grade completo
 
 Sessione di cleanup operata su repo Laravel 11 API + Nuxt 4 SPA + Caddy reverse
