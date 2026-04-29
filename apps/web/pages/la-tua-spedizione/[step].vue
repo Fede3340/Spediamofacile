@@ -7,6 +7,16 @@ import ShipmentStepIndirizzi from '~/components/shipment/ShipmentStepIndirizzi.v
 import ShipmentStepPagamento from '~/components/shipment/ShipmentStepPagamento.vue';
 import PublicPageHeader from '~/components/layout/PublicPageHeader.vue';
 import { buildSecondStepPayload } from '~/composables/useShipmentStepDraftPayload';
+import {
+	buildEmptyPaymentAddress,
+	cleanPaymentSummaryText,
+	formatExistingOrderDate,
+	getExistingOrderPackageDimensions,
+	getExistingOrderPackageQuantity,
+	getExistingOrderPackageType,
+	normalizeExistingOrderAddress,
+	resolveApiError,
+} from '~/utils/shipmentStepHelpers';
 
 const debugCheckpoint = (label) => {
 	if (!import.meta.client) return;
@@ -402,16 +412,6 @@ const ssrSafeConfirmationDestinationContact = computed(() =>
 			? 'Punto BRT da selezionare'
 			: 'Destinatario da completare',
 );
-const buildEmptyPaymentAddress = () => ({
-	full_name: '',
-	name: '',
-	address: '',
-	address_number: '',
-	postal_code: '',
-	city: '',
-	province: '',
-	country: '',
-});
 const ssrSafePaymentOriginAddress = computed(() => (summaryHydrationReady.value ? originAddress.value : buildEmptyPaymentAddress()));
 const ssrSafePaymentDestinationAddress = computed(() =>
 	summaryHydrationReady.value ? destinationAddress.value : buildEmptyPaymentAddress(),
@@ -487,59 +487,11 @@ const {
 	contentDescription: checkoutContentDescription,
 } = cart;
 
-const cleanPaymentSummaryText = (value) => {
-	const normalized = String(value ?? '').replace(/\s+/g, ' ').trim();
-	if (!normalized) return '';
-	const lowered = normalized.toLowerCase();
-	return ['n/d', 'nd', '-', '—', 'null', 'undefined'].includes(lowered) ? '' : normalized;
-};
-
-const formatExistingOrderDate = (value) => {
-	const raw = cleanPaymentSummaryText(value);
-	if (!raw) return '';
-
-	const date = new Date(raw);
-	if (!Number.isNaN(date.getTime())) {
-		return new Intl.DateTimeFormat('it-IT', {
-			day: '2-digit',
-			month: '2-digit',
-			year: 'numeric',
-		}).format(date);
-	}
-
-	return raw;
-};
-
 const existingOrderPackages = computed(() => (
 	existingOrder.value && Array.isArray(displayPackages.value) ? displayPackages.value : []
 ));
 const existingOrderPrimaryPackage = computed(() => existingOrderPackages.value[0] || null);
 const hasExistingOrderSummary = computed(() => Boolean(existingOrderId.value && existingOrderPackages.value.length));
-
-const normalizeExistingOrderAddress = (address = {}) => ({
-	full_name: cleanPaymentSummaryText(address.full_name || address.name),
-	name: cleanPaymentSummaryText(address.name || address.full_name),
-	address: cleanPaymentSummaryText(address.address),
-	address_number: cleanPaymentSummaryText(address.address_number),
-	postal_code: cleanPaymentSummaryText(address.postal_code),
-	city: cleanPaymentSummaryText(address.city),
-	province: cleanPaymentSummaryText(address.province),
-	country: cleanPaymentSummaryText(address.country || 'Italia'),
-	telephone_number: cleanPaymentSummaryText(address.telephone_number),
-	email: cleanPaymentSummaryText(address.email),
-	additional_information: cleanPaymentSummaryText(address.additional_information),
-});
-
-const getExistingOrderPackageQuantity = (pack) => Math.max(1, Number(pack?.quantity ?? pack?.pivot?.quantity) || 1);
-const getExistingOrderPackageType = (pack) => cleanPaymentSummaryText(pack?.package_type) || 'Pacco';
-const getExistingOrderPackageDimensions = (pack) => {
-	const side1 = Number(pack?.first_size ?? pack?.length);
-	const side2 = Number(pack?.second_size ?? pack?.width);
-	const side3 = Number(pack?.third_size ?? pack?.height);
-	return [side1, side2, side3].every((side) => Number.isFinite(side) && side > 0)
-		? `${side1}x${side2}x${side3} cm`
-		: '';
-};
 
 const existingOrderPackageCount = computed(() =>
 	existingOrderPackages.value.reduce((sum, pack) => sum + getExistingOrderPackageQuantity(pack), 0),
@@ -839,8 +791,6 @@ const continueToCart = async () => {
 const isAddingToCartFromVentaglio = ref(false);
 // -- ARCHIVIATO 2026-04-20: isSavingConfiguredFromVentaglio (_archive/frontend-simplification-2026-04-20/features/spedizioni-configurate) --
 const isSavingConfiguredFromVentaglio = ref(false);
-
-const resolveApiError = (err, fallback) => err?.response?._data?.message || err?.data?.message || err?.message || fallback;
 
 const handleAddToCartFromVentaglio = async () => {
 	if (isAddingToCartFromVentaglio.value) return;
