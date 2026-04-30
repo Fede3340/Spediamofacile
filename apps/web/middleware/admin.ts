@@ -7,17 +7,7 @@ import {
 	waitForPostAuthSync,
 } from '~/utils/auth';
 
-/**
- * @typedef {Object} AuthUserWithRole
- * @property {string|null} [role]
- */
-
-/**
- * Costruisce l'URL di redirect al login admin.
- * @param {string} fullPath
- * @returns {ReturnType<typeof buildAuthOverlayLocation>}
- */
-const buildAdminLoginRedirect = (fullPath) =>
+const buildAdminLoginRedirect = (fullPath: string) =>
 	buildAuthOverlayLocation({ requestedPath: fullPath, tab: 'login' });
 
 export default defineNuxtRouteMiddleware(async (to) => {
@@ -57,7 +47,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
 		return navigateTo(buildAdminLoginRedirect(to.fullPath), { replace: true });
 	}
 
-	const role = String(user.value?.role || '').trim();
+	const authUser = user.value as { role?: string } | null;
+	const role = String(authUser?.role || '').trim();
 	if (role !== 'Admin') {
 		return navigateTo('/account');
 	}

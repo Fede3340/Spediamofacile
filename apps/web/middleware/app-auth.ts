@@ -7,19 +7,10 @@ import {
 	waitForPostAuthSync,
 } from '~/utils/auth';
 
-/**
- * Normalizza un path rimuovendo eventuale slash finale (eccetto la root).
- * @param {string} path
- * @returns {string}
- */
-const normalizeRequestedPath = (path) => (path !== '/' && path.endsWith('/') ? path.slice(0, -1) : path);
+const normalizeRequestedPath = (path: string) =>
+	(path !== '/' && path.endsWith('/') ? path.slice(0, -1) : path);
 
-/**
- * Costruisce l'URL di redirect al modale di login.
- * @param {string} requestedPath
- * @returns {ReturnType<typeof buildAuthOverlayLocation>}
- */
-const buildAuthRedirectTarget = (requestedPath) =>
+const buildAuthRedirectTarget = (requestedPath: string) =>
 	buildAuthOverlayLocation({ requestedPath, tab: 'login' });
 
 export default defineNuxtRouteMiddleware(async (to) => {

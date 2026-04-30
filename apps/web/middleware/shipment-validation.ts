@@ -7,35 +7,22 @@ import {
 	resolveShipmentFlowState,
 	SHIPMENT_FLOW_ROUTES,
 	trimUserStoreToFlowState,
+	type RouteLike,
+	type TrimmableUserStore,
 } from '~/utils/shipment';
 
-/** @typedef {import('~/utils/shipment').RouteLike} RouteLike */
+type SessionLike = { data?: Record<string, unknown> };
 
 const BLOCK_TOAST_KEY = 'shipment-flow-guard-toast';
 
-/**
- * @typedef {Object} AuthUserWithRole
- * @property {string|null} [role]
- */
-
-/**
- * Pianifica l'esecuzione di un toast client-side dopo il prossimo repaint.
- * @param {() => void} callback
- * @returns {void}
- */
-const scheduleClientToast = (callback) => {
+const scheduleClientToast = (callback: () => void) => {
 	if (typeof window === 'undefined') return;
 	window.requestAnimationFrame(() => {
 		window.setTimeout(callback, 0);
 	});
 };
 
-/**
- * Normalizza il valore di una query della route mantenendo solo stringhe valide.
- * @param {unknown} value
- * @returns {string | string[] | undefined}
- */
-const normalizeRouteQueryValue = (value) => {
+const normalizeRouteQueryValue = (value: unknown) => {
 	if (Array.isArray(value)) {
 		const normalized = value.filter((item) => typeof item === 'string');
 		return normalized.length ? normalized : undefined;
@@ -43,13 +30,13 @@ const normalizeRouteQueryValue = (value) => {
 	return typeof value === 'string' ? value : undefined;
 };
 
-/**
- * Converte un oggetto route-like in una forma normalizzata compatibile con le utility shipment.
- * @param {unknown} routeLike
- * @returns {RouteLike}
- */
-const toShipmentRouteLike = (routeLike) => {
-	const route = routeLike;
+const toShipmentRouteLike = (routeLike: unknown): RouteLike => {
+	const route = (routeLike && typeof routeLike === 'object' ? routeLike : {}) as {
+		path?: unknown;
+		fullPath?: unknown;
+		hash?: unknown;
+		query?: Record<string, unknown>;
+	};
 	const query = Object.fromEntries(
 		Object.entries(route?.query || {})
 			.map(([key, value]) => [key, normalizeRouteQueryValue(value)])
@@ -64,12 +51,7 @@ const toShipmentRouteLike = (routeLike) => {
 	};
 };
 
-/**
- * Verifica se il path appartiene al flusso protetto "la-tua-spedizione".
- * @param {RouteLike} routeLike
- * @returns {boolean}
- */
-const isShipmentProtectedPath = (routeLike) => {
+const isShipmentProtectedPath = (routeLike: RouteLike) => {
 	const path = String(routeLike?.path || routeLike?.fullPath || '');
 	return path.startsWith('/la-tua-spedizione');
 };
@@ -102,7 +84,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 			});
 			await refresh().catch(() => session.value);
 
-			const serverFlowState = resolveShipmentFlowState(session.value?.data || {});
+			const serverSession = session.value as SessionLike | null | undefined;
+			const serverFlowState = resolveShipmentFlowState(serverSession?.data || {});
 			if (canAccessShipmentFlowRoute(targetRoute, serverFlowState)) {
 				return;
 			}
@@ -141,7 +124,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		return;
 	}
 
-	const hasCachedSessionData = Boolean(session.value?.data);
+	const currentSession = session.value as SessionLike | null | undefined;
+	const hasCachedSessionData = Boolean(currentSession?.data);
 	const isInternalShipmentNavigation = Boolean(from?.path)
 		&& isShipmentProtectedPath(sourceRoute)
 		&& isShipmentProtectedPath(targetRoute);
@@ -176,12 +160,14 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		}
 	}
 
-	const sessionData = session.value?.data || {};
+	const refreshedSession = session.value as SessionLike | null | undefined;
+	const sessionData = refreshedSession?.data || {};
 	const remoteFlowState = resolveShipmentFlowState(sessionData);
 	const flowState = pickMostAdvancedShipmentFlowState(remoteFlowState, localFlowState);
 	const hasAccess = canAccessShipmentFlowRoute(targetRoute, flowState);
 
-	const userRole = String(user.value?.role || '').trim();
+	const authUser = user.value as { role?: string } | null;
+	const userRole = String(authUser?.role || '').trim();
 	if (userRole === 'Admin') {
 		if (!hasAccess && !isShipmentFlowResumeException(targetRoute)) {
 			openGate({
@@ -207,7 +193,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		|| Number(localFlowState.quote_ready);
 
 	if (remoteRank >= localRank) {
-		trimUserStoreToFlowState(shipmentFlowStore, flowState);
+		trimUserStoreToFlowState(shipmentFlowStore as TrimmableUserStore, flowState);
 	}
 
 	const redirectTarget = flowState.last_valid_route || SHIPMENT_FLOW_ROUTES.packages;
