@@ -4,7 +4,7 @@ Stato globale ispezionabile in Vue DevTools. Auto-importati.
 
 ## Convenzioni
 
-- Naming: `<dominio>Store.js` (es. `cartStore`, `authModalStore`).
+- Naming: `<dominio>Store.ts` (es. `cartStore`, `authModalStore`).
 - Setup syntax (`defineStore('name', () => { ... })`), non options API.
 - Solo state + getters + actions; niente lifecycle Vue (quello vive nei composables).
 - Hydration SSR via `useState` o cookie sigillato (vedi `authStore`).
