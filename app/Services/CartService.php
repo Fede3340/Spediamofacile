@@ -5,14 +5,80 @@ namespace App\Services;
 use App\Cart\MyMoney;
 use App\Models\Service;
 use App\Models\Package;
-use App\Services\Concerns\CartDuplicateDetection;
-use App\Services\Concerns\CartServiceSignatures;
 use App\Services\PriceEngineService;
 
 class CartService
 {
-    use CartDuplicateDetection;
-    use CartServiceSignatures;
+    // --- Duplicate detection (ex trait CartDuplicateDetection, inlined per consumer unico) ---
+
+    public function normalize(?string $value): string
+    {
+        return mb_strtolower(trim($value ?? ''), 'UTF-8');
+    }
+
+    public function samePackageDimensions(array $a, array $b): bool
+    {
+        return ($a['package_type'] ?? '') === ($b['package_type'] ?? '')
+            && (string) ($a['weight'] ?? '') === (string) ($b['weight'] ?? '')
+            && (string) ($a['first_size'] ?? '') === (string) ($b['first_size'] ?? '')
+            && (string) ($a['second_size'] ?? '') === (string) ($b['second_size'] ?? '')
+            && (string) ($a['third_size'] ?? '') === (string) ($b['third_size'] ?? '');
+    }
+
+    public function sameAddress(array $a, array $b): bool
+    {
+        return ($a['city'] ?? '') === ($b['city'] ?? '')
+            && ($a['postal_code'] ?? '') === ($b['postal_code'] ?? '')
+            && ($a['name'] ?? '') === ($b['name'] ?? '')
+            && ($a['address'] ?? '') === ($b['address'] ?? '');
+    }
+
+    public function isDuplicate(
+        array $packageData, array $originAddress, array $destAddress, string $serviceSignature,
+        array $existingPkg, array $existingOrigin, array $existingDest, string $existingServiceSig
+    ): bool {
+        return $this->samePackageDimensions($packageData, $existingPkg)
+            && $this->sameAddress($originAddress, $existingOrigin)
+            && $this->sameAddress($destAddress, $existingDest)
+            && $serviceSignature === $existingServiceSig;
+    }
+
+    // --- Service signatures (ex trait CartServiceSignatures, inlined per consumer unico) ---
+
+    public function buildServiceSignatureFromService(Service $service): string
+    {
+        return app(ShipmentServicePricingService::class)->buildSelectionSignature(
+            $service->service_type ?? 'Nessuno', $service->service_data ?? [],
+            (bool) (($service->service_data ?? [])['sms_email_notification'] ?? false),
+        );
+    }
+
+    public function buildServiceSignatureFromArray(string $serviceType, array $serviceData = []): string
+    {
+        return app(ShipmentServicePricingService::class)->buildSelectionSignature(
+            $serviceType, $serviceData, (bool) ($serviceData['sms_email_notification'] ?? false),
+        );
+    }
+
+    public function buildServiceSignatureFromGuest(array $services = []): string
+    {
+        $serviceData = $services['serviceData'] ?? $services['service_data'] ?? [];
+        return app(ShipmentServicePricingService::class)->buildSelectionSignature(
+            $services['service_type'] ?? 'Nessuno',
+            is_array($serviceData) ? $serviceData : [],
+            (bool) ($services['sms_email_notification'] ?? (is_array($serviceData) ? ($serviceData['sms_email_notification'] ?? false) : false)),
+        );
+    }
+
+    public function calculateGroupedSurchargeFromModels($packages): int
+    {
+        return CartSurchargeCalculator::fromModels($packages);
+    }
+
+    public function calculateGroupedSurchargeFromArray(array $packages): int
+    {
+        return CartSurchargeCalculator::fromArray($packages);
+    }
 
     // --- Price helpers ---
 
