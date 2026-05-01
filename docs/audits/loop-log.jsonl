@@ -3,3 +3,4 @@
 {"event":"ondata_done","wave":2,"timestamp":"2026-05-01T12:01:30Z","status":"done","attempts":1,"gates_passed":["typecheck","lint","vitest_72_new"],"loc_added":441,"score_delta":"+2","cumulative_score":68}
 {"event":"ondata_done","wave":3,"timestamp":"2026-05-01T12:07:00Z","status":"done","attempts":1,"gates_passed":["typecheck","lint","vitest_341"],"loc_main":43,"loc_split":861,"score_delta":"+3","cumulative_score":71}
 {"event":"ondata_done","wave":4,"timestamp":"2026-05-01T12:09:00Z","status":"done","attempts":1,"gates_passed":["typecheck","lint","build"],"loc_added":370,"score_delta":"+3","cumulative_score":74}
+{"event":"ondata_done","wave":5,"timestamp":"2026-05-01T12:14:00Z","status":"done_partial","attempts":1,"gates_passed":["typecheck","lint","vitest_5_new"],"loc_added":345,"score_delta":"+3","cumulative_score":77,"note":"factory only, no shipmentstep refactor (E2E gate)"}

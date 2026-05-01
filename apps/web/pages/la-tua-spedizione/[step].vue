@@ -742,7 +742,9 @@ debugCheckpoint('step submit ready');
 
 // --- PROVIDE: funzioni form/validazione iniettate nei componenti figli ---
 // Evita prop drilling di 19+ funzioni attraverso StepAddressSection -> AddressFormFields.
-provide('shipmentFormHandlers', {
+// InjectionKey tipato (Ondata 6 — sostituisce string-key per dare type-safety
+// ai 4 consumer: AddressFormFields, AddressFieldFeedback, StepAddressSection).
+provide(shipmentFormHandlersKey, {
 	fieldClass,
 	getFieldError,
 	fieldErrorText,
@@ -765,7 +767,7 @@ provide('shipmentFormHandlers', {
 	formatCapSuggestionLabel,
 	sv,
 });
-provide('shipmentSuggestions', {
+provide(shipmentSuggestionsKey, {
 	originCitySuggestions,
 	originProvinceSuggestions,
 	originCapSuggestions,

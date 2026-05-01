@@ -11,6 +11,10 @@ const props = defineProps({
 	readonly: { type: Boolean, default: false },
 });
 
+// InjectionKey tipato (Ondata 6). Vue InjectionKey<T> garantisce che inject()
+// ritorni il tipo corretto a TypeScript senza cast manuali.
+const handlers = inject(shipmentFormHandlersKey);
+if (!handlers) throw new Error('AddressFormFields: shipmentFormHandlersKey non iniettata');
 const {
 	fieldClass, getFieldError, smartBlur,
 	onNameInput, onCityInput, onCityFocus, onProvinciaInput, onProvinceFocus,
@@ -18,7 +22,7 @@ const {
 	updateAddressField,
 	selectCity, sv,
 	formatCitySuggestionLabel,
-} = inject('shipmentFormHandlers');
+} = handlers;
 
 const typeKey = props.type;
 const idPrefix = typeKey === 'origin' ? '' : 'dest_';

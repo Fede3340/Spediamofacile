@@ -12,13 +12,17 @@ const props = defineProps({
 	typeKey: { type: String, required: true, validator: (v) => ['origin', 'dest'].includes(v) },
 });
 
-const { getFieldError, fieldErrorText, getFieldAssist, applyFieldAssist } = inject('shipmentFormHandlers');
+// InjectionKey tipato (Ondata 6 — sostituisce string-key 'shipmentFormHandlers').
+const handlers = inject(shipmentFormHandlersKey);
+if (!handlers) throw new Error('AddressFieldFeedback: shipmentFormHandlersKey non iniettata');
+const { getFieldError, fieldErrorText, getFieldAssist, applyFieldAssist } = handlers;
 
 const error = computed(() => getFieldError(props.typeKey, props.field));
 const assist = computed(() => getFieldAssist(props.typeKey, props.field));
 const visible = computed(() => Boolean(error.value || assist.value));
 const errorId = computed(() => `${props.typeKey === 'origin' ? '' : 'dest_'}${props.field}_error`);
-const onApply = () => applyFieldAssist(props.typeKey, props.field);
+// applyFieldAssist accetta l'oggetto FieldAssist completo (non typeKey/field).
+const onApply = () => assist.value && applyFieldAssist(assist.value);
 </script>
 
 <template>
