@@ -123,10 +123,9 @@ const handleSubmit = async () => {
 
 <template>
 <!-- eslint-disable vue/no-v-html -- icone SVG da dictionary accountCardIcons (no input utente) -->
-	<section class="sf-account-shell min-h-[600px] py-[20px] tablet:py-[24px] desktop:py-[28px]">
+	<section class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
 		<div class="my-container">
 			<AccountPageHeader
-				class="sf-account-shell-hero--compact"
 				title="Assistenza"
 				description="Apri un ticket dal tuo account o scegli il canale giusto prima di contattare il team."
 				current="Assistenza">

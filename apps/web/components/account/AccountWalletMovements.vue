@@ -1,4 +1,4 @@
-﻿<script setup>
+<script setup>
 import { formatDateTimeIt } from '~/utils/date.js';
 
 const props = defineProps({
@@ -21,7 +21,7 @@ const countLabel = computed(() => {
 });
 
 const getMovementColor = (mov) => {
-	return mov.type === 'credit' ? 'text-[#15803D]' : 'text-[#B42318]';
+	return mov.type === 'credit' ? 'text-brand-success-fg' : 'text-brand-error';
 };
 
 const getMovementSign = (mov) => {
@@ -41,13 +41,13 @@ const getSourceLabel = (source) => {
 
 const getSourceColor = (source) => {
 	const colors = {
-		stripe: 'bg-[#EDF7F8] text-[var(--color-brand-primary)]',
-		commission: 'bg-[#FFF4E8] text-[#B45309]',
-		withdrawal: 'bg-[#F5F7F8] text-[var(--color-brand-text-secondary)]',
-		wallet: 'bg-[#EDF7F8] text-[var(--color-brand-primary)]',
-		refund: 'bg-[#FEF2F2] text-[#B42318]',
+		stripe: 'bg-brand-primary/10 text-brand-primary',
+		commission: 'bg-status-pending-bg text-status-pending-fg',
+		withdrawal: 'bg-brand-bg-alt text-brand-text-secondary',
+		wallet: 'bg-brand-primary/10 text-brand-primary',
+		refund: 'bg-status-failed-bg text-status-failed-fg',
 	};
-	return colors[source] || 'bg-[#F5F7F8] text-[var(--color-brand-text-secondary)]';
+	return colors[source] || 'bg-brand-bg-alt text-brand-text-secondary';
 };
 
 const getMovementTitle = (mov) => {
@@ -56,7 +56,6 @@ const getMovementTitle = (mov) => {
 	return 'Uscita dal portafoglio';
 };
 
-/* SVG icons per source: returns path d for the movement icon */
 const getMovementSvg = (mov) => {
 	if (mov.source === 'commission')
 		return 'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM6 20v-2a4 4 0 0 1 4-4h.5M16 16h2m0 0h2m-2 0v-2m0 2v2';
@@ -71,12 +70,12 @@ const getMovementSvg = (mov) => {
 </script>
 
 <template>
-	<div class="mt-[14px] rounded-[16px] bg-white p-[16px] desktop:mt-[18px] desktop:p-[20px]" style="box-shadow: 0 2px 8px rgba(9,88,102,0.06), 0 0 0 1px rgba(9,88,102,0.04);">
-		<div class="mb-[16px] flex flex-col gap-[10px] sm:flex-row sm:items-start sm:justify-between desktop:mb-[16px]">
-			<div class="flex items-start gap-[12px]">
-				<div class="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-[#EDF7F8]">
+	<div class="mt-3.5 rounded-card border border-brand-border bg-white p-4 shadow-sf-sm desktop:mt-[18px] desktop:p-5">
+		<div class="mb-4 flex flex-col gap-2.5 sm:flex-row sm:items-start sm:justify-between">
+			<div class="flex items-start gap-3">
+				<div class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-primary/10">
 					<svg
-aria-hidden="true"
+						aria-hidden="true"
 						width="20"
 						height="20"
 						viewBox="0 0 24 24"
@@ -85,49 +84,49 @@ aria-hidden="true"
 						stroke-width="2"
 						stroke-linecap="round"
 						stroke-linejoin="round"
-						class="text-[var(--color-brand-primary)]">
+						class="text-brand-primary">
 						<path d="M12 8v4l3 3" />
 						<circle cx="12" cy="12" r="10" />
 					</svg>
 				</div>
 
 				<div>
-					<h2 class="font-montserrat text-[1rem] font-[800] text-[var(--color-brand-text)]">Movimenti</h2>
-					<p class="mt-[4px] text-[0.8125rem] leading-[1.5] text-[var(--color-brand-text-secondary)]">
+					<h2 class="font-display text-base font-extrabold text-brand-text">Movimenti</h2>
+					<p class="mt-1 text-[0.8125rem] leading-snug text-brand-text-secondary">
 						Ricariche, pagamenti, rimborsi e commissioni in ordine cronologico.
 					</p>
 				</div>
 			</div>
 
-			<span class="inline-flex w-fit items-center rounded-full bg-[#F5F6F9] px-[10px] py-[5px] text-[0.75rem] font-semibold text-[var(--color-brand-text-secondary)]">
+			<span class="inline-flex w-fit items-center rounded-full bg-brand-bg-alt px-2.5 py-1.5 text-xs font-semibold text-brand-text-secondary">
 				{{ countLabel }}
 			</span>
 		</div>
 
 		<div
 			v-if="movementsError && hasMovements"
-			class="mb-[16px] flex flex-col gap-[10px] rounded-[16px] border border-[#F3D1A7] bg-[#FFF7E8] px-[12px] py-[11px] text-[0.8125rem] text-[#B45309] tablet:flex-row tablet:items-center tablet:justify-between">
-			<p class="leading-[1.5]">Non sono riuscito ad aggiornare tutto lo storico in tempo reale. Ti mostro l ultimo elenco disponibile.</p>
+			class="mb-4 flex flex-col gap-2.5 rounded-card border border-status-pending-fg/30 bg-status-pending-bg px-3 py-2.5 text-[0.8125rem] text-status-pending-fg tablet:flex-row tablet:items-center tablet:justify-between">
+			<p class="leading-snug">Non sono riuscito ad aggiornare tutto lo storico in tempo reale. Ti mostro l'ultimo elenco disponibile.</p>
 			<SfButton variant="secondary" size="sm" @click="emit('retry-movements')">Riprova storico</SfButton>
 		</div>
 
-		<div v-if="isLoadingMovements && !hasMovements" class="space-y-[10px] py-[4px]">
-			<div v-for="index in 4" :key="index" class="animate-pulse rounded-[16px] border border-[#EEF1F3] p-[12px]">
-				<div class="flex items-start gap-[12px]">
-					<div class="h-[38px] w-[38px] rounded-full bg-[#F5F7F8]"/>
-					<div class="min-w-0 flex-1 space-y-[8px]">
-						<div class="h-[14px] w-[220px] max-w-full rounded-full bg-[var(--color-brand-border)]"/>
-						<div class="h-[12px] w-[160px] rounded-full bg-[#F0F0F0]"/>
+		<div v-if="isLoadingMovements && !hasMovements" class="space-y-2.5 py-1">
+			<div v-for="index in 4" :key="index" class="animate-pulse rounded-card border border-brand-border p-3">
+				<div class="flex items-start gap-3">
+					<div class="h-[38px] w-[38px] rounded-full bg-brand-bg-alt" />
+					<div class="min-w-0 flex-1 space-y-2">
+						<div class="h-3.5 w-[220px] max-w-full rounded-full bg-brand-border" />
+						<div class="h-3 w-[160px] rounded-full bg-brand-border/60" />
 					</div>
-					<div class="h-[14px] w-[74px] rounded-full bg-[var(--color-brand-border)]"/>
+					<div class="h-3.5 w-[74px] rounded-full bg-brand-border" />
 				</div>
 			</div>
 		</div>
 
-		<div v-else-if="hasBlockingError" class="py-[32px] text-center">
-			<div class="mx-auto mb-[16px] flex h-[56px] w-[56px] items-center justify-center rounded-full bg-[#FEF2F2]">
+		<div v-else-if="hasBlockingError" class="py-8 text-center">
+			<div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-status-failed-bg">
 				<svg
-aria-hidden="true"
+					aria-hidden="true"
 					width="24"
 					height="24"
 					viewBox="0 0 24 24"
@@ -136,17 +135,17 @@ aria-hidden="true"
 					stroke-width="2"
 					stroke-linecap="round"
 					stroke-linejoin="round"
-					class="text-[#B42318]">
+					class="text-status-failed-fg">
 					<circle cx="12" cy="12" r="10" />
 					<line x1="12" y1="8" x2="12" y2="12" />
 					<line x1="12" y1="16" x2="12.01" y2="16" />
 				</svg>
 			</div>
-			<p class="text-[0.9375rem] font-medium text-[var(--color-brand-text)]">Storico non disponibile</p>
-			<p class="mx-auto mt-[6px] max-w-[420px] text-[0.8125rem] leading-[1.55] text-[var(--color-brand-text-secondary)]">
+			<p class="text-[0.9375rem] font-medium text-brand-text">Storico non disponibile</p>
+			<p class="mx-auto mt-1.5 max-w-[420px] text-[0.8125rem] leading-snug text-brand-text-secondary">
 				{{ movementsError }}
 			</p>
-			<div class="mt-[16px] inline-flex">
+			<div class="mt-4 inline-flex">
 				<SfButton variant="secondary" size="sm" @click="emit('retry-movements')">
 					<template #leading>
 						<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -161,10 +160,10 @@ aria-hidden="true"
 			</div>
 		</div>
 
-		<div v-else-if="!hasMovements" class="py-[32px] text-center">
-			<div class="mx-auto mb-[16px] flex h-[56px] w-[56px] items-center justify-center rounded-full bg-[#F5F6F9]">
+		<div v-else-if="!hasMovements" class="py-8 text-center">
+			<div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-brand-bg-alt">
 				<svg
-aria-hidden="true"
+					aria-hidden="true"
 					width="24"
 					height="24"
 					viewBox="0 0 24 24"
@@ -173,19 +172,19 @@ aria-hidden="true"
 					stroke-width="2"
 					stroke-linecap="round"
 					stroke-linejoin="round"
-					class="text-[var(--color-brand-text-muted)]">
+					class="text-brand-text-muted">
 					<path d="M4 4h16v16H4z" />
 					<path d="M4 10h16" />
 					<path d="M10 4v16" />
 				</svg>
 			</div>
-			<p class="text-[0.9375rem] font-medium text-[var(--color-brand-text)]">Nessun movimento</p>
-			<p class="mx-auto mt-[6px] max-w-[360px] text-[0.8125rem] leading-[1.55] text-[var(--color-brand-text-secondary)]">
+			<p class="text-[0.9375rem] font-medium text-brand-text">Nessun movimento</p>
+			<p class="mx-auto mt-1.5 max-w-[360px] text-[0.8125rem] leading-snug text-brand-text-secondary">
 				I movimenti appariranno qui dopo la prima ricarica o il primo pagamento con il portafoglio.
 			</p>
-			<NuxtLink to="/preventivo" class="btn-primary btn-compact mt-[16px] inline-flex items-center gap-[6px]">
+			<NuxtLink to="/preventivo" class="btn-primary btn-compact mt-4 inline-flex items-center gap-1.5">
 				<svg
-aria-hidden="true"
+					aria-hidden="true"
 					width="17"
 					height="17"
 					viewBox="0 0 24 24"
@@ -201,23 +200,20 @@ aria-hidden="true"
 			</NuxtLink>
 		</div>
 
-		<ul v-else class="space-y-[8px]">
+		<ul v-else class="space-y-2">
 			<li
 				v-for="(mov, index) in movements"
 				:key="mov.id || `${mov.created_at || 'mov'}-${index}`"
-				:class="[
-					'flex flex-col gap-[10px] rounded-[16px] rounded-l-[14px] border border-[#EEF1F3] p-[12px] sm:flex-row sm:items-center sm:gap-[12px] sf-movement-row',
-					mov.type === 'credit' ? 'sf-movement-row--credit' : 'sf-movement-row--debit',
-				]">
+				class="flex flex-col gap-2.5 rounded-card border border-brand-border p-3 sm:flex-row sm:items-center sm:gap-3">
 				<div
 					:class="[
-						'flex h-[38px] w-[38px] items-center justify-center rounded-full shrink-0 ring-2 ring-offset-1',
+						'flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full ring-2 ring-offset-1',
 						mov.type === 'credit'
-							? 'bg-[#E8F9EE] ring-[#22C55E]/20'
-							: 'bg-[#FEF2F2] ring-[#EF4444]/20',
+							? 'bg-brand-success-bg ring-brand-success/20'
+							: 'bg-status-failed-bg ring-brand-error/20',
 					]">
 					<svg
-aria-hidden="true"
+						aria-hidden="true"
 						width="18"
 						height="18"
 						viewBox="0 0 24 24"
@@ -226,16 +222,16 @@ aria-hidden="true"
 						stroke-width="2"
 						stroke-linecap="round"
 						stroke-linejoin="round"
-						:class="mov.type === 'credit' ? 'text-[#15803D]' : 'text-[#B42318]'">
+						:class="mov.type === 'credit' ? 'text-brand-success-fg' : 'text-brand-error'">
 						<path :d="getMovementSvg(mov)" />
 					</svg>
 				</div>
 
 				<div class="min-w-0 flex-1">
-					<p class="truncate text-[0.875rem] font-medium text-[var(--color-brand-text)]">{{ getMovementTitle(mov) }}</p>
-					<div class="mt-[4px] flex flex-wrap items-center gap-[8px]">
-						<span class="text-[0.75rem] text-[var(--color-brand-text-secondary)]">{{ formatDate(mov.created_at) }}</span>
-						<span :class="['rounded-full px-[8px] py-[2px] text-[0.6875rem] font-medium', getSourceColor(mov.source)]">
+					<p class="truncate text-sm font-medium text-brand-text">{{ getMovementTitle(mov) }}</p>
+					<div class="mt-1 flex flex-wrap items-center gap-2">
+						<span class="text-xs text-brand-text-secondary">{{ formatDate(mov.created_at) }}</span>
+						<span :class="['rounded-full px-2 py-0.5 text-[0.6875rem] font-medium', getSourceColor(mov.source)]">
 							{{ getSourceLabel(mov.source) }}
 						</span>
 					</div>
@@ -248,4 +244,3 @@ aria-hidden="true"
 		</ul>
 	</div>
 </template>
-

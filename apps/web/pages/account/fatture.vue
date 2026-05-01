@@ -1,6 +1,4 @@
-<!-- PAGINA: /account/fatture — storico fatture PDF per l'utente loggato -->
 <script setup>
-import '~/assets/css/account.css';
 import { formatPriceSafe as formatPrice } from '~/utils/price.js';
 import { formatDateIt } from '~/utils/date.js';
 
@@ -14,14 +12,10 @@ useSeoMeta({
 
 const sanctum = useSanctumClient();
 
-// --- Stato lista ---
 const loading = ref(true);
 const loadError = ref(null);
 const orders = ref([]);
 
-// L'endpoint dedicato /api/invoices non esiste lato backend: riusiamo /api/orders
-// filtrando su stati con fattura emessa (completed, shipped, in_transit, delivered).
-// La fattura PDF e' servita da /api/orders/{id}/invoice.pdf (M10 InvoicePdfController).
 const loadInvoices = async () => {
 	loading.value = true;
 	loadError.value = null;
@@ -29,7 +23,6 @@ const loadInvoices = async () => {
 		const res = await sanctum('/api/orders', { query: { per_page: 100 } });
 		const raw = res?.data || res || [];
 		const arr = Array.isArray(raw) ? raw : (raw.data || []);
-		// Tengo solo ordini pagati (hanno fattura)
 		const paidStatuses = new Set(['paid', 'completed', 'shipped', 'in_transit', 'delivered', 'succeeded']);
 		orders.value = arr.filter((o) => {
 			const status = String(o.raw_status || o.status || '').toLowerCase();
@@ -46,7 +39,6 @@ onMounted(() => {
 	loadInvoices();
 });
 
-// --- Download PDF singola fattura ---
 const downloadingId = ref(null);
 const downloadError = ref(null);
 
@@ -71,13 +63,9 @@ const downloadInvoice = async (order) => {
 	}
 };
 
-// --- Helpers format ---
 const orderCode = (id) => `SF-${String(id).padStart(6, '0')}`;
-
-// formatDateIt gestisce sia string ISO che string italiano "DD/MM/YYYY HH:mm"
 const formatDate = (raw) => formatDateIt(raw, '—');
 
-// Stato SDI: inferito da campi backend sdi_status / sdi_sent_at. Fallback: "n/d" se mancanti.
 const sdiBadge = (order) => {
 	const s = String(order.sdi_status || '').toLowerCase();
 	if (s === 'sent' || s === 'accepted') return { label: 'Trasmessa', tone: 'success' };
@@ -86,12 +74,19 @@ const sdiBadge = (order) => {
 	return { label: 'N/D', tone: 'neutral' };
 };
 
+const sdiBadgeClass = (tone) => {
+	if (tone === 'success') return 'bg-brand-success-bg text-brand-success-fg border-brand-success/30';
+	if (tone === 'error') return 'bg-status-failed-bg text-status-failed-fg border-status-failed-fg/30';
+	if (tone === 'warning') return 'bg-status-pending-bg text-status-pending-fg border-status-pending-fg/30';
+	return 'bg-brand-bg-alt text-brand-text-secondary border-brand-border';
+};
+
 const empty = computed(() => !loading.value && !loadError.value && orders.value.length === 0);
 </script>
 
 <template>
-	<section class="sf-account-shell sf-fatture-page min-h-[600px] py-[20px] tablet:py-[24px] desktop:py-[28px]">
-		<div class="my-container max-w-[1280px]">
+	<section class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
+		<div class="my-container max-w-7xl">
 			<AccountPageHeader
 				eyebrow="Fatture"
 				title="Le tue fatture"
@@ -101,13 +96,11 @@ const empty = computed(() => !loading.value && !loadError.value && orders.value.
 					{ label: 'Fatture' },
 				]" />
 
-			<!-- LOADING -->
-			<div v-if="loading" class="sf-fatture__skeleton" aria-busy="true">
-				<div v-for="n in 4" :key="n" class="sf-fatture__skel-row"/>
+			<div v-if="loading" class="mt-[18px] flex flex-col gap-2.5" aria-busy="true">
+				<div v-for="n in 4" :key="n" class="h-[62px] animate-pulse rounded-card bg-gradient-to-r from-brand-bg-alt via-brand-border to-brand-bg-alt" />
 			</div>
 
-			<!-- ERRORE -->
-			<div v-else-if="loadError" class="sf-fatture__error" role="alert">
+			<div v-else-if="loadError" class="mt-[18px] flex flex-col items-center gap-3 rounded-card border border-status-failed-fg/30 bg-status-failed-bg p-8 text-center text-status-failed-fg" role="alert">
 				<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 					<circle cx="12" cy="12" r="10" />
 					<line x1="12" y1="8" x2="12" y2="12" />
@@ -117,9 +110,8 @@ const empty = computed(() => !loading.value && !loadError.value && orders.value.
 				<SfButton variant="secondary" @click="loadInvoices">Riprova</SfButton>
 			</div>
 
-			<!-- EMPTY -->
-			<div v-else-if="empty" class="sf-fatture__empty">
-				<div class="sf-fatture__empty-icon" aria-hidden="true">
+			<div v-else-if="empty" class="mx-auto mt-[18px] max-w-[560px] rounded-card border border-brand-border bg-brand-card p-12 text-center">
+				<div class="mb-3.5 inline-flex rounded-full bg-brand-primary/10 p-3.5 text-brand-primary" aria-hidden="true">
 					<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
 						<polyline points="14 2 14 8 20 8" />
@@ -128,42 +120,40 @@ const empty = computed(() => !loading.value && !loadError.value && orders.value.
 						<polyline points="10 9 9 9 8 9" />
 					</svg>
 				</div>
-				<h2 class="sf-fatture__empty-title">Nessuna fattura ancora</h2>
-				<p class="sf-fatture__empty-text">Le fatture vengono emesse automaticamente dopo il pagamento di un ordine. Effettua la tua prima spedizione per vederle qui.</p>
+				<h2 class="mb-2 font-display text-[1.375rem] font-extrabold text-brand-primary">Nessuna fattura ancora</h2>
+				<p class="mb-5 text-[0.9375rem] leading-relaxed text-brand-text-secondary">Le fatture vengono emesse automaticamente dopo il pagamento di un ordine. Effettua la tua prima spedizione per vederle qui.</p>
 				<SfButton to="/preventivo" variant="primary">Calcola un preventivo</SfButton>
 			</div>
 
-			<!-- LISTA -->
-			<div v-else class="sf-fatture__list">
-				<p v-if="downloadError" role="alert" class="sf-fatture__download-error">{{ downloadError }}</p>
+			<div v-else class="mt-[18px]">
+				<p v-if="downloadError" role="alert" class="mb-3 rounded-[10px] border border-status-failed-fg/30 bg-status-failed-bg px-3 py-2.5 text-sm font-semibold text-status-failed-fg">{{ downloadError }}</p>
 
-				<!-- Tabella desktop -->
-				<div class="sf-fatture__table-wrap">
-					<table class="sf-fatture__table">
-						<thead>
+				<div class="hidden overflow-hidden rounded-card border border-brand-border bg-brand-card md:block">
+					<table class="w-full border-collapse text-sm">
+						<thead class="bg-surface-raised">
 							<tr>
-								<th scope="col">Numero</th>
-								<th scope="col">Data emissione</th>
-								<th scope="col">Importo</th>
-								<th scope="col">Stato SDI</th>
-								<th scope="col" class="sf-fatture__th-actions">Azioni</th>
+								<th scope="col" class="border-b border-brand-border px-[18px] py-3.5 text-left text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-brand-text-muted">Numero</th>
+								<th scope="col" class="border-b border-brand-border px-[18px] py-3.5 text-left text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-brand-text-muted">Data emissione</th>
+								<th scope="col" class="border-b border-brand-border px-[18px] py-3.5 text-left text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-brand-text-muted">Importo</th>
+								<th scope="col" class="border-b border-brand-border px-[18px] py-3.5 text-left text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-brand-text-muted">Stato SDI</th>
+								<th scope="col" class="border-b border-brand-border px-[18px] py-3.5 text-right text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-brand-text-muted">Azioni</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="o in orders" :key="o.id">
-								<td>
-									<span class="sf-fatture__code">{{ orderCode(o.id) }}</span>
+							<tr v-for="o in orders" :key="o.id" class="hover:bg-surface-raised">
+								<td class="border-b border-brand-border/60 px-[18px] py-3.5 align-middle text-brand-text last:border-0">
+									<span class="rounded-md bg-brand-primary/10 px-2 py-[3px] font-mono text-[0.8125rem] font-bold tracking-wide text-brand-primary">{{ orderCode(o.id) }}</span>
 								</td>
-								<td>{{ formatDate(o.created_at) }}</td>
-								<td class="sf-fatture__amount">{{ formatPrice(o.payable_total_cents ?? o.subtotal_cents ?? 0) }}</td>
-								<td>
-									<span class="sf-fatture__status" :data-tone="sdiBadge(o).tone">{{ sdiBadge(o).label }}</span>
+								<td class="border-b border-brand-border/60 px-[18px] py-3.5 align-middle text-brand-text last:border-0">{{ formatDate(o.created_at) }}</td>
+								<td class="border-b border-brand-border/60 px-[18px] py-3.5 align-middle font-bold text-brand-primary last:border-0">{{ formatPrice(o.payable_total_cents ?? o.subtotal_cents ?? 0) }}</td>
+								<td class="border-b border-brand-border/60 px-[18px] py-3.5 align-middle last:border-0">
+									<span :class="['inline-flex rounded-full border px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-wider', sdiBadgeClass(sdiBadge(o).tone)]">{{ sdiBadge(o).label }}</span>
 								</td>
-								<td class="sf-fatture__actions-cell">
+								<td class="border-b border-brand-border/60 px-[18px] py-3.5 text-right align-middle last:border-0">
 									<SfButton
 										variant="secondary"
 										size="sm"
-										class="text-[0.75rem]"
+										class="text-xs"
 										:loading="downloadingId === o.id"
 										@click="downloadInvoice(o)">
 										<svg v-if="downloadingId !== o.id" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -180,21 +170,20 @@ const empty = computed(() => !loading.value && !loadError.value && orders.value.
 					</table>
 				</div>
 
-				<!-- Card mobile -->
-				<div class="sf-fatture__cards">
-					<article v-for="o in orders" :key="`m-${o.id}`" class="sf-fatture__card">
-						<header class="sf-fatture__card-head">
-							<span class="sf-fatture__code">{{ orderCode(o.id) }}</span>
-							<span class="sf-fatture__status" :data-tone="sdiBadge(o).tone">{{ sdiBadge(o).label }}</span>
+				<div class="flex flex-col gap-3 md:hidden">
+					<article v-for="o in orders" :key="`m-${o.id}`" class="rounded-card border border-brand-border bg-brand-card p-4">
+						<header class="mb-3 flex items-center justify-between gap-2.5">
+							<span class="rounded-md bg-brand-primary/10 px-2 py-[3px] font-mono text-[0.8125rem] font-bold tracking-wide text-brand-primary">{{ orderCode(o.id) }}</span>
+							<span :class="['inline-flex rounded-full border px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-wider', sdiBadgeClass(sdiBadge(o).tone)]">{{ sdiBadge(o).label }}</span>
 						</header>
-						<dl class="sf-fatture__card-defs">
-							<div>
-								<dt>Emessa il</dt>
-								<dd>{{ formatDate(o.created_at) }}</dd>
+						<dl class="m-0 mb-3.5 grid grid-cols-2 gap-2.5">
+							<div class="flex flex-col gap-0.5">
+								<dt class="text-[0.6875rem] font-bold uppercase tracking-wider text-brand-text-muted">Emessa il</dt>
+								<dd class="m-0 text-sm font-semibold text-brand-text">{{ formatDate(o.created_at) }}</dd>
 							</div>
-							<div>
-								<dt>Importo</dt>
-								<dd class="sf-fatture__amount">{{ formatPrice(o.payable_total_cents ?? o.subtotal_cents ?? 0) }}</dd>
+							<div class="flex flex-col gap-0.5">
+								<dt class="text-[0.6875rem] font-bold uppercase tracking-wider text-brand-text-muted">Importo</dt>
+								<dd class="m-0 text-sm font-bold text-brand-primary">{{ formatPrice(o.payable_total_cents ?? o.subtotal_cents ?? 0) }}</dd>
 							</div>
 						</dl>
 						<SfButton

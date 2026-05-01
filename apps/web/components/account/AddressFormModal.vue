@@ -1,6 +1,4 @@
-<!-- COMPONENTE: AddressFormModal -->
 <script setup>
-import '~/assets/css/account.css';
 import { provinceList } from '~/utils/provinceList';
 
 const props = defineProps({
@@ -14,9 +12,9 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'submit', 'close']);
 
 const emptyForm = () => ({
-	type: 'destination',         // 'origin' | 'destination'
-	profile: 'private',          // 'private' | 'company'
-	label: '',                   // Etichetta personale (Casa, Ufficio…)
+	type: 'destination',
+	profile: 'private',
+	label: '',
 	first_name: '',
 	last_name: '',
 	company_name: '',
@@ -40,7 +38,6 @@ const errors = ref({});
 const isEdit = computed(() => props.mode === 'edit');
 const isCompany = computed(() => form.value.profile === 'company');
 
-// Inizializza form quando si apre la modale
 watch(
 	() => props.modelValue,
 	(open) => {
@@ -67,7 +64,6 @@ watch(
 	{ immediate: true },
 );
 
-// Validazione
 const validate = () => {
 	const err = {};
 	const f = form.value;
@@ -114,9 +110,6 @@ const onSubmit = () => {
 		? f.company_name.trim()
 		: [f.first_name.trim(), f.last_name.trim()].filter(Boolean).join(' ');
 
-	// Payload mappato sui campi backend (vedi UserAddressStoreRequest).
-	// Profilo + dati azienda + label sono extra: per ora vanno in
-	// `additional_information` come prefisso strutturato (gap backend).
 	const extras = [];
 	if (f.label) extras.push(`Etichetta: ${f.label}`);
 	if (isCompany.value) {
@@ -139,7 +132,6 @@ const onSubmit = () => {
 		email: f.email?.trim() || '',
 		additional_information: additional,
 		default: f.default ? 1 : 0,
-		// Campi extra mantenuti per uso frontend (ignorati dal backend attuale)
 		_meta: {
 			profile: f.profile,
 			label: f.label,
@@ -164,178 +156,190 @@ const submitLabel = computed(() => {
 	if (props.submitting) return isEdit.value ? 'Salvataggio…' : 'Salvataggio…';
 	return isEdit.value ? 'Salva modifiche' : 'Aggiungi indirizzo';
 });
+
+const inputClass = 'w-full rounded-xl border border-brand-border bg-brand-bg-alt px-3.5 py-2.5 text-sm text-brand-text transition focus:border-brand-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(9,88,102,0.1)] focus:outline-none aria-[invalid=true]:border-status-failed-fg';
+const labelClass = 'text-[0.75rem] font-bold uppercase tracking-wide text-brand-text-secondary';
+const errorClass = 'text-[0.6875rem] text-status-failed-fg';
 </script>
 
 <template>
 	<SfModal :model-value="modelValue" :title="titleText" size="lg" :persistent="submitting" @update:model-value="(v) => emit('update:modelValue', v)">
-		<form class="sf-addr-form" novalidate @submit.prevent="onSubmit">
-			<!-- TIPO INDIRIZZO -->
-			<fieldset class="sf-addr-fieldset">
-				<legend class="sf-addr-legend">Tipo di indirizzo</legend>
-				<div class="sf-addr-radio-group">
-					<label :class="['sf-addr-radio', form.type === 'origin' ? 'sf-addr-radio--active sf-addr-radio--origin' : '']">
-						<input v-model="form.type" type="radio" value="origin" >
-						<span class="sf-addr-radio__icon">
+		<form class="flex flex-col gap-4 font-sans" novalidate @submit.prevent="onSubmit">
+			<fieldset class="m-0 grid gap-2 border-0 p-0">
+				<legend :class="['mb-1 px-0', labelClass]">Tipo di indirizzo</legend>
+				<div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+					<label
+						:class="[
+							'flex cursor-pointer items-center gap-3 rounded-card border bg-white p-3 transition',
+							form.type === 'origin'
+								? 'border-brand-primary bg-brand-primary/[0.06] text-brand-primary'
+								: 'border-brand-border hover:border-brand-primary/30',
+						]">
+						<input v-model="form.type" type="radio" value="origin" class="sr-only">
+						<span class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-bg-alt text-current">
 							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
 								<path d="M12,2A7,7 0 0,1 19,9C19,14.25 12,22 12,22C12,22 5,14.25 5,9A7,7 0 0,1 12,2M12,4A5,5 0 0,0 7,9C7,10 7,12 12,18.71C17,12 17,10 17,9A5,5 0 0,0 12,4M12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5Z" />
 							</svg>
 						</span>
 						<div>
-							<strong>Partenza</strong>
-							<small>Punto di ritiro</small>
+							<strong class="block text-sm font-semibold text-brand-text">Partenza</strong>
+							<small class="block text-xs text-brand-text-muted">Punto di ritiro</small>
 						</div>
 					</label>
-					<label :class="['sf-addr-radio', form.type === 'destination' ? 'sf-addr-radio--active sf-addr-radio--dest' : '']">
-						<input v-model="form.type" type="radio" value="destination" >
-						<span class="sf-addr-radio__icon">
+					<label
+						:class="[
+							'flex cursor-pointer items-center gap-3 rounded-card border bg-white p-3 transition',
+							form.type === 'destination'
+								? 'border-brand-accent bg-brand-accent/[0.06] text-brand-accent-dark'
+								: 'border-brand-border hover:border-brand-primary/30',
+						]">
+						<input v-model="form.type" type="radio" value="destination" class="sr-only">
+						<span class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-bg-alt text-current">
 							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
 								<path d="M12,2L4.5,20.29L5.21,21L12,18L18.79,21L19.5,20.29L12,2Z" />
 							</svg>
 						</span>
 						<div>
-							<strong>Destinazione</strong>
-							<small>Consegna pacco</small>
+							<strong class="block text-sm font-semibold text-brand-text">Destinazione</strong>
+							<small class="block text-xs text-brand-text-muted">Consegna pacco</small>
 						</div>
 					</label>
 				</div>
-				<p v-if="errors.type" class="sf-addr-error">{{ errors.type }}</p>
+				<p v-if="errors.type" :class="errorClass">{{ errors.type }}</p>
 			</fieldset>
 
-			<!-- ETICHETTA PERSONALE -->
-			<div class="sf-addr-row">
-				<label class="sf-addr-field">
-					<span class="sf-addr-field__label">Etichetta personale *</span>
+			<div class="grid gap-3">
+				<label class="grid gap-1">
+					<span :class="labelClass">Etichetta personale *</span>
 					<input
 						v-model="form.label"
 						type="text"
-						class="sf-addr-input"
+						:class="inputClass"
 						placeholder="Es. Casa, Ufficio, Magazzino"
 						maxlength="40"
-						:aria-invalid="errors.label ? 'true' : 'false'"
-					>
-					<span v-if="errors.label" class="sf-addr-error">{{ errors.label }}</span>
+						:aria-invalid="errors.label ? 'true' : 'false'">
+					<span v-if="errors.label" :class="errorClass">{{ errors.label }}</span>
 				</label>
 			</div>
 
-			<!-- PROFILO -->
-			<fieldset class="sf-addr-fieldset">
-				<legend class="sf-addr-legend">Profilo</legend>
-				<div class="sf-addr-radio-group sf-addr-radio-group--compact">
-					<label :class="['sf-addr-radio sf-addr-radio--mini', form.profile === 'private' ? 'sf-addr-radio--active' : '']">
-						<input v-model="form.profile" type="radio" value="private" >
+			<fieldset class="m-0 grid gap-2 border-0 p-0">
+				<legend :class="['mb-1 px-0', labelClass]">Profilo</legend>
+				<div class="grid max-w-[280px] grid-cols-2 gap-2">
+					<label
+						:class="[
+							'flex cursor-pointer items-center justify-center gap-2 rounded-card border bg-white px-3 py-2 text-sm font-semibold transition',
+							form.profile === 'private' ? 'border-brand-primary bg-brand-primary/[0.06] text-brand-primary' : 'border-brand-border text-brand-text hover:border-brand-primary/30',
+						]">
+						<input v-model="form.profile" type="radio" value="private" class="sr-only">
 						<span>Privato</span>
 					</label>
-					<label :class="['sf-addr-radio sf-addr-radio--mini', form.profile === 'company' ? 'sf-addr-radio--active' : '']">
-						<input v-model="form.profile" type="radio" value="company" >
+					<label
+						:class="[
+							'flex cursor-pointer items-center justify-center gap-2 rounded-card border bg-white px-3 py-2 text-sm font-semibold transition',
+							form.profile === 'company' ? 'border-brand-primary bg-brand-primary/[0.06] text-brand-primary' : 'border-brand-border text-brand-text hover:border-brand-primary/30',
+						]">
+						<input v-model="form.profile" type="radio" value="company" class="sr-only">
 						<span>Azienda</span>
 					</label>
 				</div>
 			</fieldset>
 
-			<!-- DATI AZIENDA / NOME COGNOME -->
-			<div v-if="isCompany" class="sf-addr-row sf-addr-row--triple">
-				<label class="sf-addr-field">
-					<span class="sf-addr-field__label">Ragione sociale *</span>
-					<input v-model="form.company_name" type="text" class="sf-addr-input" placeholder="Acme S.r.l." >
-					<span v-if="errors.company_name" class="sf-addr-error">{{ errors.company_name }}</span>
+			<div v-if="isCompany" class="grid grid-cols-1 gap-3 md:grid-cols-3">
+				<label class="grid gap-1">
+					<span :class="labelClass">Ragione sociale *</span>
+					<input v-model="form.company_name" type="text" :class="inputClass" placeholder="Acme S.r.l.">
+					<span v-if="errors.company_name" :class="errorClass">{{ errors.company_name }}</span>
 				</label>
-				<label class="sf-addr-field">
-					<span class="sf-addr-field__label">Partita IVA *</span>
-					<input v-model="form.vat_number" type="text" class="sf-addr-input" placeholder="12345678901" maxlength="13" >
-					<span v-if="errors.vat_number" class="sf-addr-error">{{ errors.vat_number }}</span>
+				<label class="grid gap-1">
+					<span :class="labelClass">Partita IVA *</span>
+					<input v-model="form.vat_number" type="text" :class="inputClass" placeholder="12345678901" maxlength="13">
+					<span v-if="errors.vat_number" :class="errorClass">{{ errors.vat_number }}</span>
 				</label>
-				<label class="sf-addr-field">
-					<span class="sf-addr-field__label">Codice SDI</span>
-					<input v-model="form.sdi_code" type="text" class="sf-addr-input" placeholder="XXXXXXX" maxlength="7" >
-				</label>
-			</div>
-			<div v-else class="sf-addr-row sf-addr-row--double">
-				<label class="sf-addr-field">
-					<span class="sf-addr-field__label">Nome *</span>
-					<input v-model="form.first_name" type="text" class="sf-addr-input" placeholder="Mario" >
-					<span v-if="errors.first_name" class="sf-addr-error">{{ errors.first_name }}</span>
-				</label>
-				<label class="sf-addr-field">
-					<span class="sf-addr-field__label">Cognome *</span>
-					<input v-model="form.last_name" type="text" class="sf-addr-input" placeholder="Rossi" >
-					<span v-if="errors.last_name" class="sf-addr-error">{{ errors.last_name }}</span>
+				<label class="grid gap-1">
+					<span :class="labelClass">Codice SDI</span>
+					<input v-model="form.sdi_code" type="text" :class="inputClass" placeholder="XXXXXXX" maxlength="7">
 				</label>
 			</div>
-
-			<!-- INDIRIZZO + CIVICO -->
-			<div class="sf-addr-row sf-addr-row--street">
-				<label class="sf-addr-field">
-					<span class="sf-addr-field__label">Indirizzo *</span>
-					<input v-model="form.address" type="text" class="sf-addr-input" placeholder="Via Roma" >
-					<span v-if="errors.address" class="sf-addr-error">{{ errors.address }}</span>
+			<div v-else class="grid grid-cols-1 gap-3 md:grid-cols-2">
+				<label class="grid gap-1">
+					<span :class="labelClass">Nome *</span>
+					<input v-model="form.first_name" type="text" :class="inputClass" placeholder="Mario">
+					<span v-if="errors.first_name" :class="errorClass">{{ errors.first_name }}</span>
 				</label>
-				<label class="sf-addr-field">
-					<span class="sf-addr-field__label">Civico *</span>
-					<input v-model="form.address_number" type="text" class="sf-addr-input" placeholder="10" >
-					<span v-if="errors.address_number" class="sf-addr-error">{{ errors.address_number }}</span>
+				<label class="grid gap-1">
+					<span :class="labelClass">Cognome *</span>
+					<input v-model="form.last_name" type="text" :class="inputClass" placeholder="Rossi">
+					<span v-if="errors.last_name" :class="errorClass">{{ errors.last_name }}</span>
 				</label>
 			</div>
 
-			<!-- CAP / CITTA / PROVINCIA -->
-			<div class="sf-addr-row sf-addr-row--triple">
-				<label class="sf-addr-field">
-					<span class="sf-addr-field__label">CAP *</span>
+			<div class="grid grid-cols-1 gap-3 md:grid-cols-[1fr_110px]">
+				<label class="grid gap-1">
+					<span :class="labelClass">Indirizzo *</span>
+					<input v-model="form.address" type="text" :class="inputClass" placeholder="Via Roma">
+					<span v-if="errors.address" :class="errorClass">{{ errors.address }}</span>
+				</label>
+				<label class="grid gap-1">
+					<span :class="labelClass">Civico *</span>
+					<input v-model="form.address_number" type="text" :class="inputClass" placeholder="10">
+					<span v-if="errors.address_number" :class="errorClass">{{ errors.address_number }}</span>
+				</label>
+			</div>
+
+			<div class="grid grid-cols-1 gap-3 md:grid-cols-3">
+				<label class="grid gap-1">
+					<span :class="labelClass">CAP *</span>
 					<input
 						:value="form.postal_code"
 						type="text"
-						class="sf-addr-input"
+						:class="inputClass"
 						placeholder="00100"
 						maxlength="5"
 						inputmode="numeric"
 						pattern="[0-9]{5}"
-						@input="onPostalCodeInput"
-					>
-					<span v-if="errors.postal_code" class="sf-addr-error">{{ errors.postal_code }}</span>
+						@input="onPostalCodeInput">
+					<span v-if="errors.postal_code" :class="errorClass">{{ errors.postal_code }}</span>
 				</label>
-				<label class="sf-addr-field">
-					<span class="sf-addr-field__label">Città *</span>
-					<input v-model="form.city" type="text" class="sf-addr-input" placeholder="Roma" >
-					<span v-if="errors.city" class="sf-addr-error">{{ errors.city }}</span>
+				<label class="grid gap-1">
+					<span :class="labelClass">Città *</span>
+					<input v-model="form.city" type="text" :class="inputClass" placeholder="Roma">
+					<span v-if="errors.city" :class="errorClass">{{ errors.city }}</span>
 				</label>
-				<label class="sf-addr-field">
-					<span class="sf-addr-field__label">Provincia *</span>
-					<select v-model="form.province" class="sf-addr-input sf-addr-input--select">
+				<label class="grid gap-1">
+					<span :class="labelClass">Provincia *</span>
+					<select v-model="form.province" :class="[inputClass, 'appearance-none pr-9 bg-[length:14px] bg-no-repeat bg-[right_12px_center]']" style="background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23095866'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E&quot;);">
 						<option value="" disabled>Seleziona…</option>
 						<option v-for="prov in provinceList" :key="prov" :value="prov">{{ prov }}</option>
 					</select>
-					<span v-if="errors.province" class="sf-addr-error">{{ errors.province }}</span>
+					<span v-if="errors.province" :class="errorClass">{{ errors.province }}</span>
 				</label>
 			</div>
 
-			<!-- TELEFONO + EMAIL -->
-			<div class="sf-addr-row sf-addr-row--double">
-				<label class="sf-addr-field">
-					<span class="sf-addr-field__label">Telefono *</span>
-					<input v-model="form.telephone_number" type="tel" class="sf-addr-input" placeholder="+39 333 0000000" inputmode="tel" >
-					<span v-if="errors.telephone_number" class="sf-addr-error">{{ errors.telephone_number }}</span>
+			<div class="grid grid-cols-1 gap-3 md:grid-cols-2">
+				<label class="grid gap-1">
+					<span :class="labelClass">Telefono *</span>
+					<input v-model="form.telephone_number" type="tel" :class="inputClass" placeholder="+39 333 0000000" inputmode="tel">
+					<span v-if="errors.telephone_number" :class="errorClass">{{ errors.telephone_number }}</span>
 				</label>
-				<label class="sf-addr-field">
-					<span class="sf-addr-field__label">Email</span>
-					<input v-model="form.email" type="email" class="sf-addr-input" placeholder="mario@esempio.it" >
-					<span v-if="errors.email" class="sf-addr-error">{{ errors.email }}</span>
+				<label class="grid gap-1">
+					<span :class="labelClass">Email</span>
+					<input v-model="form.email" type="email" :class="inputClass" placeholder="mario@esempio.it">
+					<span v-if="errors.email" :class="errorClass">{{ errors.email }}</span>
 				</label>
 			</div>
 
-			<!-- INFO AGGIUNTIVE -->
-			<label class="sf-addr-field">
-				<span class="sf-addr-field__label">Note aggiuntive <small>(scala, piano, citofono…)</small></span>
-				<input v-model="form.additional_information" type="text" class="sf-addr-input" placeholder="Es. Scala B, piano 3, citofono Rossi" >
+			<label class="grid gap-1">
+				<span :class="labelClass">Note aggiuntive <small class="text-brand-text-muted normal-case">(scala, piano, citofono…)</small></span>
+				<input v-model="form.additional_information" type="text" :class="inputClass" placeholder="Es. Scala B, piano 3, citofono Rossi">
 			</label>
 
-			<!-- DEFAULT -->
-			<label class="sf-addr-checkbox">
-				<input v-model="form.default" type="checkbox" >
+			<label class="flex cursor-pointer items-center gap-2.5 text-sm text-brand-text">
+				<input v-model="form.default" type="checkbox" class="h-4 w-4 cursor-pointer accent-brand-primary">
 				<span>Imposta come predefinito</span>
 			</label>
 
-			<!-- ERRORE SERVER -->
-			<div v-if="serverError" role="alert" class="sf-addr-server-error">
-				<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+			<div v-if="serverError" role="alert" class="flex items-center gap-2 rounded-card border border-status-failed-fg/30 bg-status-failed-bg p-3 text-[0.8125rem] text-status-failed-fg">
+				<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="shrink-0">
 					<path d="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
 				</svg>
 				<span>{{ serverError }}</span>
@@ -343,13 +347,10 @@ const submitLabel = computed(() => {
 		</form>
 
 		<template #footer>
-			<button type="button" class="sf-addr-btn sf-addr-btn--ghost" :disabled="submitting" @click="close">Annulla</button>
-			<button type="button" class="sf-addr-btn sf-addr-btn--primary" :disabled="submitting" @click="onSubmit">
-				<svg v-if="submitting" class="sf-addr-spin" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-					<path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
-				</svg>
+			<SfButton variant="secondary" :disabled="submitting" @click="close">Annulla</SfButton>
+			<SfButton variant="primary" :disabled="submitting" :loading="submitting" @click="onSubmit">
 				{{ submitLabel }}
-			</button>
+			</SfButton>
 		</template>
 	</SfModal>
 </template>

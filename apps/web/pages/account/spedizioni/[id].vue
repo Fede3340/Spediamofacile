@@ -87,8 +87,8 @@ const orderMetaPillStyle = (kind, status = '') => {
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-[20px] tablet:py-[24px] desktop:py-[28px]">
-		<div class="my-container max-w-[1280px]">
+	<section class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
+		<div class="my-container max-w-7xl">
 			<!-- Loading -->
 			<div v-if="orderStatus === 'pending'" class="space-y-[16px]">
 				<div class="bg-white rounded-[16px] p-[16px] border border-[var(--color-brand-border)] animate-pulse">
@@ -111,12 +111,12 @@ const orderMetaPillStyle = (kind, status = '') => {
 					back-to="/account/spedizioni"
 					back-label="Torna alle spedizioni">
 					<template #meta>
-						<div class="flex flex-wrap gap-[8px]">
-							<span class="sf-account-meta-pill" :style="orderMetaPillStyle('status', orderData.status)">{{ orderData.status }}</span>
-							<span class="sf-account-meta-pill sf-account-meta-pill--muted" :style="orderMetaPillStyle('packages')">
+						<div class="flex flex-wrap gap-2">
+							<span class="inline-flex items-center gap-1 rounded-full border border-brand-primary/15 bg-brand-primary/[0.06] px-2.5 py-1.5 text-xs font-bold leading-none text-brand-primary" :style="orderMetaPillStyle('status', orderData.status)">{{ orderData.status }}</span>
+							<span class="inline-flex items-center gap-1 rounded-full border border-brand-border bg-brand-bg-alt px-2.5 py-1.5 text-xs font-bold leading-none text-brand-text-muted" :style="orderMetaPillStyle('packages')">
 								{{ orderPackageCountLabel }}
 							</span>
-							<span class="sf-account-meta-pill" :style="orderMetaPillStyle('total')">{{ orderSubtotalLabel }}</span>
+							<span class="inline-flex items-center gap-1 rounded-full border border-brand-primary/15 bg-brand-primary/[0.06] px-2.5 py-1.5 text-xs font-bold leading-none text-brand-primary" :style="orderMetaPillStyle('total')">{{ orderSubtotalLabel }}</span>
 						</div>
 					</template>
 				</AccountPageHeader>

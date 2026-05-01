@@ -12,7 +12,6 @@
 @import "./funnel-payment-methods.css";
 @import "./funnel-cart-totals.css";
 @import "./components/empty-state.css";
-@import "./account.css";
 
 /* Keyframe stepPulse: alone esterno cerchio "current" nello stepper tracking.
    Era in tracking.css; consolidato qui dopo migrazione del modulo a Tailwind utility. */
@@ -2230,20 +2229,9 @@ input[type="number"] {
 		max-height: calc(100dvh - 16px);
 	}
 
-	/* Grids: 1 column on mobile unless explicitly 2-col */
-	.sf-account-nav-grid {
-		grid-template-columns: 1fr;
-		gap: 8px;
-	}
-
+	/* Grids admin legacy: 1 column on mobile (sf-admin-quick-links, sf-admin-kpi-grid restano in admin.css). */
 	.sf-admin-quick-links,
-	.sf-account-stat-grid,
 	.sf-admin-kpi-grid {
-		grid-template-columns: 1fr;
-		gap: 8px;
-	}
-
-	.sf-account-value-grid {
 		grid-template-columns: 1fr;
 		gap: 8px;
 	}
@@ -2260,19 +2248,6 @@ input[type="number"] {
 	img, video, iframe, embed, object {
 		max-width: 100%;
 		height: auto;
-	}
-
-	/* Reduce section spacing on mobile */
-	.sf-account-section + .sf-account-section {
-		margin-top: 12px;
-	}
-
-	.sf-account-section__header {
-		padding: 14px 14px 0;
-	}
-
-	.sf-account-section__body {
-		padding: 0 14px 14px;
 	}
 
 	/* Touch target enforcement for all interactive elements */

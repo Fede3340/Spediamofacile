@@ -47,8 +47,8 @@ if (import.meta.server) {
 </script>
 
 <template>
-	<section class="sf-account-shell py-[20px] tablet:py-[24px] desktop:py-[28px]">
-		<div class="my-container max-w-[1280px]">
+	<section class="w-full py-5 tablet:py-6 desktop:py-7">
+		<div class="my-container max-w-7xl">
 			<AccountDashboardClient
 				:customer-orders-loading="customerOrdersLoading"
 				:highlighted-customer-orders="highlightedCustomerOrders"

@@ -1,9 +1,4 @@
 <script setup>
-/**
- * AccountMobileDrawer — drawer di navigazione mobile + topbar sticky
- * dell'area account (visibile < lg). Estratto da AccountRouteShell.vue
- * senza modifiche logiche o stilistiche.
- */
 import { accountCardIcons } from '~/utils/account';
 
 defineProps({
@@ -26,46 +21,44 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 <template>
 <!-- eslint-disable vue/no-v-html -- icone SVG da dictionary accountCardIcons (no input utente) -->
 	<div>
-		<div
-			class="account-route-shell__mobile-topbar lg:hidden fixed top-0 left-0 right-0 z-50 border-b border-[#DFE2E7]/60 bg-white/95 backdrop-blur-md"
-			style="box-shadow: 0 1px 4px rgba(0,0,0,0.04);">
-			<div class="mx-auto flex h-[56px] max-w-[1280px] items-center justify-between px-[20px] sm:px-[40px]">
-				<div class="flex items-center gap-[10px]">
+		<div class="fixed inset-x-0 top-0 z-50 border-b border-brand-border/60 bg-white/95 shadow-[0_1px_4px_rgba(0,0,0,0.04)] backdrop-blur-md lg:hidden">
+			<div class="mx-auto flex h-14 max-w-7xl items-center justify-between px-5 sm:px-10">
+				<div class="flex items-center gap-2.5">
 					<button
 						type="button"
-						class="relative flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-[10px] transition-all hover:bg-[rgba(9,88,102,0.04)]"
+						class="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] transition-colors hover:bg-brand-primary/[0.04]"
 						aria-label="Apri menu account"
 						@click="emit('toggle')">
-						<svg v-if="mobileOpen" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[20px] w-[20px] text-[var(--color-brand-text)]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+						<svg v-if="mobileOpen" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5 text-brand-text" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
 							<path d="M6 6l12 12" />
 							<path d="M18 6 6 18" />
 						</svg>
-						<svg v-else aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[20px] w-[20px] text-[var(--color-brand-text-muted)]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+						<svg v-else aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5 text-brand-text-muted" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
 							<path d="M4 7h16" />
 							<path d="M4 12h16" />
 							<path d="M4 17h16" />
 						</svg>
 						<span
 							v-if="!mobileOpen && totalBadges"
-							class="absolute -right-[1px] -top-[1px] inline-flex h-[15px] min-w-[15px] items-center justify-center rounded-full bg-[var(--color-brand-primary)] text-[8px] font-[700] text-white">
+							class="absolute -right-px -top-px inline-flex h-[15px] min-w-[15px] items-center justify-center rounded-full bg-brand-primary text-[8px] font-bold text-white">
 							{{ totalBadges }}
 						</span>
 					</button>
-					<span class="text-[15px] font-[700] text-[var(--color-brand-text)]">{{ fullName }}</span>
+					<span class="text-[15px] font-bold text-brand-text">{{ fullName }}</span>
 				</div>
-				<div class="flex items-center gap-[8px]">
+				<div class="flex items-center gap-2">
 					<NuxtLink
 						:to="primaryCta.to"
 						:class="[
-							'inline-flex h-[36px] shrink-0 items-center justify-center gap-[6px] rounded-full px-[14px] text-[12px] font-[600] text-white tracking-[-0.005em] transition-all duration-200',
+							'inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-full px-3.5 text-xs font-semibold tracking-tight text-white transition-all duration-200',
 							primaryCta.tone === 'admin'
-								? 'account-route-shell__cta-primary--admin'
-								: 'bg-[#E44203] hover:bg-[#c73600] shadow-[0_3px_10px_rgba(228,66,3,0.22)]',
+								? 'border border-brand-primary/20 bg-gradient-to-br from-brand-primary-hover to-brand-primary shadow-[0_14px_30px_rgba(9,88,102,0.18)]'
+								: 'bg-brand-accent shadow-[0_3px_10px_rgba(228,66,3,0.22)] hover:bg-brand-accent-hover',
 						]">
 						<svg v-if="isAdmin" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[13px] w-[13px]" fill="currentColor">
 							<path d="M12 2 4 5v6c0 5.55 3.84 10.74 8 11 4.16-.26 8-5.45 8-11V5l-8-3Z" />
 						</svg>
-						<svg v-else aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[14px] w-[14px]" fill="currentColor" stroke-width="2">
+						<svg v-else aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="currentColor" stroke-width="2">
 							<path d="M12 5L19 12L17.59 13.41L13 8.83V20H11V8.83L6.41 13.41L5 12L12 5Z" />
 						</svg>
 						<span class="hidden sm:inline">{{ isAdmin ? 'Console' : 'Spedisci' }}</span>
@@ -84,22 +77,21 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 		<transition name="slide-right">
 			<aside
 				v-if="mobileOpen"
-				class="account-route-shell__mobile-drawer fixed inset-y-0 left-0 z-[81] w-[280px] max-w-[88vw] overflow-y-auto border-r border-[rgba(9,88,102,0.08)] bg-white px-[18px] py-[18px] shadow-[18px_0_40px_rgba(15,23,42,0.12)]"
-				style="scrollbar-width: none; -ms-overflow-style: none;">
-				<div class="flex items-start justify-between gap-[12px]">
-					<div class="flex min-w-0 items-center gap-[10px]">
-						<div class="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--color-brand-primary)_0%,var(--color-teal-600)_100%)] text-[12px] font-[800] text-white">
+				class="fixed inset-y-0 left-0 z-[81] w-[280px] max-w-[88vw] overflow-y-auto border-r border-brand-primary/10 bg-white px-4 py-4 shadow-[18px_0_40px_rgba(15,23,42,0.12)] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+				<div class="flex items-start justify-between gap-3">
+					<div class="flex min-w-0 items-center gap-2.5">
+						<div class="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-primary to-brand-accent text-xs font-extrabold text-white">
 							{{ initials }}
 						</div>
 						<div class="min-w-0">
-							<p class="truncate text-[14px] font-[700] text-[var(--color-brand-text)]">{{ fullName }}</p>
-							<p class="truncate text-[11px] text-[var(--color-brand-text-muted)]">{{ roleLabel }}</p>
+							<p class="truncate text-sm font-bold text-brand-text">{{ fullName }}</p>
+							<p class="truncate text-[11px] text-brand-text-muted">{{ roleLabel }}</p>
 						</div>
 					</div>
 
 					<button
 						type="button"
-						class="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-[12px] border border-[rgba(9,88,102,0.08)] bg-[#F7FAFB] text-[var(--color-brand-primary)]"
+						class="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-xl border border-brand-primary/10 bg-brand-bg-alt text-brand-primary"
 						aria-label="Chiudi menu account"
 						@click="emit('close')">
 						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[18px] w-[18px]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -109,17 +101,17 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 					</button>
 				</div>
 
-				<div class="mt-[14px] space-y-[10px]">
+				<div class="mt-3.5 space-y-2.5">
 					<NuxtLink
 						:to="primaryCta.to"
 						:class="[
-							'flex h-[44px] w-full items-center justify-center gap-[8px] rounded-full px-[14px] text-[13px] font-[600] tracking-[-0.005em] transition-all duration-200',
+							'flex h-11 w-full items-center justify-center gap-2 rounded-full px-3.5 text-[13px] font-semibold tracking-tight transition-all duration-200',
 							primaryCta.tone === 'admin'
 								? [
-									'account-route-shell__cta-primary--admin text-white',
-									isAdminConsoleRootRoute ? 'account-route-shell__cta-primary--admin-active' : '',
+									'border border-brand-primary/20 bg-gradient-to-br from-brand-primary-hover to-brand-primary text-white shadow-[0_14px_30px_rgba(9,88,102,0.18)]',
+									isAdminConsoleRootRoute ? 'from-[#063f49] to-brand-primary-hover shadow-[0_18px_34px_rgba(9,88,102,0.24)]' : '',
 								]
-								: 'bg-[#E44203] hover:bg-[#c73600] text-white shadow-[0_3px_10px_rgba(228,66,3,0.22)]',
+								: 'bg-brand-accent text-white shadow-[0_3px_10px_rgba(228,66,3,0.22)] hover:bg-brand-accent-hover',
 						]"
 						@click="emit('close')">
 						{{ primaryCta.label }}
@@ -128,47 +120,51 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 					<NuxtLink
 						v-if="secondaryCta"
 						:to="secondaryCta.to"
-						class="flex h-[44px] w-full items-center justify-center rounded-full border border-[rgba(9,88,102,0.12)] bg-white px-[14px] text-[13px] font-[700] text-[var(--color-brand-primary)]"
+						class="flex h-11 w-full items-center justify-center rounded-full border border-brand-primary/10 bg-white px-3.5 text-[13px] font-bold text-brand-primary"
 						@click="emit('close')">
 						{{ secondaryCta.label }}
 					</NuxtLink>
 				</div>
 
-				<nav class="mt-[16px] space-y-[14px]" aria-label="Navigazione account mobile">
+				<nav class="mt-4 space-y-3.5" aria-label="Navigazione account mobile">
 					<div
 						v-for="group in navGroups"
-						:key="`mobile-${group.key || group.title || group.items.map((item) => item.to).join('|')}`"
-						class="account-route-shell__group"
-						:data-tone="group.tone || 'client'">
-						<div v-if="group.title" class="mb-[5px] px-[10px]">
-							<span class="account-route-shell__group-label font-[700] uppercase">{{ group.title }}</span>
+						:key="`mobile-${group.key || group.title || group.items.map((item) => item.to).join('|')}`">
+						<div v-if="group.title" class="mb-1.5 px-2.5">
+							<span class="text-[10px] font-bold uppercase leading-none tracking-[0.6px] text-brand-text-muted">{{ group.title }}</span>
 						</div>
 
-						<div class="space-y-[2px]">
+						<div class="space-y-0.5">
 							<NuxtLink
 								v-for="item in group.items"
 								:key="`mobile-${item.to}`"
 								:to="item.to"
 								:class="[
-									'group flex items-center gap-[10px] rounded-[10px] px-[10px] py-[9px] text-left transition-all duration-200',
+									'group flex items-center gap-2.5 rounded-[10px] px-2.5 py-[9px] text-left transition-colors duration-200',
 									isItemActive(item)
-										? 'account-route-shell__nav-item--active bg-[rgba(9,88,102,0.08)]'
-										: 'account-route-shell__nav-item--inactive hover:bg-[rgba(9,88,102,0.04)]',
+										? 'bg-brand-primary/[0.06]'
+										: 'hover:bg-brand-primary/[0.04]',
 								]"
 								@click="emit('close')">
 								<span
-									class="account-route-shell__nav-icon-shell inline-flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-[10px] border"
-									:class="isItemActive(item) ? 'text-[var(--color-brand-primary)]' : 'text-[var(--color-brand-text-muted)] group-hover:text-[var(--color-brand-text-muted)]'">
-									<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[15px] w-[15px]" fill="currentColor" v-html="accountCardIcons[item.iconKey]" />
+									:class="[
+										'inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] border transition-colors duration-200',
+										isItemActive(item)
+											? 'border-brand-primary/15 bg-brand-primary/[0.08] text-brand-primary'
+											: 'border-brand-primary/10 bg-white text-brand-text-muted group-hover:border-brand-primary/15 group-hover:bg-brand-primary/[0.04] group-hover:text-brand-primary',
+									]">
+									<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[18px] w-[18px]" fill="currentColor" v-html="accountCardIcons[item.iconKey]" />
 								</span>
 								<span
-									class="account-route-shell__nav-label min-w-0 flex-1 truncate text-[13px]"
-									:class="isItemActive(item) ? 'font-[700] text-[var(--color-brand-primary)]' : 'font-[500] text-[var(--color-brand-text-secondary)] group-hover:text-[var(--color-brand-text)]'">
+									:class="[
+										'min-w-0 flex-1 truncate text-[13px]',
+										isItemActive(item) ? 'font-bold text-brand-primary' : 'font-medium text-brand-text-secondary group-hover:text-brand-text',
+									]">
 									{{ item.label }}
 								</span>
 								<span
 									v-if="item.badge"
-									class="inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#E44203] px-[5px] text-[9px] font-[800] text-white">
+									class="inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-brand-accent px-1.5 text-[9px] font-extrabold text-white">
 									{{ item.badge }}
 								</span>
 							</NuxtLink>
@@ -178,12 +174,14 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 
 				<button
 					type="button"
-					class="mt-[14px] flex w-full items-center gap-[10px] rounded-[10px] px-[10px] py-[9px] text-left transition-all duration-200 hover:bg-[rgba(220,38,38,0.05)]"
+					class="group mt-3.5 flex w-full items-center gap-2.5 rounded-[10px] px-2.5 py-[9px] text-left transition-colors duration-200 hover:bg-brand-error/5"
 					@click="emit('logout')">
-					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[15px] w-[15px] shrink-0 text-[#ccc]" fill="currentColor">
-						<path d="M10.08 15.59 11.5 17l5-5-5-5-1.42 1.41L12.67 11H3v2h9.67l-2.59 2.59ZM19 3H5a2 2 0 0 0-2 2v4h2V5h14v14H5v-4H3v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z" />
-					</svg>
-					<span class="text-[13px] font-[500] text-[#bbb]">Esci</span>
+					<span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] border border-brand-primary/10 bg-white text-brand-text-muted transition-colors duration-200 group-hover:border-brand-error/20 group-hover:bg-brand-error/5 group-hover:text-brand-error">
+						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[15px] w-[15px]" fill="currentColor">
+							<path d="M10.08 15.59 11.5 17l5-5-5-5-1.42 1.41L12.67 11H3v2h9.67l-2.59 2.59ZM19 3H5a2 2 0 0 0-2 2v4h2V5h14v14H5v-4H3v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z" />
+						</svg>
+					</span>
+					<span class="text-[13px] font-medium text-brand-text-secondary group-hover:text-brand-error">Esci</span>
 				</button>
 			</aside>
 		</transition>

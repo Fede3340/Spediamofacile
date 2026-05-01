@@ -1,8 +1,3 @@
-<!--
-  Vista sola lettura del profilo utente con card dati e pulsante logout.
-  Props: user.
-  Events: edit, logout.
--->
 <script setup>
 const props = defineProps({
 	user: { type: Object, default: null },
@@ -103,35 +98,30 @@ const infoFields = computed(() => {
 
 <template>
 <!-- eslint-disable vue/no-v-html -- icone SVG da dictionary accountCardIcons (no input utente) -->
-	<!-- Personal data section -->
-	<section class="rounded-[16px] bg-white mb-[24px] overflow-hidden" style="box-shadow: 0 2px 8px rgba(9,88,102,0.06), 0 0 0 1px rgba(9,88,102,0.04);" aria-labelledby="sf-profilo-view-dati">
-		<!-- Section header -->
-		<div class="flex items-center justify-between px-[16px] pt-[16px] mb-[12px]">
-			<div class="flex items-center gap-[12px]">
-				<div class="w-[28px] h-[28px] rounded-[9px] bg-[rgba(9,88,102,0.08)] flex items-center justify-center shrink-0">
-					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+	<section class="mb-6 overflow-hidden rounded-card bg-white shadow-[0_2px_8px_rgba(9,88,102,0.06),0_0_0_1px_rgba(9,88,102,0.04)]" aria-labelledby="sf-profilo-view-dati">
+		<div class="mb-3 flex items-center justify-between px-4 pt-4">
+			<div class="flex items-center gap-3">
+				<div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-[9px] bg-brand-primary/[0.08]">
+					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
 				</div>
-				<h2 id="sf-profilo-view-dati" class="text-[var(--color-brand-text)] text-[14px] tracking-[-0.2px] font-[700]">Dati personali</h2>
+				<h2 id="sf-profilo-view-dati" class="text-sm font-bold tracking-tight text-brand-text">Dati personali</h2>
 			</div>
-			<button
-				type="button"
-				aria-label="Modifica dati personali"
-				class="sf-flow-cta sf-flow-cta--secondary sf-flow-cta--compact !h-[36px] !px-[14px] !text-[12px]"
-				@click="emit('edit')">
-				<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+			<SfButton variant="secondary" size="sm" aria-label="Modifica dati personali" @click="emit('edit')">
+				<template #leading>
+					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+				</template>
 				Modifica
-			</button>
+			</SfButton>
 		</div>
-		<!-- Fields grid -->
-		<div class="px-[16px] pb-[16px]">
-			<div class="grid grid-cols-1 tablet:grid-cols-2 xl:grid-cols-3 gap-[12px]">
+		<div class="px-4 pb-4">
+			<div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
 				<div
 					v-for="(field, idx) in infoFields"
 					:key="idx"
-					class="flex items-start gap-[10px] p-[12px] rounded-[14px] hover:bg-[rgba(9,88,102,0.03)] transition-colors">
-					<div class="w-[32px] h-[32px] rounded-[10px] bg-[rgba(9,88,102,0.07)] flex items-center justify-center shrink-0">
+					class="flex items-start gap-2.5 rounded-[14px] p-3 transition-colors hover:bg-brand-primary/[0.03]">
+					<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-brand-primary/[0.07]">
 						<svg
-v-if="field.stroke"
+							v-if="field.stroke"
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							width="15"
@@ -140,114 +130,103 @@ v-if="field.stroke"
 							fill="none"
 							stroke="#095866"
 							stroke-width="2"
-							v-html="field.icon"/>
+							v-html="field.icon" />
 						<svg
-v-else
+							v-else
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							viewBox="0 0 24 24"
-							class="w-[15px] h-[15px]"
+							class="h-[15px] w-[15px]"
 							fill="#095866"
-							v-html="field.icon"/>
+							v-html="field.icon" />
 					</div>
 					<div class="min-w-0 flex-1">
-						<p class="text-[var(--color-brand-text-muted)] text-[10px] font-[600] uppercase tracking-[0.3px]">{{ field.label }}</p>
-						<p class="text-[var(--color-brand-text)] text-[13px] font-[700] leading-[1.25] truncate">{{ field.value }}</p>
-						<p v-if="field.sub" class="text-[var(--color-brand-text-muted)] text-[10px]">{{ field.sub }}</p>
+						<p class="text-[10px] font-semibold uppercase tracking-[0.3px] text-brand-text-muted">{{ field.label }}</p>
+						<p class="truncate text-[13px] font-bold leading-tight text-brand-text">{{ field.value }}</p>
+						<p v-if="field.sub" class="text-[10px] text-brand-text-muted">{{ field.sub }}</p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<!-- Notifiche section -->
-	<section class="rounded-[16px] bg-white mb-[24px] overflow-hidden" style="box-shadow: 0 2px 8px rgba(9,88,102,0.06), 0 0 0 1px rgba(9,88,102,0.04);" aria-labelledby="sf-profilo-view-notifiche">
-		<div class="flex items-center gap-[12px] px-[16px] pt-[16px] mb-[12px]">
-			<div class="w-[28px] h-[28px] rounded-[9px] bg-[rgba(9,88,102,0.08)] flex items-center justify-center shrink-0">
-				<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+	<section class="mb-6 overflow-hidden rounded-card bg-white shadow-[0_2px_8px_rgba(9,88,102,0.06),0_0_0_1px_rgba(9,88,102,0.04)]" aria-labelledby="sf-profilo-view-notifiche">
+		<div class="mb-3 flex items-center gap-3 px-4 pt-4">
+			<div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-[9px] bg-brand-primary/[0.08]">
+				<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
 			</div>
-			<h2 id="sf-profilo-view-notifiche" class="text-[var(--color-brand-text)] text-[14px] tracking-[-0.2px] font-[700]">Notifiche</h2>
+			<h2 id="sf-profilo-view-notifiche" class="text-sm font-bold tracking-tight text-brand-text">Notifiche</h2>
 		</div>
-		<div class="px-[16px] pb-[16px] space-y-[8px]">
-
+		<div class="space-y-2 px-4 pb-4">
 			<div
 				aria-label="Gestione email tramite assistenza"
-				class="flex items-center gap-[10px] p-[12px] rounded-[12px] cursor-default group no-underline opacity-70">
-				<div class="w-[32px] h-[32px] rounded-[10px] bg-[rgba(9,88,102,0.07)] flex items-center justify-center shrink-0">
-					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+				class="group flex cursor-default items-center gap-2.5 rounded-[12px] p-3 no-underline opacity-70">
+				<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-brand-primary/[0.07]">
+					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
 				</div>
-				<span class="text-[var(--color-brand-text)] text-[13px] flex-1 font-[600]">Notifiche email</span>
-				<span class="text-[var(--color-brand-text-secondary)] text-[11px] font-[600]">Via assistenza</span>
+				<span class="flex-1 text-[13px] font-semibold text-brand-text">Notifiche email</span>
+				<span class="text-[11px] font-semibold text-brand-text-secondary">Via assistenza</span>
 			</div>
 		</div>
 	</section>
 
-	<!-- GDPR section: Privacy & Dati personali -->
-	<section class="rounded-[16px] bg-white mb-[24px] overflow-hidden" style="box-shadow: 0 2px 8px rgba(9,88,102,0.06), 0 0 0 1px rgba(9,88,102,0.04);" aria-labelledby="sf-profilo-view-privacy">
-		<div class="flex items-center gap-[12px] px-[16px] pt-[16px] mb-[12px]">
-			<div class="w-[28px] h-[28px] rounded-[9px] bg-[rgba(9,88,102,0.08)] flex items-center justify-center shrink-0">
-				<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+	<section class="mb-6 overflow-hidden rounded-card bg-white shadow-[0_2px_8px_rgba(9,88,102,0.06),0_0_0_1px_rgba(9,88,102,0.04)]" aria-labelledby="sf-profilo-view-privacy">
+		<div class="mb-3 flex items-center gap-3 px-4 pt-4">
+			<div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-[9px] bg-brand-primary/[0.08]">
+				<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
 			</div>
-			<h2 id="sf-profilo-view-privacy" class="text-[var(--color-brand-text)] text-[14px] tracking-[-0.2px] font-[700]">Privacy e dati personali</h2>
+			<h2 id="sf-profilo-view-privacy" class="text-sm font-bold tracking-tight text-brand-text">Privacy e dati personali</h2>
 		</div>
-		<div class="px-[16px] pb-[16px] space-y-[8px]">
+		<div class="space-y-2 px-4 pb-4">
 			<p
 				v-if="gdprError"
 				role="alert"
-				class="text-[12px] rounded-[10px] px-[12px] py-[8px] mb-[4px]"
-				style="color: var(--color-brand-error); background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2);">
+				class="mb-1 rounded-[10px] border border-brand-error/20 bg-brand-error/[0.08] px-3 py-2 text-xs text-brand-error">
 				{{ gdprError }}
 			</p>
-			<!-- Esporta dati -->
 			<button
 				:disabled="exportingData"
-				class="flex items-center gap-[10px] p-[12px] rounded-[12px] hover:bg-[rgba(9,88,102,0.03)] transition-colors cursor-pointer group w-full text-left disabled:opacity-60 disabled:cursor-not-allowed"
+				class="group flex w-full cursor-pointer items-center gap-2.5 rounded-[12px] p-3 text-left transition-colors hover:bg-brand-primary/[0.03] disabled:cursor-not-allowed disabled:opacity-60"
 				@click="exportData">
-				<div class="w-[32px] h-[32px] rounded-[10px] bg-[rgba(9,88,102,0.07)] flex items-center justify-center shrink-0">
-					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+				<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-brand-primary/[0.07]">
+					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
 				</div>
 				<div class="flex-1">
-					<span class="text-[var(--color-brand-text)] text-[13px] block font-[600]">
+					<span class="block text-[13px] font-semibold text-brand-text">
 						{{ exportingData ? 'Esportazione in corso...' : 'Esporta i tuoi dati' }}
 					</span>
-					<span class="text-[var(--color-brand-text-muted)] text-[10px]">Scarica una copia dei tuoi dati personali (Art. 20 GDPR)</span>
+					<span class="text-[10px] text-brand-text-muted">Scarica una copia dei tuoi dati personali (Art. 20 GDPR)</span>
 				</div>
-				<span class="text-[var(--color-brand-primary)] text-[11px] opacity-0 group-hover:opacity-100 transition-opacity font-[600]">Scarica</span>
+				<span class="text-[11px] font-semibold text-brand-primary opacity-0 transition-opacity group-hover:opacity-100">Scarica</span>
 			</button>
-			<!-- Elimina account -->
 			<button
 				v-if="!showDeleteConfirm"
-				class="flex items-center gap-[10px] p-[12px] rounded-[12px] transition-colors cursor-pointer group w-full text-left sf-profilo-delete-trigger"
+				class="group flex w-full cursor-pointer items-center gap-2.5 rounded-[12px] p-3 text-left transition-colors hover:bg-brand-error/[0.06]"
 				@click="showDeleteConfirm = true">
-				<div class="w-[32px] h-[32px] rounded-[10px] flex items-center justify-center shrink-0" style="background: rgba(239,68,68,0.08);">
-					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+				<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-brand-error/[0.08]">
+					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
 				</div>
 				<div class="flex-1">
-					<span class="text-[13px] block font-[600]" style="color: var(--color-brand-error);">Elimina account</span>
-					<span class="text-[var(--color-brand-text-muted)] text-[10px]">Cancella definitivamente account e dati personali (Art. 17 GDPR)</span>
+					<span class="block text-[13px] font-semibold text-brand-error">Elimina account</span>
+					<span class="text-[10px] text-brand-text-muted">Cancella definitivamente account e dati personali (Art. 17 GDPR)</span>
 				</div>
 			</button>
-			<!-- Conferma eliminazione -->
 			<div
 				v-if="showDeleteConfirm"
 				role="alertdialog"
 				aria-labelledby="sf-profilo-delete-title"
 				aria-describedby="sf-profilo-delete-desc"
-				class="p-[14px] rounded-[14px] space-y-[10px]"
-				style="background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.24);">
-				<p id="sf-profilo-delete-title" class="text-[13px] font-[700]" style="color: var(--color-brand-error);">Sei sicuro di voler eliminare il tuo account?</p>
-				<p id="sf-profilo-delete-desc" class="text-[12px] leading-[1.45]" style="color: var(--color-brand-error);">Azione irreversibile. Dati personali, indirizzi e spedizioni eliminati. Ordini completati anonimizzati per obblighi fiscali.</p>
-				<div class="flex gap-[12px]">
-					<button
-						type="button"
-						class="sf-flow-cta sf-flow-cta--secondary sf-flow-cta--compact !h-[36px] !px-[14px] !text-[12px]"
-						@click="showDeleteConfirm = false">
+				class="space-y-2.5 rounded-[14px] border border-brand-error/[0.24] bg-brand-error/[0.06] p-3.5">
+				<p id="sf-profilo-delete-title" class="text-[13px] font-bold text-brand-error">Sei sicuro di voler eliminare il tuo account?</p>
+				<p id="sf-profilo-delete-desc" class="text-xs leading-snug text-brand-error">Azione irreversibile. Dati personali, indirizzi e spedizioni eliminati. Ordini completati anonimizzati per obblighi fiscali.</p>
+				<div class="flex gap-3">
+					<SfButton variant="secondary" size="sm" @click="showDeleteConfirm = false">
 						Annulla
-					</button>
+					</SfButton>
 					<button
 						:disabled="deletingAccount"
 						type="button"
-						class="sf-flow-cta sf-flow-cta--compact sf-profilo-delete-confirm !h-[36px] !px-[14px] !text-[12px] disabled:opacity-60 disabled:cursor-not-allowed"
+						class="inline-flex h-9 items-center justify-center rounded-full bg-brand-error px-3.5 text-xs font-bold text-white shadow-[0_6px_18px_rgba(239,68,68,0.24)] transition hover:bg-[#dc2626] hover:shadow-[0_8px_22px_rgba(239,68,68,0.32)] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-brand-error/45 disabled:cursor-not-allowed disabled:opacity-60"
 						@click="confirmDeleteAccount">
 						{{ deletingAccount ? 'Eliminazione...' : 'Conferma eliminazione' }}
 					</button>
@@ -256,15 +235,12 @@ v-else
 		</div>
 	</section>
 
-	<!-- Logout button -->
 	<button
 		type="button"
 		aria-label="Esci dall'account"
-		class="w-full h-[40px] rounded-full bg-[#F0F1F4] hover:bg-[rgba(9,88,102,0.08)] text-[var(--color-brand-text-muted)] hover:text-[var(--color-brand-primary)] text-[12px] font-[600] flex items-center justify-center gap-[8px] cursor-pointer transition-all duration-[350ms]"
+		class="flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-brand-bg-alt text-xs font-semibold text-brand-text-muted transition-all duration-300 hover:bg-brand-primary/[0.08] hover:text-brand-primary"
 		@click.prevent="emit('logout')">
-		<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+		<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
 		Esci dall'account
 	</button>
 </template>
-
-<!-- Stili estratti in assets/css/account.css (importato da main.css). -->

@@ -1,43 +1,31 @@
 <script setup>
 import { accountCardIcons } from '~/utils/account';
-import '~/assets/css/account.css';
 
 defineProps({
 	customerOrdersLoading: { type: Boolean, default: false },
 	highlightedCustomerOrders: { type: Array, default: () => [] },
 	recentCompletedCustomerOrders: { type: Array, default: () => [] },
 	personalHighlights: { type: Array, default: () => [] },
-
-	// bonusPage: { type: Object, default: null },
 	isLoggingOut: { type: Boolean, default: false },
 });
 
 const emit = defineEmits(['logout']);
 const handleLogout = () => emit('logout');
-
-// resolveAccountPageUrl era usato dal bonus-cta (archiviato). Lasciato come utility
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const resolveAccountPageUrl = (url = '') => {
-	if (!url) return '/account';
-	if (url.startsWith('/account')) return url;
-	return `/account${url.startsWith('/') ? url : `/${url}`}`;
-};
 </script>
 
 <template>
 <!-- eslint-disable vue/no-v-html -- icone SVG da dictionary accountCardIcons (no input utente) -->
-	<div class="sf-account-admin-stack">
+	<div class="flex flex-col gap-6">
 		<AccountPageHeader
-			class="sf-account-shell-hero--compact sf-account-root__header"
 			:crumbs="[]"
 			title="Il tuo account"
-			description="Spedizioni attive, storico recente e nuova spedizione in una sola vista piu chiara.">
+			description="Spedizioni attive, storico recente e nuova spedizione in una sola vista più chiara.">
 
 			<template #actions>
-				<div class="flex flex-wrap justify-end gap-[10px]">
+				<div class="flex flex-wrap justify-end gap-2.5">
 					<NuxtLink
 						to="/preventivo"
-						class="btn-primary btn-compact inline-flex min-w-[180px] items-center justify-center gap-[8px]">
+						class="btn-primary btn-compact inline-flex min-w-[180px] items-center justify-center gap-2">
 						<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 							<line x1="12" y1="5" x2="12" y2="19" />
 							<line x1="5" y1="12" x2="19" y2="12" />
@@ -59,19 +47,19 @@ const resolveAccountPageUrl = (url = '') => {
 			</template>
 		</AccountPageHeader>
 
-		<div class="sf-shell-card sf-account-root__orders-card sf-animate-in sf-animate-in-1">
-			<div class="sf-account-root__orders-header">
+		<div class="sf-animate-in sf-animate-in-1 rounded-card border border-brand-border bg-brand-card p-5 shadow-sf md:p-[22px]">
+			<div class="mb-4 flex flex-wrap items-start justify-between gap-4">
 				<div class="min-w-0">
-					<p class="sf-section-kicker mb-[6px]">Spedizioni</p>
+					<p class="sf-section-kicker mb-1.5">Spedizioni</p>
 					<h2 class="sf-section-title">Spedizioni attive</h2>
-					<p class="sf-section-description mt-[6px]">
+					<p class="sf-section-description mt-1.5">
 						Tracking e riferimenti principali restano subito sopra il fold, come primo punto davvero utile della dashboard.
 					</p>
 				</div>
 
 				<NuxtLink
 					to="/account/spedizioni"
-					class="sf-account-root__orders-link">
+					class="inline-flex items-center gap-1.5 text-[0.84rem] font-bold text-brand-primary transition-all hover:gap-2">
 					Tutte le spedizioni
 					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<path d="M9 18l6-6-6-6" />
@@ -79,81 +67,76 @@ const resolveAccountPageUrl = (url = '') => {
 				</NuxtLink>
 			</div>
 
-			<div v-if="customerOrdersLoading" class="sf-account-root__orders-empty">
-				<p class="text-[0.9rem] text-[var(--color-brand-text-secondary)]">
+			<div v-if="customerOrdersLoading" class="flex items-center gap-3.5 rounded-card border border-dashed border-brand-primary/15 bg-brand-bg-alt/90 p-4.5">
+				<p class="text-[0.9rem] text-brand-text-secondary">
 					Sto caricando le spedizioni del tuo account.
 				</p>
 			</div>
 
-			<div v-else-if="highlightedCustomerOrders.length" class="sf-account-root__orders-list">
+			<div v-else-if="highlightedCustomerOrders.length" class="grid gap-2.5">
 				<NuxtLink
 					v-for="order in highlightedCustomerOrders"
 					:key="order.id"
 					:to="order.url"
-					class="sf-account-root__order-item group">
+					class="group flex items-center gap-3.5 rounded-card border border-brand-primary/10 bg-brand-bg-alt/90 px-[18px] py-4 transition-all hover:-translate-y-px hover:border-brand-primary/15 hover:shadow-sf-sm">
 					<div
-						class="sf-account-root__order-icon"
+						class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px]"
 						:style="{ background: order.tone.bg, color: order.tone.color }">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-[16px] w-[16px]" v-html="accountCardIcons['truck-fast']" />
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-4 w-4" v-html="accountCardIcons['truck-fast']" />
 					</div>
 
 					<div class="min-w-0 flex-1">
-						<p class="sf-account-root__order-title">{{ order.title }}</p>
-						<p class="sf-account-root__order-meta">{{ order.meta }}</p>
+						<p class="text-[0.95rem] font-extrabold leading-tight text-brand-text">{{ order.title }}</p>
+						<p class="mt-1 text-[0.83rem] leading-relaxed text-brand-text-secondary">{{ order.meta }}</p>
 					</div>
 
 					<span
-						class="sf-account-root__order-status"
+						class="inline-flex shrink-0 items-center justify-center rounded-full px-2.5 py-1.5 text-[0.72rem] font-bold leading-none"
 						:style="{ background: order.tone.bg, color: order.tone.color }">
 						{{ order.statusLabel }}
 					</span>
 				</NuxtLink>
 			</div>
 
-			<div v-else class="sf-account-root__orders-empty sf-account-root__orders-empty--hero">
-				<div class="sf-account-root__orders-empty-icon">
+			<div v-else class="flex items-center justify-between gap-3.5 rounded-card border border-dashed border-brand-primary/15 bg-brand-bg-alt/90 p-4.5">
+				<div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-brand-primary/[0.08] text-brand-primary">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-[18px] w-[18px]" v-html="accountCardIcons.package" />
 				</div>
 				<div class="min-w-0 flex-1">
-					<p class="sf-account-root__orders-empty-meta">Nessuna spedizione recente. Quando ne crei una nuova, ritrovi qui tracking, stato e riferimenti principali.</p>
+					<p class="mt-1 text-[0.83rem] leading-relaxed text-brand-text-secondary">Nessuna spedizione recente. Quando ne crei una nuova, ritrovi qui tracking, stato e riferimenti principali.</p>
 				</div>
 			</div>
 		</div>
 
-		<div class="sf-account-summary-strip sf-animate-in sf-animate-in-2">
+		<div class="sf-animate-in sf-animate-in-2 grid gap-3 sm:grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
 			<div
 				v-for="item in personalHighlights"
 				:key="item.label"
-				class="sf-account-summary-item rounded-[16px] border border-[rgba(9,88,102,0.08)] bg-white"
-				:style="{
-					'--sf-hub-icon-bg': item.iconBg,
-					'--sf-hub-icon-color': item.iconColor,
-					boxShadow: 'var(--sf-shell-shadow)',
-				}">
-				<div class="sf-account-summary-item__icon" :style="{ background: item.iconBg, color: item.iconColor }">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-[16px] w-[16px]" v-html="accountCardIcons[item.iconKey]" />
+				class="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2.5 rounded-[14px] border border-brand-primary/12 bg-gradient-to-b from-white to-brand-bg-alt/95 px-4 py-3 shadow-sf-sm">
+				<div class="inline-flex h-[30px] w-[30px] items-center justify-center rounded-full" :style="{ background: item.iconBg, color: item.iconColor }">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-4 w-4" v-html="accountCardIcons[item.iconKey]" />
 				</div>
-				<div class="sf-account-summary-item__body">
-					<span class="sf-account-summary-item__label">{{ item.label }}</span>
-					<span class="sf-account-summary-item__value">{{ item.value }}</span>
-					<span class="sf-account-summary-item__meta">{{ item.meta }}</span>
+				<div class="flex min-w-0 flex-col gap-[3px]">
+					<span class="text-sm font-extrabold leading-snug text-brand-text">{{ item.label }}</span>
+					<span class="text-[1.08rem] font-extrabold leading-tight text-brand-text">{{ item.value }}</span>
+					<span class="text-xs leading-relaxed text-brand-text-secondary">{{ item.meta }}</span>
 				</div>
 			</div>
 		</div>
 
-		<div class="sf-shell-card sf-account-root__history-card sf-animate-in sf-animate-in-3">
-			<div class="sf-account-root__orders-header">
+		<div class="sf-animate-in sf-animate-in-3 rounded-card border border-brand-border bg-brand-card p-5 shadow-sf md:p-[22px]">
+			<div class="mb-4 flex flex-wrap items-start justify-between gap-4">
 				<div class="min-w-0">
-					<p class="sf-section-kicker mb-[6px]">Storico</p>
+					<p class="sf-section-kicker mb-1.5">Storico</p>
 					<h2 class="sf-section-title">Ultime spedizioni</h2>
-					<p class="sf-section-description mt-[6px]">
+					<p class="sf-section-description mt-1.5">
 						Le ultime consegne restano compatte e facili da riaprire senza trasformare la root in un hub di navigazione.
 					</p>
 				</div>
 
 				<NuxtLink
 					to="/account/spedizioni"
-					class="sf-account-root__orders-link">
+					class="inline-flex items-center gap-1.5 text-[0.84rem] font-bold text-brand-primary transition-all hover:gap-2">
 					Vedi storico completo
 					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<path d="M9 18l6-6-6-6" />
@@ -161,44 +144,37 @@ const resolveAccountPageUrl = (url = '') => {
 				</NuxtLink>
 			</div>
 
-			<div v-if="recentCompletedCustomerOrders.length" class="sf-account-root__orders-list">
+			<div v-if="recentCompletedCustomerOrders.length" class="grid gap-2.5">
 				<NuxtLink
 					v-for="order in recentCompletedCustomerOrders"
 					:key="order.id"
 					:to="order.url"
-					class="sf-account-root__order-item group">
-					<div
-						class="sf-account-root__order-icon"
-						style="background:rgba(5,150,105,0.1); color:#047857;">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-[16px] w-[16px]" v-html="accountCardIcons['check-circle']" />
+					class="group flex items-center gap-3.5 rounded-card border border-brand-primary/10 bg-brand-bg-alt/90 px-[18px] py-4 transition-all hover:-translate-y-px hover:border-brand-primary/15 hover:shadow-sf-sm">
+					<div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-brand-success-bg text-brand-success-fg">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-4 w-4" v-html="accountCardIcons['check-circle']" />
 					</div>
 
 					<div class="min-w-0 flex-1">
-						<p class="sf-account-root__order-title">{{ order.title }}</p>
-						<p class="sf-account-root__order-meta">{{ order.meta }}</p>
+						<p class="text-[0.95rem] font-extrabold leading-tight text-brand-text">{{ order.title }}</p>
+						<p class="mt-1 text-[0.83rem] leading-relaxed text-brand-text-secondary">{{ order.meta }}</p>
 					</div>
 
-					<span
-						class="sf-account-root__order-status"
-						style="background:rgba(5,150,105,0.1); color:#047857;">
+					<span class="inline-flex shrink-0 items-center justify-center rounded-full bg-brand-success-bg px-2.5 py-1.5 text-[0.72rem] font-bold leading-none text-brand-success-fg">
 						Consegnata
 					</span>
 				</NuxtLink>
 			</div>
 
-			<div v-else class="sf-account-root__orders-empty">
-				<div
-					class="sf-account-root__orders-empty-icon"
-					style="background:rgba(5,150,105,0.1); color:#047857;">
+			<div v-else class="flex items-center gap-3.5 rounded-card border border-dashed border-brand-primary/15 bg-brand-bg-alt/90 p-4.5">
+				<div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-brand-success-bg text-brand-success-fg">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-[18px] w-[18px]" v-html="accountCardIcons['history']" />
 				</div>
 				<div>
-					<p class="sf-account-root__orders-empty-title">Nessuna consegna archiviata</p>
-					<p class="sf-account-root__orders-empty-meta">Appena una spedizione si chiude, la ritrovi qui con riferimenti e data di creazione.</p>
+					<p class="text-[0.95rem] font-extrabold leading-tight text-brand-text">Nessuna consegna archiviata</p>
+					<p class="mt-1 text-[0.83rem] leading-relaxed text-brand-text-secondary">Appena una spedizione si chiude, la ritrovi qui con riferimenti e data di creazione.</p>
 				</div>
 			</div>
 		</div>
 
 	</div>
 </template>
-

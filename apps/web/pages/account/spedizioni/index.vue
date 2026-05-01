@@ -23,8 +23,8 @@ const {
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-[20px] tablet:py-[28px] desktop:py-[28px]">
-		<div class="my-container max-w-[1280px]">
+	<section class="w-full min-h-[600px] py-5 tablet:py-7 desktop:py-7">
+		<div class="my-container max-w-7xl">
 			<AccountPageHeader
 				eyebrow="Storico"
 				title="Le tue spedizioni"
@@ -33,10 +33,10 @@ const {
 				back-label="Torna al tuo account"
 				current="Spedizioni">
 				<template #meta>
-					<div class="flex flex-wrap items-center gap-[8px]">
-						<span class="sf-account-meta-pill"><strong class="font-[800]">{{ orderStats.total }}</strong>&nbsp;totali</span>
-						<span class="sf-account-meta-pill sf-account-meta-pill--muted"><strong class="font-[700]">{{ orderStats.open }}</strong>&nbsp;aperte</span>
-						<span class="sf-account-meta-pill sf-account-meta-pill--muted"><strong class="font-[700]">{{ orderStats.pending }}</strong>&nbsp;da seguire</span>
+					<div class="flex flex-wrap items-center gap-2">
+						<span class="inline-flex items-center gap-1 rounded-full border border-brand-primary/15 bg-brand-primary/[0.06] px-2.5 py-1.5 text-xs font-bold leading-none text-brand-primary"><strong class="font-extrabold">{{ orderStats.total }}</strong>&nbsp;totali</span>
+						<span class="inline-flex items-center gap-1 rounded-full border border-brand-border bg-brand-bg-alt px-2.5 py-1.5 text-xs font-bold leading-none text-brand-text-muted"><strong class="font-bold">{{ orderStats.open }}</strong>&nbsp;aperte</span>
+						<span class="inline-flex items-center gap-1 rounded-full border border-brand-border bg-brand-bg-alt px-2.5 py-1.5 text-xs font-bold leading-none text-brand-text-muted"><strong class="font-bold">{{ orderStats.pending }}</strong>&nbsp;da seguire</span>
 					</div>
 				</template>
 				<template #actions>

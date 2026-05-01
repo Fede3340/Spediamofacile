@@ -201,7 +201,7 @@ const runCardAction = (kind) => {
 </script>
 
 <template>
-	<div class="sf-account-panel mt-[16px] rounded-[16px] p-[18px] tablet:p-[20px]">
+	<div class="mt-4 rounded-card border border-brand-border bg-brand-card p-[18px] shadow-sf tablet:p-5">
 		<div class="flex flex-col gap-[12px] border-b border-[#E9EEF2] pb-[14px] desktop:flex-row desktop:items-start desktop:justify-between">
 			<div class="max-w-[760px]">
 				<p class="sf-section-kicker mb-[6px]">Esecuzione spedizione</p>
@@ -242,8 +242,8 @@ const runCardAction = (kind) => {
 			Le azioni operative diventano complete dopo la generazione dell'etichetta BRT. Puoi comunque consultare lo stato appena disponibile.
 		</div>
 
-		<div class="sf-account-value-grid mt-[16px] desktop:grid-cols-3">
-			<article v-for="card in executionCards" :key="card.key" class="sf-account-value-card">
+		<div class="mt-4 grid gap-3.5 desktop:grid-cols-3">
+			<article v-for="card in executionCards" :key="card.key" class="flex flex-col gap-2 rounded-card border border-brand-primary/[0.08] bg-brand-card p-[18px] shadow-sf-sm transition-all hover:-translate-y-0.5 hover:shadow-sf">
 				<div class="flex items-start justify-between gap-[10px]">
 					<div class="min-w-0">
 						<p class="text-[0.75rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-brand-text-muted)]">{{ card.eyebrow }}</p>
@@ -302,7 +302,7 @@ const runCardAction = (kind) => {
 					</p>
 				</div>
 
-				<div class="sf-account-value-card__actions">
+				<div class="flex flex-wrap gap-2">
 					<div class="flex flex-wrap gap-[8px]">
 						<SfButton
 							size="sm"

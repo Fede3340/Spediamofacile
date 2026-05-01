@@ -139,10 +139,9 @@ const handleLogout = async () => {
 </script>
 
 <template>
-	<section v-if="profileUiReady" class="sf-account-shell min-h-[600px] py-[20px] tablet:py-[24px] desktop:py-[28px]">
-		<div class="my-container max-w-[1280px]">
+	<section v-if="profileUiReady" class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
+		<div class="my-container max-w-7xl">
 			<AccountPageHeader
-				class="sf-account-shell-hero--compact"
 				eyebrow="Profilo"
 				title="Il mio profilo"
 				description="Gestisci dati personali, sicurezza e fatturazione dell'account."
@@ -207,8 +206,8 @@ const handleLogout = async () => {
 	</section>
 
 	<!-- Skeleton -->
-	<section v-else class="sf-account-shell min-h-[600px] py-[20px] tablet:py-[24px] desktop:py-[28px]">
-		<div class="my-container max-w-[1280px] space-y-[8px]">
+	<section v-else class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
+		<div class="my-container max-w-7xl space-y-[8px]">
 			<div class="space-y-[8px] mb-[10px]">
 				<div class="h-[14px] w-[80px] rounded-full bg-[#EEF3F7] animate-pulse"/>
 				<div class="flex items-center gap-[12px]">
@@ -219,7 +218,7 @@ const handleLogout = async () => {
 					</div>
 				</div>
 			</div>
-			<div class="rounded-[16px] p-[18px] sf-shell-card">
+			<div class="rounded-card border border-brand-border bg-brand-card p-[18px] shadow-sf">
 				<div class="grid grid-cols-1 tablet:grid-cols-2 gap-[12px]">
 					<div
 						v-for="index in 6"

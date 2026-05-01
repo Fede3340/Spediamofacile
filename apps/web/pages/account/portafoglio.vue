@@ -226,8 +226,8 @@ onMounted(() => {
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-[20px] tablet:py-[24px] desktop:py-[28px]">
-		<div class="my-container max-w-[1280px]">
+	<section class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
+		<div class="my-container max-w-7xl">
 			<AccountPageHeader
 				eyebrow="Wallet"
 				title="Portafoglio"
@@ -238,7 +238,7 @@ onMounted(() => {
 						<span
 							v-for="stat in walletHeaderStats"
 							:key="stat.label"
-							class="sf-account-meta-pill">
+							class="inline-flex items-center gap-1 rounded-full border border-brand-primary/15 bg-brand-primary/[0.06] px-2.5 py-1.5 text-xs font-bold leading-none text-brand-primary">
 							{{ stat.label }}: {{ stat.value }}
 						</span>
 					</div>

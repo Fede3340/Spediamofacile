@@ -204,7 +204,7 @@ const shareWhatsApp = () => {
 </script>
 
 <template>
-	<section v-if="accountProUiReady" class="sf-account-shell min-h-[600px] py-[20px] tablet:py-[24px] desktop:py-[28px]">
+	<section v-if="accountProUiReady" class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
 		<div class="my-container space-y-[20px] tablet:space-y-[22px]">
 			<AccountPageHeader
 				eyebrow="Account"
@@ -212,7 +212,7 @@ const shareWhatsApp = () => {
 				:description="partnerHeaderDescription"
 				:crumbs="[{ label: 'Account', to: '/account' }, { label: 'Area Partner Pro' }]">
 				<template #meta>
-					<span class="sf-account-meta-pill">{{ requestStatusLabel }}</span>
+					<span class="inline-flex items-center gap-1 rounded-full border border-brand-primary/15 bg-brand-primary/[0.06] px-2.5 py-1.5 text-xs font-bold leading-none text-brand-primary">{{ requestStatusLabel }}</span>
 				</template>
 				<template #actions>
 					<NuxtLink to="/preventivo" class="btn-primary btn-compact inline-flex items-center justify-center">Nuova spedizione</NuxtLink>
@@ -269,9 +269,9 @@ const shareWhatsApp = () => {
 		</div>
 	</section>
 
-	<section v-else class="sf-account-shell min-h-[600px] py-[18px] tablet:py-[24px] desktop:py-[28px]">
+	<section v-else class="w-full min-h-[600px] py-[18px] tablet:py-6 desktop:py-7">
 		<div class="my-container">
-			<div class="sf-account-panel rounded-[16px] p-[18px] desktop:p-[20px]">
+			<div class="rounded-card border border-brand-border bg-brand-card p-[18px] shadow-sf desktop:p-5">
 				<div class="animate-pulse space-y-[14px]">
 					<div class="h-[18px] w-[200px] rounded-full bg-[var(--color-brand-border)]"/>
 					<div class="h-[14px] w-[320px] rounded-full bg-[#F0F2F4]"/>

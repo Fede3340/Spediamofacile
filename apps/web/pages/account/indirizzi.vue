@@ -1,6 +1,4 @@
-<!-- Limite backend: max 5 indirizzi per utente. -->
 <script setup>
-import '~/assets/css/account.css';
 definePageMeta({ middleware: ['app-auth'] });
 
 useSeoMeta({
@@ -28,10 +26,9 @@ const serverError = ref(null);
 const deleteConfirmId = ref(null);
 const deleting = ref(false);
 
-const activeTab = ref('all'); // 'all' | 'origin' | 'destination'
+const activeTab = ref('all');
 const searchQuery = ref('');
 
-// ─────────── Loaders ───────────
 const fetchAddresses = async () => {
 	loading.value = true;
 	loadError.value = null;
@@ -49,7 +46,6 @@ const fetchAddresses = async () => {
 
 await fetchAddresses();
 
-// ─────────── Stats ───────────
 const stats = computed(() => {
 	const total = addresses.value.length;
 	const origin = addresses.value.filter((a) => String(a.type || '').toLowerCase() === 'origin').length;
@@ -86,8 +82,6 @@ const filteredAddresses = computed(() => {
 
 const reachedLimit = computed(() => stats.value.total >= stats.value.max);
 
-// ─────────── Flash ───────────
-// Timer tracker centralizzato: previene accumulo + leak su navigazione mid-flash.
 let flashSuccessTimer = null;
 let flashErrorTimer = null;
 const showFlashSuccess = (msg) => {
@@ -105,7 +99,6 @@ onBeforeUnmount(() => {
 	if (flashErrorTimer) clearTimeout(flashErrorTimer);
 });
 
-// ─────────── Apertura modale ───────────
 const openCreate = () => {
 	if (reachedLimit.value) {
 		showFlashError(`Hai raggiunto il limite di ${stats.value.max} indirizzi salvati. Eliminane uno per aggiungerne altri.`);
@@ -124,12 +117,10 @@ const openEdit = (address) => {
 	modalOpen.value = true;
 };
 
-// ─────────── Submit ───────────
 const handleSubmit = async (payload) => {
 	submitting.value = true;
 	serverError.value = null;
 	try {
-		// Estraiamo _meta (campi extra solo frontend) dal payload da inviare al backend
 		const { _meta, ...bodyForBackend } = payload;
 
 		if (modalMode.value === 'create') {
@@ -148,7 +139,6 @@ const handleSubmit = async (payload) => {
 	}
 };
 
-// ─────────── Set default ───────────
 const setDefault = async (address) => {
 	try {
 		await sanctum(`/api/user-addresses/${address.id}`, { method: 'PATCH', body: { default: true } });
@@ -159,7 +149,6 @@ const setDefault = async (address) => {
 	}
 };
 
-// ─────────── Delete ───────────
 const requestDelete = (id) => { deleteConfirmId.value = id; };
 const cancelDelete = () => { deleteConfirmId.value = null; };
 
@@ -185,9 +174,8 @@ const tabs = computed(() => [
 </script>
 
 <template>
-	<section class="sf-account-shell sf-addr-page">
-		<div class="my-container max-w-[1280px]">
-			<!-- HEADER unificato (P5 design system - prima era custom .sf-addr-page__header) -->
+	<section class="w-full py-5 tablet:py-6 desktop:py-7">
+		<div class="my-container max-w-7xl">
 			<AccountPageHeader
 				eyebrow="Rubrica"
 				title="I tuoi indirizzi"
@@ -195,60 +183,66 @@ const tabs = computed(() => [
 				current="Indirizzi">
 				<template #actions>
 					<SfButton
-						class="sf-addr-page__cta"
+						variant="primary"
 						:disabled="reachedLimit"
 						@click="openCreate">
-						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-							<path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-						</svg>
+						<template #leading>
+							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+								<path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+							</svg>
+						</template>
 						Nuovo indirizzo
 					</SfButton>
 				</template>
 			</AccountPageHeader>
 
-			<!-- FLASH -->
-			<div v-if="flashSuccess" class="sf-addr-flash sf-addr-flash--success" role="status">
-				<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+			<div v-if="flashSuccess" class="mb-3 flex items-center gap-2 rounded-card border border-brand-success/30 bg-brand-success-bg px-3.5 py-2.5 text-sm font-semibold text-brand-success-fg" role="status">
+				<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="shrink-0">
 					<path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
 				</svg>
 				<span>{{ flashSuccess }}</span>
 			</div>
-			<div v-if="flashError" class="sf-addr-flash sf-addr-flash--error" role="alert">
-				<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+			<div v-if="flashError" class="mb-3 flex items-center gap-2 rounded-card border border-status-failed-fg/30 bg-status-failed-bg px-3.5 py-2.5 text-sm font-semibold text-status-failed-fg" role="alert">
+				<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="shrink-0">
 					<path d="M11,15H13V17H11V15M11,7H13V13H11V7M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2Z" />
 				</svg>
 				<span>{{ flashError }}</span>
 			</div>
 
-			<!-- TOOLBAR: TABS + RICERCA -->
-			<div class="sf-addr-toolbar">
-				<div class="sf-addr-tabs" role="tablist">
+			<div class="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+				<div class="flex flex-wrap gap-1.5" role="tablist">
 					<button
 						v-for="tab in tabs"
 						:key="tab.key"
 						role="tab"
-						:aria-selected="activeTab === tab.key"
-						:class="['sf-addr-tab', activeTab === tab.key ? 'sf-addr-tab--active' : '']"
 						type="button"
-						@click="activeTab = tab.key"
-					>
+						:aria-selected="activeTab === tab.key"
+						:class="[
+							'inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-[0.8125rem] font-semibold transition-colors',
+							activeTab === tab.key
+								? 'border-brand-primary bg-brand-primary text-white'
+								: 'border-brand-border bg-white text-brand-text-secondary hover:border-brand-primary hover:bg-brand-primary/[0.04] hover:text-brand-primary',
+						]"
+						@click="activeTab = tab.key">
 						<span>{{ tab.label }}</span>
-						<span class="sf-addr-tab__badge">{{ tab.count }}</span>
+						<span :class="[
+							'inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[0.6875rem] font-bold',
+							activeTab === tab.key ? 'bg-white/20 text-white' : 'bg-brand-bg-alt text-brand-text-muted',
+						]">{{ tab.count }}</span>
 					</button>
 				</div>
 
-				<div class="sf-addr-search">
-					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+				<div class="relative w-full lg:w-[320px]">
+					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-text-muted">
 						<path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,10.89 15.56,12.18 14.81,13.24L20.29,18.71L18.88,20.12L13.41,14.64C12.35,15.4 11.05,15.83 9.67,15.83A6.5,6.5 0 0,1 3.17,9.33A6.5,6.5 0 0,1 9.5,3M9.5,5A4.5,4.5 0 0,0 5,9.5A4.5,4.5 0 0,0 9.5,14A4.5,4.5 0 0,0 14,9.5A4.5,4.5 0 0,0 9.5,5Z" />
 					</svg>
 					<input
 						v-model="searchQuery"
 						type="search"
 						placeholder="Cerca per etichetta, nome, città…"
-						class="sf-addr-search__input"
 						aria-label="Cerca indirizzo"
-					>
-					<button v-if="searchQuery" type="button" class="sf-addr-search__clear" aria-label="Azzera ricerca" @click="searchQuery = ''">
+						class="w-full rounded-full border border-brand-border bg-white py-2.5 pl-10 pr-10 text-sm text-brand-text transition focus:border-brand-primary focus:shadow-[0_0_0_3px_rgba(9,88,102,0.1)] focus:outline-none">
+					<button v-if="searchQuery" type="button" aria-label="Azzera ricerca" class="absolute right-2.5 top-1/2 -translate-y-1/2 inline-flex h-7 w-7 items-center justify-center rounded-full text-brand-text-muted transition-colors hover:bg-brand-bg-alt hover:text-brand-primary" @click="searchQuery = ''">
 						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
 							<path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
 						</svg>
@@ -256,25 +250,22 @@ const tabs = computed(() => [
 				</div>
 			</div>
 
-			<!-- LOADING -->
-			<div v-if="loading" class="sf-addr-grid">
-				<div v-for="n in 3" :key="n" class="sf-addr-skeleton">
-					<div class="sf-addr-skeleton__chip"/>
-					<div class="sf-addr-skeleton__title"/>
-					<div class="sf-addr-skeleton__line"/>
-					<div class="sf-addr-skeleton__line sf-addr-skeleton__line--short"/>
+			<div v-if="loading" class="grid gap-3.5 sm:grid-cols-2 xl:grid-cols-3">
+				<div v-for="n in 3" :key="n" class="animate-pulse space-y-3 rounded-card border border-brand-border bg-brand-card p-4">
+					<div class="h-5 w-20 rounded-full bg-brand-bg-alt" />
+					<div class="h-4 w-3/5 rounded-full bg-brand-bg-alt" />
+					<div class="h-3 w-full rounded-full bg-brand-bg-alt" />
+					<div class="h-3 w-2/5 rounded-full bg-brand-bg-alt" />
 				</div>
 			</div>
 
-			<!-- ERROR LOAD -->
-			<div v-else-if="loadError" class="sf-addr-empty sf-addr-empty--error">
+			<div v-else-if="loadError" class="flex flex-col items-center gap-3 rounded-card border border-status-failed-fg/30 bg-status-failed-bg p-8 text-center text-status-failed-fg">
 				<p>{{ loadError }}</p>
 				<SfButton @click="fetchAddresses">Riprova</SfButton>
 			</div>
 
-			<!-- EMPTY -->
-			<div v-else-if="addresses.length === 0" class="sf-addr-empty">
-				<div class="sf-addr-empty__illustration" aria-hidden="true">
+			<div v-else-if="addresses.length === 0" class="flex flex-col items-center gap-3.5 rounded-card border border-brand-border bg-brand-card p-12 text-center">
+				<div aria-hidden="true">
 					<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96" fill="none">
 						<circle cx="48" cy="48" r="46" fill="#F0F6F7" />
 						<path d="M48 22a14 14 0 0 0-14 14c0 10.5 14 26 14 26s14-15.5 14-26a14 14 0 0 0-14-14Zm0 19a5 5 0 1 1 0-10 5 5 0 0 1 0 10Z" fill="#095866" />
@@ -282,25 +273,25 @@ const tabs = computed(() => [
 						<path d="M62 64h12M68 58v12" stroke="#fff" stroke-width="2" stroke-linecap="round" />
 					</svg>
 				</div>
-				<h2 class="sf-addr-empty__title">La tua rubrica è ancora vuota</h2>
-				<p class="sf-addr-empty__text">Salva i tuoi indirizzi più usati per spedire più velocemente. Puoi aggiungerne fino a {{ stats.max }}.</p>
-				<SfButton @click="openCreate">
-					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-						<path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-					</svg>
+				<h2 class="font-display text-xl font-extrabold text-brand-primary">La tua rubrica è ancora vuota</h2>
+				<p class="max-w-md text-sm leading-relaxed text-brand-text-secondary">Salva i tuoi indirizzi più usati per spedire più velocemente. Puoi aggiungerne fino a {{ stats.max }}.</p>
+				<SfButton variant="primary" @click="openCreate">
+					<template #leading>
+						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+						</svg>
+					</template>
 					Aggiungi il primo indirizzo
 				</SfButton>
 			</div>
 
-			<!-- EMPTY filtri -->
-			<div v-else-if="filteredAddresses.length === 0" class="sf-addr-empty sf-addr-empty--compact">
-				<p class="sf-addr-empty__title sf-addr-empty__title--small">Nessun indirizzo corrisponde ai filtri</p>
-				<p class="sf-addr-empty__text">Prova a cambiare scheda o azzera la ricerca.</p>
-				<button type="button" class="sf-addr-empty__reset" @click="() => { searchQuery = ''; activeTab = 'all'; }">Mostra tutti</button>
+			<div v-else-if="filteredAddresses.length === 0" class="flex flex-col items-center gap-2 rounded-card border border-brand-border bg-brand-card p-8 text-center">
+				<p class="font-semibold text-brand-text">Nessun indirizzo corrisponde ai filtri</p>
+				<p class="text-sm text-brand-text-secondary">Prova a cambiare scheda o azzera la ricerca.</p>
+				<button type="button" class="mt-2 text-sm font-semibold text-brand-primary underline transition-opacity hover:opacity-80" @click="() => { searchQuery = ''; activeTab = 'all'; }">Mostra tutti</button>
 			</div>
 
-			<!-- GRID -->
-			<div v-else class="sf-addr-grid">
+			<div v-else class="grid gap-3.5 sm:grid-cols-2 xl:grid-cols-3">
 				<AddressCard
 					v-for="address in filteredAddresses"
 					:key="address.id"
@@ -311,20 +302,16 @@ const tabs = computed(() => [
 					@set-default="setDefault"
 					@request-delete="requestDelete"
 					@confirm-delete="confirmDelete"
-					@cancel-delete="cancelDelete"
-				/>
+					@cancel-delete="cancelDelete" />
 			</div>
 		</div>
 
-		<!-- MODALE -->
 		<AddressFormModal
 			v-model="modalOpen"
 			:mode="modalMode"
 			:initial="modalInitial"
 			:submitting="submitting"
 			:server-error="serverError"
-			@submit="handleSubmit"
-		/>
+			@submit="handleSubmit" />
 	</section>
 </template>
-

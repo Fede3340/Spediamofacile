@@ -1,6 +1,3 @@
-﻿<!--
-  Dashboard Partner Pro: link invito, codice account, statistiche e storico commissioni.
--->
 <script setup>
 import { formatDateIt } from '~/utils/date.js';
 import { formatEuro, formatPrice } from '~/utils/price.js';
@@ -27,150 +24,149 @@ const historyItems = computed(() => props.earnings?.data || []);
 </script>
 
 <template>
-	<div class="space-y-[20px]">
-		<div class="sf-account-panel rounded-[16px] p-[18px] desktop:p-[22px]">
-			<div class="grid gap-[18px] desktop:grid-cols-[minmax(0,1.35fr)_320px] desktop:gap-[20px]">
+	<div class="space-y-5">
+		<div class="rounded-card border border-brand-border bg-brand-card p-5 shadow-sf md:p-[22px]">
+			<div class="grid gap-[18px] lg:grid-cols-[minmax(0,1.35fr)_320px] lg:gap-5">
 				<div>
-					<p class="text-[0.75rem] uppercase tracking-[0.08em] text-[var(--color-brand-text-secondary)] font-semibold mb-[6px]">Programma attivo</p>
-					<h2 class="font-montserrat text-[1.3rem] desktop:text-[1.55rem] font-[800] text-[var(--color-brand-text)]">
+					<p class="mb-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-brand-text-secondary">Programma attivo</p>
+					<h2 class="font-display text-[1.3rem] font-extrabold text-brand-text lg:text-[1.55rem]">
 						Condividi il link e tieni tutto sotto controllo
 					</h2>
-					<p class="text-[0.9375rem] leading-[1.6] text-[var(--color-brand-text-secondary)] mt-[8px] max-w-[700px]">
+					<p class="mt-2 max-w-[700px] text-[0.9375rem] leading-relaxed text-brand-text-secondary">
 						Il link invito resta la prima azione, mentre utilizzi, commissioni e saldo restano leggibili senza aprire viste secondarie.
 					</p>
 
-					<div class="mt-[18px] rounded-[16px] border border-[rgba(9,88,102,0.08)] bg-[#F8FAFB] p-[14px] desktop:p-[16px]">
-						<p class="text-[0.75rem] uppercase tracking-[0.08em] text-[var(--color-brand-text-secondary)] font-semibold mb-[6px]">Link invito</p>
-						<p class="text-[0.9375rem] desktop:text-[1rem] text-[var(--color-brand-text)] break-all leading-[1.6]">
+					<div class="mt-[18px] rounded-card border border-brand-primary/10 bg-brand-bg-alt p-3.5 lg:p-4">
+						<p class="mb-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-brand-text-secondary">Link invito</p>
+						<p class="break-all text-[0.9375rem] leading-relaxed text-brand-text lg:text-base">
 							{{ referralLink || 'Link disponibile al prossimo aggiornamento dati.' }}
 						</p>
 					</div>
 
-					<div class="mt-[12px] flex flex-wrap gap-[8px]">
+					<div class="mt-3 flex flex-wrap gap-2">
 						<SfButton variant="primary" size="sm" @click="emit('copy-link')">{{ copiedLink ? 'Link copiato' : 'Copia link' }}</SfButton>
 						<SfButton variant="secondary" size="sm" @click="emit('share-whatsapp')">WhatsApp</SfButton>
 						<SfButton variant="secondary" size="sm" @click="emit('copy-code')">{{ copied ? 'Codice copiato' : 'Copia codice' }}</SfButton>
 					</div>
 				</div>
 
-				<div class="grid gap-[10px] sm:grid-cols-3 desktop:grid-cols-1">
-					<div class="sf-account-stat-card">
-						<p class="text-[0.6875rem] uppercase tracking-[0.8px] text-[var(--color-brand-text-secondary)] font-medium">Commissioni</p>
-						<p class="text-[1.4rem] font-[800] text-[var(--color-brand-text)] mt-[6px]">&euro;{{ totalEarnings }}</p>
+				<div class="grid gap-2.5 sm:grid-cols-3 lg:grid-cols-1">
+					<div class="rounded-card border border-brand-primary/10 bg-brand-card p-4 shadow-sf-sm">
+						<p class="text-[0.6875rem] font-medium uppercase tracking-[0.8px] text-brand-text-secondary">Commissioni</p>
+						<p class="mt-1.5 text-[1.4rem] font-extrabold text-brand-text">&euro;{{ totalEarnings }}</p>
 					</div>
-					<div class="sf-account-stat-card">
-						<p class="text-[0.6875rem] uppercase tracking-[0.8px] text-[var(--color-brand-text-secondary)] font-medium">Utilizzi</p>
-						<p class="text-[1.4rem] font-[800] text-[var(--color-brand-text)] mt-[6px]">{{ totalUsages }}</p>
+					<div class="rounded-card border border-brand-primary/10 bg-brand-card p-4 shadow-sf-sm">
+						<p class="text-[0.6875rem] font-medium uppercase tracking-[0.8px] text-brand-text-secondary">Utilizzi</p>
+						<p class="mt-1.5 text-[1.4rem] font-extrabold text-brand-text">{{ totalUsages }}</p>
 					</div>
-					<div class="sf-account-stat-card">
-						<p class="text-[0.6875rem] uppercase tracking-[0.8px] text-[var(--color-brand-text-secondary)] font-medium">Saldo</p>
-						<p class="text-[1.4rem] font-[800] text-[var(--color-brand-primary)] mt-[6px]">&euro;{{ commissionBalance }}</p>
+					<div class="rounded-card border border-brand-primary/10 bg-brand-card p-4 shadow-sf-sm">
+						<p class="text-[0.6875rem] font-medium uppercase tracking-[0.8px] text-brand-text-secondary">Saldo</p>
+						<p class="mt-1.5 text-[1.4rem] font-extrabold text-brand-primary">&euro;{{ commissionBalance }}</p>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="sf-account-stat-grid">
-			<div class="sf-account-stat-card">
-				<p class="text-[0.6875rem] uppercase tracking-[0.8px] text-[var(--color-brand-text-secondary)] font-medium">Codice account</p>
-				<p class="text-[0.95rem] font-semibold text-[var(--color-brand-text)] mt-[6px] font-mono break-all">
+		<div class="grid gap-3.5 sm:grid-cols-2">
+			<div class="rounded-card border border-brand-primary/10 bg-brand-card p-4 shadow-sf-sm md:p-5">
+				<p class="text-[0.6875rem] font-medium uppercase tracking-[0.8px] text-brand-text-secondary">Codice account</p>
+				<p class="mt-1.5 break-all font-mono text-[0.95rem] font-semibold text-brand-text">
 					SF-PRO-{{ user?.id?.toString().padStart(6, '0') }}
 				</p>
-				<div class="mt-[10px] inline-flex">
+				<div class="mt-2.5 inline-flex">
 					<SfButton variant="secondary" size="sm" @click="emit('copy-account-code')">{{ copiedAccountCode ? 'Copiato' : 'Copia codice' }}</SfButton>
 				</div>
 			</div>
 
-			<div class="sf-account-stat-card">
-				<p class="text-[0.6875rem] uppercase tracking-[0.8px] text-[var(--color-brand-text-secondary)] font-medium">Codice invito</p>
-				<p class="text-[1rem] font-semibold text-[var(--color-brand-text)] mt-[6px] font-mono break-all">
+			<div class="rounded-card border border-brand-primary/10 bg-brand-card p-4 shadow-sf-sm md:p-5">
+				<p class="text-[0.6875rem] font-medium uppercase tracking-[0.8px] text-brand-text-secondary">Codice invito</p>
+				<p class="mt-1.5 break-all font-mono text-base font-semibold text-brand-text">
 					{{ referralCode }}
 				</p>
-				<p class="text-[0.8125rem] leading-[1.55] text-[var(--color-brand-text-secondary)] mt-[8px]">
+				<p class="mt-2 text-[0.8125rem] leading-relaxed text-brand-text-secondary">
 					Usalo quando devi condividere il programma in forma breve.
 				</p>
 			</div>
-
 		</div>
 
-		<div class="sf-account-panel rounded-[16px] p-[18px] desktop:p-[22px]">
-			<div class="flex flex-col gap-[6px] desktop:flex-row desktop:items-end desktop:justify-between mb-[16px] desktop:mb-[20px]">
+		<div class="rounded-card border border-brand-border bg-brand-card p-5 shadow-sf md:p-[22px]">
+			<div class="mb-4 flex flex-col gap-1.5 lg:mb-5 lg:flex-row lg:items-end lg:justify-between">
 				<div>
-					<p class="text-[0.75rem] uppercase tracking-[0.08em] text-[var(--color-brand-text-secondary)] font-semibold">Storico commissioni</p>
-					<h2 class="font-montserrat text-[1.125rem] font-[800] text-[var(--color-brand-text)] mt-[6px]">Utilizzi recenti del programma</h2>
+					<p class="text-xs font-semibold uppercase tracking-[0.08em] text-brand-text-secondary">Storico commissioni</p>
+					<h2 class="mt-1.5 font-display text-lg font-extrabold text-brand-text">Utilizzi recenti del programma</h2>
 				</div>
-				<p class="text-[0.8125rem] text-[var(--color-brand-text-secondary)]">
+				<p class="text-[0.8125rem] text-brand-text-secondary">
 					Ordini, commissioni e stato restano leggibili in un solo posto.
 				</p>
 			</div>
 
-			<div v-if="!historyItems.length" class="text-center py-[28px]">
-				<div class="w-[64px] h-[64px] mx-auto mb-[16px] rounded-full bg-[#F5F6F9] flex items-center justify-center">
+			<div v-if="!historyItems.length" class="py-7 text-center">
+				<div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-brand-bg-alt">
 					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#C8CCD0">
 						<path d="M16,11.78L20.24,4.45L21.97,5.45L16.74,14.5L10.23,10.75L5.46,19H22V21H2V3H4V17.54L9.5,8L16,11.78Z" />
 					</svg>
 				</div>
-				<p class="text-[1rem] font-medium text-[var(--color-brand-text)]">Nessuna commissione ancora</p>
-				<p class="text-[0.8125rem] text-[var(--color-brand-text-secondary)] mt-[6px]">Condividi il link invito per iniziare a raccogliere i primi utilizzi.</p>
+				<p class="text-base font-medium text-brand-text">Nessuna commissione ancora</p>
+				<p class="mt-1.5 text-[0.8125rem] text-brand-text-secondary">Condividi il link invito per iniziare a raccogliere i primi utilizzi.</p>
 			</div>
 
-			<div v-else class="space-y-[12px] desktop:space-y-0">
-				<div class="desktop:hidden space-y-[10px]">
-					<div v-for="usage in historyItems" :key="usage.id" class="bg-[#F5F6F9] rounded-[16px] p-[14px] border border-transparent shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
-						<div class="flex items-start justify-between gap-[12px]">
+			<div v-else class="space-y-3 lg:space-y-0">
+				<div class="space-y-2.5 lg:hidden">
+					<div v-for="usage in historyItems" :key="usage.id" class="rounded-card border border-transparent bg-brand-bg-alt p-3.5 shadow-sf-sm">
+						<div class="flex items-start justify-between gap-3">
 							<div>
-								<p class="text-[0.8125rem] font-semibold text-[var(--color-brand-text)]">{{ usage.buyer?.name || 'â€”' }}</p>
-								<p class="text-[0.75rem] text-[var(--color-brand-text-secondary)] mt-[2px]">{{ formatDate(usage.created_at) }}</p>
+								<p class="text-[0.8125rem] font-semibold text-brand-text">{{ usage.buyer?.name || 'â€”' }}</p>
+								<p class="mt-0.5 text-xs text-brand-text-secondary">{{ formatDate(usage.created_at) }}</p>
 							</div>
 							<span
 								:class="[
-									'inline-flex items-center gap-[4px] px-[10px] py-[3px] rounded-full text-[0.6875rem] font-medium',
+									'inline-flex items-center gap-1 rounded-full px-2.5 py-[3px] text-[0.6875rem] font-medium',
 									usage.status === 'confirmed'
-										? 'bg-[#f0fdf4] text-[#0a8a7a]'
+										? 'bg-brand-success-bg text-brand-success-fg'
 										: usage.status === 'paid'
-											? 'bg-[#eef7f8] text-[var(--color-brand-primary)]'
-											: 'bg-amber-50 text-amber-700',
+											? 'bg-brand-primary/10 text-brand-primary'
+											: 'bg-status-pending-bg text-status-pending-fg',
 								]">
 								{{ usage.status === 'confirmed' ? 'Confermata' : usage.status === 'paid' ? 'Pagata' : 'In attesa' }}
 							</span>
 						</div>
-						<div class="flex items-center justify-between gap-[10px] mt-[10px] text-[0.8125rem]">
-							<span class="text-[var(--color-brand-text-secondary)]">Ordine</span>
-							<span class="text-[var(--color-brand-text)]">{{ formatPrice(Number(usage.order_amount) * 100) }}</span>
+						<div class="mt-2.5 flex items-center justify-between gap-2.5 text-[0.8125rem]">
+							<span class="text-brand-text-secondary">Ordine</span>
+							<span class="text-brand-text">{{ formatPrice(Number(usage.order_amount) * 100) }}</span>
 						</div>
-						<div class="flex items-center justify-between gap-[10px] mt-[6px] text-[0.8125rem]">
-							<span class="text-[var(--color-brand-text-secondary)]">Commissione</span>
-							<span class="font-semibold text-[var(--color-brand-primary)]">+{{ formatPrice(Number(usage.commission_amount) * 100) }}</span>
+						<div class="mt-1.5 flex items-center justify-between gap-2.5 text-[0.8125rem]">
+							<span class="text-brand-text-secondary">Commissione</span>
+							<span class="font-semibold text-brand-primary">+{{ formatPrice(Number(usage.commission_amount) * 100) }}</span>
 						</div>
 					</div>
 				</div>
 
-				<div class="hidden desktop:block overflow-x-auto">
-					<table class="w-full text-[0.875rem]" style="min-width:520px">
+				<div class="hidden overflow-x-auto lg:block">
+					<table class="w-full text-sm" style="min-width:520px">
 						<thead>
-							<tr class="border-b border-[var(--color-brand-border)] text-left text-[var(--color-brand-text-secondary)]">
-								<th class="pb-[12px] font-medium">Data</th>
-								<th class="pb-[12px] font-medium">Cliente</th>
-								<th class="pb-[12px] font-medium text-right">Ordine</th>
-								<th class="pb-[12px] font-medium text-right">Commissione</th>
-								<th class="pb-[12px] font-medium text-center">Stato</th>
+							<tr class="border-b border-brand-border text-left text-brand-text-secondary">
+								<th class="pb-3 font-medium">Data</th>
+								<th class="pb-3 font-medium">Cliente</th>
+								<th class="pb-3 text-right font-medium">Ordine</th>
+								<th class="pb-3 text-right font-medium">Commissione</th>
+								<th class="pb-3 text-center font-medium">Stato</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr v-for="usage in historyItems" :key="usage.id" class="border-b border-[#F0F0F0] last:border-0">
-								<td class="py-[12px] text-[var(--color-brand-text)]">{{ formatDate(usage.created_at) }}</td>
-								<td class="py-[12px] text-[var(--color-brand-text)]">{{ usage.buyer?.name || 'â€”' }}</td>
-								<td class="py-[12px] text-right text-[var(--color-brand-text)]">{{ formatPrice(Number(usage.order_amount) * 100) }}</td>
-								<td class="py-[12px] text-right font-semibold text-[var(--color-brand-primary)]">+{{ formatPrice(Number(usage.commission_amount) * 100) }}</td>
-								<td class="py-[12px] text-center">
+								<td class="py-3 text-brand-text">{{ formatDate(usage.created_at) }}</td>
+								<td class="py-3 text-brand-text">{{ usage.buyer?.name || 'â€”' }}</td>
+								<td class="py-3 text-right text-brand-text">{{ formatPrice(Number(usage.order_amount) * 100) }}</td>
+								<td class="py-3 text-right font-semibold text-brand-primary">+{{ formatPrice(Number(usage.commission_amount) * 100) }}</td>
+								<td class="py-3 text-center">
 									<span
 										:class="[
-											'inline-block px-[10px] py-[3px] rounded-full text-[0.6875rem] font-medium',
+											'inline-block rounded-full px-2.5 py-[3px] text-[0.6875rem] font-medium',
 											usage.status === 'confirmed'
-												? 'bg-[#f0fdf4] text-[#0a8a7a]'
+												? 'bg-brand-success-bg text-brand-success-fg'
 												: usage.status === 'paid'
-													? 'bg-[#eef7f8] text-[var(--color-brand-primary)]'
-													: 'bg-amber-50 text-amber-700',
+													? 'bg-brand-primary/10 text-brand-primary'
+													: 'bg-status-pending-bg text-status-pending-fg',
 										]">
 										{{ usage.status === 'confirmed' ? 'Confermata' : usage.status === 'paid' ? 'Pagata' : 'In attesa' }}
 									</span>
@@ -183,4 +179,3 @@ const historyItems = computed(() => props.earnings?.data || []);
 		</div>
 	</div>
 </template>
-

@@ -1,9 +1,4 @@
 <script setup>
-/**
- * AccountSidebar — sidebar desktop dell'area account (visibile da lg).
- * Gli stili .account-route-shell__* sono definiti nel parent (global, non
- * scoped) così che sidebar e drawer mobile condividano lo stesso look.
- */
 import { accountCardIcons } from '~/utils/account';
 
 defineProps({
@@ -26,39 +21,32 @@ const emit = defineEmits(['logout']);
 
 <template>
 <!-- eslint-disable vue/no-v-html -- icone SVG da dictionary accountCardIcons (no input utente) -->
-	<aside class="account-route-shell__sidebar hidden lg:block shrink-0 self-start">
-		<div class="account-route-shell__sidebar-sticky flex flex-col">
-			<div class="mb-[12px] flex items-center gap-[10px] px-[4px]">
-				<div class="sf-sidebar-avatar shrink-0">
+	<aside class="hidden w-[204px] shrink-0 self-start lg:sticky lg:top-7 lg:mt-5 lg:block">
+		<div class="flex flex-col">
+			<div class="mb-3 flex items-center gap-2.5 px-1">
+				<div class="inline-flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-primary to-brand-accent text-sm font-bold leading-none text-white shadow-[0_6px_16px_rgba(9,88,102,0.20),0_2px_6px_rgba(228,66,3,0.12)]">
 					{{ initials }}
 				</div>
 				<div class="min-w-0">
-					<p class="account-route-shell__identity-name truncate text-[var(--color-brand-text)]">{{ fullName }}</p>
-					<p class="account-route-shell__identity-role truncate text-[var(--color-brand-text-muted)]">{{ roleLabel }}</p>
+					<p class="truncate text-[15px] font-bold leading-tight text-brand-primary">{{ fullName }}</p>
+					<p class="truncate text-xs font-medium leading-snug text-brand-text-muted">{{ roleLabel }}</p>
 				</div>
 			</div>
 
-			<div class="account-route-shell__sidebar-cta mb-[14px]">
+			<div class="mb-3.5 grid gap-[7px]">
 				<NuxtLink
 					:to="primaryCta.to"
 					:class="[
-						'flex h-[38px] w-full items-center justify-center gap-[8px] rounded-full px-[14px] text-[13px] font-[700] transition-all duration-200 hover:-translate-y-[1px]',
+						'flex h-[38px] w-full items-center justify-center gap-2 rounded-full px-3.5 text-[13px] font-bold text-white transition-all duration-200 hover:-translate-y-px',
 						primaryCta.tone === 'admin'
 							? [
-								'account-route-shell__cta-primary--admin text-white',
-								isAdminConsoleRootRoute ? 'account-route-shell__cta-primary--admin-active' : '',
+								'border border-brand-primary/20 bg-gradient-to-br from-brand-primary-hover to-brand-primary shadow-[0_14px_30px_rgba(9,88,102,0.18)] hover:saturate-[1.03] hover:shadow-[0_18px_34px_rgba(9,88,102,0.22)]',
+								isAdminConsoleRootRoute ? 'from-[#063f49] to-brand-primary-hover shadow-[0_18px_34px_rgba(9,88,102,0.24)]' : '',
 							]
-							: 'bg-[var(--color-brand-accent)] text-white shadow-[0_12px_26px_rgba(228,66,3,0.18)]',
+							: 'bg-brand-accent shadow-[0_12px_26px_rgba(228,66,3,0.18)]',
 					]">
-					<span
-						:class="[
-							'inline-flex h-[22px] w-[22px] items-center justify-center rounded-full',
-							primaryCta.tone === 'admin'
-								? 'border border-white/18 bg-white/12 text-white'
-								: 'border border-white/20 bg-white/12 text-white',
-						]"
-						aria-hidden="true">
-						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[12px] w-[12px]" fill="currentColor">
+					<span class="inline-flex h-[22px] w-[22px] items-center justify-center rounded-full border border-white/20 bg-white/10 text-white" aria-hidden="true">
+						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-3 w-3" fill="currentColor">
 							<path v-if="isAdmin" d="M12 2 4 5v6c0 5.55 3.84 10.74 8 11 4.16-.26 8-5.45 8-11V5l-8-3Zm0 3.2 5 1.88V11c0 3.95-2.53 7.6-5 8.77C9.53 18.6 7 14.95 7 11V7.08l5-1.88Z" />
 							<path v-else d="M12 5L19 12L17.59 13.41L13 8.83V20H11V8.83L6.41 13.41L5 12L12 5Z" />
 						</svg>
@@ -69,68 +57,68 @@ const emit = defineEmits(['logout']);
 				<NuxtLink
 					v-if="secondaryCta"
 					:to="secondaryCta.to"
-					class="flex h-[42px] w-full items-center justify-center rounded-full border border-[rgba(9,88,102,0.12)] bg-white px-[14px] text-[13px] font-[700] text-[var(--color-brand-primary)] transition-all duration-200 hover:-translate-y-[1px] hover:border-[rgba(9,88,102,0.18)] hover:shadow-[0_10px_22px_rgba(20,37,48,0.06)]">
+					class="flex h-[42px] w-full items-center justify-center rounded-full border border-brand-primary/10 bg-brand-card px-3.5 text-[13px] font-bold text-brand-primary transition-all duration-200 hover:-translate-y-px hover:border-brand-primary/20 hover:shadow-[0_10px_22px_rgba(20,37,48,0.06)]">
 					{{ secondaryCta.label }}
 				</NuxtLink>
 			</div>
 
 			<nav aria-label="Navigazione account">
-				<div class="account-route-shell__nav-groups flex flex-col pb-[4px]">
+				<div class="flex flex-col gap-2.5 pb-1">
 					<div
 						v-for="group in navGroups"
-						:key="group.key || group.title || group.items.map((item) => item.to).join('|')"
-						class="account-route-shell__group"
-						:data-tone="group.tone || 'client'">
+						:key="group.key || group.title || group.items.map((item) => item.to).join('|')">
 						<div
 							v-if="group.title"
 							:class="[
-								'account-route-shell__group-toggle mb-[4px] px-[8px]',
+								'mb-1 px-2',
 								canCollapseGroup(group) ? 'cursor-pointer select-none' : '',
 							]"
 							@click="toggleGroup(group)">
-							<div class="flex items-center justify-between gap-[8px]">
-								<span class="account-route-shell__group-label font-[700] uppercase">{{ group.title }}</span>
+							<div class="flex items-center justify-between gap-2">
+								<span class="text-[10px] font-bold uppercase leading-none tracking-[0.6px] text-brand-text-muted">{{ group.title }}</span>
 								<button
 									v-if="canCollapseGroup(group)"
 									type="button"
-									class="inline-flex h-[18px] w-[18px] items-center justify-center rounded-full text-[var(--color-brand-text-muted)] transition-colors duration-200 hover:text-[var(--color-brand-primary)]"
+									class="inline-flex h-[18px] w-[18px] items-center justify-center rounded-full text-brand-text-muted transition-colors duration-200 hover:text-brand-primary"
 									:aria-label="`${isGroupOpen(group) ? 'Chiudi' : 'Apri'} gruppo ${group.title}`"
 									@click.stop="toggleGroup(group)">
-									<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[12px] w-[12px] transition-transform duration-200" :class="isGroupOpen(group) ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-3 w-3 transition-transform duration-200" :class="isGroupOpen(group) ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 										<path d="m6 9 6 6 6-6" />
 									</svg>
 								</button>
 							</div>
 						</div>
 
-						<div v-if="isGroupOpen(group)" class="account-route-shell__group-list">
+						<div v-if="isGroupOpen(group)" class="grid gap-[3px]">
 							<NuxtLink
 								v-for="item in group.items"
 								:key="item.to"
 								:to="item.to"
 								:class="[
-									'account-route-shell__nav-item group flex min-h-[36px] items-center gap-[9px] rounded-[10px] px-[8px] py-[6px] text-left transition-all duration-200',
+									'group flex min-h-[40px] items-center gap-[9px] rounded-[10px] px-3.5 py-2.5 text-left transition-colors duration-200',
 									isItemActive(item)
-										? 'account-route-shell__nav-item--active bg-[rgba(9,88,102,0.08)]'
-										: 'account-route-shell__nav-item--inactive hover:bg-[rgba(9,88,102,0.04)]',
+										? 'bg-brand-primary/[0.06]'
+										: 'hover:bg-brand-primary/[0.04]',
 								]">
 								<span
 									:class="[
-										'account-route-shell__nav-icon-shell inline-flex h-[28px] w-[28px] shrink-0 items-center justify-center rounded-[9px] border transition-colors duration-200',
+										'inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[9px] border transition-colors duration-200',
 										isItemActive(item)
-											? 'border-[rgba(9,88,102,0.14)] bg-[rgba(9,88,102,0.08)] text-[var(--color-brand-primary)]'
-											: 'border-[rgba(9,88,102,0.10)] bg-white text-[var(--color-brand-text-muted)] group-hover:border-[rgba(9,88,102,0.14)] group-hover:bg-[rgba(9,88,102,0.04)] group-hover:text-[var(--color-brand-text-muted)]',
+											? 'border-brand-primary/15 bg-brand-primary/[0.08] text-brand-primary'
+											: 'border-brand-primary/10 bg-white text-brand-text-muted group-hover:border-brand-primary/15 group-hover:bg-brand-primary/[0.04] group-hover:text-brand-primary',
 									]">
-									<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[14px] w-[14px]" fill="currentColor" v-html="accountCardIcons[item.iconKey]" />
+									<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[18px] w-[18px]" fill="currentColor" v-html="accountCardIcons[item.iconKey]" />
 								</span>
 								<span
-									class="account-route-shell__nav-label min-w-0 flex-1 truncate leading-[1.3]"
-									:class="isItemActive(item) ? 'font-[700] text-[var(--color-brand-primary)]' : 'font-[500] text-[var(--color-brand-text-secondary)] group-hover:text-[var(--color-brand-text)]'">
+									:class="[
+										'min-w-0 flex-1 truncate text-[13px] leading-tight',
+										isItemActive(item) ? 'font-bold text-brand-primary' : 'font-medium text-brand-text-secondary group-hover:text-brand-text',
+									]">
 									{{ item.label }}
 								</span>
 								<span
 									v-if="item.badge"
-									class="inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#E44203] px-[5px] text-[9px] font-[800] text-white">
+									class="inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-brand-accent px-1.5 text-[9px] font-extrabold text-white">
 									{{ item.badge }}
 								</span>
 							</NuxtLink>
@@ -141,14 +129,14 @@ const emit = defineEmits(['logout']);
 
 			<button
 				type="button"
-				class="account-route-shell__logout group mt-[10px] flex min-h-[36px] w-full shrink-0 items-center gap-[9px] rounded-[10px] px-[8px] py-[6px] text-left hover:bg-[rgba(220,38,38,0.05)]"
+				class="group mt-2.5 flex min-h-[40px] w-full shrink-0 items-center gap-[9px] rounded-[10px] px-3.5 py-2.5 text-left transition-colors duration-200 hover:bg-brand-error/5"
 				@click="emit('logout')">
-				<span class="account-route-shell__nav-icon-shell inline-flex h-[28px] w-[28px] shrink-0 items-center justify-center rounded-[9px] border border-[rgba(9,88,102,0.10)] bg-white text-[var(--color-brand-text-muted)] group-hover:border-[rgba(220,38,38,0.20)] group-hover:text-[#C75A29]">
-					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[14px] w-[14px]" fill="currentColor">
+				<span class="inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[9px] border border-brand-primary/10 bg-white text-brand-text-muted transition-colors duration-200 group-hover:border-brand-error/20 group-hover:bg-brand-error/5 group-hover:text-brand-error">
+					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[18px] w-[18px]" fill="currentColor">
 						<path d="M10.08 15.59 11.5 17l5-5-5-5-1.42 1.41L12.67 11H3v2h9.67l-2.59 2.59ZM19 3H5a2 2 0 0 0-2 2v4h2V5h14v14H5v-4H3v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z" />
 					</svg>
 				</span>
-				<span class="account-route-shell__nav-label min-w-0 flex-1 truncate leading-[1.3] text-[13px] font-[500] text-[var(--color-brand-text-secondary)] group-hover:text-[#9A3412]">Esci</span>
+				<span class="min-w-0 flex-1 truncate text-[13px] font-medium leading-tight text-brand-text-secondary group-hover:text-brand-error">Esci</span>
 			</button>
 		</div>
 	</aside>

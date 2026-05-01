@@ -267,10 +267,9 @@ const togglePaymentForm = async () => {
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-[20px] tablet:py-[24px] desktop:py-[28px]">
+	<section class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
 		<div class="my-container">
 			<AccountPageHeader
-				class="sf-account-shell-hero--compact"
 				:title="cardsHeader.title"
 				:description="cardsHeader.description"
 				current="Carte">

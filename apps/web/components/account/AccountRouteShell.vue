@@ -1,13 +1,4 @@
 <script setup>
-/**
- * AccountRouteShell — layout wrapper dell'area account (sidebar + content).
- * Orchestratore che risolve il ruolo utente (admin/pro/client), computa CTA
- * e attive di menu, e delega il rendering a:
- *   - AccountSidebar (desktop >= lg)
- *   - AccountMobileDrawer (< lg topbar + drawer)
- * I nav groups sono definiti in utils/accountNavigationGroups.ts.
- */
-import '~/assets/css/account.css';
 import AccountSidebar from './AccountSidebar.vue';
 import AccountMobileDrawer from './AccountMobileDrawer.vue';
 import {
@@ -44,8 +35,6 @@ const pickProfileField = (...candidates) => {
 	return '';
 };
 
-// Source of truth: il ruolo live di Sanctum viene prima dello snapshot UI.
-// Lo snapshot resta solo come fallback per il primo paint o sessioni in bootstrap.
 const roleKey = computed(() => resolveRoleKey(user.value?.role, uiSnapshot.value.role));
 
 const isAdmin = computed(() => roleKey.value === 'admin');
@@ -166,7 +155,7 @@ watch(isAdmin, (value) => {
 </script>
 
 <template>
-	<div class="account-route-shell__frame flex w-full items-start">
+	<div class="mx-auto flex w-full max-w-7xl items-start overflow-x-hidden px-3.5 pt-7 pb-10 md:px-6 lg:gap-7 lg:px-10 lg:pt-12 lg:pb-14">
 		<AccountSidebar
 			:full-name="fullName"
 			:initials="initials"
@@ -198,7 +187,7 @@ watch(isAdmin, (value) => {
 			@close="closeDrawer"
 			@logout="handleLogout" />
 
-		<div class="account-route-shell__content min-w-0 flex-1">
+		<div class="min-w-0 flex-1">
 			<slot />
 		</div>
 	</div>
