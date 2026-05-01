@@ -196,7 +196,6 @@
 	}
 }
 
-
 /* ── Route composer ─────────────────────────────────────────── */
 
 .route-composer {
@@ -1314,10 +1313,6 @@
 }
 
 /* ── Animations ── */
-@keyframes checkout-fade-up {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
 
 /* ── Transition: payment-panel ── */
 /* ── Layout ── */
@@ -1486,7 +1481,6 @@
   color: var(--color-brand-primary);
   font-weight: 800;
 }
-
 
 .checkout-motion-card {
   animation: checkout-fade-up 0.6s var(--sf-ease) both;
@@ -2432,7 +2426,7 @@
   cursor: not-allowed;
 }
 /* Spinner CTA (pattern sf-flow-cta) */
-@keyframes sf-cta-spin { to { transform: rotate(360deg); } }
+
 .sf-flow-cta__arrow .spin {
   animation: sf-cta-spin 1s linear infinite;
   transform-origin: center;
@@ -4836,11 +4830,6 @@
 	outline-offset: 2px;
 }
 
-@keyframes shipment-stage-error-pop {
-	0% { opacity: 0; transform: translateY(4px) scale(0.98); }
-	100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-
 @media (prefers-reduced-motion: reduce) {
 	.shipment-stage-error {
 		animation: none;
@@ -4859,11 +4848,6 @@
 		rgba(9, 88, 102, 0.06) 100%);
 	background-size: 200% 100%;
 	animation: sf-skeleton-shimmer-anim 1400ms linear infinite;
-}
-
-@keyframes sf-skeleton-shimmer-anim {
-	0% { background-position: 200% 0; }
-	100% { background-position: -200% 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -5534,32 +5518,6 @@
 	.checkout-success__title {
 		font-size: 32px;
 	}
-}
-
-@keyframes success-enter {
-	from { opacity: 0; transform: translateY(12px); }
-	to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes badge-pop {
-	0% { opacity: 0; transform: scale(0.5); }
-	60% { transform: scale(1.08); }
-	100% { opacity: 1; transform: scale(1); }
-}
-
-@keyframes badge-ring {
-	0% { opacity: 0; transform: scale(0.6); }
-	100% { opacity: 1; transform: scale(1); }
-}
-
-@keyframes badge-check {
-	0% { stroke-dashoffset: 48; }
-	100% { stroke-dashoffset: 0; }
-}
-
-@keyframes pulse-dot {
-	0%, 100% { opacity: 1; transform: scale(1); }
-	50% { opacity: 0.55; transform: scale(0.85); }
 }
 
 @media (prefers-reduced-motion: reduce) {
