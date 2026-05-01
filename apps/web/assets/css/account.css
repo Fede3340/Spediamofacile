@@ -43,7 +43,7 @@
 	width: 3px;
 	height: 36px;
 	border-radius: 0 3px 3px 0;
-	background: linear-gradient(180deg, var(--color-brand-accent) 0%, #c73600 100%);
+	background: linear-gradient(180deg, var(--color-brand-accent) 0%, var(--color-accent-dark) 100%);
 	pointer-events: none;
 	z-index: 1;
 }
@@ -1523,14 +1523,14 @@
 	font-weight: 700;
 	letter-spacing: 0.12em;
 	text-transform: uppercase;
-	color: var(--color-brand-text-muted, #6B7280);
+	color: var(--color-brand-text-muted, var(--color-brand-text-muted));
 	border-bottom: 1px solid var(--color-brand-border, #DFE2E7);
 }
 
 .sf-fatture__table td {
 	padding: 14px 18px;
 	border-bottom: 1px solid #EEF1F4;
-	color: var(--color-brand-text, #1d2738);
+	color: var(--color-brand-text, var(--color-brand-text));
 	vertical-align: middle;
 }
 
@@ -1637,13 +1637,13 @@
 	font-weight: 700;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
-	color: var(--color-brand-text-muted, #6B7280);
+	color: var(--color-brand-text-muted, var(--color-brand-text-muted));
 }
 
 .sf-fatture__card-defs dd {
 	margin: 0;
 	font-size: 0.875rem;
-	color: var(--color-brand-text, #1d2738);
+	color: var(--color-brand-text, var(--color-brand-text));
 	font-weight: 600;
 }
 

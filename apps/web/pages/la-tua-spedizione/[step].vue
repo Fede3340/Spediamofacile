@@ -918,9 +918,6 @@ const {
 
 <template>
 	<section class="pb-[64px] md:pb-[88px]" style="background: var(--gradient-page-surface)">
-		<div v-if="false" class="w-full max-w-[1280px] mx-auto px-[14px] sm:px-[40px] py-[40px]">
-			<div class="rounded-[18px] border border-[#D7E4E7] bg-white p-[24px] text-[#1d2738]">debug step shell</div>
-		</div>
 		<PublicPageHeader
 			:title="quoteHeroTitle"
 			:description="quoteHeroDescription"

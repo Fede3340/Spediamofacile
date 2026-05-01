@@ -5,9 +5,12 @@
 /* Shared segment toggle (sf-shared-segment-*) — estratto da shipment-flow.css (Ondata 6).
    Import DOPO shipment-flow.css per mantenere cascade originale. */
 @import "./funnel-shared.css";
-/* Animazioni funnel (@keyframes) — estratto da shipment-flow.css (Ondata 10).
-   Self-contained: i keyframes non dipendono da specificity ordering. */
+/* Animazioni funnel (@keyframes) — estratto da shipment-flow.css (Ondata 10). */
 @import "./funnel-animations.css";
+/* Payment methods + Apple/Google Pay wallet (Ondata 10b). */
+@import "./funnel-payment-methods.css";
+/* Cart totals + coupon panel (Ondata 10b). */
+@import "./funnel-cart-totals.css";
 @import "./components/empty-state.css";
 @import "./tracking.css";
 @import "./account.css";

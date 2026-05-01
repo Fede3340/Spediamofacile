@@ -1,6 +1,7 @@
 <script setup>
-// CRITICAL: vedi CLAUDE.md "Eccezioni documentate" — non splittare senza E2E gating Stripe.
-// File 737 LOC: form multi-zona (pickup/delivery/common) con validazione cross-field.
+// Form indirizzi multi-zona (mittente/destinatario) con validazione inline.
+// Gli handler arrivano via inject(shipmentFormHandlersKey) da ShipmentFlowPage.
+// Sub-componenti markup-only sono in components/shipment/address/* (Ondata 6).
 const props = defineProps({
 	type: { type: String, required: true, validator: (value) => ['origin', 'dest'].includes(value) },
 	address: { type: Object, required: true },
