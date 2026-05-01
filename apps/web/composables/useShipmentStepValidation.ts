@@ -36,9 +36,11 @@ export const useShipmentStepValidation = ({
 	const debugValidationLog = (label: string, payload: unknown = '') => {
 		if (!import.meta.client) return
 		if (localStorage.getItem('sf_debug_shipment') !== '1') return
+		// eslint-disable-next-line no-console -- debug runtime opt-in via localStorage
 		console.info(`[shipment-validation-debug] ${label}`, payload)
 	}
 	const debugValidationError = (label: string, error: unknown) => {
+		// eslint-disable-next-line no-console -- traccia errori validazione lato client
 		if (import.meta.client) console.error(`[shipment-validation-debug] ${label}`, error)
 	}
 

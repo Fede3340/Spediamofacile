@@ -1,4 +1,52 @@
-/* Preventivo component styles */
+/* ============================================================================
+   shipment-flow.css — Stili funnel preventivo + checkout pagamento.
+   File grande (~6000 LOC) per evitare conflitti di specificity tra sezioni.
+
+   INDICE (line numbers approssimative — ricerca per nome se cambiano):
+
+   01. CSS custom properties (:root)              → riga ~30
+   02. Quote rapido (homepage Preventivo.vue)
+       - Route composer (origine/destinazione)    → riga 152
+       - Inputs + location suggestions            → riga 302
+       - Error / feedback                         → riga 393
+       - Package entries (colli)                  → riga 443
+       - Add package button                       → riga 666
+       - Quantity stepper                         → riga 746
+       - Continue CTA                             → riga 833
+       - Trust row                                → riga 924
+       - Breakpoints (tablet/desktop/mobile)      → riga 948
+   03. Account carte Stripe                       → riga 1254
+   04. Payment summary (riepilogo accordion)      → riga 1284
+   05. Checkout stage / panel head                → riga 1448
+   06. Checkout payment options grid              → riga 1517
+   07. Payment notice + panel + choice stack      → riga 1634
+   08. Card form (Stripe Elements)                → riga 1801
+   09. Wallet/bonifico alt payment                → riga 1912
+   10. Billing form                               → riga 2018
+   11. Same-address toggle                        → riga 2126
+   12. Payment footer                             → riga 2191
+   13. Submit button + status messages            → riga 2350
+   14. Base form styles (input-preventivo-step-2) → riga 2594
+   15. Shared stage card (ventaglio funnel)       → riga 2681
+   16. Address section                            → riga 2814
+   17. Date picker                                → riga 3150
+   18. Service option helpers                     → riga 3289
+   19. Address cards                              → riga 3292
+   20. Step 2/3 polish + PUDO map markers         → riga 3418
+   21. Pill CTA buttons + a11y reduced motion     → riga 3493
+   22. Mobile responsive fixes (<640px)           → riga 3510
+   23. Funnel DS alignment                        → riga 3945
+   24. service-surface BASE LAYOUT                → riga 3962
+   25. SERVICE-PANEL expanded (Contrassegno)      → riga 4240
+   26. Stage transitions + animations             → riga 4631
+   27. Tablet media queries                       → riga 4963
+   28. payment-auth-required                      → riga 5010
+   29. SF Shared Segment (toggle condiviso)       → riga 5784
+
+   PRIMA DI SPLITTARE: questo file ha specificity ordering critico. Spostare
+   regole tra file rischia di rompere il pattern --active/--open. Per
+   refactor sicuro serve baseline visual regression + QA umano.
+   ============================================================================ */
 
 :root {
 	/* Sprint 2.4 — Coerenza Preventivo homepage vs ventaglio funnel. */

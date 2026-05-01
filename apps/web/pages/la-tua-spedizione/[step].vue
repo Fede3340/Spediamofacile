@@ -29,6 +29,7 @@ import {
 const debugCheckpoint = (label) => {
 	if (!import.meta.client) return;
 	if (localStorage.getItem('sf_debug_shipment') !== '1') return;
+	// eslint-disable-next-line no-console -- debug runtime opt-in via localStorage
 	console.info(`[shipment-step-debug] ${label}`);
 };
 const summaryHydrationReady = ref(false);
