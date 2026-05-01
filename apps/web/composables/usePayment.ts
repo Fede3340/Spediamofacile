@@ -101,7 +101,7 @@ export function usePayment(cart: CartLike) {
   const { user, isAuthenticated, refreshIdentity } = useSanctumAuth()
   const { authCookie } = useAuthUiSnapshotPersistence()
   const { session } = useSession()
-  const shipmentFlowStore = useShipmentFlowStore()
+  const shipmentFlowStore = useShipmentStore()
 
   // ---------- CONFIG TAB METODI ----------
   const paymentMethodOptions = [

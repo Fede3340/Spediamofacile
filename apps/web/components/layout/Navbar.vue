@@ -10,7 +10,7 @@ const navLinks = [
 ];
 
 const { accountLabel, isAuthenticatedForUi, isAuthUiPending, mobileAccountLabel } = useAuthUiState();
-const { openAuthModal } = useAuthModalStore();
+const { openAuthModal } = useAuthStore();
 const { cart } = useCartFetch();
 const route = useRoute();
 const { isAccountRoute, isAuthMinimalShellRoute, isQuoteFlowRoute } = useShellRouteState();

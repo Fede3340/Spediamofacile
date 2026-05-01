@@ -71,7 +71,7 @@ export function useCart() {
 	const { user, isAuthenticated } = useSanctumAuth();
 	const { loadPriceBands, priceBands, promoSettings } = usePriceBands();
 	const { session } = useSession() as { session: SessionRef };
-	const userStore = useShipmentFlowStore();
+	const userStore = useShipmentStore();
 
 	const fallbackFlowRoute = computed(() => {
 		const remoteFlowState = resolveShipmentFlowState(session.value?.data || {});

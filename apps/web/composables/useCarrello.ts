@@ -34,7 +34,7 @@ export function useCarrello() {
     const { cart: rawCart, refresh, status } = useCartFetch();
     const cart = rawCart as Ref<CartResponse | null | undefined>;
     const { isAuthenticated } = useSanctumAuth();
-    const { openAuthModal } = useAuthModalStore();
+    const { openAuthModal } = useAuthStore();
     const sanctum = useSanctumClient() as SanctumClient;
     const route = useRoute();
     const uiFeedback = useUiFeedback();

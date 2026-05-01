@@ -6,7 +6,7 @@ import { normalizeAuthTab, normalizeRequestedPath } from '~/utils/auth';
 useCanonical();
 
 const { isAuthenticatedForUi } = useAuthUiState();
-const { openAuthModal } = useAuthModalStore();
+const { openAuthModal } = useAuthStore();
 const route = useRoute();
 const router = useRouter();
 const { isAccountRoute, isAuthPageRoute, isQuoteFlowRoute } = useShellRouteState();

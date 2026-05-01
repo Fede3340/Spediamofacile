@@ -24,7 +24,7 @@ import {
 	formatResolvedLocation as formatResolvedLocationCanonical,
 } from "~/utils/quickQuoteContract";
 
-type QuoteFlowStore = ReturnType<typeof useShipmentFlowStore>;
+type QuoteFlowStore = ReturnType<typeof useShipmentStore>;
 type QuoteTimer = ReturnType<typeof setTimeout> | null;
 
 // =============================================================================
@@ -104,7 +104,7 @@ import { useQuoteResultsInternal } from '~/composables/useQuoteResults';
  */
 export const useQuote = () => {
 	// --- DIPENDENZE GLOBALI ---
-	const shipmentFlowStore = useShipmentFlowStore();
+	const shipmentFlowStore = useShipmentStore();
 	const route = useRoute();
 	const runtimeConfig = useRuntimeConfig();
 	const apiBase = String(runtimeConfig.public?.apiBase || "http://127.0.0.1:8787").replace(/\/$/, "");

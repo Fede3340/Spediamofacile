@@ -54,7 +54,7 @@ export function useAuthOverlay() {
 	const { refreshIdentity } = useSanctumAuth()
 	const { persistSnapshotFromUser } = useAuthUiSnapshotPersistence()
 	const { authProviders, refreshAuthProviders } = useAuthProviders()
-	const authModal = useAuthModalStore()
+	const authModal = useAuthStore()
 	const { isOpen, redirectPath, selectedTab, entryMode } = storeToRefs(authModal)
 	const { openAuthModal, closeAuthModal } = authModal
 	// Funnel analytics: track login/register success.

@@ -108,7 +108,7 @@ export const resolveFunnelErrorMessage = (error: unknown, fallback: string) => {
 
 export function useShipmentStepPageOrchestration(deps: StepPageDeps) {
 	const route = useRoute();
-	const shipmentFlowStore = useShipmentFlowStore();
+	const shipmentFlowStore = useShipmentStore();
 	const sanctumClient = useSanctumClient();
 	const uiFeedback = useUiFeedback();
 	const funnelAnalytics = useFunnelAnalytics();

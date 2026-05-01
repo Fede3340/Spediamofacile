@@ -6,7 +6,7 @@
 -->
 <script setup>
 const DEBUG_STATIC_QUOTE = false;
-const debugQuoteStore = useShipmentFlowStore();
+const debugQuoteStore = useShipmentStore();
 const quoteApi = DEBUG_STATIC_QUOTE
   ? {
     formRef: ref(null),

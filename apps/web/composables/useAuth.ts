@@ -204,13 +204,13 @@ export const useAuthUiState = () => {
 }
 
 export const useAuthProviders = () => {
-	const store = useAuthProvidersStore()
-	const { providers, loaded, loading } = storeToRefs(store)
+	const store = useAuthStore()
+	const { providers, providersLoaded, providersLoading } = storeToRefs(store)
 
 	return {
 		authProviders: providers,
-		authProvidersLoaded: loaded,
-		authProvidersLoading: loading,
-		refreshAuthProviders: store.refresh,
+		authProvidersLoaded: providersLoaded,
+		authProvidersLoading: providersLoading,
+		refreshAuthProviders: store.refreshProviders,
 	}
 }

@@ -106,9 +106,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 	const { init, user } = useSanctumAuth();
 	const { authCookie } = useAuthUiSnapshotPersistence();
 	const { session, refresh } = useSession();
-	const shipmentFlowStore = useShipmentFlowStore();
+	const shipmentFlowStore = useShipmentStore();
 	const uiFeedback = useUiFeedback();
-	const { openGate } = useShipmentFlowAdminGateStore();
+	const { openAdminGate: openGate } = useShipmentStore();
 	const quoteTransitionLock = useState('shipment-flow-quote-transition-lock', () => false);
 
 	// Allineiamo subito lo stato locale del funnel prima di derivare localFlowState.

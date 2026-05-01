@@ -1,12 +1,12 @@
 import { describe, it, expect } from 'vitest'
 
 /**
- * Test per shipmentFlowStore.js (stores/shipmentFlowStore.js)
+ * Test per shipmentStore (stores/shipmentStore.ts)
  * Testiamo la struttura dati, i calcoli e la logica di serializzazione
  * senza dipendenze da Pinia/Vue runtime.
  */
 
-describe('shipmentFlowStore Logic', () => {
+describe('shipmentStore Logic', () => {
 
   // ========== PACKAGE DATA ==========
   describe('Package Data Structure', () => {

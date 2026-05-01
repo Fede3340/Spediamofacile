@@ -27,7 +27,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 		if (status !== 401 && status !== 419) return
 
 		// Evita reopen ripetuti se l'overlay è già aperto.
-		const authModal = useAuthModalStore()
+		const authModal = useAuthStore()
 		if (authModal.isOpen) return
 		const { openAuthModal } = authModal
 

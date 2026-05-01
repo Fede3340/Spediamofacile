@@ -61,7 +61,8 @@ export default createConfigForNuxt({
 			// Composables auto-import del progetto
 			usePriceBands: 'readonly',
 			useSession: 'readonly',
-			useShipmentFlowStore: 'readonly',
+			useShipmentStore: 'readonly',
+			useAuthStore: 'readonly',
 			useCartFetch: 'readonly',
 			useUiFeedback: 'readonly',
 			useFunnelAnalytics: 'readonly',

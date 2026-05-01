@@ -39,9 +39,9 @@ onMounted(() => {
 	});
 });
 
-const shipmentFlowStore = useShipmentFlowStore();
+const shipmentFlowStore = useShipmentStore();
 const route = useRoute();
-const { openAuthModal } = useAuthModalStore();
+const { openAuthModal } = useAuthStore();
 const authUi = useAuthUiState();
 const isAuthenticated = authUi.isAuthenticatedForUi;
 definePageMeta({ middleware: ['shipment-validation'] });

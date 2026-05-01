@@ -9,7 +9,7 @@ import '~/assets/css/autenticazione.css';
 //   • AuthSocialButtons    — 3 bottoni Google/Apple/Facebook (login + register)
 // Logica di business in useAuthOverlay (composable). Stato locale qui: solo forgot mode.
 const { loginForm, registerForm, isLoading, resendLoading, authError, authSuccess, socialError, verificationMode, verificationLoading, verificationCode, verificationError, verificationSuccess, showLoginPassword, showRegisterPassword, showRegisterPasswordConfirm, socialErrorTone, isBusy, isOpen, selectedTab, entryMode, authProviders, clearFeedback, resetVerificationMode, closeModal, startSocialAuth, handleLogin, handleRegister, handleVerificationInput, handleVerificationKeydown, verifyCode, resendVerificationEmail, } = useAuthOverlay();
-const { clearEntryMode } = useAuthModalStore();
+const { clearEntryMode } = useAuthStore();
 // Cloudflare Turnstile (CAPTCHA) sul form di registrazione.
 const registerTurnstile = useTurnstile();
 // Wrapper handleRegister che blocca se il CAPTCHA non e' stato risolto

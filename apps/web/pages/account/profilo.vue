@@ -14,7 +14,7 @@ useSeoMeta({
 const { refreshIdentity, user, logout } = useSanctumAuth();
 const { uiSnapshot } = useAuthUiState();
 const { clearSnapshot } = useAuthUiSnapshotPersistence();
-const { openAuthModal } = useAuthModalStore();
+const { openAuthModal } = useAuthStore();
 const profileUiReady = ref(true);
 
 const messageError = ref(null);

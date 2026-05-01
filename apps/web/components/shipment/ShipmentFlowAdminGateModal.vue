@@ -2,15 +2,15 @@
   Componente: ShipmentFlowAdminGateModal
   Password gate per admin che accede al funnel fuori percorso normale.
   Consolidato 2026-04-20: wrapper sottile su <SfModal> (primitive SF).
-  Nessuna API esterna (state gestito via useShipmentFlowAdminGateStore).
+  Nessuna API esterna (state gestito via useShipmentStore — sezione admin gate).
 -->
 <script setup>
 import { storeToRefs } from 'pinia';
 import { SHIPMENT_FLOW_ROUTES } from '~/utils/shipment';
 
-const adminGate = useShipmentFlowAdminGateStore();
-const { challenge } = storeToRefs(adminGate);
-const { closeGate } = adminGate;
+const adminGate = useShipmentStore();
+const { adminGateChallenge: challenge } = storeToRefs(adminGate);
+const { closeAdminGate: closeGate } = adminGate;
 const route = useRoute();
 const sanctumClient = useSanctumClient();
 const uiFeedback = useUiFeedback();

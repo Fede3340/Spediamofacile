@@ -130,7 +130,7 @@ export default defineNuxtPlugin({
 		// rileggere eventuali dati di flusso spedizione salvati in sessione.
 		// Indipendente dagli altri blocchi: puo' partire in parallelo.
 		nuxtApp.hook('app:mounted', () => {
-			const shipmentFlowStore = useShipmentFlowStore()
+			const shipmentFlowStore = useShipmentStore()
 			shipmentFlowStore.hydrateFromSession()
 		})
 	},

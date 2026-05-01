@@ -9,7 +9,7 @@ import {
 	toStepAddressState,
 } from '~/utils/shipment';
 
-const shipmentFlowStore = useShipmentFlowStore();
+const shipmentFlowStore = useShipmentStore();
 const route = useRoute();
 
 // === SEO TECNICA GLOBALE ===
