@@ -24,6 +24,9 @@
 // 4242 4242 4242 4242 09/30 123 — vedi piano ondata 8b futura.
 
 import { useCheckoutOrderContext } from '~/composables/useCheckoutOrderContext'
+import { usePaymentBonifico } from '~/composables/payment/usePaymentBonifico'
+import { usePaymentWallet } from '~/composables/payment/usePaymentWallet'
+import { usePaymentStripe } from '~/composables/payment/usePaymentStripe'
 import { buildCheckoutSuccessQuery, translateStripeError } from '~/utils/checkout'
 import type { Ref } from 'vue'
 import type {
@@ -387,118 +390,27 @@ export function usePayment(cart: CartLike) {
   }
 
   // ---------- CARTA (+ 3DS automatico) ----------
-  /** Paga con carta. Gestisce sia carta nuova (confirmCardPayment) sia salvata (handleCardAction). */
-  async function payWithCard() {
-    const stripeClient = stripe.value
-    if (!stripeClient) throw new Error('Stripe non inizializzato.')
-    const orderId = await resolvePayableOrderId()
-    const isExisting = Boolean(cart.existingOrder?.value || cart.existingOrderId?.value)
-    const submissionContext = buildSubmissionContext({
-      preferExisting: isExisting,
-      generate: true,
-    })
-    const submissionId = submissionContext.client_submission_id
-    const useSaved = hasSavedCard.value && !useNewCard.value
-
-    // Persist draft PRIMA del 3DS: se la sessione Sanctum scade durante la challenge,
-    // l'utente puo' recuperare l'ordine al re-login.
-    persistPaymentDraft({
-      orderId,
-      paymentMethod: 'carta',
-      submissionId,
-      isExisting,
-      amount: Number(cart.finalTotal?.value ?? 0),
-    })
-
-    paymentStep.value = 'Conferma pagamento...'
-
-    if (useSaved) {
-      // ---- CARTA SALVATA ----
-      const endpoint = isExisting
-        ? '/api/stripe/existing-order-payment'
-        : '/api/stripe/create-payment'
-      const result = await sanctum(endpoint, {
-        method: 'POST',
-        body: {
-          order_id: orderId,
-          currency: 'eur',
-          payment_method_id: defaultPayment.value?.card?.id,
-          ...submissionContext,
-        },
-      }) as StripePaymentResponse
-
-      let finalIntentId = result?.payment_intent_id ?? null
-
-      if (result?.status === 'requires_action' && result?.client_secret) {
-        // 3DS challenge senza rimontare il Card Element.
-        const { paymentIntent, error } = await stripeClient.handleCardAction(
-          result.client_secret,
-        )
-        if (error) throw error
-        if (paymentIntent?.status !== 'succeeded') {
-          throw new Error('Autenticazione 3D Secure non completata.')
-        }
-        finalIntentId = paymentIntent.id
-      } else if (result?.status !== 'succeeded') {
-        throw new Error('Pagamento non riuscito. Stato: ' + (result?.status || 'sconosciuto'))
-      }
-
-      await markOrderPaid(orderId, finalIntentId, isExisting, submissionId)
-    } else {
-      // ---- CARTA NUOVA ----
-      const card = cardElement.value
-      if (!card) throw new Error('Campo carta non pronto.')
-      const intentEndpoint = isExisting
-        ? '/api/stripe/existing-order-payment-intent'
-        : '/api/stripe/create-payment-intent'
-      const intent = await sanctum(intentEndpoint, {
-        method: 'POST',
-        body: { order_id: orderId, ...submissionContext },
-      }) as PaymentIntentResponse
-      if (!intent?.client_secret) {
-        throw new Error(intent?.error || 'PaymentIntent non creato.')
-      }
-
-      const billingName =
-        String(cart.billingPayload.value?.full_name || '') ||
-        String(cart.billingPayload.value?.name || '') ||
-        String(((user.value || {}) as UserProfile).name || '') ||
-        ''
-
-      const confirmOpts = {
-        payment_method: {
-          card,
-          billing_details: { name: billingName },
-        },
-      } as Parameters<Stripe['confirmCardPayment']>[1] & { setup_future_usage?: 'off_session' }
-      if (saveCardForFuture.value) confirmOpts.setup_future_usage = 'off_session'
-
-      const { paymentIntent, error } = await stripeClient.confirmCardPayment(
-        intent.client_secret,
-        confirmOpts,
-      )
-      if (error) throw error
-      if (paymentIntent?.status !== 'succeeded') {
-        throw new Error('Stato pagamento: ' + paymentIntent?.status)
-      }
-
-      await markOrderPaid(orderId, paymentIntent.id, isExisting, submissionId)
-
-      // Salva carta come default (non bloccante).
-      if (saveCardForFuture.value && paymentIntent.payment_method) {
-        try {
-          await sanctum('/api/stripe/set-default-payment-method', {
-            method: 'POST',
-            body: { payment_method: paymentIntent.payment_method },
-          })
-        } catch (e) {
-          console.warn('[usePayment] save card failed (non bloccante):', getErrorMessage(e) || e)
-        }
-      }
-    }
-
-    await onPaymentSuccess(orderId, 'carta')
-  }
+  // Flusso Stripe carta estratto in composables/payment/usePaymentStripe.ts
+  // (Ondata 5 split). Gestisce carta nuova/salvata + 3DS challenge.
+  // Lifecycle Stripe SDK (initStripe) resta nell'orchestratore per lazy mount.
+  const { payWithCard } = usePaymentStripe({
+    stripe,
+    cardElement,
+    hasSavedCard,
+    useNewCard,
+    defaultPayment,
+    saveCardForFuture,
+    cart,
+    user,
+    paymentStep,
+    sanctum,
+    resolvePayableOrderId,
+    buildSubmissionContext,
+    persistPaymentDraft,
+    callWithAuthRetry,
+    markOrderPaid,
+    onPaymentSuccess,
+  })
 
   /**
    * Notifica backend che l'ordine è stato pagato (per invio email + sync stato).
@@ -525,108 +437,32 @@ export function usePayment(cart: CartLike) {
   }
 
   // ---------- WALLET ----------
-  /** Paga con saldo wallet interno (debito immediato, no 3DS). */
-  async function payWithWallet() {
-    // Il totale mostrato in checkout nasce da useCart().
-    // Qui usiamo quel contesto UI per pagare e poi finalizzare l'ordine.
-    // Se la preview coupon/referral diverge dal totale canonico ordine,
-    // il backend rifiuta la finalizzazione invece di introdurre drift silenzioso.
-    const orderId = await resolvePayableOrderId()
-    const isExisting = Boolean(cart.existingOrder?.value || cart.existingOrderId?.value)
-    const submissionContext = buildSubmissionContext({
-      preferExisting: isExisting,
-      generate: true,
-    })
-    const submissionId = submissionContext.client_submission_id
-
-    persistPaymentDraft({
-      orderId,
-      paymentMethod: 'wallet',
-      submissionId,
-      isExisting,
-      amount: Number(cart.finalTotal?.value ?? 0),
-    })
-
-    paymentStep.value = 'Addebito saldo wallet...'
-    const amountEur = Number(cart.finalTotal?.value ?? 0)
-    const res = await callWithAuthRetry<WalletPayResponse>(
-      () =>
-        sanctum('/api/wallet/pay', {
-          method: 'POST',
-          body: {
-            amount: amountEur,
-            reference: `order-${orderId}`,
-            description: `Pagamento ordine #${orderId}`,
-          },
-        }) as Promise<WalletPayResponse>,
-      { label: 'wallet pay' },
-    )
-    if (!res?.success || !res?.data?.id) {
-      // Messaggio contestuale: cerca di distinguere saldo insufficiente
-      // da errore tecnico/rete per evitare false comunicazioni all'utente.
-      const serverMessage = res?.message || res?.error
-      const isInsufficientFunds = typeof serverMessage === 'string'
-        && /saldo|insufficien/i.test(serverMessage)
-      const fallback = isInsufficientFunds
-        ? 'Saldo wallet insufficiente per completare il pagamento.'
-        : 'Errore durante l\'addebito dal wallet. Riprova tra poco o contatta l\'assistenza.'
-      throw new Error(serverMessage || fallback)
-    }
-    const walletTransactionId = res.data.id
-
-    paymentStep.value = 'Finalizzazione...'
-    await callWithAuthRetry(
-      () =>
-        sanctum('/api/stripe/mark-order-completed', {
-          method: 'POST',
-          body: {
-            order_id: orderId,
-            payment_type: 'wallet',
-            ext_id: `wallet-${walletTransactionId}`,
-            is_existing_order: isExisting,
-            ...submissionContext,
-          },
-        }),
-      { label: 'wallet mark-completed' },
-    )
-    await onPaymentSuccess(orderId, 'wallet')
-  }
+  // Flusso wallet estratto in composables/payment/usePaymentWallet.ts
+  // (Ondata 5 split). 65% isolato: 2 API chained, no Stripe SDK.
+  const { payWithWallet } = usePaymentWallet({
+    cart,
+    paymentStep,
+    sanctum,
+    resolvePayableOrderId,
+    buildSubmissionContext,
+    persistPaymentDraft,
+    callWithAuthRetry,
+    onPaymentSuccess,
+  })
 
   // ---------- BONIFICO ----------
-  /** Registra l'ordine con pagamento pendente; backend invia email IBAN. */
-  async function payWithBonifico() {
-    const orderId = await resolvePayableOrderId()
-    const isExisting = Boolean(cart.existingOrder?.value || cart.existingOrderId?.value)
-    const submissionContext = buildSubmissionContext({
-      preferExisting: isExisting,
-      generate: true,
-    })
-    const submissionId = submissionContext.client_submission_id
-
-    persistPaymentDraft({
-      orderId,
-      paymentMethod: 'bonifico',
-      submissionId,
-      isExisting,
-      amount: Number(cart.finalTotal?.value ?? 0),
-    })
-
-    paymentStep.value = 'Registrazione ordine...'
-    await callWithAuthRetry(
-      () =>
-        sanctum('/api/stripe/mark-order-completed', {
-          method: 'POST',
-          body: {
-            order_id: orderId,
-            payment_type: 'bonifico',
-            is_existing_order: isExisting,
-            ...submissionContext,
-          },
-        }),
-      { label: 'bonifico mark-completed' },
-    )
-    await onPaymentSuccess(orderId, 'bonifico')
-  }
+  // Flusso bonifico estratto in composables/payment/usePaymentBonifico.ts
+  // (Ondata 3 split). 100% isolato: no Stripe SDK, no card state.
+  const { payWithBonifico } = usePaymentBonifico({
+    cart,
+    paymentStep,
+    sanctum,
+    resolvePayableOrderId,
+    buildSubmissionContext,
+    persistPaymentDraft,
+    callWithAuthRetry,
+    onPaymentSuccess,
+  })
 
   // ---------- SUCCESS + ANALYTICS ----------
   /**
