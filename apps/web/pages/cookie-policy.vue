@@ -139,19 +139,19 @@ const sections = [
 				name: '__stripe_mid, __stripe_sid',
 				purpose: 'Stripe Payments Europe Ltd.: identificatori antifrode e gestione 3D Secure in fase di pagamento.',
 				duration: '__stripe_mid: 1 anno — __stripe_sid: 30 minuti',
-				owner: 'Stripe — terza parte. <a class="lp-link" href="https://stripe.com/cookies-policy/legal" target="_blank" rel="noopener noreferrer">Policy</a>',
+				owner: 'Stripe — terza parte. <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="https://stripe.com/cookies-policy/legal" target="_blank" rel="noopener noreferrer">Policy</a>',
 			},
 			{
 				name: '_GRECAPTCHA',
 				purpose: 'Google reCAPTCHA Enterprise: distinzione tra utenti umani e bot in form sensibili.',
 				duration: '6 mesi',
-				owner: 'Google Ireland Ltd. — terza parte. <a class="lp-link" href="https://policies.google.com/technologies/cookies" target="_blank" rel="noopener noreferrer">Policy</a>',
+				owner: 'Google Ireland Ltd. — terza parte. <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="https://policies.google.com/technologies/cookies" target="_blank" rel="noopener noreferrer">Policy</a>',
 			},
 			{
 				name: 'BRT_TRACK_*',
 				purpose: 'BRT S.p.A. tracking widget: visualizzazione dello stato spedizione integrato (solo nelle pagine di tracking).',
 				duration: 'Sessione',
-				owner: 'BRT S.p.A. — terza parte. <a class="lp-link" href="https://www.brt.it/it/privacy" target="_blank" rel="noopener noreferrer">Policy</a>',
+				owner: 'BRT S.p.A. — terza parte. <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="https://www.brt.it/it/privacy" target="_blank" rel="noopener noreferrer">Policy</a>',
 			},
 		],
 	},
@@ -177,8 +177,8 @@ const sections = [
 		id: 'contatti',
 		title: '7. Contatti e aggiornamenti',
 		paragraphs: [
-			`Per qualsiasi richiesta di chiarimento sull\'utilizzo dei cookie o per esercitare i diritti previsti dal GDPR, è possibile scrivere a <a class="lp-link" href="mailto:${legal.dpoEmail}">${legal.dpoEmail}</a>.`,
-			'Per il trattamento generale dei dati personali si rimanda alla nostra <a class="lp-link" href="/privacy-policy">Privacy Policy</a>.',
+			`Per qualsiasi richiesta di chiarimento sull\'utilizzo dei cookie o per esercitare i diritti previsti dal GDPR, è possibile scrivere a <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="mailto:${legal.dpoEmail}">${legal.dpoEmail}</a>.`,
+			'Per il trattamento generale dei dati personali si rimanda alla nostra <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="/privacy-policy">Privacy Policy</a>.',
 			'La presente Cookie Policy può essere aggiornata periodicamente per riflettere modifiche tecniche, normative o l\'aggiunta di nuovi servizi di terze parti. La data dell\'ultimo aggiornamento è indicata in cima alla pagina.',
 		],
 	},
@@ -192,52 +192,52 @@ function scrollToTop() {
 </script>
 
 <template>
-	<section class="lp-page" aria-labelledby="lp-title">
-		<a href="#lp-content" class="lp-skiplink">Salta al contenuto principale</a>
+	<section class="bg-brand-bg text-brand-text py-6 pb-14" aria-labelledby="lp-title">
+		<a href="#lp-content" class="absolute -left-[9999px] top-0 z-50 rounded-lg bg-brand-primary px-4 py-2 font-semibold text-white focus:left-4 focus:top-4">Salta al contenuto principale</a>
 
-		<div class="lp-container">
+		<div class="mx-auto w-full max-w-7xl px-4 lg:px-10">
 			<PublicPageHeader
 				eyebrow="Cookie"
 				title="Cookie Policy"
 				description="Informazioni complete sui cookie e le tecnologie di tracciamento di SpedizioneFacile. Conforme al Provvedimento Garante Privacy 10/06/2021 e all'art. 13 GDPR."
 				:crumbs="[{ label: 'Home', to: '/' }, { label: 'Cookie Policy' }]">
-				<p class="lp-hero-meta"><span class="lp-hero-meta__label">Ultimo aggiornamento:</span> <time datetime="2026-04-18">{{ lastUpdate }}</time></p>
+				<p class="mt-2 text-sm text-brand-text-secondary"><span class="font-semibold">Ultimo aggiornamento:</span> <time datetime="2026-04-18">{{ lastUpdate }}</time></p>
 			</PublicPageHeader>
 
-			<div class="lp-layout">
-				<aside class="lp-toc" aria-labelledby="lp-toc-title">
-					<div class="lp-toc__inner">
-						<h2 id="lp-toc-title" class="lp-toc__title">In questa pagina</h2>
+			<div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[280px_1fr]">
+				<aside class="rounded-card border border-brand-border bg-brand-card shadow-sf-sm" aria-labelledby="lp-toc-title">
+					<div class="p-5">
+						<h2 id="lp-toc-title" class="mb-3 font-display text-sm font-bold uppercase tracking-wide text-brand-primary">In questa pagina</h2>
 						<nav aria-label="Indice della pagina">
-							<ol class="lp-toc__list">
-								<li v-for="s in sections" :key="s.id" class="lp-toc__item">
-									<a :href="`#${s.id}`" class="lp-toc__link">{{ s.title }}</a>
+							<ol class="m-0 list-none p-0 space-y-2">
+								<li v-for="s in sections" :key="s.id" class="">
+									<a :href="`#${s.id}`" class="block rounded-md py-1.5 text-sm text-brand-text-secondary transition-colors hover:bg-brand-bg-alt hover:text-brand-primary">{{ s.title }}</a>
 								</li>
 							</ol>
 						</nav>
 					</div>
 				</aside>
 
-				<main id="lp-content" class="lp-content" tabindex="-1">
+				<main id="lp-content" class="space-y-4 outline-none" tabindex="-1">
 					<article
 						v-for="s in sections"
 						:id="s.id"
 						:key="s.id"
-						class="lp-section"
+						class="scroll-mt-22 rounded-card border border-brand-border border-l-4 border-l-brand-primary bg-brand-card p-6 shadow-sf-sm"
 						:aria-labelledby="`${s.id}-h`"
 					>
-						<h2 :id="`${s.id}-h`" class="lp-section__title">{{ s.title }}</h2>
+						<h2 :id="`${s.id}-h`" class="mb-4 font-display text-lg font-bold leading-tight text-brand-primary">{{ s.title }}</h2>
 						<!-- eslint-disable vue/no-v-html — testi cookie policy controllati dall'amministratore (no input utente) -->
 						<p
 							v-for="(p, i) in s.paragraphs"
 							:key="`p-${i}`"
-							class="lp-section__text"
+							class="mb-3 leading-relaxed text-brand-text-secondary [&_strong]:font-semibold [&_strong]:text-brand-text"
 							v-html="p"
 						/>
 
 						<!-- Tabella cookie (per sezioni con elenchi tecnici) -->
-						<div v-if="s.cookies" class="lp-cookie-table" role="table" :aria-label="`Elenco cookie sezione ${s.title}`">
-							<div class="lp-cookie-row lp-cookie-row--head" role="row">
+						<div v-if="s.cookies" class="mt-4 grid gap-3" role="table" :aria-label="`Elenco cookie sezione ${s.title}`">
+							<div class="grid grid-cols-1 gap-2 rounded-card border border-brand-border bg-brand-bg-alt p-3 sm:grid-cols-[1fr_2fr_1fr_1fr] hidden sm:grid font-semibold uppercase text-xs text-brand-text-muted" role="row">
 								<span role="columnheader">Nome</span>
 								<span role="columnheader">Finalità</span>
 								<span role="columnheader">Durata</span>
@@ -246,38 +246,38 @@ function scrollToTop() {
 							<div
 								v-for="c in s.cookies"
 								:key="c.name"
-								class="lp-cookie-row"
+								class="grid grid-cols-1 gap-2 rounded-card border border-brand-border bg-brand-bg-alt p-3 sm:grid-cols-[1fr_2fr_1fr_1fr]"
 								role="row"
 							>
-								<span class="lp-cookie-cell lp-cookie-cell--name" role="cell" data-label="Nome">{{ c.name }}</span>
-								<span class="lp-cookie-cell" role="cell" data-label="Finalità">{{ c.purpose }}</span>
-								<span class="lp-cookie-cell" role="cell" data-label="Durata">{{ c.duration }}</span>
-								<span class="lp-cookie-cell" role="cell" data-label="Titolare" v-html="c.owner" />
+								<span class="text-sm font-mono font-semibold text-brand-primary" role="cell" data-label="Nome">{{ c.name }}</span>
+								<span class="text-sm" role="cell" data-label="Finalità">{{ c.purpose }}</span>
+								<span class="text-sm" role="cell" data-label="Durata">{{ c.duration }}</span>
+								<span class="text-sm" role="cell" data-label="Titolare" v-html="c.owner" />
 							</div>
 						</div>
 
 						<!-- Lista bullet -->
-						<ul v-if="s.list" class="lp-section__list">
+						<ul v-if="s.list" class="list-disc space-y-2 pl-6 text-brand-text-secondary [&_strong]:font-semibold [&_strong]:text-brand-text">
 							<li v-for="(item, i) in s.list" :key="`l-${i}`" v-html="item" />
 						</ul>
 						<!-- eslint-enable vue/no-v-html -->
 
 						<!-- Link esterni guide browser -->
-						<ul v-if="s.links" class="lp-section__list lp-section__list--links">
+						<ul v-if="s.links" class="list-none space-y-2 pl-0 text-brand-text-secondary">
 							<li v-for="link in s.links" :key="link.url">
-								<a :href="link.url" target="_blank" rel="noopener noreferrer" class="lp-link">{{ link.text }}</a>
+								<a :href="link.url" target="_blank" rel="noopener noreferrer" class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent">{{ link.text }}</a>
 							</li>
 						</ul>
 
 						<!-- CTA gestione preferenze nella sezione "gestione" -->
-						<div v-if="s.id === 'gestione'" class="lp-section__cta">
+						<div v-if="s.id === 'gestione'" class="mt-6 flex justify-center">
 							<SfButton @click="openCookieBanner">
 								Gestisci preferenze cookie
 							</SfButton>
 						</div>
 					</article>
 
-					<div class="lp-backtop">
+					<div class="mt-8 flex justify-center">
 						<SfButton variant="secondary" aria-label="Torna all'inizio della pagina" @click="scrollToTop">
 							Torna in alto
 						</SfButton>
@@ -288,4 +288,3 @@ function scrollToTop() {
 	</section>
 </template>
 
-<!-- Stili condivisi in assets/css/legal-pages.css (classi .lp-*) -->

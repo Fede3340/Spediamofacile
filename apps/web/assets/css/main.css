@@ -14,8 +14,6 @@
 @import "./components/empty-state.css";
 @import "./tracking.css";
 @import "./account.css";
-@import "./legal-pages.css";
-
 /* Nasconde le frecce spinner di default del browser sugli input number.
    Le useriamo solo quando serve un pulsante +/- custom (es. quantity-stepper). */
 input[type="number"]::-webkit-inner-spin-button,

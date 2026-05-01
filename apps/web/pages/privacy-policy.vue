@@ -23,7 +23,7 @@ const sections = [
 		paragraphs: [
 			// LEGAL-TODO: aggiornare denominazione, P.IVA, sede, REA in app.config.ts
 			`Titolare del trattamento dei dati personali è ${legal.companyName}, P.IVA ${legal.vatNumber}, con sede legale in ${legal.registeredOffice} (REA ${legal.rea}, capitale sociale ${legal.shareCapital} interamente versato). Rappresentante legale: ${legal.legalRepresentative}.`,
-			`Per qualsiasi richiesta relativa al trattamento dei propri dati personali è possibile scrivere a <a class="lp-link" href="mailto:${legal.dpoEmail}">${legal.dpoEmail}</a>. Eventuale Data Protection Officer (DPO) nominato: ${legal.dpoName}. Tempo massimo di risposta alle richieste degli interessati: 30 giorni (Art. 12.3 GDPR), prorogabile di ulteriori 60 giorni in caso di particolare complessità, previa comunicazione motivata.`,
+			`Per qualsiasi richiesta relativa al trattamento dei propri dati personali è possibile scrivere a <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="mailto:${legal.dpoEmail}">${legal.dpoEmail}</a>. Eventuale Data Protection Officer (DPO) nominato: ${legal.dpoName}. Tempo massimo di risposta alle richieste degli interessati: 30 giorni (Art. 12.3 GDPR), prorogabile di ulteriori 60 giorni in caso di particolare complessità, previa comunicazione motivata.`,
 		],
 	},
 	{
@@ -94,7 +94,7 @@ const sections = [
 		paragraphs: [
 			'Alcuni sub-processor (Stripe, Resend, Render, Sentry, Google) possono trattare i dati anche in paesi al di fuori dello Spazio Economico Europeo, in particolare negli Stati Uniti d\'America.',
 			'Per garantire un livello di protezione adeguato, tutti i trasferimenti extra-UE avvengono nel rispetto delle <strong>Standard Contractual Clauses</strong> (SCC) approvate dalla Commissione Europea con Decisione di esecuzione 2021/914/UE, integrate ove pertinente dall\'<strong>EU-US Data Privacy Framework</strong> (decisione di adeguatezza del 10/07/2023).',
-			`L\'elenco completo e aggiornato dei DPA sottoscritti con i sub-processor è disponibile su richiesta scrivendo a <a class="lp-link" href="mailto:${legal.dpoEmail}">${legal.dpoEmail}</a>.`,
+			`L\'elenco completo e aggiornato dei DPA sottoscritti con i sub-processor è disponibile su richiesta scrivendo a <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="mailto:${legal.dpoEmail}">${legal.dpoEmail}</a>.`,
 		],
 	},
 	{
@@ -109,7 +109,7 @@ const sections = [
 			'<strong>Dati di spedizione:</strong> 5 anni dalla consegna, per finalità di reclamo e contenzioso col vettore.',
 			'<strong>Log di sicurezza e accesso:</strong> 24 mesi (provvedimento Garante n. 13/2008 e successivi aggiornamenti).',
 			'<strong>Dati raccolti previo consenso (marketing):</strong> fino alla revoca del consenso o, in mancanza, 24 mesi dall\'ultima interazione.',
-			'<strong>Cookie:</strong> secondo le durate indicate nella <a class="lp-link" href="/cookie-policy">Cookie Policy</a>.',
+			'<strong>Cookie:</strong> secondo le durate indicate nella <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="/cookie-policy">Cookie Policy</a>.',
 		],
 	},
 	{
@@ -126,7 +126,7 @@ const sections = [
 			'<strong>Diritto di opposizione</strong> (art. 21): opporsi al trattamento per motivi connessi alla propria situazione, in particolare per marketing diretto.',
 			'<strong>Diritto alla portabilità</strong> (art. 20): ricevere i dati in formato strutturato, di uso comune e leggibile da dispositivo automatico.',
 			'<strong>Diritto di revoca del consenso</strong> (art. 7.3): revocabile in qualsiasi momento senza pregiudicare la liceità del trattamento precedente.',
-			'<strong>Diritto di reclamo al Garante</strong> per la Protezione dei Dati Personali (<a class="lp-link" href="https://www.garanteprivacy.it" target="_blank" rel="noopener noreferrer">garanteprivacy.it</a>) o all\'autorità di controllo competente.',
+			'<strong>Diritto di reclamo al Garante</strong> per la Protezione dei Dati Personali (<a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="https://www.garanteprivacy.it" target="_blank" rel="noopener noreferrer">garanteprivacy.it</a>) o all\'autorità di controllo competente.',
 			'<strong>Utenti residenti in California (CCPA):</strong> diritto di sapere quali dati personali sono raccolti, di richiederne cancellazione, di opporsi alla "vendita" dei dati (non praticata) e diritto alla non discriminazione per l\'esercizio di tali diritti.',
 		],
 	},
@@ -134,7 +134,7 @@ const sections = [
 		id: 'cookie',
 		title: '9. Cookie e tecnologie di tracciamento',
 		paragraphs: [
-			'Il sito utilizza cookie tecnici necessari al funzionamento (sempre attivi) e, previo consenso esplicito, cookie analitici e di terze parti. Per l\'elenco dettagliato, le finalità, le durate e le modalità di gestione si rimanda alla nostra <a class="lp-link" href="/cookie-policy">Cookie Policy</a>.',
+			'Il sito utilizza cookie tecnici necessari al funzionamento (sempre attivi) e, previo consenso esplicito, cookie analitici e di terze parti. Per l\'elenco dettagliato, le finalità, le durate e le modalità di gestione si rimanda alla nostra <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="/cookie-policy">Cookie Policy</a>.',
 			'L\'utente può modificare le proprie preferenze in qualsiasi momento dal banner accessibile tramite il link "Gestisci cookie" presente nel footer di ogni pagina.',
 		],
 	},
@@ -142,7 +142,7 @@ const sections = [
 		id: 'contatti',
 		title: '10. Contatti per la privacy',
 		paragraphs: [
-			`Per esercitare i diritti previsti dagli artt. 15-22 GDPR, per richieste di informazioni o per segnalare presunte violazioni, è possibile scrivere a <a class="lp-link" href="mailto:${legal.dpoEmail}">${legal.dpoEmail}</a>.`,
+			`Per esercitare i diritti previsti dagli artt. 15-22 GDPR, per richieste di informazioni o per segnalare presunte violazioni, è possibile scrivere a <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="mailto:${legal.dpoEmail}">${legal.dpoEmail}</a>.`,
 			// LEGAL-TODO: se il DPO viene formalmente nominato, indicare nome, recapito e atto di nomina
 			`Eventuale Data Protection Officer: ${legal.dpoName}. PEC del Titolare: ${legal.pec}.`,
 			'Tempo massimo di risposta: 30 giorni dal ricevimento (Art. 12.3 GDPR). In caso di mancata risposta o riscontro non soddisfacente è sempre possibile rivolgersi al Garante per la Protezione dei Dati Personali, Piazza Venezia 11, 00187 Roma.',
@@ -159,30 +159,30 @@ function scrollToTop() {
 </script>
 
 <template>
-	<section class="lp-page" aria-labelledby="lp-title">
+	<section class="bg-brand-bg text-brand-text py-6 pb-14" aria-labelledby="lp-title">
 		<!-- Skip link per accessibilità -->
-		<a href="#lp-content" class="lp-skiplink">Salta al contenuto principale</a>
+		<a href="#lp-content" class="absolute -left-[9999px] top-0 z-50 rounded-lg bg-brand-primary px-4 py-2 font-semibold text-white focus:left-4 focus:top-4">Salta al contenuto principale</a>
 
-		<div class="lp-container">
+		<div class="mx-auto w-full max-w-7xl px-4 lg:px-10">
 			<!-- HERO -->
 			<PublicPageHeader
 				eyebrow="Privacy"
 				title="Informativa sulla privacy"
 				description="Come SpedizioneFacile raccoglie, utilizza e protegge i tuoi dati personali nell'ambito del servizio di intermediazione spedizioni con corriere BRT (GDPR 2016/679 e CCPA)."
 				:crumbs="[{ label: 'Home', to: '/' }, { label: 'Privacy Policy' }]">
-				<p class="lp-hero-meta"><span class="lp-hero-meta__label">Ultimo aggiornamento:</span> <time datetime="2026-04-18">{{ lastUpdate }}</time></p>
+				<p class="mt-2 text-sm text-brand-text-secondary"><span class="font-semibold">Ultimo aggiornamento:</span> <time datetime="2026-04-18">{{ lastUpdate }}</time></p>
 			</PublicPageHeader>
 
 			<!-- LAYOUT 2 COLONNE: TOC + Contenuto -->
-			<div class="lp-layout">
+			<div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[280px_1fr]">
 				<!-- Table of Contents (sticky desktop) -->
-				<aside class="lp-toc" aria-labelledby="lp-toc-title">
-					<div class="lp-toc__inner">
-						<h2 id="lp-toc-title" class="lp-toc__title">In questa pagina</h2>
+				<aside class="rounded-card border border-brand-border bg-brand-card shadow-sf-sm" aria-labelledby="lp-toc-title">
+					<div class="p-5">
+						<h2 id="lp-toc-title" class="mb-3 font-display text-sm font-bold uppercase tracking-wide text-brand-primary">In questa pagina</h2>
 						<nav aria-label="Indice della pagina">
-							<ol class="lp-toc__list">
-								<li v-for="s in sections" :key="s.id" class="lp-toc__item">
-									<a :href="`#${s.id}`" class="lp-toc__link">{{ s.title }}</a>
+							<ol class="m-0 list-none p-0 space-y-2">
+								<li v-for="s in sections" :key="s.id" class="">
+									<a :href="`#${s.id}`" class="block rounded-md py-1.5 text-sm text-brand-text-secondary transition-colors hover:bg-brand-bg-alt hover:text-brand-primary">{{ s.title }}</a>
 								</li>
 							</ol>
 						</nav>
@@ -190,30 +190,30 @@ function scrollToTop() {
 				</aside>
 
 				<!-- Contenuto principale -->
-				<main id="lp-content" class="lp-content" tabindex="-1">
+				<main id="lp-content" class="space-y-4 outline-none" tabindex="-1">
 					<article
 						v-for="s in sections"
 						:id="s.id"
 						:key="s.id"
-						class="lp-section"
+						class="scroll-mt-22 rounded-card border border-brand-border border-l-4 border-l-brand-primary bg-brand-card p-6 shadow-sf-sm"
 						:aria-labelledby="`${s.id}-h`"
 					>
-						<h2 :id="`${s.id}-h`" class="lp-section__title">{{ s.title }}</h2>
+						<h2 :id="`${s.id}-h`" class="mb-4 font-display text-lg font-bold leading-tight text-brand-primary">{{ s.title }}</h2>
 						<!-- eslint-disable vue/no-v-html — testi privacy controllati dall'amministratore (no input utente) -->
 						<p
 							v-for="(p, i) in s.paragraphs"
 							:key="i"
-							class="lp-section__text"
+							class="mb-3 leading-relaxed text-brand-text-secondary [&_strong]:font-semibold [&_strong]:text-brand-text"
 							v-html="p"
 						/>
-						<ul v-if="s.list" class="lp-section__list">
+						<ul v-if="s.list" class="list-disc space-y-2 pl-6 text-brand-text-secondary [&_strong]:font-semibold [&_strong]:text-brand-text">
 							<li v-for="(item, i) in s.list" :key="i" v-html="item" />
 						</ul>
 						<!-- eslint-enable vue/no-v-html -->
 					</article>
 
 					<!-- Pulsante torna in alto -->
-					<div class="lp-backtop">
+					<div class="mt-8 flex justify-center">
 						<SfButton variant="secondary" aria-label="Torna all'inizio della pagina" @click="scrollToTop">
 							Torna in alto
 						</SfButton>
@@ -224,4 +224,3 @@ function scrollToTop() {
 	</section>
 </template>
 
-<!-- Stili condivisi in assets/css/legal-pages.css (classi .lp-*) -->

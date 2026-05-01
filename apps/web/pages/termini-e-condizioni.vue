@@ -21,7 +21,7 @@ const sections = [
 		paragraphs: [
 			// LEGAL-TODO: aggiornare dati legali in app.config.ts prima del go-live
 			`Il servizio è offerto da ${legal.companyName}, P.IVA ${legal.vatNumber}, codice fiscale ${legal.fiscalCode}, con sede legale in ${legal.registeredOffice} (REA ${legal.rea}, capitale sociale ${legal.shareCapital} interamente versato), iscritta al Registro delle Imprese.`,
-			`Rappresentante legale: ${legal.legalRepresentative}. Posta elettronica certificata: <a class="lp-link" href="mailto:${legal.pec}">${legal.pec}</a>. Email di contatto generale: <a class="lp-link" href="mailto:${legal.supportEmail}">${legal.supportEmail}</a>.`,
+			`Rappresentante legale: ${legal.legalRepresentative}. Posta elettronica certificata: <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="mailto:${legal.pec}">${legal.pec}</a>. Email di contatto generale: <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="mailto:${legal.supportEmail}">${legal.supportEmail}</a>.`,
 		],
 	},
 	{
@@ -82,7 +82,7 @@ const sections = [
 		id: 'recesso',
 		title: '7. Diritto di recesso del consumatore',
 		paragraphs: [
-			`Il <strong>consumatore</strong> ai sensi dell'art. 3 del D.Lgs. 206/2005 (Codice del Consumo) ha diritto di recedere dal contratto entro <strong>14 giorni</strong> dalla conclusione, senza alcuna motivazione e senza penalità, mediante comunicazione esplicita inviata via email a <a class="lp-link" href="mailto:${legal.supportEmail}">${legal.supportEmail}</a> oppure tramite il modulo di recesso disponibile in piattaforma.`,
+			`Il <strong>consumatore</strong> ai sensi dell'art. 3 del D.Lgs. 206/2005 (Codice del Consumo) ha diritto di recedere dal contratto entro <strong>14 giorni</strong> dalla conclusione, senza alcuna motivazione e senza penalità, mediante comunicazione esplicita inviata via email a <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="mailto:${legal.supportEmail}">${legal.supportEmail}</a> oppure tramite il modulo di recesso disponibile in piattaforma.`,
 			'<strong>Eccezione importante:</strong> ai sensi dell\'art. 59, lettera a) del Codice del Consumo, il diritto di recesso <strong>non si applica</strong> qualora la prestazione del servizio sia già iniziata con l\'accordo espresso del consumatore e con l\'accettazione della perdita del diritto di recesso. Nel caso specifico, l\'attivazione della prenotazione presso BRT (presa in carico del ritiro) costituisce inizio dell\'esecuzione e comporta la rinuncia al recesso, salvo rimborso delle somme non ancora maturate dal vettore.',
 			'In caso di recesso esercitato prima dell\'attivazione della prenotazione, il rimborso integrale viene effettuato entro 14 giorni con lo stesso metodo di pagamento utilizzato per l\'acquisto, salvo diversa indicazione dell\'utente.',
 		],
@@ -91,7 +91,7 @@ const sections = [
 		id: 'assicurazione',
 		title: '8. Assicurazione delle spedizioni',
 		paragraphs: [
-			'In assenza di copertura assicurativa aggiuntiva, la responsabilità del vettore BRT in caso di smarrimento o danneggiamento è limitata ai massimali previsti dalla Convenzione CMR (per le spedizioni internazionali) e dalle Condizioni Generali di Trasporto BRT pubblicate su <a class="lp-link" href="https://www.brt.it" target="_blank" rel="noopener noreferrer">brt.it</a>.',
+			'In assenza di copertura assicurativa aggiuntiva, la responsabilità del vettore BRT in caso di smarrimento o danneggiamento è limitata ai massimali previsti dalla Convenzione CMR (per le spedizioni internazionali) e dalle Condizioni Generali di Trasporto BRT pubblicate su <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="https://www.brt.it" target="_blank" rel="noopener noreferrer">brt.it</a>.',
 			'L\'utente può sottoscrivere in fase di prenotazione una <strong>copertura assicurativa aggiuntiva</strong> per il valore reale della merce, fino al massimale previsto dalla polizza convenzionata (tipicamente Euro 5.000 per collo, salvo diverse condizioni). I premi assicurativi sono indicati esplicitamente nel riepilogo prima della conferma.',
 		],
 		list: [
@@ -104,7 +104,7 @@ const sections = [
 		id: 'reclami',
 		title: '9. Reclami, contestazioni e assistenza',
 		paragraphs: [
-			`In caso di anomalie (mancata consegna, ritardo eccessivo, danni, smarrimento, errori di fatturazione) l'utente può presentare reclamo scrivendo a <a class="lp-link" href="mailto:${legal.supportEmail}">${legal.supportEmail}</a> o tramite il <a class="lp-link" href="/account/assistenza">centro assistenza</a>.`,
+			`In caso di anomalie (mancata consegna, ritardo eccessivo, danni, smarrimento, errori di fatturazione) l'utente può presentare reclamo scrivendo a <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="mailto:${legal.supportEmail}">${legal.supportEmail}</a> o tramite il <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="/account/assistenza">centro assistenza</a>.`,
 			'Il Fornitore si impegna a fornire un primo riscontro entro <strong>5 giorni lavorativi</strong> dalla ricezione del reclamo e a chiudere la pratica entro un termine ragionevole, compatibilmente con i tempi di istruttoria del vettore (30-60 giorni). Per i reclami relativi a danni materiali la pratica viene attivata presso BRT secondo le procedure previste dalle Condizioni Generali di Trasporto.',
 		],
 	},
@@ -124,7 +124,7 @@ const sections = [
 		paragraphs: [
 			'Il presente contratto è regolato dalla <strong>legge italiana</strong>. Per le controversie con utenti consumatori il foro competente in via esclusiva è quello del luogo di residenza o domicilio del consumatore, ai sensi dell\'art. 66-bis del Codice del Consumo.',
 			'Per gli utenti professionali (P.IVA), foro esclusivamente competente è quello di <strong>Milano</strong>.',
-			'Ai sensi del Regolamento UE 524/2013, gli utenti consumatori possono accedere alla piattaforma di Risoluzione delle Controversie Online (ODR) della Commissione Europea, disponibile all\'indirizzo <a class="lp-link" href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer">ec.europa.eu/consumers/odr</a>, per tentare una risoluzione extragiudiziale della controversia.',
+			'Ai sensi del Regolamento UE 524/2013, gli utenti consumatori possono accedere alla piattaforma di Risoluzione delle Controversie Online (ODR) della Commissione Europea, disponibile all\'indirizzo <a class="font-medium text-brand-primary underline underline-offset-2 transition-colors hover:text-brand-accent" href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer">ec.europa.eu/consumers/odr</a>, per tentare una risoluzione extragiudiziale della controversia.',
 		],
 	},
 	{
@@ -146,61 +146,61 @@ function scrollToTop() {
 </script>
 
 <template>
-	<section class="lp-page" aria-labelledby="lp-title">
-		<a href="#lp-content" class="lp-skiplink">Salta al contenuto principale</a>
+	<section class="bg-brand-bg text-brand-text py-6 pb-14" aria-labelledby="lp-title">
+		<a href="#lp-content" class="absolute -left-[9999px] top-0 z-50 rounded-lg bg-brand-primary px-4 py-2 font-semibold text-white focus:left-4 focus:top-4">Salta al contenuto principale</a>
 
-		<div class="lp-container">
+		<div class="mx-auto w-full max-w-7xl px-4 lg:px-10">
 			<PublicPageHeader
 				eyebrow="Termini"
 				title="Termini e Condizioni di Servizio"
 				description="Condizioni generali del servizio di intermediazione spedizioni offerto da SpedizioneFacile tramite BRT S.p.A. e corrieri convenzionati. L'accettazione è condizione necessaria per l'utilizzo della piattaforma."
 				:crumbs="[{ label: 'Home', to: '/' }, { label: 'Termini e Condizioni' }]">
-				<p class="lp-hero-meta"><span class="lp-hero-meta__label">Ultimo aggiornamento:</span> <time datetime="2026-04-18">{{ lastUpdate }}</time></p>
+				<p class="mt-2 text-sm text-brand-text-secondary"><span class="font-semibold">Ultimo aggiornamento:</span> <time datetime="2026-04-18">{{ lastUpdate }}</time></p>
 			</PublicPageHeader>
 
-			<div class="lp-layout">
-				<aside class="lp-toc" aria-labelledby="lp-toc-title">
-					<div class="lp-toc__inner">
-						<h2 id="lp-toc-title" class="lp-toc__title">In questa pagina</h2>
+			<div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[280px_1fr]">
+				<aside class="rounded-card border border-brand-border bg-brand-card shadow-sf-sm" aria-labelledby="lp-toc-title">
+					<div class="p-5">
+						<h2 id="lp-toc-title" class="mb-3 font-display text-sm font-bold uppercase tracking-wide text-brand-primary">In questa pagina</h2>
 						<nav aria-label="Indice della pagina">
-							<ol class="lp-toc__list">
-								<li v-for="s in sections" :key="s.id" class="lp-toc__item">
-									<a :href="`#${s.id}`" class="lp-toc__link">{{ s.title }}</a>
+							<ol class="m-0 list-none p-0 space-y-2">
+								<li v-for="s in sections" :key="s.id" class="">
+									<a :href="`#${s.id}`" class="block rounded-md py-1.5 text-sm text-brand-text-secondary transition-colors hover:bg-brand-bg-alt hover:text-brand-primary">{{ s.title }}</a>
 								</li>
 							</ol>
 						</nav>
 					</div>
 				</aside>
 
-				<main id="lp-content" class="lp-content" tabindex="-1">
+				<main id="lp-content" class="space-y-4 outline-none" tabindex="-1">
 					<article
 						v-for="s in sections"
 						:id="s.id"
 						:key="s.id"
-						class="lp-section"
+						class="scroll-mt-22 rounded-card border border-brand-border border-l-4 border-l-brand-primary bg-brand-card p-6 shadow-sf-sm"
 						:aria-labelledby="`${s.id}-h`"
 					>
-						<h2 :id="`${s.id}-h`" class="lp-section__title">{{ s.title }}</h2>
+						<h2 :id="`${s.id}-h`" class="mb-4 font-display text-lg font-bold leading-tight text-brand-primary">{{ s.title }}</h2>
 						<!-- eslint-disable vue/no-v-html — testi termini controllati dall'amministratore (no input utente) -->
 						<p
 							v-for="(p, i) in s.paragraphs"
 							:key="`p-${i}`"
-							class="lp-section__text"
+							class="mb-3 leading-relaxed text-brand-text-secondary [&_strong]:font-semibold [&_strong]:text-brand-text"
 							v-html="p"
 						/>
-						<ul v-if="s.list" class="lp-section__list">
+						<ul v-if="s.list" class="list-disc space-y-2 pl-6 text-brand-text-secondary [&_strong]:font-semibold [&_strong]:text-brand-text">
 							<li v-for="(item, i) in s.list" :key="`l-${i}`" v-html="item" />
 						</ul>
 						<p
 							v-for="(p, i) in s.extra || []"
 							:key="`e-${i}`"
-							class="lp-section__text"
+							class="mb-3 leading-relaxed text-brand-text-secondary [&_strong]:font-semibold [&_strong]:text-brand-text"
 							v-html="p"
 						/>
 						<!-- eslint-enable vue/no-v-html -->
 					</article>
 
-					<div class="lp-backtop">
+					<div class="mt-8 flex justify-center">
 						<SfButton variant="secondary" aria-label="Torna all'inizio della pagina" @click="scrollToTop">
 							Torna in alto
 						</SfButton>
@@ -211,4 +211,3 @@ function scrollToTop() {
 	</section>
 </template>
 
-<!-- Stili condivisi in assets/css/legal-pages.css (classi .lp-*) -->
