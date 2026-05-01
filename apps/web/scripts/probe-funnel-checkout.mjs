@@ -285,7 +285,7 @@ try {
 	try {
 		await page.waitForURL(/step=pagamento/, { timeout: 20000 });
 	} catch (error) {
-		const bodyText = await page.locator('body').innerText().catch(() => '');
+		const bodyText = await page.locator('body').textContent().catch(() => '');
 		logStep('step3-post-click-body', summarizeBody(bodyText));
 		logStep('relevant-responses', JSON.stringify(relevantResponses.slice(-12), null, 2));
 		if (/troppi tentativi|numero massimo di tentativi|riprova tra|too many requests/i.test(bodyText)) {
@@ -295,7 +295,7 @@ try {
 	}
 	await page.waitForTimeout(1500);
 	logStep('step4-url', page.url());
-	logStep('step4-body', summarizeBody(await page.locator('body').innerText().catch(() => '')));
+	logStep('step4-body', summarizeBody(await page.locator('body').textContent().catch(() => '')));
 	logStep('relevant-responses', JSON.stringify(relevantResponses.slice(-12), null, 2));
 	const orderId = extractOrderIdFromUrl(page.url());
 	logStep('order-id-from-url', orderId || 'n/a');
@@ -393,7 +393,7 @@ try {
 	}
 
 	logStep('post-submit-url', page.url());
-	logStep('post-submit-body', summarizeBody(await page.locator('body').innerText().catch(() => '')));
+	logStep('post-submit-body', summarizeBody(await page.locator('body').textContent().catch(() => '')));
 
 	await page.goto(`${baseUrl}${selectors.step4.accountListLink}`, {
 		waitUntil: 'domcontentloaded',
@@ -408,7 +408,7 @@ try {
 			await page.waitForTimeout(800);
 		}
 	}
-	const accountBody = (await page.locator('body').innerText()).slice(0, 3000).replace(/\n+/g, ' | ');
+	const accountBody = (await page.locator('body').textContent()).slice(0, 3000).replace(/\n+/g, ' | ');
 	logStep('account-spedizioni-body', accountBody);
 	if (orderId && !accountBody.includes(`#${orderId}`) && !accountBody.includes(`Account #${orderId}`)) {
 		throw new Error(`L'ordine #${orderId} non compare in /account/spedizioni dopo il submit.`);
@@ -421,7 +421,7 @@ try {
 		});
 		await page.waitForLoadState('networkidle');
 		logStep('account-spedizione-detail-url', page.url());
-		logStep('account-spedizione-detail-body', summarizeBody(await page.locator('body').innerText().catch(() => '')));
+		logStep('account-spedizione-detail-body', summarizeBody(await page.locator('body').textContent().catch(() => '')));
 	}
 
 	await page.screenshot({ path: screenshotPath, fullPage: true });
@@ -442,7 +442,7 @@ try {
 			timeout: 120000,
 		});
 		await adminPage.waitForLoadState('networkidle');
-		const adminOrdersInitialBody = summarizeBody(await adminPage.locator('body').innerText().catch(() => ''));
+		const adminOrdersInitialBody = summarizeBody(await adminPage.locator('body').textContent().catch(() => ''));
 		if (
 			adminPage.url() === `${baseUrl}/`
 			|| /accedi|calcola preventivo|preventivo rapido/i.test(adminOrdersInitialBody)
@@ -462,7 +462,7 @@ try {
 			});
 			await adminPage.waitForLoadState('networkidle');
 		}
-		const adminOrdersResolvedBody = summarizeBody(await adminPage.locator('body').innerText().catch(() => ''));
+		const adminOrdersResolvedBody = summarizeBody(await adminPage.locator('body').textContent().catch(() => ''));
 		if (
 			adminPage.url().includes('auth_modal=login')
 			|| adminPage.url() === `${baseUrl}/`
@@ -475,7 +475,7 @@ try {
 			await adminOrdersSearch.fill(String(orderId));
 			await adminPage.waitForTimeout(1200);
 		}
-		const adminOrdersBody = (await adminPage.locator('body').innerText()).slice(0, 3000).replace(/\n+/g, ' | ');
+		const adminOrdersBody = (await adminPage.locator('body').textContent()).slice(0, 3000).replace(/\n+/g, ' | ');
 		logStep('admin-ordini-body', adminOrdersBody);
 		if (!adminOrdersBody.includes(`#${orderId}`) && !adminOrdersBody.includes(String(orderId))) {
 			throw new Error(`L'ordine #${orderId} non compare in /account/amministrazione/ordini.`);
@@ -491,7 +491,7 @@ try {
 			await adminShipmentsSearch.fill(String(orderId));
 			await adminPage.waitForTimeout(1200);
 		}
-		const adminShipmentsBody = summarizeBody(await adminPage.locator('body').innerText().catch(() => ''));
+		const adminShipmentsBody = summarizeBody(await adminPage.locator('body').textContent().catch(() => ''));
 		logStep('admin-spedizioni-body', adminShipmentsBody);
 		if (!adminShipmentsBody.includes(`#${orderId}`) && !adminShipmentsBody.includes(String(orderId))) {
 			throw new Error(`L'ordine #${orderId} non compare in /account/amministrazione/spedizioni.`);

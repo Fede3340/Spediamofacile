@@ -20,6 +20,8 @@ function Resolve-Executable([string]$label, [string[]]$candidates, [switch]$Opti
 }
 
 function Resolve-ProjectDir([string]$basePath, [string]$preferredName, [string]$markerFile) {
+  if (Test-Path (Join-Path $basePath $markerFile)) { return $basePath }
+
   $preferred = Join-Path $basePath $preferredName
   if (Test-Path (Join-Path $preferred $markerFile)) { return $preferred }
 
@@ -119,8 +121,8 @@ function Resolve-ReachableProxyTarget([int]$port, [string[]]$hosts) {
   return "127.0.0.1:$port"
 }
 
-$laravelDir = Resolve-ProjectDir -basePath $root -preferredName 'laravel-spedizionefacile-main' -markerFile 'artisan'
-$nuxtDir = Resolve-ProjectDir -basePath $root -preferredName 'nuxt-spedizionefacile-master' -markerFile 'nuxt.config.ts'
+$laravelDir = Resolve-ProjectDir -basePath $root -preferredName 'apps/api' -markerFile 'artisan'
+$nuxtDir = Resolve-ProjectDir -basePath $root -preferredName 'apps/web' -markerFile 'nuxt.config.ts'
 
 $phpCmd = Resolve-Executable 'PHP' @(
   'C:\Users\Feder\AppData\Local\Microsoft\WinGet\Packages\PHP.PHP.8.4_Microsoft.Winget.Source_8wekyb3d8bbwe\php.exe',
@@ -156,8 +158,12 @@ $caddyFile = $null
 if ($env:CADDYFILE_OVERRIDE -and (Test-Path $env:CADDYFILE_OVERRIDE)) {
   $caddyFile = $env:CADDYFILE_OVERRIDE
 } else {
-  $caddyFile = Join-Path $root 'Caddyfile'
-  if (-not (Test-Path $caddyFile)) { $caddyFile = Join-Path $root 'Caddyfile.example' }
+  $caddyCandidates = @(
+    (Join-Path $root 'infra\caddy\Caddyfile'),
+    (Join-Path $root 'Caddyfile'),
+    (Join-Path $root 'Caddyfile.example')
+  )
+  $caddyFile = $caddyCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
 }
 
 $env:NUXT_PUBLIC_API_BASE = if ($env:NUXT_PUBLIC_API_BASE) { $env:NUXT_PUBLIC_API_BASE } else { 'http://127.0.0.1:8787' }

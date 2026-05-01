@@ -5,9 +5,10 @@
  * (lastmod = updated_at reale). Usato dal modulo @nuxtjs/sitemap.
  */
 import type { SitemapUrlInput } from '#sitemap/types'
+import type { H3Event } from 'h3'
 import { fetchArticleList } from '../../utils/sitemapSources'
 
-export default defineSitemapEventHandler(async (event: any): Promise<SitemapUrlInput[]> => {
+export default defineSitemapEventHandler(async (event: H3Event): Promise<SitemapUrlInput[]> => {
   const items = await fetchArticleList(event, 'guides')
 
   return items.map((item) => ({

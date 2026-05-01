@@ -1,9 +1,9 @@
 {
-    "name": "laravel/laravel",
+    "name": "spediamofacile/app",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
-    "license": "MIT",
+    "description": "Backend Laravel per SpediamoFacile: intermediario BRT, checkout, account, admin e integrazioni operative.",
+    "keywords": ["spediamofacile", "laravel", "shipping", "brt", "checkout"],
+    "license": "proprietary",
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.0",

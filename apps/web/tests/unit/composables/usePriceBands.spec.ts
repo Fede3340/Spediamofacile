@@ -49,23 +49,50 @@ const DEFAULT_SUPPLEMENTS = [
   { id: 'supplement-1', prefix: '90', amount_cents: 250, apply_to: 'both', enabled: true },
 ]
 
+type PriceBandLike = {
+  min_value?: unknown
+  max_value?: unknown
+  base_price?: unknown
+  discount_price?: unknown
+}
+
+type ExtraRulesLike = {
+  enabled?: boolean
+  weight_start?: unknown
+  weight_step?: unknown
+  weight_resolution?: unknown
+  volume_start?: unknown
+  volume_step?: unknown
+  volume_resolution?: unknown
+  increment_cents?: unknown
+  base_price_cents_mode?: unknown
+  base_price_cents_manual?: unknown
+}
+
+type SupplementRuleLike = {
+  enabled?: boolean
+  prefix?: unknown
+  amount_cents?: unknown
+  apply_to?: unknown
+}
+
 // ---- FUNZIONI HELPER RIPRODOTTE DAL COMPOSABLE ----
 
-const toNumber = (value: any, fallback = 0): number => {
+const toNumber = (value: unknown, fallback = 0): number => {
   const n = Number(value)
   return Number.isFinite(n) ? n : fallback
 }
 
-const toInt = (value: any, fallback = 0): number => {
+const toInt = (value: unknown, fallback = 0): number => {
   const n = Number.parseInt(value, 10)
   return Number.isFinite(n) ? n : fallback
 }
 
-const normalizeDecimal = (value: any, fallback = 0): number => {
+const normalizeDecimal = (value: unknown, fallback = 0): number => {
   return Number(toNumber(value, fallback).toFixed(4))
 }
 
-const effectivePriceCents = (band: any): number => {
+const effectivePriceCents = (band: PriceBandLike | null | undefined): number => {
   const discount = band?.discount_price
   if (discount !== null && discount !== undefined) {
     return toInt(discount, 0)
@@ -79,7 +106,7 @@ const ceilByResolution = (value: number, resolution: number): number => {
   return normalizeDecimal(Math.ceil((value * multiplier) - EPSILON) / multiplier, value)
 }
 
-const findBand = (bands: any[], value: number): any | null => {
+const findBand = (bands: PriceBandLike[], value: number): PriceBandLike | null => {
   if (!Array.isArray(bands) || bands.length === 0 || !Number.isFinite(value) || value <= 0) return null
   for (let idx = 0; idx < bands.length; idx++) {
     const band = bands[idx]
@@ -92,7 +119,7 @@ const findBand = (bands: any[], value: number): any | null => {
   return null
 }
 
-const computeExtraPriceCents = (type: string, rawValue: number, bands: any[], extraRules: any): number | null => {
+const computeExtraPriceCents = (type: string, rawValue: number, bands: PriceBandLike[], extraRules: ExtraRulesLike): number | null => {
   if (!extraRules?.enabled) return null
   if (!Number.isFinite(rawValue) || rawValue <= 0) return null
 
@@ -123,7 +150,7 @@ const computeExtraPriceCents = (type: string, rawValue: number, bands: any[], ex
   return baseCents + (bandNumber * increment)
 }
 
-function getBandPriceCents(type: string, rawValue: number, bands?: any[], extraRules?: any): number | null {
+function getBandPriceCents(type: string, rawValue: number, bands?: PriceBandLike[], extraRules?: ExtraRulesLike): number | null {
   const value = Number(rawValue)
   if (!Number.isFinite(value) || value <= 0) return null
 
@@ -142,13 +169,13 @@ function getBandPriceCents(type: string, rawValue: number, bands?: any[], extraR
   return effectivePriceCents(fallback[fallback.length - 1])
 }
 
-function getCapSupplementCents(originCap: string, destinationCap: string, rules?: any[]): number {
+function getCapSupplementCents(originCap: string, destinationCap: string, rules?: SupplementRuleLike[]): number {
   const supplements = rules || DEFAULT_SUPPLEMENTS
   const origin = String(originCap || '').replace(/\D+/g, '')
   const destination = String(destinationCap || '').replace(/\D+/g, '')
 
   let total = 0
-  supplements.forEach((rule: any) => {
+  supplements.forEach((rule: SupplementRuleLike) => {
     if (rule?.enabled === false) return
     const prefix = String(rule?.prefix || '').replace(/\D+/g, '')
     if (!prefix) return
@@ -238,7 +265,7 @@ describe('Price Calculation Logic (usePriceBands)', () => {
     })
 
     it('peso NaN restituisce null', () => {
-      expect(getBandPriceCents('weight', NaN)).toBeNull()
+      expect(getBandPriceCents('weight', Number.NaN)).toBeNull()
     })
   })
 

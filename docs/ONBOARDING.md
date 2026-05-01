@@ -37,6 +37,7 @@ git clone <repo> spediamofacile && cd spediamofacile
 composer install
 cp .env.example .env
 php artisan key:generate
+php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');"
 php artisan migrate:fresh --seed
 
 # Frontend
@@ -125,7 +126,7 @@ spedizionefacile/                  ← root Laravel
 # Backend
 php artisan route:list             # tutte le rotte
 php artisan tinker                 # REPL Eloquent
-php artisan test                   # PHPUnit (333 test)
+php artisan test                   # PHPUnit backend
 php artisan test --filter=...      # test specifico
 composer dump-autoload             # ricarica classmap
 

@@ -163,7 +163,7 @@ spedizionefacile/                  ← root Laravel
 
 - [`README.md`](../README.md) — quickstart
 - [`ONBOARDING.md`](./ONBOARDING.md) — primo giorno dev
-- [`reference/AUDIT_V5_1R4_*.md`](./reference/) — audit qualità repo
+- [`audits/2026-04-v5-1-r4/`](./audits/2026-04-v5-1-r4/) — audit qualita repo V5.1R4 archiviato
 - [`operations/DEPLOY.md`](./operations/DEPLOY.md) — pipeline prod
 - [`legal/SECURITY.md`](./legal/SECURITY.md) — OWASP baseline
 - [`legal/GDPR_COMPLETO.md`](./legal/GDPR_COMPLETO.md) — compliance

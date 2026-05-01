@@ -80,13 +80,14 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-progress --no-interaction
 
-      - name: Copy .env
+      - name: Create test .env
         run: |
-          cp .env.example .env 2>/dev/null || cat > .env <<'EOF'
+          cat > .env <<'EOF'
           APP_NAME=SpedizioneFacile
           APP_ENV=testing
           APP_DEBUG=true
           APP_URL=http://localhost
+          BCRYPT_ROUNDS=4
           DB_CONNECTION=pgsql
           DB_HOST=127.0.0.1
           DB_PORT=5432
@@ -95,6 +96,7 @@ jobs:
           DB_PASSWORD=laravel
           REDIS_HOST=127.0.0.1
           REDIS_PORT=6379
+          CACHE_STORE=array
           CACHE_DRIVER=array
           QUEUE_CONNECTION=sync
           SESSION_DRIVER=array
@@ -230,10 +232,24 @@ jobs:
           name: nuxt-output
           path: apps/web/.output
 
+      - name: Start Nuxt preview
+        run: |
+          node .output/server/index.mjs > nuxt-preview.log 2>&1 &
+          for i in {1..30}; do
+            curl -fsS http://127.0.0.1:3000 >/dev/null && exit 0
+            sleep 1
+          done
+          cat nuxt-preview.log
+          exit 1
+        env:
+          PORT: 3000
+          NUXT_PUBLIC_API_BASE: http://localhost
+
       - name: Run Playwright tests
         run: npx playwright test --project=${{ matrix.project }} --reporter=github,html
         env:
           CI: true
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:3000
 
       - name: Upload Playwright report
         if: always()

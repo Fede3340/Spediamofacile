@@ -39,7 +39,7 @@ test.describe('Accessibilita', () => {
         }
 
         expect(critical.length).toBe(0)
-      } catch (e) {
+      } catch {
         // If axe-core is not installed, skip
         test.skip()
       }

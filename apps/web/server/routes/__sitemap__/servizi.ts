@@ -6,9 +6,10 @@
  * Priorita' piu' alta (0.8) perche' i servizi sono core business.
  */
 import type { SitemapUrlInput } from '#sitemap/types'
+import type { H3Event } from 'h3'
 import { fetchArticleList } from '../../utils/sitemapSources'
 
-export default defineSitemapEventHandler(async (event: any): Promise<SitemapUrlInput[]> => {
+export default defineSitemapEventHandler(async (event: H3Event): Promise<SitemapUrlInput[]> => {
   const items = await fetchArticleList(event, 'services')
 
   return items.map((item) => ({

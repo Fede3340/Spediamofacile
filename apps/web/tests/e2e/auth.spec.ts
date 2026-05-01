@@ -28,7 +28,7 @@ test.describe('Autenticazione', () => {
 			await page.locator('#auth-modal-password').fill('wrongpassword');
 			await page.locator('#auth-modal-password').locator('xpath=ancestor::form').getByRole('button', { name: /^accedi$/i }).click();
 			await expect
-				.poll(async () => await page.locator('body').innerText(), { timeout: 20000 })
+				.poll(async () => await page.locator('body').textContent(), { timeout: 20000 })
 				.toMatch(/credenziali non sono corrette|email o password|password non valida/i);
 		});
 

@@ -24,9 +24,9 @@ describe('useSmartValidation', () => {
   describe('CAP Validation', () => {
     // Riproduce la logica di validateCAP: 5 cifre, range 00010-98168
     function isValidCAP(value: string): boolean {
-      const cleaned = String(value).replace(/[^0-9]/g, '')
+      const cleaned = String(value).replace(/\D/g, '')
       if (cleaned.length !== 5) return false
-      const capNum = parseInt(cleaned, 10)
+      const capNum = Number.parseInt(cleaned, 10)
       return capNum >= 10 && capNum <= 98168
     }
 
@@ -83,7 +83,7 @@ describe('useSmartValidation', () => {
     // digits = cleaned senza prefisso +39; 6 <= digits.length <= 10
     function isValidPhone(value: string): { valid: boolean; error?: string } {
       if (!value || !String(value).trim()) return { valid: false, error: 'obbligatorio' }
-      const cleaned = String(value).replace(/[\s\-\(\)]/g, '')
+      const cleaned = String(value).replace(/[\s()-]/g, '')
       if (!/^\+?\d+$/.test(cleaned)) return { valid: false, error: 'solo numeri' }
       const digits = cleaned.replace(/^\+?39/, '')
       if (digits.length < 6) return { valid: false, error: 'troppo corto' }
@@ -137,7 +137,7 @@ describe('useSmartValidation', () => {
   // ========== EMAIL VALIDATION ==========
   describe('Email Validation', () => {
     // Riproduce la logica di validateEmail: opzionale; se presente, regex /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const emailRegex = /^[^\s@]{1,64}@[^\s@.]{1,253}(?:\.[^\s@.]{1,63})+$/
 
     function isValidEmail(value: string): boolean | null {
       if (!value || !String(value).trim()) return null // opzionale -> valido
@@ -255,10 +255,10 @@ describe('useSmartValidation', () => {
   // ========== WEIGHT VALIDATION ==========
   describe('Weight Validation', () => {
     // Riproduce la logica di validatePeso: num = Number(cleaned), num > 0, num <= 1000
-    function isValidWeight(value: any): boolean {
+    function isValidWeight(value: unknown): boolean {
       if (!value && value !== 0) return false
       const num = Number(String(value).replace(/[^0-9.]/g, ''))
-      if (isNaN(num) || num <= 0) return false
+      if (Number.isNaN(num) || num <= 0) return false
       if (num > 1000) return false
       return true
     }
@@ -301,10 +301,10 @@ describe('useSmartValidation', () => {
   // ========== DIMENSION VALIDATION ==========
   describe('Dimension Validation', () => {
     // Riproduce la logica di validateDimensione: num > 0, num <= 300
-    function isValidDimension(value: any): boolean {
+    function isValidDimension(value: unknown): boolean {
       if (!value && value !== 0) return false
       const num = Number(String(value).replace(/[^0-9.]/g, ''))
-      if (isNaN(num) || num <= 0) return false
+      if (Number.isNaN(num) || num <= 0) return false
       if (num > 300) return false
       return true
     }
@@ -337,7 +337,7 @@ describe('useSmartValidation', () => {
       // Riproduce: String(value).replace(/[^0-9]/g, '').slice(0, 5)
       function filterCAP(value: string): string {
         if (!value) return value
-        return String(value).replace(/[^0-9]/g, '').slice(0, 5)
+        return String(value).replace(/\D/g, '').slice(0, 5)
       }
 
       it('rimuove non-numerici', () => {
@@ -361,7 +361,7 @@ describe('useSmartValidation', () => {
       // Riproduce: String(value).replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase()
       function filterProvincia(value: string): string {
         if (!value) return value
-        return String(value).replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase()
+        return String(value).replace(/[^a-z]/gi, '').slice(0, 2).toUpperCase()
       }
 
       it('rimuove non-lettere e uppercase', () => {

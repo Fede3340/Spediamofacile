@@ -30,7 +30,7 @@ describe('parseCurrencyAmount', () => {
   })
 
   it('gestisce NaN/Infinity', () => {
-    expect(parseCurrencyAmount(NaN)).toBe(0)
+    expect(parseCurrencyAmount(Number.NaN)).toBe(0)
     expect(parseCurrencyAmount(Infinity)).toBe(0)
   })
 

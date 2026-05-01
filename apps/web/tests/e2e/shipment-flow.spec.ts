@@ -5,6 +5,22 @@ import { authSetupProfiles, resolveE2EStorageState } from './utils/authState';
 const accountStorageState = resolveE2EStorageState('account');
 const customerAuthProfile = authSetupProfiles[0];
 
+type ShipmentFlowPackage = Record<string, unknown>;
+
+type ShipmentSessionPayload = {
+	data: Record<string, unknown>;
+};
+
+type ShipmentOrderPayload = Record<string, unknown> & {
+	content_description?: unknown;
+	delivery_mode?: unknown;
+	destination_address?: unknown;
+	origin_address?: unknown;
+	packages?: ShipmentFlowPackage[];
+	selected_pudo?: unknown;
+	services?: unknown;
+};
+
 const ensureAuthenticatedShipmentUser = async (page: Page) => {
 	await page.goto('/?auth_modal=login&redirect=/preventivo');
 	await page.waitForLoadState('networkidle');
@@ -56,14 +72,14 @@ const installShipmentFlowMocks = async (
 	page: Page,
 	options: {
 		cartPayload?: Record<string, unknown>;
-		sessionPayload?: Record<string, any>;
+		sessionPayload?: ShipmentSessionPayload;
 	} = {},
 ) => {
 	let csrfRequestCount = 0;
 	let firstStepRequestCount = 0;
 	let secondStepRequestCount = 0;
-	let createdOrderId = 987;
-	let createdOrderPayload: Record<string, any> | null = null;
+	const createdOrderId = 987;
+	let createdOrderPayload: ShipmentOrderPayload | null = null;
 	const mockedLocations = [
 		{
 			place_name: 'Roma',
@@ -80,7 +96,7 @@ const installShipmentFlowMocks = async (
 			country_name: 'Italia',
 		},
 	];
-	const defaultSessionPayload: Record<string, any> = {
+	const defaultSessionPayload: ShipmentSessionPayload = {
 		data: {
 			shipment_details: {},
 			packages: [],
@@ -107,7 +123,7 @@ const installShipmentFlowMocks = async (
 			total: '8,50€',
 		},
 	};
-	let sessionPayload: Record<string, any> = options.sessionPayload || defaultSessionPayload;
+	let sessionPayload: ShipmentSessionPayload = options.sessionPayload || defaultSessionPayload;
 	let cartPayload: Record<string, unknown> = options.cartPayload || defaultCartPayload;
 
 	await page.route('**/sanctum/csrf-cookie', async (route: Route) => {
@@ -168,11 +184,13 @@ const installShipmentFlowMocks = async (
 
 	await page.route('**/api/session/first-step', async (route: Route) => {
 		firstStepRequestCount += 1;
-		const requestBody = route.request().postDataJSON();
+		const requestBody = route.request().postDataJSON() as ShipmentOrderPayload & {
+			shipment_details?: unknown;
+		};
 		sessionPayload = {
 			data: {
 				shipment_details: requestBody.shipment_details,
-				packages: requestBody.packages.map((pack: Record<string, unknown>) => ({
+				packages: (requestBody.packages ?? []).map((pack: ShipmentFlowPackage) => ({
 					...pack,
 					weight_price: 8.5,
 					volume_price: 7.25,
@@ -193,7 +211,9 @@ const installShipmentFlowMocks = async (
 
 	await page.route('**/api/session/second-step', async (route: Route) => {
 		secondStepRequestCount += 1;
-		const requestBody = route.request().postDataJSON();
+		const requestBody = route.request().postDataJSON() as ShipmentOrderPayload & {
+			pickup_date?: unknown;
+		};
 
 		sessionPayload = {
 			data: {
@@ -225,7 +245,7 @@ const installShipmentFlowMocks = async (
 	});
 
 	await page.route('**/api/create-direct-order', async (route: Route) => {
-		createdOrderPayload = route.request().postDataJSON();
+		createdOrderPayload = route.request().postDataJSON() as ShipmentOrderPayload;
 		await route.fulfill({
 			status: 200,
 			contentType: 'application/json',
@@ -238,8 +258,8 @@ const installShipmentFlowMocks = async (
 
 	await page.route('**/api/orders/*', async (route: Route) => {
 		const orderId = route.request().url().split('/').pop() || String(createdOrderId);
-		const fallbackPackages = Array.isArray((cartPayload as Record<string, any>)?.data)
-			? (cartPayload as Record<string, any>).data
+		const fallbackPackages = Array.isArray(cartPayload.data)
+			? cartPayload.data as ShipmentFlowPackage[]
 			: [];
 		const sourcePackages = Array.isArray(createdOrderPayload?.packages) && createdOrderPayload.packages.length
 			? createdOrderPayload.packages
@@ -253,15 +273,20 @@ const installShipmentFlowMocks = async (
 			|| sessionPayload?.data?.destination_address
 			|| null;
 		const packages = Array.isArray(sourcePackages)
-			? sourcePackages.map((pack: Record<string, any>, index: number) => ({
+			? sourcePackages.map((pack: ShipmentFlowPackage, index: number) => ({
 				id: index + 1,
-				package_type: pack.package_type || 'Pacco',
+				package_type: typeof pack.package_type === 'string' ? pack.package_type : 'Pacco',
 				quantity: Number(pack.quantity) || 1,
 				weight: Number(pack.weight) || 5,
 				first_size: Number(pack.first_size) || 30,
 				second_size: Number(pack.second_size) || 20,
 				third_size: Number(pack.third_size) || 15,
-				content_description: createdOrderPayload?.content_description || pack.content_description || 'Documenti e accessori',
+				content_description:
+					typeof createdOrderPayload?.content_description === 'string'
+						? createdOrderPayload.content_description
+						: typeof pack.content_description === 'string'
+							? pack.content_description
+							: 'Documenti e accessori',
 				origin_address: originAddress,
 				destination_address: destinationAddress,
 				services: createdOrderPayload?.services || {},
@@ -317,7 +342,7 @@ const installShipmentFlowMocks = async (
 		setCartPayload: (payload: Record<string, unknown>) => {
 			cartPayload = payload;
 		},
-		setSessionPayload: (payload: Record<string, any>) => {
+		setSessionPayload: (payload: ShipmentSessionPayload) => {
 			sessionPayload = payload;
 		},
 	};
@@ -655,4 +680,3 @@ test.describe('Flusso Spedizione', () => {
 		await expect(page.locator('#origin_city')).toHaveValue('Torino');
 	});
 });
-

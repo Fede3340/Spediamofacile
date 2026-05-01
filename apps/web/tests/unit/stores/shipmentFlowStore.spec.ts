@@ -284,7 +284,7 @@ describe('shipmentFlowStore Logic', () => {
     })
 
     it('packages default array vuoto', () => {
-      const defaultValue: any[] = []
+      const defaultValue: unknown[] = []
       expect(defaultValue).toEqual([])
     })
 

@@ -9,7 +9,7 @@ Intermediario BRT: preventivo, funnel spedizione, carrello, pagamento, account c
 - **Reverse proxy**: Caddy `:8787` → Laravel `:8000` API + Nuxt `:3001` SPA
 - **DB**: SQLite (dev) / Postgres (prod)
 - **Pagamenti**: Stripe + Bonifico + Wallet interno
-- **Test**: PHPUnit backend (333 test) + Playwright E2E + Vitest unit
+- **Test**: PHPUnit backend + Playwright E2E + Vitest unit
 
 ## Quickstart
 
@@ -20,6 +20,7 @@ cd spedizionefacile
 # Backend
 composer install
 cp .env.example .env && php artisan key:generate
+php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');"
 php artisan migrate:fresh --seed
 
 # Frontend
@@ -68,7 +69,7 @@ cd apps/web && npm install && cd ..
 - [`CLAUDE.md`](CLAUDE.md) — istruzioni AI + convenzioni
 - [`docs/ONBOARDING.md`](docs/ONBOARDING.md) — setup completo nuovo dev
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — overview backend + frontend
-- [`docs/reference/AUDIT_V5_1R4_*.md`](docs/reference/) — audit qualità repo
+- [`docs/audits/2026-04-v5-1-r4/`](docs/audits/2026-04-v5-1-r4/) — storico audit V5.1R4
 
 ## File critici (idempotency / soldi reali)
 
