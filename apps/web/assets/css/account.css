@@ -43,7 +43,7 @@
 	width: 3px;
 	height: 36px;
 	border-radius: 0 3px 3px 0;
-	background: linear-gradient(180deg, #E44203 0%, #c73600 100%);
+	background: linear-gradient(180deg, var(--color-brand-accent) 0%, #c73600 100%);
 	pointer-events: none;
 	z-index: 1;
 }
@@ -217,9 +217,9 @@
 }
 
 .sf-admin-btn-primary {
-	background: #095866;
+	background: var(--color-brand-primary);
 	color: #ffffff;
-	border-color: #095866;
+	border-color: var(--color-brand-primary);
 	box-shadow: 0 4px 14px rgba(9, 88, 102, 0.22);
 }
 
@@ -234,14 +234,14 @@
 .sf-admin-btn-secondary {
 	background: #ffffff;
 	border-color: #d5dae2;
-	color: #095866;
+	color: var(--color-brand-primary);
 }
 
 .sf-admin-btn-secondary:hover,
 .sf-admin-btn-secondary:focus-visible {
 	background: #f7f9fb;
-	border-color: #095866;
-	color: #095866;
+	border-color: var(--color-brand-primary);
+	color: var(--color-brand-primary);
 	outline: none;
 }
 
@@ -578,7 +578,7 @@
 	font-weight: 700;
 	letter-spacing: 0.12em;
 	text-transform: uppercase;
-	color: #E44203;
+	color: var(--color-brand-accent);
 }
 
 .sf-account-kicker::before {
@@ -587,7 +587,7 @@
 	width: 24px;
 	height: 2px;
 	border-radius: 2px;
-	background: linear-gradient(90deg, #E44203 0%, rgba(228, 66, 3, 0.35) 100%);
+	background: linear-gradient(90deg, var(--color-brand-accent) 0%, rgba(228, 66, 3, 0.35) 100%);
 }
 
 /* Metric card — 3/4 card su top pagina per statistiche */
@@ -839,7 +839,7 @@
 
 .account-route-shell__group[data-tone] .account-route-shell__nav-item--active .account-route-shell__nav-label {
 	font-weight: 700 !important;
-	color: var(--color-brand-primary, #095866) !important;
+	color: var(--color-brand-primary, var(--color-brand-primary)) !important;
 }
 
 /* Sprint UX 2026-04-18 — refresh sidebar active state */
@@ -864,7 +864,7 @@
 	width: 38px;
 	height: 38px;
 	border-radius: 999px;
-	background: linear-gradient(135deg, var(--color-brand-primary, #095866), var(--color-brand-accent, #E44203));
+	background: linear-gradient(135deg, var(--color-brand-primary, var(--color-brand-primary)), var(--color-brand-accent, var(--color-brand-accent)));
 	color: #ffffff;
 	font-size: 14px;
 	font-weight: 700;
@@ -886,7 +886,7 @@
 	font-size: 0.875rem;
 	font-weight: 700;
 	line-height: 1.2;
-	color: var(--color-brand-primary, #095866);
+	color: var(--color-brand-primary, var(--color-brand-primary));
 }
 
 .account-route-shell__identity-role {
@@ -1454,7 +1454,7 @@
 	display: inline-flex;
 	padding: 14px;
 	background: #EEF7F8;
-	color: var(--color-brand-primary, #095866);
+	color: var(--color-brand-primary, var(--color-brand-primary));
 	border-radius: 999px;
 	margin-bottom: 14px;
 }
@@ -1463,7 +1463,7 @@
 	margin: 0 0 8px;
 	font-size: 1.375rem;
 	font-weight: 800;
-	color: var(--color-brand-primary, #095866);
+	color: var(--color-brand-primary, var(--color-brand-primary));
 	font-family: 'Montserrat', sans-serif;
 }
 
@@ -1545,7 +1545,7 @@
 .sf-fatture__code {
 	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 	font-weight: 700;
-	color: var(--color-brand-primary, #095866);
+	color: var(--color-brand-primary, var(--color-brand-primary));
 	background: #EEF7F8;
 	padding: 3px 8px;
 	border-radius: 6px;
@@ -1555,7 +1555,7 @@
 
 .sf-fatture__amount {
 	font-weight: 700;
-	color: var(--color-brand-primary, #095866);
+	color: var(--color-brand-primary, var(--color-brand-primary));
 }
 
 .sf-fatture__status {
@@ -1745,7 +1745,7 @@
 
 .sf-address-chip--origin {
 	background: rgba(9, 88, 102, 0.10);
-	color: #095866;
+	color: var(--color-brand-primary);
 }
 
 .sf-address-chip--destination {
@@ -1754,7 +1754,7 @@
 }
 
 .sf-address-chip--default {
-	background: linear-gradient(135deg, #095866 0%, #0b6e7d 100%);
+	background: linear-gradient(135deg, var(--color-brand-primary) 0%, #0b6e7d 100%);
 	color: #ffffff;
 }
 
@@ -1773,7 +1773,7 @@
 }
 
 .sf-address-card__recipient svg {
-	color: var(--accent, #095866);
+	color: var(--accent, var(--color-brand-primary));
 	flex-shrink: 0;
 }
 
@@ -1858,7 +1858,7 @@
 .sf-address-action:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .sf-address-action--edit {
-	color: #095866;
+	color: var(--color-brand-primary);
 	background: rgba(9, 88, 102, 0.06);
 	border-color: rgba(9, 88, 102, 0.14);
 }
@@ -1926,7 +1926,7 @@
 	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: 0.6px;
-	color: #095866;
+	color: var(--color-brand-primary);
 	padding: 0;
 }
 
@@ -1964,7 +1964,7 @@
 }
 
 .sf-addr-radio--active {
-	border-color: #095866;
+	border-color: var(--color-brand-primary);
 	background: rgba(9, 88, 102, 0.05);
 	box-shadow: 0 0 0 3px rgba(9, 88, 102, 0.12);
 }
@@ -1976,7 +1976,7 @@
 	height: 32px;
 	border-radius: 10px;
 	background: rgba(9, 88, 102, 0.08);
-	color: #095866;
+	color: var(--color-brand-primary);
 	flex-shrink: 0;
 }
 .sf-addr-radio strong {
@@ -2047,7 +2047,7 @@
 
 .sf-addr-input:focus {
 	outline: none;
-	border-color: #095866;
+	border-color: var(--color-brand-primary);
 	box-shadow: 0 0 0 3px rgba(9, 88, 102, 0.15);
 }
 
@@ -2082,7 +2082,7 @@
 .sf-addr-checkbox input[type='checkbox'] {
 	width: 18px;
 	height: 18px;
-	accent-color: #095866;
+	accent-color: var(--color-brand-primary);
 	cursor: pointer;
 }
 
@@ -2126,8 +2126,8 @@
 }
 
 .sf-addr-btn--primary {
-	background: #E44203;
-	border-color: #E44203;
+	background: var(--color-brand-accent);
+	border-color: var(--color-brand-accent);
 	color: #ffffff;
 }
 .sf-addr-btn--primary:hover:not(:disabled) {
@@ -2227,7 +2227,7 @@
 }
 
 .sf-addr-tab--active {
-	background: var(--color-brand-primary, #095866);
+	background: var(--color-brand-primary, var(--color-brand-primary));
 	color: #ffffff;
 	border-color: rgba(9, 88, 102, 0.28);
 	box-shadow: 0 2px 8px rgba(9, 88, 102, 0.12);
@@ -2254,7 +2254,7 @@
 }
 
 .sf-addr-tab--active .sf-addr-tab__badge {
-	color: #095866;
+	color: var(--color-brand-primary);
 	background: rgba(9, 88, 102, 0.10);
 	border-color: transparent;
 }
@@ -2288,7 +2288,7 @@
 
 .sf-addr-search__input:focus {
 	outline: none;
-	border-color: #095866;
+	border-color: var(--color-brand-primary);
 	background: #ffffff;
 	box-shadow: 0 0 0 3px rgba(9, 88, 102, 0.12);
 }
@@ -2410,7 +2410,7 @@
 	padding: 8px 16px;
 	font-size: 0.875rem;
 	font-weight: 600;
-	color: #095866;
+	color: var(--color-brand-primary);
 	background: rgba(9, 88, 102, 0.08);
 	border: 1px solid rgba(9, 88, 102, 0.16);
 	border-radius: 10px;
