@@ -1,0 +1,1462 @@
+/* funnel-stages.css - Stage cards funnel (input-preventivo-step-2 + shipment-stage-*).
+   Estratto da shipment-flow.css (Ondata 10b split agency-grade). */
+
+   Il bottone "Completa il pagamento" aveva padding/dimensioni ridotti che facevano
+   apparire la scritta attaccata al bordo. Ora hit area 44px, padding 24px laterali. */
+.checkout-payment-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  width: 100%;
+  min-width: 0;
+  padding: 0 22px 0 26px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  color: #fff;
+  align-self: auto;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: box-shadow var(--sf-t1) var(--sf-ease),
+              opacity var(--sf-t1) var(--sf-ease);
+}
+.checkout-payment-submit--active {
+  background: linear-gradient(135deg, var(--color-brand-accent), var(--color-accent-dark));
+  box-shadow: 0 4px 16px rgba(228, 66, 3, 0.22);
+}
+.checkout-payment-submit--active:hover {
+  box-shadow: 0 10px 32px rgba(228, 66, 3, 0.3);
+}
+.checkout-payment-submit--disabled {
+  background: var(--color-border-hover);
+  color: rgba(255, 255, 255, 0.92);
+  cursor: not-allowed;
+}
+/* Spinner CTA (pattern sf-flow-cta) */
+
+.sf-flow-cta__arrow .spin {
+  animation: sf-cta-spin 1s linear infinite;
+  transform-origin: center;
+}
+
+/* ── Status messages ── */
+.checkout-payment-status {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.checkout-payment-status__error,
+.checkout-payment-status__progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 16px;
+  font-size: 0.75rem;
+}
+.checkout-payment-status__error {
+  border: 1px solid var(--color-error-input-border);
+  background: var(--color-error-input-bg);
+  color: var(--color-error-input-text);
+}
+.checkout-payment-status__progress {
+  border: 1px solid var(--color-teal-300);
+  background: var(--color-teal-100);
+  color: var(--color-brand-primary);
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════
+   Responsive overrides
+   ═══════════════════════════════════════════════ */
+@media (max-width: 1279px) {
+  .checkout-payment-options-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .checkout-billing-grid--company-mid,
+  .checkout-billing-grid--private-top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .checkout-billing-grid--company-top {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  }
+  .checkout-billing-grid--company-top > :nth-child(3) {
+    grid-column: 1 / -1;
+  }
+  .checkout-billing-grid--address {
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.15fr) 88px 96px;
+  }
+  .checkout-payment-footer {
+    position: relative;
+    align-items: start;
+  }
+}
+
+@media (max-width: 767px) {
+  .checkout-stage-card--payment,
+  .checkout-stage-card--billing {
+    padding: 16px;
+    border-radius: 16px;
+  }
+  .checkout-panel-head {
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 8px;
+  }
+  .checkout-panel-head__icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+  .checkout-panel-head__title { font-size: 1rem; }
+  .checkout-panel-head__text { font-size: 0.75rem; }
+  .checkout-payment-options-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .checkout-payment-option {
+    min-height: 0;
+    padding: 12px 14px;
+  }
+  .checkout-payment-option__main {
+    gap: 10px;
+  }
+  .checkout-payment-choice {
+    padding: 14px;
+    border-radius: 12px;
+  }
+  .checkout-payment-card-form { padding: 14px; }
+  .checkout-payment-card-form__head { margin-bottom: 8px; }
+  .checkout-mini-switch {
+    width: 100%;
+  }
+  .checkout-mini-switch--billing,
+  .checkout-mini-switch--subject {
+    width: 100%;
+  }
+  .checkout-mini-switch__option {
+    min-width: 0;
+    flex: 1 1 0;
+    padding: 0 14px;
+  }
+  .checkout-billing-grid--company-top,
+  .checkout-billing-grid--company-mid,
+  .checkout-billing-grid--private-top,
+  .checkout-billing-grid--address {
+    grid-template-columns: 1fr;
+  }
+  .checkout-billing-context-note,
+  .checkout-billing-receipt-note { padding: 8px 9px; }
+  .checkout-payment-footer {
+    padding: 8px;
+  }
+  .checkout-payment-footer__summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    padding: 7px 8px;
+  }
+  .checkout-payment-footer__body {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+  .checkout-payment-footer__summary-side {
+    justify-content: flex-start;
+  }
+  .checkout-payment-footer__summary-chip { align-self: flex-start; }
+  .checkout-payment-footer__support { padding: 0; }
+  .checkout-payment-footer__cta {
+    justify-content: stretch;
+    max-width: none;
+    margin-left: 0;
+  }
+  .checkout-payment-submit {
+    width: 100%;
+    min-width: 0;
+    align-self: stretch;
+  }
+  .checkout-payment-footer__hint {
+    padding-left: 0;
+    max-width: none;
+  }
+}
+
+/* Checkout: extra-small (375px) — ensure no horizontal overflow */
+@media (max-width: 23.4375rem) {
+  .checkout-stage-card--payment,
+  .checkout-stage-card--billing {
+    padding: 10px;
+  }
+
+  .checkout-payment-option {
+    min-height: 88px;
+    padding: 16px 8px;
+  }
+
+  .checkout-payment-option__title {
+    font-size: 0.875rem;
+  }
+
+  .checkout-payment-choice {
+    padding: 16px;
+  }
+}
+
+/* ============================================================ */
+@media (max-width: 768px) {
+  .payment-summary-section__edit {
+    height: auto;
+    min-height: 44px;
+    padding: 0 14px;
+  }
+
+  .checkout-billing-input {
+    height: auto;
+    min-height: 44px;
+  }
+
+  .checkout-mini-switch {
+    padding: 4px;
+  }
+
+  .checkout-mini-switch__option {
+    min-height: 40px;
+    padding: 0 12px;
+  }
+
+  /* CTA principale di pagamento: tap target massima priorita' */
+  .checkout-payment-submit {
+    min-height: 48px;
+    padding: 0 16px;
+  }
+
+  .checkout-payment-choice__icon-shell,
+  .checkout-payment-option__icon-shell {
+    /* Sono icone interne (decorative), il tap area e' il container parent
+       (.checkout-payment-choice / .checkout-payment-option) che e' gia' grande. */
+    width: 36px;
+    height: 36px;
+  }
+}
+/* ========================================================== */
+
+/* ==========================================================
+   Base / Form styles
+   ========================================================== */
+
+.input-preventivo-step-2 {
+	width: 100%;
+	height: 48px;
+	min-width: 0;
+	background: var(--color-brand-card);
+	border: none;
+	outline: none;
+	box-shadow: 0 0 0 1.5px var(--color-neutral-250);
+	border-radius: 16px;
+	padding: 0 16px;
+	color: var(--color-brand-text);
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.2;
+	transition: box-shadow var(--sf-t1) var(--sf-ease), background-color var(--sf-t1) var(--sf-ease);
+}
+
+.input-preventivo-step-2::placeholder {
+	color: var(--color-brand-text-muted);
+	font-weight: 500;
+}
+
+.input-preventivo-step-2:focus {
+	box-shadow:
+		0 0 0 1.5px rgba(9, 88, 102, 0.4),
+		0 0 0 4px rgba(9, 88, 102, 0.12);
+	outline: none;
+}
+@media (min-width: 640px) {
+	.input-preventivo-step-2 {
+		height: 50px;
+	}
+}
+
+/* Fix mobile: input font-size ≥ 16px evita lo zoom automatico iOS Safari
+   al focus. Applichiamo il boost SOLO sotto 640px per non cambiare la scala
+   tipografica desktop (15px voluto). */
+@media (max-width: 639px) {
+	.input-preventivo-step-2 {
+		font-size: 16px;
+	}
+}
+
+.field-gentle-error {
+	margin-top: 0;
+	display: block;
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--color-brand-accent);
+	line-height: 1.35;
+}
+
+/* DS: feedback divs hidden when empty */
+.field-gentle-error:empty,
+/* Errore cliccabile con suggerimento auto-fill (arancione brand soft) */
+
+.field-assist-chip {
+	margin-top: 8px;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px;
+	border-radius: var(--sf-radius-button-compact);
+	border: 1px solid var(--color-teal-250);
+	background: var(--color-teal-50);
+	color: var(--color-brand-text-secondary);
+	font-size: 0.75rem;
+	font-weight: 600;
+	line-height: 1;
+	cursor: pointer;
+	transition: background-color var(--sf-t1) var(--sf-ease), border-color var(--sf-t1) var(--sf-ease), color var(--sf-t1) var(--sf-ease);
+}
+
+.field-assist-chip:hover {
+	background: var(--color-teal-150);
+	border-color: var(--color-teal-300);
+	color: var(--color-brand-text);
+}
+
+/* Fix 9 — Spring-back sobrio su click: previene rimbalzo elastico */
+.service-card,
+/* .btn-compact definito in assets/css/shipment-flow.css (globale) */
+
+/* ==========================================================
+   Shared stage card (used to realign ventaglio with quote DS)
+   ========================================================== */
+.shipment-stage-card {
+	position: relative;
+	overflow: hidden;
+	border-radius: 16px;
+	background: var(--color-brand-card);
+	box-shadow: 0 0 0 1px rgba(20, 37, 48, 0.06), 0 1px 6px rgba(20, 37, 48, 0.04);
+	transition: box-shadow var(--sf-t2) var(--sf-ease);
+}
+
+.shipment-stage-card--open {
+	box-shadow:
+		0 0 0 1px rgba(9, 88, 102, 0.12),
+		0 6px 22px rgba(9, 88, 102, 0.08),
+		0 18px 44px rgba(20, 37, 48, 0.05);
+}
+
+.shipment-stage-card__accent {
+	height: 4px;
+	background: var(--color-border-soft);
+	transition: background var(--sf-t2) var(--sf-ease);
+}
+
+.shipment-stage-card--open .shipment-stage-card__accent {
+	background: linear-gradient(90deg, var(--color-brand-primary) 0%, var(--color-teal-400) 50%, var(--color-brand-primary) 100%);
+}
+
+.shipment-stage-card__toggle {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	width: 100%;
+	padding: 16px 20px;
+	border: 0;
+	background: var(--color-brand-card);
+	text-align: left;
+	cursor: pointer;
+	transition: background-color var(--sf-t2) var(--sf-ease);
+}
+
+.shipment-stage-card__toggle:hover,
+.shipment-stage-card__toggle:focus-visible {
+	background: var(--surface-muted);
+}
+
+.shipment-stage-card__toggle:focus-visible {
+	outline: 3px solid rgba(9, 88, 102, 0.45);
+	outline-offset: 2px;
+}
+
+.shipment-stage-card--open .shipment-stage-card__toggle {
+	background: var(--surface-subtle);
+}
+
+.shipment-stage-card--open .shipment-stage-card__toggle:hover,
+.shipment-stage-card--open .shipment-stage-card__toggle:focus-visible {
+	background: var(--surface-subtle);
+}
+
+.shipment-stage-card__badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	flex: 0 0 36px;
+	border-radius: 999px;
+	background: var(--color-border-hover);
+	color: var(--color-brand-bg);
+	font-size: 0.875rem;
+	font-weight: 800;
+	line-height: 1;
+	transition: background-color var(--sf-t2) var(--sf-ease);
+}
+
+.shipment-stage-card--open .shipment-stage-card__badge {
+	background: linear-gradient(135deg, var(--color-brand-primary), var(--color-teal-400));
+}
+
+.shipment-stage-card__copy {
+	display: grid;
+	gap: 2px;
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.shipment-stage-card__title {
+	margin: 0;
+	font-family: var(--font-montserrat);
+	color: var(--color-brand-text);
+	font-size: 1.125rem;
+	line-height: 1.2;
+	letter-spacing: -0.45px;
+	font-weight: 800;
+}
+
+.shipment-stage-card__summary {
+	margin: 0;
+	font-size: 0.875rem;
+	line-height: 1.4;
+	font-weight: 600;
+	color: var(--color-brand-text-muted);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.shipment-stage-card__indicator {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	color: var(--color-border-hover);
+	transition: transform var(--sf-t2) var(--sf-ease);
+}
+
+.shipment-stage-card__indicator--open {
+	transform: rotate(180deg);
+}
+
+.shipment-stage-card__body {
+	padding: 14px 20px 24px;
+	background: var(--color-brand-card);
+}
+
+.shipment-stage-card__body-inner {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 10px;
+}
+
+/* ==========================================================
+   Address section
+   ========================================================== */
+.address-stage-shell {
+	display: grid;
+	gap: 8px;
+	margin-top: 0;
+	border-radius: 0;
+	overflow: visible;
+	min-width: 0;
+	max-width: 100%;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.address-stage-shell__content {
+	display: grid;
+	gap: 8px;
+	padding: 0;
+}
+
+/* Sprint 2.3 — Spaziatura partenza/destinazione. */
+.address-stage-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 24px;
+	align-items: start;
+}
+
+.address-stage-menu {
+	position: absolute;
+	top: calc(100% + 8px);
+	right: 0;
+	z-index: 30;
+	display: grid;
+	gap: 8px;
+	width: min(92vw, 320px);
+	padding: 4px;
+	border-radius: 16px;
+	background: var(--color-brand-card);
+	box-shadow: 0 0 0 1px var(--color-border), 0 14px 28px rgba(20, 37, 48, 0.1);
+}
+
+.address-stage-menu--card {
+	width: min(92vw, 320px);
+}
+
+.address-stage-menu__empty-text {
+	margin: 0;
+	font-size: 0.75rem;
+	line-height: 1.35;
+	color: var(--color-brand-text-secondary);
+}
+
+.address-stage-menu__list {
+	display: grid;
+	gap: 4px;
+}
+
+.address-stage-menu__item {
+	display: grid;
+	gap: 2px;
+	width: 100%;
+	padding: 8px;
+	border: 1px solid transparent;
+	border-radius: 16px;
+	background: var(--color-teal-50);
+	text-align: left;
+	cursor: pointer;
+	transition: border-color var(--sf-t1) var(--sf-ease), background-color var(--sf-t1) var(--sf-ease);
+}
+
+.address-stage-menu__item:hover,
+.address-stage-menu__item:focus-visible {
+	border-color: var(--color-teal-300);
+	background: var(--color-brand-card);
+}
+.address-stage-menu__item:focus-visible {
+	outline: 3px solid rgba(9, 88, 102, 0.45);
+	outline-offset: 2px;
+}
+
+.address-stage-menu__route {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.875rem;
+	font-weight: 800;
+	line-height: 1.3;
+	color: var(--color-brand-text);
+}
+
+.address-stage-menu__meta {
+	font-size: 0.75rem;
+	line-height: 1.4;
+	color: var(--color-brand-text-secondary);
+}
+
+.address-stage-menu__link {
+	font-size: 0.875rem;
+	font-weight: 700;
+	color: var(--color-brand-primary);
+}
+
+.address-field-menu {
+	position: absolute;
+	top: calc(100% + 4px);
+	left: 0;
+	right: 0;
+	z-index: 120;
+	display: grid;
+	gap: 4px;
+	max-height: 220px;
+	margin: 0;
+	padding: 8px;
+	overflow-y: auto;
+	list-style: none;
+	border-radius: 16px;
+	background: var(--color-brand-card);
+	box-shadow: 0 0 0 1px var(--color-border), 0 14px 28px rgba(20, 37, 48, 0.1);
+}
+
+.address-field-menu__item {
+	padding: 8px 16px;
+	border: 1px solid transparent;
+	border-radius: 16px;
+	cursor: pointer;
+	color: var(--color-brand-text);
+	transition: border-color var(--sf-t1) var(--sf-ease), background-color var(--sf-t1) var(--sf-ease);
+}
+
+.address-field-menu__item:hover,
+.address-field-menu__item:focus-visible {
+	border-color: var(--color-border-teal-soft);
+	background: var(--surface-teal-wash);
+}
+.address-field-menu__item:focus-visible {
+	outline: 3px solid rgba(9, 88, 102, 0.45);
+	outline-offset: 2px;
+}
+
+.address-field-menu__label {
+	font-size: 0.875rem;
+	font-weight: 700;
+	line-height: 1.3;
+}
+
+.address-entry-card {
+	display: grid;
+	gap: 8px;
+	padding: 16px 20px;
+	border-radius: 16px;
+	background: white;
+	box-shadow: 0 0 0 1px var(--color-border);
+	color: var(--color-brand-text);
+}
+
+.address-entry-card__head {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 8px;
+	margin-bottom: 0;
+}
+.address-entry-card__title-stack {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+	flex: 1 1 320px;
+}
+
+.address-entry-card__title {
+	margin: 0;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-family: var(--font-montserrat);
+	font-size: 1.125rem;
+	font-weight: 800;
+	letter-spacing: -0.01em;
+	color: var(--color-brand-text);
+}
+
+.address-entry-card__title::before {
+	content: '';
+	width: 22px;
+	height: 22px;
+	flex: 0 0 22px;
+	border-radius: 999px;
+}
+
+/* Origin = teal dot, Dest = teal dot */
+.address-entry-card:first-child .address-entry-card__title::before {
+	background: rgba(9, 88, 102, 0.1);
+}
+
+.address-entry-card:last-child .address-entry-card__title::before {
+	background: rgba(9, 88, 102, 0.1);
+}
+
+.address-entry-card__actions {
+	display: inline-flex;
+	position: relative;
+	align-items: center;
+	justify-content: flex-end;
+	flex-wrap: nowrap;
+	gap: 4px;
+	flex: 0 0 auto;
+}
+
+.address-entry-card__link-action {
+	display: inline-flex;
+	align-items: center;
+	min-height: auto;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	font-size: 0.75rem;
+	font-weight: 700;
+	color: var(--color-brand-text-secondary);
+	cursor: pointer;
+	transition: color var(--sf-t1) var(--sf-ease);
+	white-space: nowrap;
+}
+
+.address-entry-card__link-action:disabled {
+	opacity: 0.56;
+	cursor: default;
+}
+
+.address-entry-card__link-action:hover,
+.address-entry-card__link-action:focus-visible {
+	color: var(--color-brand-primary);
+}
+.address-entry-card__link-action:focus-visible {
+	outline: 3px solid rgba(9, 88, 102, 0.45);
+	outline-offset: 2px;
+}
+
+.address-form-shell {
+	display: grid;
+	gap: 8px;
+}
+
+.address-form-block {
+	display: grid;
+	gap: 8px;
+}
+
+.address-form-block + .address-form-block {
+	padding-top: 8px;
+}
+
+.address-form-shell .form-label {
+	margin-bottom: 4px;
+	font-size: 0.75rem; /* 12px DS */
+	font-weight: 700;
+	letter-spacing: 0.3px;
+	text-transform: uppercase;
+	color: var(--color-brand-text-muted);
+}
+
+.address-entry-card__mode {
+	padding-bottom: 0;
+}
+
+.address-delivery-shell {
+	display: grid;
+	gap: 4px;
+	padding: 0;
+	border-radius: 0;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.address-pudo-shell {
+	display: grid;
+	gap: 8px;
+	padding-top: 8px;
+}
+
+.address-pudo-selected {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	padding: 16px;
+	border-radius: 16px;
+	background: linear-gradient(180deg, var(--surface-subtle) 0%, var(--surface-teal-wash) 100%);
+	box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+.address-pudo-selected__name {
+	margin: 0;
+	font-size: 1rem;
+	font-weight: 800;
+	line-height: 1.2;
+	color: var(--color-brand-text);
+}
+
+.address-pudo-selected__icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	flex: 0 0 38px;
+	border-radius: 16px;
+	border: 1px solid var(--color-brand-secondary-soft-border);
+	background: var(--color-teal-100);
+	color: var(--color-brand-primary);
+}
+
+.address-pudo-selected__copy {
+	display: grid;
+	gap: 2px;
+	min-width: 0;
+}
+
+.address-pudo-selected__name {
+	margin: 0;
+	font-size: 1rem;
+	font-weight: 800;
+	line-height: 1.2;
+	color: var(--color-brand-text);
+}
+
+.address-pudo-selected__address {
+	margin: 0;
+	font-size: 0.875rem;
+	line-height: 1.4;
+	color: var(--color-brand-text-secondary);
+}
+
+/* ==========================================================
+   Date picker
+   ========================================================== */
+@media (min-width: 640px) {
+	
+
+	
+}
+
+/* Active address card refinement */
+/* ==========================================================
+   Responsive / media queries
+   ========================================================== */
+@media (max-width: 44.99rem) {
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+}
+
+@media (min-width: 45rem) {
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	.address-entry-card {
+		padding: 20px;
+	}
+
+	.address-entry-card__head {
+		margin-bottom: 8px;
+	}
+}
+
+@media (min-width: 768px) {
+	
+}
+
+@media (min-width: 75rem) {
+	.address-stage-grid {
+		grid-template-columns: 1fr;
+		gap: 28px;
+	}
+}
+
+@media (max-width: 74.99rem) {
+	.address-stage-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.address-entry-card__actions {
+		width: 100%;
+		justify-content: flex-start;
+	}
+}
+
+@media (max-width: 44.99rem) {
+	
+
+	.address-entry-card__actions {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.address-stage-actions__group,
+	.address-entry-card__actions > .address-entry-card__link-action,
+	.address-entry-card__actions > .address-stage-actions__group > .address-entry-card__link-action,
+	.address-stage-menu,
+	.address-stage-menu--card {
+		width: 100%;
+	}
+
+	.address-stage-menu {
+		position: static;
+	}
+
+	.address-entry-card,
+	.address-delivery-shell {
+		padding: 16px;
+	}
+
+	.address-entry-card__head {
+		gap: 8px;
+		margin-bottom: 8px;
+	}
+
+	.address-entry-card__title {
+		font-size: 1rem;
+	}
+
+	.address-entry-card__link-action {
+		justify-content: flex-start;
+	}
+}
+/* ==========================================================
+   Helpers: service option structure (unique to this section)
+   ========================================================== */
+/* ==========================================================
+   Address cards (unique to address flow)
+   ========================================================== */
+
+.address-stage-shell__content {
+	gap: 8px;
+}
+
+.address-stage-grid {
+	/* Sprint 2.3 — respiro tra mittente e destinatario (era 16px) */
+	gap: 24px;
+}
+
+.address-entry-card {
+	gap: 8px;
+	padding: 20px;
+	border-color: var(--color-border-strong);
+	border-radius: 16px;
+}
+
+.address-entry-card__head {
+	gap: 8px;
+}
+
+.address-entry-card__title {
+	font-size: 1.125rem;
+}
+
+.address-entry-card__actions {
+	gap: 8px;
+}
+
+.address-entry-card__link-action {
+	font-size: 0.875rem;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+}
+.address-stage-menu,
+.address-field-menu {
+	border-radius: 16px;
+}
+
+@media (min-width: 1024px) {
+	.address-stage-grid {
+		/* Sprint 2.3 — respiro desktop (era 8px) */
+		gap: 28px;
+	}
+}
+
+/* ==========================================================
+   Unique helpers (support panels, address cards)
+   ========================================================== */
+/* label--notification and notification-text overrides removed: unified flat layout */
+
+.address-stage-shell {
+	gap: 8px;
+}
+.address-entry-card {
+	position: relative;
+	overflow: hidden;
+	gap: 8px;
+	padding: 20px;
+	border-radius: 16px;
+	border: 1.5px solid var(--color-border-strong);
+	background: var(--color-brand-card);
+	box-shadow: 0 4px 16px rgba(20, 37, 48, 0.04);
+}
+.address-entry-card__head {
+	align-items: flex-start;
+	gap: 8px;
+}
+
+.address-entry-card__title {
+	font-size: 1.125rem;
+}
+
+.address-entry-card__actions {
+	gap: 8px;
+}
+
+.address-entry-card__link-action {
+	min-height: 34px;
+	padding: 0 16px;
+	border: 1.5px solid var(--color-border-teal-faint);
+	border-radius: 999px;
+	background: var(--color-brand-card);
+	color: var(--color-brand-text);
+	font-size: 0.875rem;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+	box-shadow: 0 4px 10px rgba(20, 37, 48, 0.04);
+}
+
+.address-entry-card__link-action.btn-cta {
+	border-color: rgba(9, 88, 102, 0.2);
+	background: rgba(9, 88, 102, 0.04);
+	color: var(--color-brand-primary);
+}
+
+.address-entry-card__link-action:hover,
+.address-entry-card__link-action:focus-visible {
+	border-color: rgba(9, 88, 102, 0.3);
+	background: var(--surface-teal-tint);
+	color: var(--color-brand-primary);
+}
+.address-delivery-shell {
+	gap: 8px;
+	padding-top: 8px;
+}
+.address-pudo-selected {
+	padding: 16px;
+	border: 1.5px solid var(--color-border-teal-faint);
+	border-radius: 16px;
+	background: var(--surface-subtle);
+}
+
+@media (max-width: 44.99rem) {
+	.address-entry-card {
+		padding: 16px;
+	}
+.address-entry-card__link-action {
+		width: 100%;
+		justify-content: center;
+	}
+}
+
+/* ==========================================================
+   2026-04-05 Step 2/3 polish — navigation, inputs, summary
+   ========================================================== */
+
+/* Step navigation: flex space-between, 24px gap from content */
+/* service-support-panel__input — Figma-aligned definition is above (line ~2003) */
+
+/* ============================================================
+   PUDO map markers
+   Merged from map-pudo.css
+   ============================================================ */
+
+.pudo-marker-icon-wrap,
+.pudo-reference-icon-wrap {
+	background: none !important;
+	border: none !important;
+}
+
+.pudo-marker {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 9999px;
+	background: var(--color-brand-card);
+	border: 3px solid var(--color-brand-primary);
+	box-shadow: 0 8px 16px rgba(15, 23, 42, 0.2);
+}
+
+.pudo-marker.is-selected {
+	background: var(--color-brand-primary);
+	border-color: var(--color-brand-primary);
+	box-shadow: 0 10px 20px rgba(9, 88, 102, 0.42);
+}
+
+.pudo-marker-dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 9999px;
+	background: var(--color-brand-primary);
+}
+
+.pudo-marker-tip {
+	width: 0;
+	height: 0;
+	margin: -1px auto 0;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-top: 10px solid var(--color-brand-primary);
+}
+
+.pudo-marker-tip.is-selected {
+	border-top-color: var(--color-brand-primary);
+}
+
+.pudo-ref-marker {
+	width: 32px;
+	height: 32px;
+	border-radius: 9999px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--color-brand-primary);
+	border: 3px solid var(--color-brand-bg);
+	box-shadow: 0 8px 16px rgba(9, 88, 102, 0.42);
+}
+
+.pudo-ref-tip {
+	width: 0;
+	height: 0;
+	margin: -1px auto 0;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-top: 10px solid var(--color-brand-primary);
+}
+
+/* ==========================================================
+   Prototype-aligned CTA buttons (pill style)
+   ========================================================== */
+/* .sf-flow-cta — CTA funnel allineato alla scala .btn-lg (48px default) / .btn (40px compact) */
+/* ==========================================================
+   Accessibility: reduced motion
+   ========================================================== */
+@media (prefers-reduced-motion: reduce) {
+	.service-option,
+	.service-option__status-dot,
+	.service-support-panel__checkbox,
+	.service-card-tile__icon-shell,
+	.service-inline-field__input {
+		transition-duration: 0.01ms !important;
+	}
+}
+
+/* ==========================================================
+   Mobile responsive fixes (< 640px)
+   ========================================================== */
+@media (max-width: 639px) {
+	/* Date picker: ensure cards are not cut at edges */
+	.pickup-date-track {
+		scroll-padding-inline: 4px;
+	}
+
+	.pickup-date-track__list {
+		padding-inline: 2px;
+		gap: 8px;
+	}
+/* Address form: stack fields properly on mobile */
+	.address-form-street-grid {
+		grid-template-columns: 1fr;
+		gap: 8px;
+	}
+
+	.address-form-inline-grid {
+		grid-template-columns: 1fr;
+		gap: 8px;
+	}
+
+	.address-form-country-grid {
+		grid-template-columns: 1fr;
+		gap: 8px;
+	}
+
+	.address-form-country-grid__city {
+		grid-column: auto;
+	}
+
+	.address-form-optional__grid {
+		grid-template-columns: 1fr;
+	}
+
+	/* Delivery choices: full-width stack on tiny screens */
+/* Ensure address entry cards have adequate padding */
+	.address-entry-card {
+		padding: 16px;
+	}
+/* PUDO selected: don't overflow */
+	.address-pudo-selected {
+		padding: 8px 16px;
+	}
+}
+
+.packages-stage-shell,
+.address-stage-shell__content {
+	gap: 16px;
+}
+
+.address-stage-grid {
+	gap: 24px;
+}
+
+.address-entry-card {
+	gap: 14px;
+	padding: 18px;
+	background: var(--color-border-soft);
+	border: none;
+	border-radius: 16px;
+	box-shadow: inset 0 1px 2px rgba(9, 88, 102, 0.06);
+}
+.address-entry-card__head {
+	gap: 10px;
+}
+.address-entry-card__link-action,
+.address-entry-card__link-action.btn-cta,
+.address-entry-card__link-action.btn-secondary {
+	min-height: 36px;
+	padding: 0 14px;
+	border: 1.5px solid var(--color-border);
+	border-radius: 999px;
+	background: var(--color-brand-card);
+	box-shadow: none;
+	color: var(--color-brand-primary);
+}
+
+.address-entry-card__link-action:hover,
+.address-entry-card__link-action:focus-visible {
+	border-color: rgba(9, 88, 102, 0.22);
+	background: rgba(255, 255, 255, 0.84);
+	color: var(--color-brand-primary);
+}
+
+.address-delivery-shell {
+	gap: 8px;
+}
+
+.sf-shared-segment-strip--compact {
+	padding: 3px;
+	gap: 4px;
+	border: none;
+	border-radius: 999px;
+	background: var(--quote-selector-shell-bg, var(--color-border-strong));
+	box-shadow: inset 0 1px 2px rgba(9, 88, 102, 0.06);
+	align-items: stretch;
+}
+
+.sf-shared-segment--compact {
+	min-height: 44px;
+	height: 44px;
+	padding: 0 16px;
+	border: none;
+	border-radius: 999px;
+	background: transparent;
+	color: var(--color-brand-text-secondary);
+	box-shadow: none;
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1;
+}
+
+.sf-shared-segment--compact:hover {
+	background: rgba(255, 255, 255, 0.72);
+	border-color: transparent;
+}
+
+.sf-shared-segment--compact.sf-shared-segment--active {
+	background: var(--quote-selector-active-bg, var(--color-brand-primary));
+	color: var(--quote-selector-active-fg, #fff);
+	box-shadow: 0 8px 18px rgba(9, 88, 102, 0.18);
+}
+
+.sf-shared-segment--compact .sf-shared-segment__icon {
+	background: rgba(9, 88, 102, 0.08);
+	color: var(--color-brand-primary);
+}
+
+.sf-shared-segment--compact.sf-shared-segment--active .sf-shared-segment__icon {
+	background: rgba(255, 255, 255, 0.16);
+	color: #fff;
+}
+
+.sf-shared-segment--compact.sf-shared-segment--active .sf-shared-segment__title,
+.sf-shared-segment--compact.sf-shared-segment--active .sf-shared-segment__caption,
+.sf-shared-segment--compact.sf-shared-segment--active .sf-shared-segment__badge {
+	color: #fff;
+}
+
+/* Icon turned pure white when type is active (bg teal var(--color-brand-primary)) */
+.sf-shared-segment--compact.sf-shared-segment--active .sf-shared-segment__badge {
+	background: rgba(255, 255, 255, 0.16);
+}
+
+.package-entry-list {
+	display: grid;
+	gap: 8px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.package-entry {
+	padding: 16px;
+	border-radius: 16px;
+	background: var(--color-border-soft);
+	border: none;
+	box-shadow: inset 0 1px 2px rgba(9, 88, 102, 0.06);
+	transition: box-shadow var(--sf-t1) var(--sf-ease);
+}
+
+.package-type-switcher {
+	display: block;
+	max-width: 100%;
+	min-width: 0;
+	width: fit-content;
+	overflow-x: auto;
+	scrollbar-width: none;
+}
+
+.package-type-switcher::-webkit-scrollbar {
+	display: none;
+}
+
+.package-entry__header .package-type-switcher {
+	flex: 0 0 auto;
+	max-width: 100%;
+}
+
+.package-type-switcher__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	flex: 0 0 auto;
+	min-width: 0;
+	white-space: nowrap;
+	line-height: 1;
+}
+
+.package-type-switcher__button span:last-child {
+	white-space: nowrap;
+}
+
+.package-type-switcher__icon-wrap {
+	width: 28px;
+	height: 28px;
+	flex: 0 0 28px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 999px;
+	background: rgba(9, 88, 102, 0.08);
+}
+
+.package-type-switcher__icon-image {
+	display: block;
+	max-width: 17px;
+	max-height: 17px;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+	object-position: center;
+	filter: none;
+	opacity: 1;
+	flex-shrink: 0;
+	transition: filter var(--sf-t1) var(--sf-ease), transform var(--sf-t1) var(--sf-ease);
+}
+
+.package-entry__delete {
+	margin-left: auto;
+	width: 44px;
+	height: 44px;
+	min-width: 44px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 999px;
+	border: 1px solid rgba(120, 130, 145, 0.32);
+	background: #ffffff;
+	color: var(--color-brand-text-secondary);
+	cursor: pointer;
+	transition:
+		background-color var(--sf-t1) var(--sf-ease),
+		color var(--sf-t1) var(--sf-ease),
+		border-color var(--sf-t1) var(--sf-ease),
+		transform var(--sf-t1) var(--sf-ease),
+		box-shadow var(--sf-t1) var(--sf-ease);
+}
+
+.package-entry__delete:hover {
+	color: #ffffff;
+	background: var(--color-brand-accent);
+	border-color: var(--color-brand-accent);
+	transform: translateY(-1px);
+	box-shadow: 0 6px 14px rgba(228, 66, 3, 0.28);
+}
+
+.package-entry__delete:active {
+	transform: scale(0.95);
+	transition-duration: 90ms;
+}
+
+.package-entry__delete:focus-visible {
+	outline: 3px solid rgba(228, 66, 3, 0.45);
+	outline-offset: 2px;
+}
+
+.package-entry__grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 10px;
+	align-items: start;
+}
+
+.package-field-card {
+	display: grid;
+	grid-template-rows: auto auto auto;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	min-width: 0;
+}
+
+.package-field-card--quantity {
+	min-width: 0;
+	flex: 0 0 110px;
+	width: 110px;
+}
+
+@media (min-width: 40rem) {
+	.package-field-card--quantity {
+		flex: 0 0 118px;
+		width: 118px;
+	}
+}
+
+.package-field-card__label {
+	display: block;
+	margin-bottom: 6px;
+	font-size: 12px;
+	line-height: 1;
+	font-weight: 700;
+	letter-spacing: 0.3px;
+	text-transform: uppercase;
+	color: var(--color-brand-text-muted);
+}

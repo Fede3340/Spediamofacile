@@ -1,15 +1,15 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 @import "./motion.css";
+/* Funnel CSS split per dominio (Ondata 10b agency-grade).
+   Import order CRITICO: rispetta cascade originale del monolite 5831 LOC. */
+@import "./funnel-quote.css";
+@import "./funnel-checkout.css";
+@import "./funnel-stages.css";
 @import "./shipment-flow.css";
-/* Shared segment toggle (sf-shared-segment-*) — estratto da shipment-flow.css (Ondata 6).
-   Import DOPO shipment-flow.css per mantenere cascade originale. */
 @import "./funnel-shared.css";
-/* Animazioni funnel (@keyframes) — estratto da shipment-flow.css (Ondata 10). */
 @import "./funnel-animations.css";
-/* Payment methods + Apple/Google Pay wallet (Ondata 10b). */
 @import "./funnel-payment-methods.css";
-/* Cart totals + coupon panel (Ondata 10b). */
 @import "./funnel-cart-totals.css";
 @import "./components/empty-state.css";
 @import "./tracking.css";

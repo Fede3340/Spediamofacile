@@ -1,5 +1,8 @@
 <script setup>
-// CRITICAL — Eccezione documentata 1207 LOC.
+// Funnel master orchestrator: 5 step (colli/servizi/indirizzi/pagamento/return)
+// + Stripe checkout + 14 composable + 35+ computed + 3 provide tipizzati.
+// Lo split full in ShipmentFlowPage shell richiede E2E funnel live + visual
+// regression baseline — vedi piano ondata 7b futura. Eccezione documentata.
 // Orchestratore funnel 5 step + entry point Stripe checkout. Composto da:
 //   - Setup di 14 composable (services, addresses, validation, flow, summary, ecc.)
 //   - 35+ computed di summary derivati da multipla sorgenti (cart/session/store)

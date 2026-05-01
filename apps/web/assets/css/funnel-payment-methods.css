@@ -15,7 +15,7 @@
 	gap: 10px;
 	padding: 14px 16px;
 	margin-bottom: 16px;
-	background: #F8F9FB;
+	background: var(--surface-sunken);
 	border-radius: 14px;
 	border: 1px solid rgba(9, 88, 102, 0.1);
 }
@@ -58,7 +58,7 @@
 }
 .payment-wallet-section__divider span {
 	position: relative;
-	background: #F8F9FB;
+	background: var(--surface-sunken);
 	padding: 0 10px;
 	font-size: 0.75rem;
 	font-weight: 600;
@@ -75,7 +75,7 @@
 	max-width: 620px;
 	margin: 20px auto 0;
 	padding: 20px;
-	background: linear-gradient(180deg, #ffffff 0%, #F7FAFB 100%);
+	background: linear-gradient(180deg, var(--color-brand-card) 0%, #F7FAFB 100%);
 	border: 1px solid #DCE4EA;
 	border-radius: 16px;
 	box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
@@ -133,7 +133,7 @@
 
 .bti-field {
 	padding: 12px 14px;
-	background: #ffffff;
+	background: var(--color-brand-card);
 	border: 1px solid #E6ECF0;
 	border-radius: 12px;
 }
@@ -201,7 +201,7 @@
 }
 
 .bti-copy--primary {
-	color: #fff;
+	color: var(--color-brand-card);
 	background: var(--color-brand-accent);
 	border-color: var(--color-brand-accent);
 }
@@ -266,7 +266,7 @@
 	height: 64px;
 	border-radius: 999px;
 	background: radial-gradient(circle at 30% 20%, #0b7d92, var(--color-brand-primary));
-	color: #ffffff;
+	color: var(--color-brand-card);
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -350,7 +350,7 @@
 	gap: 6px;
 	padding: 14px 12px;
 	border-radius: 14px;
-	background: linear-gradient(180deg, #ffffff 0%, #F7FAFB 100%);
+	background: linear-gradient(180deg, var(--color-brand-card) 0%, #F7FAFB 100%);
 	border: 1px solid #DCE4EA;
 	box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
 }

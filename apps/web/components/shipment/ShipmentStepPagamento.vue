@@ -1,6 +1,8 @@
 <script setup>
-// CRITICAL: vedi CLAUDE.md "Eccezioni documentate" — non splittare senza E2E gating Stripe.
-// File 716 LOC: selezione metodo pagamento (Stripe/wallet/bonifico) + 3DS + idempotency.
+// Step 4 funnel: selezione metodo pagamento (Stripe/wallet/bonifico) + 3DS.
+// Logica complessa (useCheckout, stripe, coupon, confirm modal) resta nel parent.
+// Migrazione VM in corso (Ondata 5b): props *Vm opzionali aggiungono backward-compat
+// per ridurre i 70 props atomici a 6 ViewModel typed in `types/payment.ts`.
 import { computed } from 'vue';
 import CheckoutBilling from '~/components/checkout/Billing.vue';
 import CheckoutSuccess from '~/components/checkout/Success.vue';
@@ -87,6 +89,17 @@ const props = defineProps({
 	selectPaymentMethod: { type: Function, required: true },
 	confirmPayment: { type: Function, required: true },
 	proceedWithPayment: { type: Function, required: true },
+
+	// Ondata 5b — ViewModel opzionali (overlay backward-compat).
+	// Se passati dal parent, possono sostituire i 70 props atomici a regime
+	// (Ondata 5c richiede E2E carta Stripe live per migrazione completa).
+	// Tipi in types/payment.ts: PaymentSummaryViewModel, ecc.
+	summaryVm: { type: Object, default: null },
+	methodsVm: { type: Object, default: null },
+	billingVm: { type: Object, default: null },
+	actionsVm: { type: Object, default: null },
+	stripeVm: { type: Object, default: null },
+	walletVm: { type: Object, default: null },
 });
 
 defineEmits([

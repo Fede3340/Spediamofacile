@@ -10,7 +10,7 @@
 
 .sf-account-stat-card,
 .sf-account-value-card {
-	background: #ffffff;
+	background: var(--color-brand-card);
 	box-shadow: var(--sf-shell-shadow);
 	border: none;
 }
@@ -218,7 +218,7 @@
 
 .sf-admin-btn-primary {
 	background: var(--color-brand-primary);
-	color: #ffffff;
+	color: var(--color-brand-card);
 	border-color: var(--color-brand-primary);
 	box-shadow: 0 4px 14px rgba(9, 88, 102, 0.22);
 }
@@ -227,12 +227,12 @@
 .sf-admin-btn-primary:focus-visible {
 	background: #074650;
 	border-color: #074650;
-	color: #ffffff;
+	color: var(--color-brand-card);
 	outline: none;
 }
 
 .sf-admin-btn-secondary {
-	background: #ffffff;
+	background: var(--color-brand-card);
 	border-color: #d5dae2;
 	color: var(--color-brand-primary);
 }
@@ -385,7 +385,7 @@
 	border-radius: 14px;
 	border: none;
 	background: linear-gradient(135deg, var(--sf-icon-color, var(--color-brand-primary)), color-mix(in srgb, var(--sf-icon-color, var(--color-brand-primary)) 80%, black));
-	color: #ffffff;
+	color: var(--color-brand-card);
 	box-shadow: 0 4px 12px color-mix(in srgb, var(--sf-icon-color, var(--color-brand-primary)) 25%, transparent);
 	transition: color var(--sf-t2) var(--sf-ease), background-color var(--sf-t2) var(--sf-ease), border-color var(--sf-t2) var(--sf-ease), box-shadow var(--sf-t2) var(--sf-ease), transform var(--sf-t2) var(--sf-ease);
 }
@@ -496,7 +496,7 @@
 	overflow: hidden;
 	border-radius: 12px;
 	border: 1px solid rgba(9, 88, 102, 0.12);
-	background: #ffffff;
+	background: var(--color-brand-card);
 	box-shadow: 0 1px 3px rgba(9, 88, 102, 0.05);
 	padding: 10px 12px;
 	display: flex;
@@ -558,7 +558,7 @@
 
 /* Utility: unified shadow card (replaces inline box-shadow on arbitrary elements) */
 .sf-shell-card {
-	background: #ffffff;
+	background: var(--color-brand-card);
 	border-radius: 16px;
 	box-shadow: var(--sf-shell-shadow);
 	padding: 20px;
@@ -593,7 +593,7 @@
 /* Metric card — 3/4 card su top pagina per statistiche */
 /* Standard section block — usato per toolbar filtri, container di contenuto */
 .sf-section-block {
-	background: #ffffff;
+	background: var(--color-brand-card);
 	border: 1px solid #E2E8EE;
 	border-radius: 16px;
 	box-shadow: 0 3px 14px rgba(15, 23, 42, 0.04);
@@ -865,7 +865,7 @@
 	height: 38px;
 	border-radius: 999px;
 	background: linear-gradient(135deg, var(--color-brand-primary, var(--color-brand-primary)), var(--color-brand-accent, var(--color-brand-accent)));
-	color: #ffffff;
+	color: var(--color-brand-card);
 	font-size: 14px;
 	font-weight: 700;
 	letter-spacing: 0.3px;
@@ -1386,7 +1386,7 @@
 /* Variante danger del CTA: riusa la scala .sf-flow-cta ma con palette error (no Tailwind red-*). */
 .sf-profilo-delete-confirm {
 	background: var(--color-brand-error);
-	color: #ffffff;
+	color: var(--color-brand-card);
 	box-shadow: 0 6px 18px rgba(239, 68, 68, 0.24);
 }
 
@@ -1425,13 +1425,13 @@
 }
 
 .sf-fatture__error {
-	background: #FEF2F2;
+	background: var(--status-failed-bg);
 	border: 1px solid #FECACA;
 	border-radius: 16px;
 	padding: 32px;
 	margin-top: 18px;
 	text-align: center;
-	color: #B91C1C;
+	color: var(--status-failed-fg);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -1439,7 +1439,7 @@
 }
 
 .sf-fatture__empty {
-	background: #ffffff;
+	background: var(--color-brand-card);
 	border: 1px solid var(--color-brand-border, #DFE2E7);
 	border-radius: 16px;
 	padding: 48px 24px;
@@ -1479,8 +1479,8 @@
 }
 
 .sf-fatture__download-error {
-	background: #FEF2F2;
-	color: #B91C1C;
+	background: var(--status-failed-bg);
+	color: var(--status-failed-fg);
 	border: 1px solid #FECACA;
 	border-radius: 10px;
 	padding: 10px 12px;
@@ -1491,7 +1491,7 @@
 
 .sf-fatture__table-wrap {
 	display: none;
-	background: #ffffff;
+	background: var(--color-brand-card);
 	border: 1px solid var(--color-brand-border, #DFE2E7);
 	border-radius: 16px;
 	overflow: hidden;
@@ -1513,7 +1513,7 @@
 }
 
 .sf-fatture__table thead {
-	background: #FBFCFD;
+	background: var(--surface-raised);
 }
 
 .sf-fatture__table th {
@@ -1539,7 +1539,7 @@
 }
 
 .sf-fatture__table tbody tr:hover {
-	background: #FBFCFD;
+	background: var(--surface-raised);
 }
 
 .sf-fatture__code {
@@ -1570,19 +1570,19 @@
 
 .sf-fatture__status[data-tone="success"] {
 	background: #ECFDF5;
-	color: #047857;
+	color: var(--status-paid-fg);
 	border: 1px solid #A7F3D0;
 }
 
 .sf-fatture__status[data-tone="warning"] {
 	background: #FFFBEB;
-	color: #B45309;
+	color: var(--status-pending-fg);
 	border: 1px solid #FDE68A;
 }
 
 .sf-fatture__status[data-tone="error"] {
-	background: #FEF2F2;
-	color: #B91C1C;
+	background: var(--status-failed-bg);
+	color: var(--status-failed-fg);
 	border: 1px solid #FECACA;
 }
 
@@ -1605,7 +1605,7 @@
 }
 
 .sf-fatture__card {
-	background: #ffffff;
+	background: var(--color-brand-card);
 	border: 1px solid var(--color-brand-border, #DFE2E7);
 	border-radius: 16px;
 	padding: 16px;
@@ -1691,7 +1691,7 @@
 	flex-direction: column;
 	gap: 12px;
 	padding: 16px;
-	background: #ffffff;
+	background: var(--color-brand-card);
 	border-radius: 16px;
 	border: 1px solid rgba(9, 88, 102, 0.08);
 	box-shadow: 0 1px 3px rgba(9, 88, 102, 0.04);
@@ -1755,7 +1755,7 @@
 
 .sf-address-chip--default {
 	background: linear-gradient(135deg, var(--color-brand-primary) 0%, #0b6e7d 100%);
-	color: #ffffff;
+	color: var(--color-brand-card);
 }
 
 .sf-address-chip--neutral {
@@ -1782,7 +1782,7 @@
 	flex-direction: column;
 	gap: 2px;
 	padding: 10px 12px;
-	background: #FBFCFD;
+	background: var(--surface-raised);
 	border-radius: 12px;
 	border: 1px solid rgba(9, 88, 102, 0.06);
 }
@@ -1877,7 +1877,7 @@
 }
 
 .sf-address-action--delete {
-	color: #B91C1C;
+	color: var(--status-failed-fg);
 	background: transparent;
 	border-color: rgba(185, 28, 28, 0.18);
 }
@@ -1887,12 +1887,12 @@
 }
 
 .sf-address-action--confirm {
-	color: #ffffff;
-	background: #B91C1C;
-	border-color: #B91C1C;
+	color: var(--color-brand-card);
+	background: var(--status-failed-fg);
+	border-color: var(--status-failed-fg);
 }
 .sf-address-action--confirm:hover:not(:disabled) {
-	background: #991717;
+	background: var(--status-failed-fg);
 }
 
 .sf-address-action--cancel {
@@ -1948,7 +1948,7 @@
 	border: 1.5px solid rgba(9, 88, 102, 0.14);
 	border-radius: 12px;
 	cursor: pointer;
-	background: #ffffff;
+	background: var(--color-brand-card);
 	transition: color var(--sf-t1) var(--sf-ease), background-color var(--sf-t1) var(--sf-ease), border-color var(--sf-t1) var(--sf-ease), box-shadow var(--sf-t1) var(--sf-ease), transform var(--sf-t1) var(--sf-ease);
 }
 
@@ -1960,7 +1960,7 @@
 
 .sf-addr-radio:hover {
 	border-color: rgba(9, 88, 102, 0.32);
-	background: #FBFCFD;
+	background: var(--surface-raised);
 }
 
 .sf-addr-radio--active {
@@ -2038,7 +2038,7 @@
 	padding: 10px 12px;
 	font-size: 0.9375rem;
 	color: #1A2429;
-	background: #ffffff;
+	background: var(--color-brand-card);
 	border: 1.5px solid rgba(9, 88, 102, 0.14);
 	border-radius: 10px;
 	transition: border-color var(--sf-t1) var(--sf-ease), box-shadow var(--sf-t1) var(--sf-ease);
@@ -2060,11 +2060,11 @@
 	cursor: pointer;
 }
 
-.sf-addr-input[aria-invalid='true'] { border-color: #B91C1C; }
+.sf-addr-input[aria-invalid='true'] { border-color: var(--status-failed-fg); }
 
 .sf-addr-error {
 	font-size: 0.75rem;
-	color: #B91C1C;
+	color: var(--status-failed-fg);
 	font-weight: 500;
 	margin-top: 2px;
 }
@@ -2094,7 +2094,7 @@
 	background: rgba(185, 28, 28, 0.08);
 	border: 1px solid rgba(185, 28, 28, 0.20);
 	border-radius: 10px;
-	color: #991717;
+	color: var(--status-failed-fg);
 	font-size: 0.875rem;
 	font-weight: 500;
 }
@@ -2128,7 +2128,7 @@
 .sf-addr-btn--primary {
 	background: var(--color-brand-accent);
 	border-color: var(--color-brand-accent);
-	color: #ffffff;
+	color: var(--color-brand-card);
 }
 .sf-addr-btn--primary:hover:not(:disabled) {
 	background: #C2380B;
@@ -2175,7 +2175,7 @@
 
 .sf-addr-flash--error {
 	background: rgba(185, 28, 28, 0.08);
-	color: #991717;
+	color: var(--status-failed-fg);
 	border: 1px solid rgba(185, 28, 28, 0.20);
 }
 
@@ -2188,7 +2188,7 @@
 	gap: 14px;
 	padding: 12px 16px;
 	margin-bottom: 18px;
-	background: #ffffff;
+	background: var(--color-brand-card);
 	border-radius: 14px;
 	border: 1px solid rgba(9, 88, 102, 0.08);
 	box-shadow: 0 1px 3px rgba(9, 88, 102, 0.04);
@@ -2228,13 +2228,13 @@
 
 .sf-addr-tab--active {
 	background: var(--color-brand-primary, var(--color-brand-primary));
-	color: #ffffff;
+	color: var(--color-brand-card);
 	border-color: rgba(9, 88, 102, 0.28);
 	box-shadow: 0 2px 8px rgba(9, 88, 102, 0.12);
 }
 
 .sf-addr-tab--active .sf-addr-tab__badge {
-	color: #ffffff;
+	color: var(--color-brand-card);
 	background: rgba(255, 255, 255, 0.2);
 	border-color: transparent;
 }
@@ -2248,7 +2248,7 @@
 	font-size: 0.6875rem;
 	font-weight: 700;
 	color: #5A656C;
-	background: #ffffff;
+	background: var(--color-brand-card);
 	border-radius: 999px;
 	border: 1px solid rgba(9, 88, 102, 0.12);
 }
@@ -2279,7 +2279,7 @@
 	width: 100%;
 	padding: 9px 36px 9px 36px;
 	font-size: 0.9375rem;
-	background: #FBFCFD;
+	background: var(--surface-raised);
 	border: 1.5px solid rgba(9, 88, 102, 0.12);
 	border-radius: 10px;
 	color: #1A2429;
@@ -2289,7 +2289,7 @@
 .sf-addr-search__input:focus {
 	outline: none;
 	border-color: var(--color-brand-primary);
-	background: #ffffff;
+	background: var(--color-brand-card);
 	box-shadow: 0 0 0 3px rgba(9, 88, 102, 0.12);
 }
 
@@ -2327,7 +2327,7 @@
 /* SKELETON */
 .sf-addr-skeleton {
 	padding: 18px;
-	background: #ffffff;
+	background: var(--color-brand-card);
 	border-radius: 18px;
 	border: 1px solid rgba(9, 88, 102, 0.08);
 	display: flex;
@@ -2366,7 +2366,7 @@
 /* EMPTY */
 .sf-addr-empty {
 	padding: 40px 24px;
-	background: #ffffff;
+	background: var(--color-brand-card);
 	border-radius: 18px;
 	border: 1px solid rgba(9, 88, 102, 0.08);
 	box-shadow: 0 2px 8px rgba(9, 88, 102, 0.06);
@@ -2379,7 +2379,7 @@
 
 .sf-addr-empty--compact { padding: 28px 24px; }
 
-.sf-addr-empty--error { color: #991717; }
+.sf-addr-empty--error { color: var(--status-failed-fg); }
 
 .sf-addr-empty__illustration {
 	display: flex;

@@ -8,7 +8,7 @@
   position: relative;
   padding: 20px;
   border-radius: 16px;
-  background: linear-gradient(180deg, #ffffff 0%, #F7FAFB 100%);
+  background: linear-gradient(180deg, var(--color-brand-card) 0%, #F7FAFB 100%);
   border: 1px solid #DCE4EA;
   box-shadow:
     0 1px 2px rgba(15, 23, 42, 0.02),
@@ -175,7 +175,7 @@
   padding: 0 14px;
   border-radius: 999px;
   border: 1.5px solid #DFE2E7;
-  background: #ffffff;
+  background: var(--color-brand-card);
   color: var(--color-brand-text);
   font-size: 13px;
   font-weight: 600;
@@ -225,7 +225,7 @@
   padding: 0 8px;
   border-radius: 999px;
   background: var(--color-brand-success-fg);
-  color: #ffffff;
+  color: var(--color-brand-card);
   font-size: 11px;
   font-weight: 800;
 }

@@ -18,10 +18,10 @@
 //
 // L'obiettivo di semplificazione futuro e' rendere questo boundary piu' lineare senza perdere idempotenza.
 //
-// Eccezione formale (~682 LOC): file critico Stripe + 3DS + idempotency-key.
-// Pure helpers gia' estratti in utils/checkout + utils/pendingPayment. Splittare
-// la logica reattiva richiede E2E gating con carta test 4242 4242 4242 4242
-// (vedi CLAUDE.md "Eccezioni documentate"). NON splittare in sessione autonoma.
+// Boundary critico Stripe + 3DS + idempotency-key. Pure helpers gia' estratti
+// in utils/checkout + utils/pendingPayment. Lo split del composable in
+// sub-composable per flusso (carta/wallet/bonifico) richiede E2E carta test
+// 4242 4242 4242 4242 09/30 123 — vedi piano ondata 8b futura.
 
 import { useCheckoutOrderContext } from '~/composables/useCheckoutOrderContext'
 import { buildCheckoutSuccessQuery, translateStripeError } from '~/utils/checkout'
