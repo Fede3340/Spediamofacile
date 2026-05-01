@@ -45,7 +45,7 @@
   - Vue 3.5 + Pinia 3 + Nuxt UI 4 + Tailwind 4
   - `useSanctumClient()` per chiamate API stateful
 - **Reverse proxy**: Caddy `:8787`
-- **DB**: SQLite locale, Postgres 15 produzione (Eloquent parity)
+- **DB**: SQLite locale (default), Postgres 15 in prod e per parity test locale (`docker compose up postgres`)
 - **Cache/Queue**: Redis 7 (file driver in dev)
 - **Email**: SMTP via Laravel Mail
 - **Errori**: Sentry PHP SDK (DSN opzionale)
@@ -112,8 +112,7 @@ spedizionefacile/                  ← root Laravel
 │       ├── community.php admin.php public.php invoices.php
 │       └── shipment.php
 ├── database/
-│   ├── migrations/                ← (vuoto: schema dump-based)
-│   ├── schema/sqlite-schema.sql   ← fonte di verità schema (Laravel 11 squash)
+│   ├── migrations/                ← 6 migration grouped per dominio (auth, user, catalog, orders, payments, admin)
 │   ├── seeders/                   ← User, Article, PriceBand, Location (713 CAP), PudoPoint
 │   └── factories/
 ├── apps/
@@ -140,6 +139,36 @@ spedizionefacile/                  ← root Laravel
 ├── docs/                          ← documentazione
 └── scripts/                       ← bisect-purge.py, multi-pass-purge.py CSS tools
 ```
+
+## Local DB Setup
+
+### SQLite (default, dev veloce)
+
+```bash
+php artisan migrate:fresh --seed   # ricrea schema + seed (~2s)
+```
+
+Le 6 migration grouped in `database/migrations/` usano `Schema::create()` DB-agnostic.
+Schema deterministico identico tra SQLite e Postgres.
+
+### Postgres (parity con prod)
+
+```bash
+docker compose up -d postgres      # postgres:15-alpine su :5432
+
+# Backup .env attuale e attiva quello Postgres
+cp .env .env.sqlite.bak
+cp .env.local.postgres .env
+
+php artisan config:clear
+php artisan migrate:fresh --seed   # stesso schema, su Postgres
+
+# Tornare a SQLite:
+cp .env.sqlite.bak .env
+php artisan config:clear
+```
+
+`docker compose up -d` avvia anche redis:7 (porta 6379) per testing cache/queue parity.
 
 ## File critici (NON toccare senza E2E gating Stripe)
 

@@ -1,0 +1,51 @@
+# SpediamoFacile — stack locale Postgres + Redis per testare la parity con prod.
+#
+# Uso:
+#   docker compose up -d postgres        # solo Postgres (parity DB)
+#   docker compose up -d                 # postgres + redis (cache/queue parity)
+#   docker compose down -v               # rimuove anche i volumi (reset completo)
+#
+# Default: si usa SQLite (vedi .env). Per switchare a Postgres:
+#   cp .env.local.postgres .env
+#   php artisan migrate:fresh --seed
+#
+# Health check: postgres pronto in ~3s, redis in ~1s.
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: spediamofacile-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: spediamofacile
+      POSTGRES_USER: spediamofacile
+      POSTGRES_PASSWORD: spediamofacile_local
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U spediamofacile -d spediamofacile"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: spediamofacile-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  postgres_data:
+    name: spediamofacile_postgres_data
+  redis_data:
+    name: spediamofacile_redis_data
