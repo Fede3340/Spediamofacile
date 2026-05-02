@@ -8,9 +8,11 @@ use App\Services\ShipmentServicePricingService;
 
 trait BuildsSessionPayload
 {
+    private const SUBMISSION_FIELDS = ['client_submission_id', 'pricing_signature', 'pricing_snapshot_version', 'pricing_snapshot'];
+
     private function buildSessionPayload(): array
     {
-        $submissionContext = $this->buildSubmissionContextPayload();
+        $ctx = $this->buildSubmissionContextPayload();
 
         return [
             'shipment_details' => session()->get('shipment_details', []),
@@ -26,10 +28,10 @@ trait BuildsSessionPayload
             'destination_address' => session()->get('destination_address'),
             'delivery_mode' => session()->get('delivery_mode', 'home'),
             'selected_pudo' => session()->get('selected_pudo'),
-            'client_submission_id' => $submissionContext['client_submission_id'] ?? null,
-            'pricing_signature' => $submissionContext['pricing_signature'] ?? null,
-            'pricing_snapshot_version' => $submissionContext['pricing_snapshot_version'] ?? null,
-            'pricing_snapshot' => $submissionContext['pricing_snapshot'] ?? null,
+            'client_submission_id' => $ctx['client_submission_id'] ?? null,
+            'pricing_signature' => $ctx['pricing_signature'] ?? null,
+            'pricing_snapshot_version' => $ctx['pricing_snapshot_version'] ?? null,
+            'pricing_snapshot' => $ctx['pricing_snapshot'] ?? null,
             'flow_state' => $this->buildFlowState(),
         ];
     }
@@ -40,36 +42,27 @@ trait BuildsSessionPayload
         if (! is_array($packages) || empty($packages)) {
             return [];
         }
-
         [$packages, $subtotalCents] = $this->normalizeSessionPackagesForSubmissionContext($packages);
         $services = $this->normalizeSessionServicesPayload(session()->get('services'));
         $subtotalCents += $this->sessionServiceSurchargeCents($services, $packages);
 
-        $contextSeed = [];
-        foreach (['client_submission_id', 'pricing_signature', 'pricing_snapshot_version', 'pricing_snapshot'] as $field) {
-            $value = session()->get($field);
-            if ($value !== null && $value !== '') {
-                $contextSeed[$field] = $value;
+        $seed = [];
+        foreach (self::SUBMISSION_FIELDS as $field) {
+            if (($v = session()->get($field)) !== null && $v !== '') {
+                $seed[$field] = $v;
             }
         }
+        $svc = app(CheckoutSubmissionContextService::class);
+        $context = $svc->enrich($seed, $svc->snapshotFromDirectOrderPayload([
+            'packages' => $packages,
+            'origin_address' => session()->get('origin_address'),
+            'destination_address' => session()->get('destination_address'),
+            'delivery_mode' => session()->get('delivery_mode', 'home'),
+            'selected_pudo' => session()->get('selected_pudo'),
+            'services' => $services,
+        ], $subtotalCents), ['flow' => 'session-restore', 'step' => (int) session()->get('step', 1)]);
 
-        $context = app(CheckoutSubmissionContextService::class)->enrich(
-            $contextSeed,
-            app(CheckoutSubmissionContextService::class)->snapshotFromDirectOrderPayload([
-                'packages' => $packages,
-                'origin_address' => session()->get('origin_address'),
-                'destination_address' => session()->get('destination_address'),
-                'delivery_mode' => session()->get('delivery_mode', 'home'),
-                'selected_pudo' => session()->get('selected_pudo'),
-                'services' => $services,
-            ], $subtotalCents),
-            [
-                'flow' => 'session-restore',
-                'step' => (int) session()->get('step', 1),
-            ],
-        );
-
-        foreach (['client_submission_id', 'pricing_signature', 'pricing_snapshot_version', 'pricing_snapshot'] as $field) {
+        foreach (self::SUBMISSION_FIELDS as $field) {
             session()->put($field, $context[$field] ?? null);
         }
 
@@ -78,92 +71,52 @@ trait BuildsSessionPayload
 
     private function normalizeSessionPackagesForSubmissionContext(array $packages): array
     {
-        $originPostalCode = trim((string) (
-            data_get(session()->get('origin_address'), 'postal_code')
-            ?? data_get(session()->get('shipment_details', []), 'origin_postal_code')
-            ?? ''
-        ));
-        $destinationPostalCode = trim((string) (
-            $this->sessionDestinationPostalCode()
-            ?? data_get(session()->get('shipment_details', []), 'destination_postal_code')
-            ?? ''
-        ));
-        $capSupplementCents = app(PriceEngineService::class)->calculateCapSupplementCents(
-            $originPostalCode !== '' ? $originPostalCode : null,
-            $destinationPostalCode !== '' ? $destinationPostalCode : null,
-        );
+        $shipDet = session()->get('shipment_details', []);
+        $origin = $this->trimString(data_get(session()->get('origin_address'), 'postal_code') ?? data_get($shipDet, 'origin_postal_code'));
+        $dest = $this->trimString($this->sessionDestinationPostalCode() ?? data_get($shipDet, 'destination_postal_code'));
+        $capCents = app(PriceEngineService::class)->calculateCapSupplementCents($origin ?: null, $dest ?: null);
 
-        $normalizedPackages = [];
-        $subtotalCents = 0;
-
+        $normalized = [];
+        $subtotal = 0;
         foreach ($packages as $package) {
             if (! is_array($package)) {
                 continue;
             }
-
-            $normalizedPackage = $package;
-            $normalizedPackage['quantity'] = max(1, (int) ($package['quantity'] ?? 1));
-
-            $singlePriceCents = (int) ($package['single_price_cents'] ?? 0);
-            if ($singlePriceCents <= 0) {
-                $singlePriceCents = $this->deriveSessionPackagePriceCents($package, $capSupplementCents);
-            }
-
-            $normalizedPackage['single_price_cents'] = $singlePriceCents;
-            $normalizedPackages[] = $normalizedPackage;
-            $subtotalCents += $singlePriceCents;
+            $package['quantity'] = max(1, (int) ($package['quantity'] ?? 1));
+            $cents = (int) ($package['single_price_cents'] ?? 0);
+            $package['single_price_cents'] = $cents > 0 ? $cents : $this->deriveSessionPackagePriceCents($package, $capCents);
+            $normalized[] = $package;
+            $subtotal += $package['single_price_cents'];
         }
 
-        if ($subtotalCents <= 0) {
-            $subtotalCents = $this->sessionTotalPriceCents();
-        }
-
-        return [$normalizedPackages, $subtotalCents];
+        return [$normalized, $subtotal > 0 ? $subtotal : $this->sessionTotalPriceCents()];
     }
 
     private function deriveSessionPackagePriceCents(array $package, int $capSupplementCents): int
     {
-        $quantity = max(1, (int) ($package['quantity'] ?? 1));
         $weight = $this->toPositiveFloat($package['weight'] ?? null);
-        $firstSize = $this->toPositiveFloat($package['first_size'] ?? null);
-        $secondSize = $this->toPositiveFloat($package['second_size'] ?? null);
-        $thirdSize = $this->toPositiveFloat($package['third_size'] ?? null);
+        $w = $this->toPositiveFloat($package['first_size'] ?? null);
+        $h = $this->toPositiveFloat($package['second_size'] ?? null);
+        $d = $this->toPositiveFloat($package['third_size'] ?? null);
+        $engine = app(PriceEngineService::class);
+        $weightCents = $weight > 0 ? $engine->calculateBandPriceCents('weight', $weight) : 0;
+        $volume = ($w > 0 && $h > 0 && $d > 0) ? ($w / 100) * ($h / 100) * ($d / 100) : 0.0;
+        $baseCents = max($weightCents, $volume > 0 ? $engine->calculateBandPriceCents('volume', $volume) : 0);
 
-        $weightPriceCents = $weight > 0
-            ? app(PriceEngineService::class)->calculateBandPriceCents('weight', $weight)
-            : 0;
-        $volume = ($firstSize > 0 && $secondSize > 0 && $thirdSize > 0)
-            ? ($firstSize / 100) * ($secondSize / 100) * ($thirdSize / 100)
-            : 0.0;
-        $volumePriceCents = $volume > 0
-            ? app(PriceEngineService::class)->calculateBandPriceCents('volume', $volume)
-            : 0;
-
-        $basePriceCents = max($weightPriceCents, $volumePriceCents);
-        if ($basePriceCents > 0) {
-            return ($basePriceCents + $capSupplementCents) * $quantity;
+        if ($baseCents > 0) {
+            return ($baseCents + $capSupplementCents) * max(1, (int) ($package['quantity'] ?? 1));
         }
+        $single = $package['single_price'] ?? null;
 
-        $singlePrice = $package['single_price'] ?? null;
-        if (is_numeric($singlePrice)) {
-            return (int) round(((float) $singlePrice) * 100);
-        }
-
-        return 0;
+        return is_numeric($single) ? (int) round(((float) $single) * 100) : 0;
     }
 
     private function sessionServiceSurchargeCents(array $services, array $packages): int
     {
-        $serviceData = $services['service_data'] ?? [];
-        if (! is_array($serviceData)) {
-            $serviceData = [];
-        }
-
+        $serviceData = is_array($services['service_data'] ?? null) ? $services['service_data'] : [];
         $deliveryMode = (string) session()->get('delivery_mode', 'home');
-        $selectedPudo = session()->get('selected_pudo');
-        $destinationAddress = $deliveryMode === 'pudo' && is_array($selectedPudo)
-            ? $selectedPudo
-            : session()->get('destination_address', []);
+        $pudo = session()->get('selected_pudo');
+        $dest = $deliveryMode === 'pudo' && is_array($pudo) ? $pudo : session()->get('destination_address', []);
 
         return app(ShipmentServicePricingService::class)->calculateSurchargeCents(
             $services['service_type'] ?? '',
@@ -172,9 +125,9 @@ trait BuildsSessionPayload
             [
                 'packages' => $packages,
                 'origin_address' => session()->get('origin_address', []),
-                'destination_address' => is_array($destinationAddress) ? $destinationAddress : [],
+                'destination_address' => is_array($dest) ? $dest : [],
                 'delivery_mode' => $deliveryMode,
-                'selected_pudo' => is_array($selectedPudo) ? $selectedPudo : null,
+                'selected_pudo' => is_array($pudo) ? $pudo : null,
                 'requires_manual_quote' => (bool) ($serviceData['requires_manual_quote'] ?? false),
             ],
         );
@@ -182,32 +135,22 @@ trait BuildsSessionPayload
 
     private function sessionDestinationPostalCode(): ?string
     {
-        $deliveryMode = (string) session()->get('delivery_mode', 'home');
-        if ($deliveryMode === 'pudo') {
-            $selectedPudo = session()->get('selected_pudo');
-            $postalCode = trim((string) (
-                data_get($selectedPudo, 'postal_code')
-                ?? data_get($selectedPudo, 'zip_code')
-                ?? ''
-            ));
-
-            return $postalCode !== '' ? $postalCode : null;
+        if ((string) session()->get('delivery_mode', 'home') === 'pudo') {
+            $pudo = session()->get('selected_pudo');
+            $code = $this->trimString(data_get($pudo, 'postal_code') ?? data_get($pudo, 'zip_code'));
+        } else {
+            $code = $this->trimString(data_get(session()->get('destination_address'), 'postal_code'));
         }
 
-        $postalCode = trim((string) (data_get(session()->get('destination_address'), 'postal_code') ?? ''));
-
-        return $postalCode !== '' ? $postalCode : null;
+        return $code !== '' ? $code : null;
     }
 
     private function sessionTotalPriceCents(): int
     {
-        $rawTotal = session()->get('total_price', 0);
-        if (is_numeric($rawTotal)) {
-            return (int) round(((float) $rawTotal) * 100);
-        }
-
-        $normalized = str_replace(',', '.', (string) $rawTotal);
-        $normalized = preg_replace('/[^0-9.]/', '', $normalized) ?? '0';
+        $raw = session()->get('total_price', 0);
+        $normalized = is_numeric($raw)
+            ? (string) $raw
+            : (preg_replace('/[^0-9.]/', '', str_replace(',', '.', (string) $raw)) ?? '0');
 
         return (int) round(((float) $normalized) * 100);
     }
@@ -217,18 +160,15 @@ trait BuildsSessionPayload
         if (! is_array($services)) {
             return [];
         }
-
         if (! isset($services['service_data']) && isset($services['serviceData']) && is_array($services['serviceData'])) {
             $services['service_data'] = $services['serviceData'];
         }
-
         unset($services['serviceData']);
-
-        $serviceType = trim((string) ($services['service_type'] ?? ''));
-        if ($serviceType === '') {
+        $type = trim((string) ($services['service_type'] ?? ''));
+        if ($type === '') {
             unset($services['service_type']);
         } else {
-            $services['service_type'] = $serviceType;
+            $services['service_type'] = $type;
         }
 
         return $services;
@@ -236,46 +176,29 @@ trait BuildsSessionPayload
 
     private function buildFlowState(): array
     {
-        $shipmentDetails = session()->get('shipment_details', []);
-        $packages = session()->get('packages', []);
-        $contentDescription = trim((string) session()->get('content_description', ''));
+        $contentDesc = trim((string) session()->get('content_description', ''));
         $pickupDate = trim((string) session()->get('pickup_date', ''));
-        $originAddress = session()->get('origin_address');
-        $destinationAddress = session()->get('destination_address');
         $deliveryMode = (string) session()->get('delivery_mode', 'home');
-        $selectedPudo = session()->get('selected_pudo');
+        $pudo = session()->get('selected_pudo');
+        $dest = session()->get('destination_address');
 
-        $quoteReady = $this->hasQuoteState($shipmentDetails, $packages);
-        $hasDestinationState = $deliveryMode === 'pudo'
-            ? (! empty($selectedPudo) || $this->hasAddressState($destinationAddress))
-            : $this->hasAddressState($destinationAddress);
-        $servicesReady = $quoteReady && $contentDescription !== '' && $pickupDate !== '';
-        $addressesReady = $servicesReady
-            && $this->hasAddressState($originAddress)
-            && $hasDestinationState;
-        $summaryReady = $addressesReady;
-
-        $lastValidRoute = '/la-tua-spedizione/2?step=colli';
-        if ($summaryReady) {
-            $lastValidRoute = '/la-tua-spedizione/2?step=pagamento';
-        } elseif ($servicesReady) {
-            $lastValidRoute = '/la-tua-spedizione/2?step=indirizzi';
-        } elseif ($quoteReady) {
-            $lastValidRoute = '/la-tua-spedizione/2?step=servizi';
-        }
+        $quoteReady = $this->hasPackagesState(session()->get('packages', []));
+        $hasDest = $deliveryMode === 'pudo' ? (! empty($pudo) || $this->hasAddressState($dest)) : $this->hasAddressState($dest);
+        $servicesReady = $quoteReady && $contentDesc !== '' && $pickupDate !== '';
+        $addressesReady = $servicesReady && $this->hasAddressState(session()->get('origin_address')) && $hasDest;
 
         return [
             'quote_ready' => $quoteReady,
             'services_ready' => $servicesReady,
             'addresses_ready' => $addressesReady,
-            'summary_ready' => $summaryReady,
-            'last_valid_route' => $lastValidRoute,
+            'summary_ready' => $addressesReady,
+            'last_valid_route' => match (true) {
+                $addressesReady => '/la-tua-spedizione/2?step=pagamento',
+                $servicesReady => '/la-tua-spedizione/2?step=indirizzi',
+                $quoteReady => '/la-tua-spedizione/2?step=servizi',
+                default => '/la-tua-spedizione/2?step=colli',
+            },
         ];
-    }
-
-    private function hasQuoteState(array $shipmentDetails, array $packages): bool
-    {
-        return $this->hasPackagesState($packages);
     }
 
     private function hasPackagesState(array $packages): bool
@@ -283,7 +206,6 @@ trait BuildsSessionPayload
         if (empty($packages)) {
             return false;
         }
-
         foreach ($packages as $package) {
             if (! is_array($package) || ! $this->hasCompletePackageState($package)) {
                 return false;
@@ -305,22 +227,22 @@ trait BuildsSessionPayload
 
     private function toPositiveFloat(mixed $value): float
     {
-        $normalized = str_replace(',', '.', (string) ($value ?? ''));
-        $normalized = preg_replace('/[^0-9.]/', '', $normalized) ?? '0';
-        $parsed = (float) $normalized;
+        $normalized = preg_replace('/[^0-9.]/', '', str_replace(',', '.', (string) ($value ?? ''))) ?? '0';
 
-        return $parsed > 0 ? $parsed : 0.0;
+        return ($f = (float) $normalized) > 0 ? $f : 0.0;
     }
 
     private function hasAddressState(mixed $address): bool
     {
-        if (! is_array($address)) {
-            return false;
-        }
-
-        return filled($address['name'] ?? null)
+        return is_array($address)
+            && filled($address['name'] ?? null)
             && filled($address['address'] ?? null)
             && filled($address['city'] ?? null)
             && filled($address['postal_code'] ?? null);
+    }
+
+    private function trimString(mixed $value): string
+    {
+        return trim((string) ($value ?? ''));
     }
 }
