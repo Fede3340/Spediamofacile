@@ -1,7 +1,5 @@
 <!-- FILE: pages/account/amministrazione/servizi/nuovo.vue -->
 <script setup>
-import '~/assets/css/admin.css';
-
 definePageMeta({
 	middleware: ["app-auth", "admin"],
 });
@@ -115,8 +113,8 @@ const FAQ_ICON_PATH = 'M18,15H6L2,19V3A1,1 0 0,1 3,2H18A1,1 0 0,1 19,3V14A1,1 0 
 
 			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
 
-			<div class="service-editor-layout">
-				<div class="service-editor-main">
+			<div class="grid grid-cols-1 desktop:grid-cols-[minmax(0,1fr)_320px] gap-5 items-start">
+				<div class="grid gap-5 min-w-0">
 					<ServizioFormBase
 						:title="form.title"
 						:slug="form.slug"

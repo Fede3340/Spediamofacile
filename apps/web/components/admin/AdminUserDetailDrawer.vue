@@ -1,6 +1,5 @@
-<!-- AdminUserDetailDrawer.vue — Drawer dettaglio utente admin (M9).
-     Orchestratore slim: usa i sub-component in `components/admin/user-detail/` per
-     header, profilo, permessi, tab e azioni. Logica fetch/save resta qui. -->
+<!-- AdminUserDetailDrawer.vue — Drawer dettaglio utente admin.
+     Orchestratore: usa i sub-component in `components/admin/user-detail/`. -->
 <script setup>
 import { ref, computed, watch } from 'vue';
 
@@ -15,7 +14,6 @@ const emit = defineEmits(['update:open', 'updated', 'impersonate']);
 const sanctum = useSanctumClient();
 const { showSuccess, showError, formatDate, formatPrice } = useAdmin();
 
-/* ===== State ===== */
 const loading = ref(false);
 const saving = ref(false);
 const user = ref(null);
@@ -33,26 +31,23 @@ const showEmailModal = ref(false);
 const showImpersonateConfirm = ref(false);
 const newEmail = ref('');
 
-/* ===== Computed ===== */
 const fullName = computed(() => user.value
 	? `${user.value.name || ''} ${user.value.surname || ''}`.trim()
 	: '');
 const isBanned = computed(() => form.value.status === 'banned');
 const tabs = [
-	{ key: 'orders', label: 'Ordini' },
-	{ key: 'addresses', label: 'Indirizzi' },
-	{ key: 'wallet', label: 'Wallet' },
-	{ key: 'audit', label: 'Audit log' },
+	{ id: 'orders', label: 'Ordini' },
+	{ id: 'addresses', label: 'Indirizzi' },
+	{ id: 'wallet', label: 'Wallet' },
+	{ id: 'audit', label: 'Audit log' },
 ];
 
-/* ===== Helpers ===== */
 const formatTxAmount = (cents) => {
 	if (typeof formatPrice === 'function') return formatPrice(cents);
 	const n = Number(cents) / 100;
 	return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(n);
 };
 
-/* ===== Fetch ===== */
 const fetchDetail = async () => {
 	if (!props.userId) return;
 	loading.value = true;
@@ -84,7 +79,6 @@ watch(() => [props.open, props.userId], ([isOpen, id]) => {
 	}
 });
 
-/* ===== Save profilo ===== */
 const saveProfile = async () => {
 	if (!user.value) return;
 	saving.value = true;
@@ -100,7 +94,6 @@ const saveProfile = async () => {
 	}
 };
 
-/* ===== Reset password ===== */
 const doResetPassword = async () => {
 	if (!user.value) return;
 	saving.value = true;
@@ -115,7 +108,6 @@ const doResetPassword = async () => {
 	}
 };
 
-/* ===== Ban / Unban ===== */
 const doBanToggle = async () => {
 	if (!user.value) return;
 	saving.value = true;
@@ -133,11 +125,11 @@ const doBanToggle = async () => {
 	}
 };
 
-/* ===== Cambia email (admin-master) ===== */
 const askChangeEmail = () => {
 	newEmail.value = user.value?.email || '';
 	showEmailModal.value = true;
 };
+
 const doChangeEmail = async () => {
 	if (!user.value || !newEmail.value) return;
 	saving.value = true;
@@ -154,7 +146,6 @@ const doChangeEmail = async () => {
 	}
 };
 
-/* ===== Impersonate ===== */
 const doImpersonate = async () => {
 	if (!user.value) return;
 	saving.value = true;
@@ -176,14 +167,18 @@ const close = () => emit('update:open', false);
 
 <template>
 	<Teleport to="body">
-		<Transition name="drawer-fade">
-			<div v-if="open" class="admin-drawer-overlay" @click.self="close">
-				<aside class="admin-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+		<Transition
+			enter-active-class="transition-opacity duration-200"
+			leave-active-class="transition-opacity duration-200"
+			enter-from-class="opacity-0"
+			leave-to-class="opacity-0">
+			<div v-if="open" class="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex justify-end" @click.self="close">
+				<aside class="bg-brand-card w-full max-w-[640px] h-screen flex flex-col shadow-sf-lg overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
 					<UserDetailHeader :user="user" @close="close" />
 
-					<div class="admin-drawer__body">
-						<div v-if="loading" class="admin-drawer__loading">
-							<div class="admin-drawer__spinner" aria-hidden="true" />
+					<div class="flex-1 overflow-y-auto p-5 flex flex-col gap-4">
+						<div v-if="loading" class="flex flex-col items-center gap-3 py-16 text-brand-text-secondary">
+							<UIcon name="mdi:loading" class="w-8 h-8 text-brand-primary animate-spin" />
 							<p>Caricamento dettaglio in corso...</p>
 						</div>
 
@@ -192,19 +187,8 @@ const close = () => emit('update:open', false);
 
 							<UserDetailPermissionsForm v-model="form" :saving="saving" @save="saveProfile" />
 
-							<section class="admin-drawer-section">
-								<div class="admin-drawer-tabs" role="tablist">
-									<button
-										v-for="t in tabs"
-										:key="t.key"
-										type="button"
-										role="tab"
-										:aria-selected="activeTab === t.key"
-										:class="['admin-drawer-tab', activeTab === t.key && 'admin-drawer-tab--active']"
-										@click="activeTab = t.key">
-										{{ t.label }}
-									</button>
-								</div>
+							<section class="flex flex-col gap-3">
+								<SfTabs v-model="activeTab" :items="tabs" />
 
 								<UserDetailTabOrders v-if="activeTab === 'orders'" :orders="orders" :format-date="formatDate" :format-price="formatTxAmount" />
 								<UserDetailTabAddresses v-if="activeTab === 'addresses'" :addresses="addresses" />
@@ -221,7 +205,7 @@ const close = () => emit('update:open', false);
 								@impersonate="showImpersonateConfirm = true" />
 						</template>
 
-						<div v-else class="admin-drawer-empty admin-drawer-empty--lg">
+						<div v-else class="px-6 py-10 text-center text-brand-text-muted text-sm bg-brand-bg-alt rounded-control">
 							Impossibile caricare l'utente.
 						</div>
 					</div>
@@ -233,7 +217,7 @@ const close = () => emit('update:open', false);
 	<AccountConfirmDialog
 		v-model:open="showResetConfirm"
 		title="Invia reset password"
-		:description="`Stai per inviare a ${user?.email} un'email per reimpostare la password. L'utente potra creare una nuova password tramite il link.`"
+		:description="`Stai per inviare a ${user?.email} un'email per reimpostare la password.`"
 		confirm-label="Invia email"
 		tone="primary"
 		:loading="saving"
@@ -243,7 +227,7 @@ const close = () => emit('update:open', false);
 		v-model:open="showBanConfirm"
 		:title="isBanned ? 'Rimuovi ban' : 'Banna utente'"
 		:description="isBanned
-			? `Stai per ripristinare l'accesso di ${fullName}. L'utente potra di nuovo effettuare il login.`
+			? `Stai per ripristinare l'accesso di ${fullName}.`
 			: `Stai per bannare ${fullName}. L'utente non potra piu accedere finche non rimuovi il ban.`"
 		:confirm-label="isBanned ? 'Rimuovi ban' : 'Banna'"
 		:tone="isBanned ? 'primary' : 'danger'"
@@ -253,7 +237,7 @@ const close = () => emit('update:open', false);
 	<AccountConfirmDialog
 		v-model:open="showImpersonateConfirm"
 		title="Impersona utente"
-		:description="`Stai per accedere come ${fullName}. Tutte le azioni saranno tracciate nell'audit log. Al termine dovrai effettuare il logout per tornare al tuo account.`"
+		:description="`Stai per accedere come ${fullName}. Tutte le azioni saranno tracciate.`"
 		confirm-label="Impersona ora"
 		tone="primary"
 		:loading="saving"
@@ -267,61 +251,3 @@ const close = () => emit('update:open', false);
 		:saving="saving"
 		@confirm="doChangeEmail" />
 </template>
-
-<style scoped>
-/* sf-admin-user-detail.css — stili overlay drawer + tab generici. */
-.admin-drawer-overlay {
-	position: fixed; inset: 0; z-index: 100;
-	background: rgba(15, 25, 35, 0.36);
-	backdrop-filter: blur(4px);
-	display: flex; justify-content: flex-end;
-}
-.admin-drawer {
-	background: #fff;
-	width: min(640px, 100vw);
-	height: 100vh;
-	display: flex; flex-direction: column;
-	box-shadow: -8px 0 24px rgba(15, 25, 35, 0.12);
-	overflow: hidden;
-}
-.admin-drawer__body {
-	flex: 1;
-	overflow-y: auto;
-	padding: 20px;
-	display: flex; flex-direction: column; gap: 18px;
-}
-.admin-drawer__loading {
-	display: flex; flex-direction: column; align-items: center; gap: 12px;
-	padding: 60px 20px; color: #5b6b7d;
-}
-.admin-drawer__spinner {
-	width: 32px; height: 32px;
-	border: 3px solid #e3eaf0; border-top-color: #095866;
-	border-radius: 50%;
-	animation: drawer-spin .9s linear infinite;
-}
-@keyframes drawer-spin { to { transform: rotate(360deg); } }
-.admin-drawer-section { background: #fff; border-radius: 14px; }
-.admin-drawer-tabs {
-	display: flex; gap: 4px;
-	border-bottom: 1px solid #e3eaf0;
-	margin-bottom: 14px;
-}
-.admin-drawer-tab {
-	padding: 8px 14px;
-	background: transparent; border: 0;
-	font-size: 13px; font-weight: 600;
-	color: #5b6b7d; cursor: pointer;
-	border-bottom: 2px solid transparent;
-}
-.admin-drawer-tab--active { color: #095866; border-bottom-color: #095866; }
-.admin-drawer-empty {
-	padding: 18px; text-align: center;
-	color: #6b7a87; font-size: 13.5px;
-	background: #f7f9fb; border-radius: 10px;
-}
-.admin-drawer-empty--lg { padding: 40px 20px; }
-
-.drawer-fade-enter-active, .drawer-fade-leave-active { transition: opacity 200ms ease; }
-.drawer-fade-enter-from, .drawer-fade-leave-to { opacity: 0; }
-</style>

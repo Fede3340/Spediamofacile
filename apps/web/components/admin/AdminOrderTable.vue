@@ -1,11 +1,9 @@
-<!-- COMPONENTE: AdminOrderTable.vue -->
+<!-- AdminOrderTable.vue — Tabella ordini admin (mobile cards + desktop table) -->
 <script setup>
-import '~/assets/css/admin.css';
 import { getBrtTrackingLabel, getBrtTrackingUrl } from '~/utils/brtTracking';
 
 const props = defineProps({
 	orders: { type: Array, default: () => [] },
-	/* sort = { key: 'created_at' | 'total' | 'status', dir: 'asc' | 'desc' } */
 	sort: {
 		type: Object,
 		default: () => ({ key: 'created_at', dir: 'desc' }),
@@ -27,172 +25,152 @@ const sortIcon = (key) => {
 	return props.sort.dir === 'desc' ? '↓' : '↑';
 };
 
-/* Helper: estrai importo (cents) da subtotal (oggetto MyMoney o numero) */
 const orderTotalCents = (order) => {
 	const raw = order?.subtotal;
 	if (raw && typeof raw === 'object' && 'amount' in raw) return Number(raw.amount || 0);
-	return Number(raw || 0) * 100; // se in euro
+	return Number(raw || 0) * 100;
 };
 
-/* Helper: stringa origine→destinazione abbreviata */
-const _orderRoute = (order) => {
-	const pkg = order?.packages?.[0];
-	const origin = pkg?.originAddress?.city || pkg?.origin_city || '—';
-	const dest = pkg?.destinationAddress?.city || pkg?.destination_city || '—';
-	return { origin, dest };
-};
-
-/* Stato badge config */
 const resolvedOrderRoute = (order) => {
 	const pkg = order?.packages?.[0];
-	const origin = pkg?.originAddress?.city || pkg?.origin_address?.city || pkg?.origin_city || 'â€”';
-	const dest = pkg?.destinationAddress?.city || pkg?.destination_address?.city || pkg?.destination_city || 'â€”';
+	const origin = pkg?.originAddress?.city || pkg?.origin_address?.city || pkg?.origin_city || '—';
+	const dest = pkg?.destinationAddress?.city || pkg?.destination_address?.city || pkg?.destination_city || '—';
 	return { origin, dest };
 };
 
-const badgeFor = (status) => props.statusConfig?.[status] || { label: status, bg: 'bg-gray-100', text: 'text-gray-600' };
+const badgeFor = (status) => props.statusConfig?.[status] || { label: status, bg: 'bg-brand-bg-alt', text: 'text-brand-text-secondary' };
 
-/* Click row naviga a dettaglio */
 const onRowClick = (order, evt) => {
-	// Evita navigazione se click su un bottone/link
 	if (evt.target.closest('button, a')) return;
 	emit('action', { type: 'detail', order });
 };
 
-/* Determina se mostrare "marca come pagato" */
-const canMarkPaid = (order) => {
-	return order.status === 'pending_transfer' || order.status === 'awaiting_bank_transfer';
-};
+const canMarkPaid = (order) => order.status === 'pending_transfer' || order.status === 'awaiting_bank_transfer';
 
-const hasBordero = (order) => {
-	return Boolean(
-		order?.bordero_status === 'completed'
-		|| order?.bordero_document_filename
-		|| order?.bordero_reference,
-	);
-};
+const hasBordero = (order) => Boolean(
+	order?.bordero_status === 'completed'
+	|| order?.bordero_document_filename
+	|| order?.bordero_reference,
+);
 
 const trackingHref = (order) => getBrtTrackingUrl(order);
 const trackingLabel = (order) => getBrtTrackingLabel(order);
 </script>
 
 <template>
-	<div class="m6-order-table-wrap">
-		<!-- DESKTOP: tabella sticky ----------------------------------- -->
-		<div class="m6-order-table m6-only-desktop" role="region" aria-label="Tabella ordini">
-			<table class="m6-order-table__table">
-				<thead class="m6-order-table__head">
+	<div class="w-full">
+		<div class="hidden tablet:block w-full overflow-x-auto bg-brand-card rounded-card border border-brand-border" role="region" aria-label="Tabella ordini">
+			<table class="w-full">
+				<thead class="bg-brand-bg-alt border-b border-brand-border">
 					<tr>
-						<th scope="col" class="m6-order-table__th">
-							<button type="button" class="m6-order-table__sort" @click="onSort('id')">
+						<th scope="col" class="px-3 py-3 text-left text-[0.6875rem] font-bold uppercase tracking-wider text-brand-text-muted">
+							<button type="button" class="inline-flex items-center gap-1 hover:text-brand-primary transition" @click="onSort('id')">
 								Codice {{ sortIcon('id') }}
 							</button>
 						</th>
-						<th scope="col" class="m6-order-table__th">Cliente</th>
-						<th scope="col" class="m6-order-table__th">Tratta</th>
-						<th scope="col" class="m6-order-table__th">
-							<button type="button" class="m6-order-table__sort" @click="onSort('status')">
+						<th scope="col" class="px-3 py-3 text-left text-[0.6875rem] font-bold uppercase tracking-wider text-brand-text-muted">Cliente</th>
+						<th scope="col" class="px-3 py-3 text-left text-[0.6875rem] font-bold uppercase tracking-wider text-brand-text-muted">Tratta</th>
+						<th scope="col" class="px-3 py-3 text-left text-[0.6875rem] font-bold uppercase tracking-wider text-brand-text-muted">
+							<button type="button" class="inline-flex items-center gap-1 hover:text-brand-primary transition" @click="onSort('status')">
 								Stato {{ sortIcon('status') }}
 							</button>
 						</th>
-						<th scope="col" class="m6-order-table__th">Tracking</th>
-						<th scope="col" class="m6-order-table__th m6-order-table__th--right">
-							<button type="button" class="m6-order-table__sort" @click="onSort('total')">
+						<th scope="col" class="px-3 py-3 text-left text-[0.6875rem] font-bold uppercase tracking-wider text-brand-text-muted">Tracking</th>
+						<th scope="col" class="px-3 py-3 text-right text-[0.6875rem] font-bold uppercase tracking-wider text-brand-text-muted">
+							<button type="button" class="inline-flex items-center gap-1 hover:text-brand-primary transition" @click="onSort('total')">
 								Totale {{ sortIcon('total') }}
 							</button>
 						</th>
-						<th scope="col" class="m6-order-table__th">
-							<button type="button" class="m6-order-table__sort" @click="onSort('created_at')">
+						<th scope="col" class="px-3 py-3 text-left text-[0.6875rem] font-bold uppercase tracking-wider text-brand-text-muted">
+							<button type="button" class="inline-flex items-center gap-1 hover:text-brand-primary transition" @click="onSort('created_at')">
 								Data {{ sortIcon('created_at') }}
 							</button>
 						</th>
-						<th scope="col" class="m6-order-table__th m6-order-table__th--actions">Azioni</th>
+						<th scope="col" class="px-3 py-3 text-center text-[0.6875rem] font-bold uppercase tracking-wider text-brand-text-muted w-1">Azioni</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr
 						v-for="order in orders"
 						:key="order.id"
-						class="m6-order-table__row"
+						class="border-b border-brand-border last:border-0 cursor-pointer hover:bg-brand-bg-alt transition focus:outline-none focus-visible:bg-brand-soft-bg"
 						tabindex="0"
 						@click="onRowClick(order, $event)"
 						@keydown.enter="onRowClick(order, $event)">
-						<td class="m6-order-table__td m6-order-table__td--code">
-							<span class="m6-order-table__code">#{{ order.id }}</span>
+						<td class="px-3 py-3 whitespace-nowrap w-1">
+							<span class="text-sm font-bold text-brand-primary tabular-nums">#{{ order.id }}</span>
 						</td>
-						<td class="m6-order-table__td">
-							<div class="m6-order-table__cust">
-								<span class="m6-order-table__cust-name">{{ order.user?.name || '—' }} {{ order.user?.surname || '' }}</span>
-								<span class="m6-order-table__cust-email">{{ order.user?.email || '—' }}</span>
+						<td class="px-3 py-3">
+							<div class="flex flex-col gap-0.5 min-w-[160px]">
+								<span class="text-sm font-semibold text-brand-text">{{ order.user?.name || '—' }} {{ order.user?.surname || '' }}</span>
+								<span class="text-xs text-brand-text-secondary">{{ order.user?.email || '—' }}</span>
 							</div>
 						</td>
-						<td class="m6-order-table__td">
-							<div class="m6-order-table__route">
-								<span class="m6-order-table__route-from">{{ resolvedOrderRoute(order).origin }}</span>
-								<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" class="m6-order-table__route-arrow">
-									<path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
-								</svg>
-								<span class="m6-order-table__route-to">{{ resolvedOrderRoute(order).dest }}</span>
+						<td class="px-3 py-3">
+							<div class="inline-flex items-center gap-1.5 text-xs text-brand-text">
+								<span>{{ resolvedOrderRoute(order).origin }}</span>
+								<UIcon name="mdi:arrow-right" class="w-3.5 h-3.5 text-brand-text-muted shrink-0" />
+								<span>{{ resolvedOrderRoute(order).dest }}</span>
 							</div>
 						</td>
-						<td class="m6-order-table__td">
-							<span :class="['m6-status', badgeFor(order.status).bg, badgeFor(order.status).text]">
+						<td class="px-3 py-3">
+							<span :class="['inline-flex items-center px-2 py-0.5 rounded-full text-[0.6875rem] font-semibold', badgeFor(order.status).bg, badgeFor(order.status).text]">
 								{{ badgeFor(order.status).label }}
 							</span>
 						</td>
-						<td class="m6-order-table__td">
+						<td class="px-3 py-3">
 							<a
 								v-if="trackingHref(order)"
 								:href="trackingHref(order)"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="m6-order-table__tracking"
+								class="inline-flex items-center gap-1 text-xs font-semibold text-brand-primary hover:underline"
 								@click.stop>
-								<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" /></svg>
+								<UIcon name="mdi:open-in-new" class="w-3.5 h-3.5" />
 								{{ trackingLabel(order) }}
 							</a>
-							<span v-else class="m6-order-table__tracking m6-order-table__tracking--empty">—</span>
+							<span v-else class="text-xs text-brand-text-muted">—</span>
 						</td>
-						<td class="m6-order-table__td m6-order-table__td--right">
-							<strong class="m6-order-table__amount">{{ formatCents(orderTotalCents(order)) }}</strong>
+						<td class="px-3 py-3 text-right whitespace-nowrap">
+							<strong class="text-sm font-bold text-brand-primary tabular-nums">{{ formatCents(orderTotalCents(order)) }}</strong>
 						</td>
-						<td class="m6-order-table__td m6-order-table__td--date">
+						<td class="px-3 py-3 text-xs text-brand-text-secondary whitespace-nowrap">
 							{{ formatDate(order.created_at) }}
 						</td>
-						<td class="m6-order-table__td m6-order-table__td--actions">
-							<div class="m6-order-table__actions">
+						<td class="px-3 py-3 text-center">
+							<div class="inline-flex items-center gap-1">
 								<button
 									type="button"
-									class="m6-act m6-act--ghost"
+									class="inline-flex items-center justify-center w-8 h-8 rounded-control border border-brand-border bg-brand-card text-brand-text-secondary cursor-pointer transition hover:bg-brand-bg-alt hover:text-brand-text"
 									title="Vedi dettaglio"
 									aria-label="Vedi dettaglio ordine"
 									@click.stop="$emit('action', { type: 'detail', order })">
-									<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" /></svg>
+									<UIcon name="mdi:eye-outline" class="w-4 h-4" />
 								</button>
 								<button
 									type="button"
-									class="m6-act m6-act--ghost"
+									class="inline-flex items-center justify-center w-8 h-8 rounded-control border border-brand-border bg-brand-card text-brand-text-secondary cursor-pointer transition hover:bg-brand-bg-alt hover:text-brand-text"
 									title="Fattura"
 									aria-label="Scarica fattura"
 									@click.stop="$emit('action', { type: 'invoice', order })">
-									<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" /></svg>
+									<UIcon name="mdi:file-document-outline" class="w-4 h-4" />
 								</button>
 								<button
 									v-if="hasBordero(order)"
 									type="button"
-									class="m6-act m6-act--ghost"
+									class="inline-flex items-center justify-center w-8 h-8 rounded-control border border-brand-border bg-brand-card text-brand-text-secondary cursor-pointer transition hover:bg-brand-bg-alt hover:text-brand-text"
 									title="Borderò"
 									aria-label="Scarica borderò"
 									@click.stop="$emit('action', { type: 'bordero', order })">
-									<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M13,9V3.5L18.5,9M8,13H16V15H8M8,17H13V19H8Z" /></svg>
+									<UIcon name="mdi:file-document-multiple-outline" class="w-4 h-4" />
 								</button>
 								<button
 									v-if="canMarkPaid(order)"
 									type="button"
-									class="m6-act m6-act--accent"
+									class="inline-flex items-center gap-1 px-2 h-8 rounded-control border border-brand-accent bg-brand-accent text-white text-xs font-semibold cursor-pointer transition hover:brightness-95"
 									title="Marca come pagato"
 									@click.stop="$emit('action', { type: 'mark-paid', order })">
-									<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" /></svg>
+									<UIcon name="mdi:check" class="w-3.5 h-3.5" />
 									Pagato
 								</button>
 							</div>
@@ -202,63 +180,62 @@ const trackingLabel = (order) => getBrtTrackingLabel(order);
 			</table>
 		</div>
 
-		<!-- MOBILE/TABLET: cards stack -------------------------------- -->
-		<ul class="m6-order-cards m6-only-mobile" aria-label="Lista ordini (mobile)">
+		<ul class="tablet:hidden flex flex-col gap-3 list-none m-0 p-0" aria-label="Lista ordini (mobile)">
 			<li
 				v-for="order in orders"
 				:key="`mob-${order.id}`"
-				class="m6-order-card"
+				class="rounded-card border border-brand-border bg-brand-card p-4 cursor-pointer transition hover:border-brand-primary/40"
 				tabindex="0"
 				@click="onRowClick(order, $event)"
 				@keydown.enter="onRowClick(order, $event)">
-				<header class="m6-order-card__head">
-					<span class="m6-order-card__code">#{{ order.id }}</span>
-					<span :class="['m6-status', badgeFor(order.status).bg, badgeFor(order.status).text]">
+				<header class="flex items-center justify-between gap-2 mb-2">
+					<span class="text-sm font-bold text-brand-primary tabular-nums">#{{ order.id }}</span>
+					<span :class="['inline-flex items-center px-2 py-0.5 rounded-full text-[0.6875rem] font-semibold', badgeFor(order.status).bg, badgeFor(order.status).text]">
 						{{ badgeFor(order.status).label }}
 					</span>
 				</header>
-				<div class="m6-order-card__body">
-					<p class="m6-order-card__cust-name">{{ order.user?.name || '—' }} {{ order.user?.surname || '' }}</p>
-					<p class="m6-order-card__cust-email">{{ order.user?.email || '—' }}</p>
-					<p class="m6-order-card__route">
+				<div class="flex flex-col gap-1">
+					<p class="m-0 text-sm font-semibold text-brand-text">{{ order.user?.name || '—' }} {{ order.user?.surname || '' }}</p>
+					<p class="m-0 text-xs text-brand-text-secondary">{{ order.user?.email || '—' }}</p>
+					<p class="m-0 text-xs text-brand-text inline-flex items-center gap-1.5">
 						<span>{{ resolvedOrderRoute(order).origin }}</span>
 						<span aria-hidden="true">→</span>
 						<span>{{ resolvedOrderRoute(order).dest }}</span>
 					</p>
-					<p class="m6-order-card__date">{{ formatDate(order.created_at) }}</p>
+					<p class="m-0 text-xs text-brand-text-muted">{{ formatDate(order.created_at) }}</p>
 				</div>
-				<footer class="m6-order-card__foot">
-					<strong class="m6-order-card__amount">{{ formatCents(orderTotalCents(order)) }}</strong>
-					<div class="m6-order-card__actions">
+				<footer class="flex items-center justify-between gap-2 mt-3 pt-3 border-t border-brand-border">
+					<strong class="text-base font-bold text-brand-primary tabular-nums">{{ formatCents(orderTotalCents(order)) }}</strong>
+					<div class="flex items-center gap-1">
 						<a
 							v-if="trackingHref(order)"
 							:href="trackingHref(order)"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="m6-act m6-act--ghost"
+							class="inline-flex items-center justify-center w-8 h-8 rounded-control border border-brand-border bg-brand-card text-brand-text-secondary transition hover:bg-brand-bg-alt"
 							title="Tracking BRT"
 							@click.stop>
-							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" /></svg>
+							<UIcon name="mdi:truck-fast" class="w-4 h-4" />
 						</a>
 						<button
 							type="button"
-							class="m6-act m6-act--ghost"
+							class="inline-flex items-center justify-center w-8 h-8 rounded-control border border-brand-border bg-brand-card text-brand-text-secondary cursor-pointer transition hover:bg-brand-bg-alt"
 							title="Fattura"
 							@click.stop="$emit('action', { type: 'invoice', order })">
-							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" /></svg>
+							<UIcon name="mdi:file-document-outline" class="w-4 h-4" />
 						</button>
 						<button
 							v-if="hasBordero(order)"
 							type="button"
-							class="m6-act m6-act--ghost"
+							class="inline-flex items-center justify-center w-8 h-8 rounded-control border border-brand-border bg-brand-card text-brand-text-secondary cursor-pointer transition hover:bg-brand-bg-alt"
 							title="Borderò"
 							@click.stop="$emit('action', { type: 'bordero', order })">
-							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M13,9V3.5L18.5,9M8,13H16V15H8M8,17H13V19H8Z" /></svg>
+							<UIcon name="mdi:file-document-multiple-outline" class="w-4 h-4" />
 						</button>
 						<button
 							v-if="canMarkPaid(order)"
 							type="button"
-							class="m6-act m6-act--accent"
+							class="inline-flex items-center gap-1 px-2.5 h-8 rounded-control border border-brand-accent bg-brand-accent text-white text-xs font-semibold cursor-pointer transition hover:brightness-95"
 							@click.stop="$emit('action', { type: 'mark-paid', order })">
 							Pagato
 						</button>

@@ -3,7 +3,6 @@ defineProps({
 	europePricing: { type: Object, required: true },
 	filteredEuropeBands: { type: Array, required: true },
 	compactEuropeView: { type: Boolean, required: true },
-	// Functions
 	centsToEuro: { type: Function, required: true },
 	updateEuropeRateAmountFromEuro: { type: Function, required: true },
 	toggleEuropeRateQuote: { type: Function, required: true },
@@ -11,59 +10,58 @@ defineProps({
 </script>
 
 <template>
-	<div class="rounded-[16px] p-[20px] tablet:p-[24px] desktop:p-[32px] border border-[var(--color-brand-border)]">
-		<div class="flex flex-wrap items-start justify-between gap-[16px] mb-[16px]">
-			<div class="space-y-[4px]">
-				<h2 class="text-[1.125rem] font-bold text-[var(--color-brand-text)]">Europa monocollo</h2>
-				<p class="text-[0.75rem] text-[var(--color-brand-text-secondary)]">Listino Italia &rarr; Europa. Un solo collo per spedizione, quantità sempre 1.</p>
+	<SfCard padding="md">
+		<div class="flex flex-wrap items-start justify-between gap-4 mb-4">
+			<div class="space-y-1">
+				<h2 class="text-lg font-bold text-brand-text">Europa monocollo</h2>
+				<p class="text-xs text-brand-text-secondary">Listino Italia → Europa. Un solo collo per spedizione, quantita sempre 1.</p>
 			</div>
-			<div class="flex flex-wrap gap-[8px] text-[0.75rem]">
-				<span class="inline-flex items-center gap-[6px] px-[10px] py-[6px] rounded-full bg-[#F4FAFC] text-[var(--color-brand-primary)] border border-[#D8E9F0]">Origine IT</span>
-				<span class="inline-flex items-center gap-[6px] px-[10px] py-[6px] rounded-full bg-[#F4FAFC] text-[var(--color-brand-primary)] border border-[#D8E9F0]">Max colli 1</span>
-				<span class="inline-flex items-center gap-[6px] px-[10px] py-[6px] rounded-full bg-[#F4FAFC] text-[var(--color-brand-primary)] border border-[#D8E9F0]">Q.tà per collo 1</span>
+			<div class="flex flex-wrap gap-2 text-xs">
+				<span class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-pill bg-brand-soft-bg text-brand-primary border border-brand-soft-border">Origine IT</span>
+				<span class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-pill bg-brand-soft-bg text-brand-primary border border-brand-soft-border">Max colli 1</span>
+				<span class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-pill bg-brand-soft-bg text-brand-primary border border-brand-soft-border">Q.ta per collo 1</span>
 			</div>
 		</div>
 
-		<div class="space-y-[16px]">
-			<div v-if="!filteredEuropeBands.length" class="p-[16px] rounded-[16px] border border-dashed border-[var(--color-brand-border)] text-[var(--color-brand-text-secondary)] text-[0.8125rem]">
+		<div class="space-y-4">
+			<div v-if="!filteredEuropeBands.length" class="p-4 rounded-card border border-dashed border-brand-border text-brand-text-secondary text-sm">
 				Nessun paese trovato con i filtri attuali.
 			</div>
 			<div
 				v-for="band in filteredEuropeBands"
 				:key="band.id"
-				class="rounded-[12px] border-[1.5px] border-[#DFE2E7] bg-[#FAFBFC] overflow-hidden">
-				<div class="flex flex-wrap items-center justify-between gap-[10px] px-[16px] py-[14px] border-b border-[var(--color-brand-border)] bg-white">
+				class="rounded-card border border-brand-border bg-brand-bg-alt overflow-hidden">
+				<div class="flex flex-wrap items-center justify-between gap-2.5 px-4 py-3.5 border-b border-brand-border bg-brand-card">
 					<div>
-						<h3 class="text-[0.9375rem] font-bold text-[var(--color-brand-text)]">{{ band.label }}</h3>
-						<p class="text-[0.75rem] text-[var(--color-brand-text-secondary)]">
-							Max {{ band.max_weight_kg }} kg &middot; Max {{ Number(band.max_volume_m3).toFixed(3) }} m&sup3; &middot; Fattore volumetrico {{ band.volumetric_factor }}
+						<h3 class="text-base font-bold text-brand-text">{{ band.label }}</h3>
+						<p class="text-xs text-brand-text-secondary">
+							Max {{ band.max_weight_kg }} kg · Max {{ Number(band.max_volume_m3).toFixed(3) }} m³ · Fattore volumetrico {{ band.volumetric_factor }}
 						</p>
 					</div>
-					<div class="flex flex-wrap gap-[8px]">
-						<span class="inline-flex items-center gap-[6px] px-[10px] py-[5px] rounded-full bg-[#F0F7FA] text-[var(--color-brand-primary)] text-[0.75rem] font-medium">
+					<div class="flex flex-wrap gap-2">
+						<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill bg-brand-soft-bg text-brand-primary text-xs font-medium">
 							{{ band.rates.length }} paesi
 						</span>
-						<span class="inline-flex items-center gap-[6px] px-[10px] py-[5px] rounded-full bg-[#f0fdf4] text-[#0a8a7a] text-[0.75rem] font-medium border border-[#d1fae5]">
+						<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill bg-brand-success-bg text-brand-success-fg text-xs font-medium border border-brand-success/30">
 							{{ band.activeCount }} attivi
 						</span>
-						<span class="inline-flex items-center gap-[6px] px-[10px] py-[5px] rounded-full bg-amber-50 text-amber-700 text-[0.75rem] font-medium border border-amber-200">
+						<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill bg-amber-50 text-amber-700 text-xs font-medium border border-amber-200">
 							{{ band.quoteCount }} preventivo
 						</span>
 					</div>
 				</div>
 
-				<!-- Vista compatta -->
-				<div v-if="compactEuropeView" class="p-[16px] grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 gap-[10px]">
+				<div v-if="compactEuropeView" class="p-4 grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 gap-2.5">
 					<div
 						v-for="rate in band.rates"
 						:key="`${band.id}-${rate.country_code}-compact`"
-						class="rounded-[16px] border border-[#E6EDF1] bg-white px-[14px] py-[12px]">
-						<div class="flex items-start justify-between gap-[10px] mb-[8px]">
+						class="rounded-card border border-brand-border bg-brand-card px-3.5 py-3">
+						<div class="flex items-start justify-between gap-2.5 mb-2">
 							<div>
-								<p class="text-[0.875rem] font-semibold text-[var(--color-brand-text)]">{{ rate.country_name }}</p>
-								<p class="text-[0.75rem] text-[var(--color-brand-text-muted)]">{{ rate.country_code }}</p>
+								<p class="text-sm font-semibold text-brand-text">{{ rate.country_name }}</p>
+								<p class="text-xs text-brand-text-muted">{{ rate.country_code }}</p>
 							</div>
-							<span :class="rate.quote_required ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-[#EDF6F8] text-[var(--color-brand-primary)] border-[#D8E9F0]'" class="inline-flex items-center px-[8px] py-[4px] rounded-full border text-[0.6875rem] font-semibold">
+							<span :class="rate.quote_required ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-brand-soft-bg text-brand-primary border-brand-soft-border'" class="inline-flex items-center px-2 py-1 rounded-pill border text-[0.6875rem] font-semibold">
 								{{ rate.quote_required ? 'Manuale' : 'Attivo' }}
 							</span>
 						</div>
@@ -72,44 +70,43 @@ defineProps({
 							:disabled="rate.quote_required"
 							type="text"
 							placeholder="0,00"
-							class="w-full h-[38px] px-[10px] rounded-[12px] border-[1.5px] border-[#DFE2E7] bg-white text-[var(--color-brand-text)] disabled:bg-[var(--color-brand-bg-alt)] disabled:text-[var(--color-brand-text-muted)]"
+							class="w-full h-9 px-2.5 rounded-control border border-brand-border bg-brand-card text-brand-text disabled:bg-brand-bg-alt disabled:text-brand-text-muted focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
 							@input="updateEuropeRateAmountFromEuro(rate, $event.target.value)">
 					</div>
 				</div>
 
-				<!-- Vista tabella -->
-				<div v-else class="overflow-hidden">
-					<table class="w-full min-w-[760px] text-[0.8125rem]">
+				<div v-else class="overflow-x-auto">
+					<table class="w-full min-w-[760px] text-sm">
 						<thead>
-							<tr class="text-left text-[var(--color-brand-text-secondary)] border-b border-[var(--color-brand-border)] bg-white">
-								<th class="px-[16px] py-[10px] font-semibold">Paese</th>
-								<th class="px-[16px] py-[10px] font-semibold">Prezzo</th>
-								<th class="px-[16px] py-[10px] font-semibold">Stato</th>
+							<tr class="text-left text-brand-text-secondary border-b border-brand-border bg-brand-card">
+								<th class="px-4 py-2.5 font-semibold">Paese</th>
+								<th class="px-4 py-2.5 font-semibold">Prezzo</th>
+								<th class="px-4 py-2.5 font-semibold">Stato</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr
 								v-for="rate in band.rates"
 								:key="`${band.id}-${rate.country_code}`"
-								class="border-b border-[#EEF2F4] last:border-0">
-								<td class="px-[16px] py-[10px] font-semibold text-[var(--color-brand-text)]">
+								class="border-b border-brand-border last:border-0">
+								<td class="px-4 py-2.5 font-semibold text-brand-text">
 									{{ rate.country_name }}
-									<span class="text-[var(--color-brand-text-muted)] font-medium">({{ rate.country_code }})</span>
+									<span class="text-brand-text-muted font-medium">({{ rate.country_code }})</span>
 								</td>
-								<td class="px-[16px] py-[10px]">
+								<td class="px-4 py-2.5">
 									<input
 										:value="rate.price_cents == null ? '' : (Number(rate.price_cents || 0) / 100).toFixed(2).replace('.', ',')"
 										:disabled="rate.quote_required"
 										type="text"
 										placeholder="0,00"
-										class="w-[120px] h-[38px] px-[10px] rounded-[12px] border-[1.5px] border-[#DFE2E7] bg-white text-[var(--color-brand-text)] disabled:bg-[var(--color-brand-bg-alt)] disabled:text-[var(--color-brand-text-muted)]"
+										class="w-[120px] h-9 px-2.5 rounded-control border border-brand-border bg-brand-card text-brand-text disabled:bg-brand-bg-alt disabled:text-brand-text-muted focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
 										@input="updateEuropeRateAmountFromEuro(rate, $event.target.value)">
 								</td>
-								<td class="px-[16px] py-[10px]">
+								<td class="px-4 py-2.5">
 									<button
 										type="button"
-										:class="rate.quote_required ? 'bg-amber-50 text-amber-800 border-amber-200' : 'bg-[#EDF6F8] text-[var(--color-brand-primary)] border-[#D8E9F0]'"
-										class="inline-flex items-center gap-[6px] px-[12px] py-[8px] rounded-full border text-[0.75rem] font-medium cursor-pointer"
+										:class="rate.quote_required ? 'bg-amber-50 text-amber-800 border-amber-200' : 'bg-brand-soft-bg text-brand-primary border-brand-soft-border'"
+										class="inline-flex items-center gap-1.5 px-3 py-2 rounded-pill border text-xs font-medium cursor-pointer"
 										@click="toggleEuropeRateQuote(rate)">
 										{{ rate.quote_required ? 'Preventivo manuale' : 'Prezzo attivo' }}
 									</button>
@@ -120,5 +117,5 @@ defineProps({
 				</div>
 			</div>
 		</div>
-	</div>
+	</SfCard>
 </template>

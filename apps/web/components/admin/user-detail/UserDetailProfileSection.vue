@@ -13,82 +13,33 @@ const userType = computed(() => {
 </script>
 
 <template>
-	<section class="admin-drawer-section">
-		<h3 class="admin-drawer-section__title">Dati profilo</h3>
-		<dl class="admin-drawer-grid">
-			<div class="admin-drawer-grid__cell">
-				<dt>ID</dt>
-				<dd>#{{ user.id }}</dd>
+	<section class="flex flex-col gap-2.5">
+		<h3 class="m-0 text-[0.6875rem] font-extrabold uppercase tracking-wider text-brand-text-muted">Dati profilo</h3>
+		<dl class="grid grid-cols-2 gap-2 m-0 p-3 bg-brand-bg-alt border border-brand-border rounded-control">
+			<div>
+				<dt class="text-[0.625rem] font-bold uppercase tracking-wider text-brand-text-muted">ID</dt>
+				<dd class="mt-0.5 text-sm font-semibold text-brand-text break-words">#{{ user.id }}</dd>
 			</div>
-			<div class="admin-drawer-grid__cell">
-				<dt>Tipo</dt>
-				<dd>{{ userType }}</dd>
+			<div>
+				<dt class="text-[0.625rem] font-bold uppercase tracking-wider text-brand-text-muted">Tipo</dt>
+				<dd class="mt-0.5 text-sm font-semibold text-brand-text break-words">{{ userType }}</dd>
 			</div>
-			<div class="admin-drawer-grid__cell">
-				<dt>Telefono</dt>
-				<dd>{{ user.telephone_number || '\u2014' }}</dd>
+			<div>
+				<dt class="text-[0.625rem] font-bold uppercase tracking-wider text-brand-text-muted">Telefono</dt>
+				<dd class="mt-0.5 text-sm font-semibold text-brand-text break-words">{{ user.telephone_number || '—' }}</dd>
 			</div>
-			<div class="admin-drawer-grid__cell">
-				<dt>Codice referral</dt>
-				<dd class="admin-drawer-grid__mono">{{ user.referral_code || '\u2014' }}</dd>
+			<div>
+				<dt class="text-[0.625rem] font-bold uppercase tracking-wider text-brand-text-muted">Codice referral</dt>
+				<dd class="mt-0.5 text-xs font-mono font-semibold text-brand-text break-words">{{ user.referral_code || '—' }}</dd>
 			</div>
-			<div class="admin-drawer-grid__cell">
-				<dt>Registrato</dt>
-				<dd>{{ formatDate(user.created_at) }}</dd>
+			<div>
+				<dt class="text-[0.625rem] font-bold uppercase tracking-wider text-brand-text-muted">Registrato</dt>
+				<dd class="mt-0.5 text-sm font-semibold text-brand-text break-words">{{ formatDate(user.created_at) }}</dd>
 			</div>
-			<div class="admin-drawer-grid__cell">
-				<dt>Email verificata</dt>
-				<dd>{{ user.email_verified_at ? formatDate(user.email_verified_at) : 'No' }}</dd>
+			<div>
+				<dt class="text-[0.625rem] font-bold uppercase tracking-wider text-brand-text-muted">Email verificata</dt>
+				<dd class="mt-0.5 text-sm font-semibold text-brand-text break-words">{{ user.email_verified_at ? formatDate(user.email_verified_at) : 'No' }}</dd>
 			</div>
 		</dl>
 	</section>
 </template>
-
-<style scoped>
-.admin-drawer-section {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-}
-
-.admin-drawer-section__title {
-	margin: 0;
-	font-size: 0.6875rem;
-	font-weight: 800;
-	letter-spacing: 0.1em;
-	text-transform: uppercase;
-	color: var(--admin-text-muted);
-}
-
-.admin-drawer-grid {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 8px;
-	margin: 0;
-	padding: 12px;
-	background: var(--admin-surface-muted);
-	border: 1px solid var(--admin-border);
-	border-radius: var(--admin-radius-sm);
-}
-
-.admin-drawer-grid__cell dt {
-	font-size: 0.625rem;
-	font-weight: 700;
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
-	color: var(--admin-text-muted);
-}
-
-.admin-drawer-grid__cell dd {
-	margin: 3px 0 0;
-	font-size: 0.8125rem;
-	font-weight: 600;
-	color: var(--admin-text-primary);
-	word-break: break-word;
-}
-
-.admin-drawer-grid__mono {
-	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-	font-size: 0.75rem;
-}
-</style>

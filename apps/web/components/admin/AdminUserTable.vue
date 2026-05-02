@@ -1,6 +1,5 @@
 <!-- AdminUserTable.vue — Tabella utenti admin (mobile cards + desktop table) -->
 <script setup>
-import '~/assets/css/admin.css';
 import AdminTableLayout from './AdminTableLayout.vue';
 import AdminStatusBadge from './AdminStatusBadge.vue';
 
@@ -35,12 +34,18 @@ const userTypeLabel = (u) => {
 	return 'Privato';
 };
 
-/* Mappa stato -> { tone, label } per chip locale (status non e nel ROLE_MAP del badge) */
 const STATUS_MAP = {
 	active: { tone: 'success', label: 'Attivo' },
 	banned: { tone: 'danger', label: 'Bannato' },
 	'pending-verification': { tone: 'warning', label: 'In verifica' },
 	pending: { tone: 'warning', label: 'In verifica' },
+};
+
+const STATUS_TONE_CLASS = {
+	success: 'bg-brand-success-bg text-brand-success-fg',
+	danger: 'bg-red-50 text-red-700',
+	warning: 'bg-amber-50 text-amber-700',
+	neutral: 'bg-brand-bg-alt text-brand-text-secondary',
 };
 
 const userStatus = (u) => {
@@ -56,132 +61,123 @@ const lastLogin = (u) => u?.last_login_at || u?.last_seen_at || u?.updated_at;
 <template>
 	<AdminTableLayout :items="users" :columns="columns" row-key="id">
 		<template #empty>
-			<div class="admin-user-table-empty">
-				<div class="admin-user-table-empty__icon" aria-hidden="true">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/></svg>
-				</div>
-				<h3 class="admin-user-table-empty__title">Nessun utente trovato</h3>
-				<p class="admin-user-table-empty__text">Modifica i filtri o la ricerca per ampliare i risultati.</p>
-			</div>
+			<SfEmptyState
+				icon="mdi:account-search-outline"
+				title="Nessun utente trovato"
+				description="Modifica i filtri o la ricerca per ampliare i risultati." />
 		</template>
 
-		<!-- Mobile cards (< 720px) -->
 		<template #mobile-card="{ item }">
-			<article class="admin-card admin-user-card">
-				<header class="admin-user-card__head">
-					<div class="admin-user-card__avatar" aria-hidden="true">
-						<span>{{ initials(item) }}</span>
+			<article class="p-4 rounded-card border border-brand-border bg-brand-card transition hover:border-brand-primary/40">
+				<header class="flex items-center gap-3 mb-3">
+					<div class="inline-flex items-center justify-center w-11 h-11 rounded-full bg-brand-soft-bg text-brand-primary font-extrabold text-sm shrink-0" aria-hidden="true">
+						{{ initials(item) }}
 					</div>
-					<div class="admin-user-card__identity">
-						<p class="admin-user-card__name">{{ item.name }} {{ item.surname }}</p>
-						<p class="admin-user-card__email">{{ item.email }}</p>
+					<div class="flex-1 min-w-0">
+						<p class="m-0 text-sm font-bold text-brand-text truncate">{{ item.name }} {{ item.surname }}</p>
+						<p class="m-0 text-xs text-brand-text-secondary truncate">{{ item.email }}</p>
 					</div>
 					<AdminStatusBadge :status="item.role || 'User'" type="role" />
 				</header>
 
-				<dl class="admin-user-card__grid">
-					<div class="admin-user-card__cell">
-						<dt>Tipo</dt>
-						<dd>{{ userTypeLabel(item) }}</dd>
+				<dl class="grid grid-cols-2 gap-2 m-0 mb-3 p-3 bg-brand-bg-alt border border-brand-border rounded-control">
+					<div>
+						<dt class="text-[0.625rem] font-bold uppercase tracking-wider text-brand-text-muted">Tipo</dt>
+						<dd class="mt-0.5 text-xs font-semibold text-brand-text">{{ userTypeLabel(item) }}</dd>
 					</div>
-					<div class="admin-user-card__cell">
-						<dt>Ordini</dt>
-						<dd>{{ item.orders_count ?? 0 }}</dd>
+					<div>
+						<dt class="text-[0.625rem] font-bold uppercase tracking-wider text-brand-text-muted">Ordini</dt>
+						<dd class="mt-0.5 text-xs font-semibold text-brand-text">{{ item.orders_count ?? 0 }}</dd>
 					</div>
-					<div class="admin-user-card__cell">
-						<dt>Ultimo accesso</dt>
-						<dd>{{ formatDate(lastLogin(item)) }}</dd>
+					<div>
+						<dt class="text-[0.625rem] font-bold uppercase tracking-wider text-brand-text-muted">Ultimo accesso</dt>
+						<dd class="mt-0.5 text-xs font-semibold text-brand-text">{{ formatDate(lastLogin(item)) }}</dd>
 					</div>
-					<div class="admin-user-card__cell">
-						<dt>Stato</dt>
-						<dd>
-							<span :class="['admin-user-chip', `admin-user-chip--${userStatus(item).tone}`]">
+					<div>
+						<dt class="text-[0.625rem] font-bold uppercase tracking-wider text-brand-text-muted">Stato</dt>
+						<dd class="mt-0.5">
+							<span :class="['inline-flex items-center px-2 py-0.5 rounded-full text-[0.6875rem] font-semibold', STATUS_TONE_CLASS[userStatus(item).tone]]">
 								{{ userStatus(item).label }}
 							</span>
 						</dd>
 					</div>
 				</dl>
 
-				<footer class="admin-user-card__actions">
-					<button
-						type="button"
-						class="admin-user-btn admin-user-btn--primary"
-						@click="emit('view', item)">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"/></svg>
+				<footer class="flex flex-wrap gap-1.5">
+					<SfButton size="sm" @click="emit('view', item)">
+						<template #leading><UIcon name="mdi:eye-outline" class="w-3.5 h-3.5" /></template>
 						Dettaglio
-					</button>
-					<button
-						type="button"
-						class="admin-user-btn admin-user-btn--ghost"
-						@click="emit('edit', item)">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/></svg>
+					</SfButton>
+					<SfButton variant="secondary" size="sm" @click="emit('edit', item)">
+						<template #leading><UIcon name="mdi:pencil" class="w-3.5 h-3.5" /></template>
 						Modifica
-					</button>
-					<button
+					</SfButton>
+					<SfButton
 						v-if="canImpersonate"
-						type="button"
-						class="admin-user-btn admin-user-btn--accent"
+						variant="accent"
+						size="sm"
 						:disabled="actionLoading === `imp-${item.id}`"
 						@click="emit('impersonate', item)">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M10,17V14H3V10H10V7L15,12L10,17M10,2H19A2,2 0 0,1 21,4V20A2,2 0 0,1 19,22H10A2,2 0 0,1 8,20V18H10V20H19V4H10V6H8V4A2,2 0 0,1 10,2Z"/></svg>
+						<template #leading><UIcon name="mdi:account-arrow-right" class="w-3.5 h-3.5" /></template>
 						Impersona
-					</button>
+					</SfButton>
 				</footer>
 			</article>
 		</template>
 
-		<!-- Desktop row (>= 720px) -->
 		<template #desktop-row="{ item }">
-			<tr class="admin-row admin-user-row">
-				<td class="admin-user-row__user">
-					<div class="admin-user-row__user-cell">
-						<span class="admin-user-row__avatar" aria-hidden="true">{{ initials(item) }}</span>
-						<div class="admin-user-row__user-copy">
-							<p class="admin-user-row__name" :title="`${item.name} ${item.surname}`">{{ item.name }} {{ item.surname }}</p>
-							<p class="admin-user-row__email" :title="item.email">{{ item.email }}</p>
+			<tr class="border-b border-brand-border last:border-0 hover:bg-brand-bg-alt transition">
+				<td class="py-3 px-3">
+					<div class="flex items-center gap-3 min-w-0">
+						<span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-brand-soft-bg text-brand-primary font-extrabold text-xs shrink-0" aria-hidden="true">{{ initials(item) }}</span>
+						<div class="min-w-0">
+							<p class="m-0 text-sm font-bold text-brand-text truncate" :title="`${item.name} ${item.surname}`">{{ item.name }} {{ item.surname }}</p>
+							<p class="m-0 text-xs text-brand-text-secondary truncate" :title="item.email">{{ item.email }}</p>
 						</div>
 					</div>
 				</td>
-				<td>
-					<span class="admin-user-chip admin-user-chip--neutral">{{ userTypeLabel(item) }}</span>
+				<td class="py-3 px-3">
+					<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[0.6875rem] font-semibold bg-brand-bg-alt text-brand-text-secondary">{{ userTypeLabel(item) }}</span>
 				</td>
-				<td>
+				<td class="py-3 px-3">
 					<AdminStatusBadge :status="item.role || 'User'" type="role" />
 				</td>
-				<td class="admin-user-row__num">{{ item.orders_count ?? 0 }}</td>
-				<td class="admin-user-row__date">{{ formatDate(lastLogin(item)) }}</td>
-				<td>
-					<span :class="['admin-user-chip', `admin-user-chip--${userStatus(item).tone}`]">
+				<td class="py-3 px-3 text-sm font-semibold text-brand-text tabular-nums">{{ item.orders_count ?? 0 }}</td>
+				<td class="py-3 px-3 text-xs text-brand-text-secondary whitespace-nowrap">{{ formatDate(lastLogin(item)) }}</td>
+				<td class="py-3 px-3">
+					<span :class="['inline-flex items-center px-2 py-0.5 rounded-full text-[0.6875rem] font-semibold', STATUS_TONE_CLASS[userStatus(item).tone]]">
 						{{ userStatus(item).label }}
 					</span>
 				</td>
-				<td class="admin-user-row__actions">
-					<button
-						type="button"
-						class="admin-user-icon-btn admin-user-icon-btn--primary"
-						:title="`Dettaglio ${item.name}`"
-						:aria-label="`Dettaglio ${item.name}`"
-						@click="emit('view', item)">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"/></svg>
-					</button>
-					<button
-						type="button"
-						class="admin-user-icon-btn"
-						:title="`Modifica ${item.name}`"
-						:aria-label="`Modifica ${item.name}`"
-						@click="emit('edit', item)">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/></svg>
-					</button>
-					<button
-						v-if="canImpersonate"
-						type="button"
-						class="admin-user-icon-btn admin-user-icon-btn--accent"
-						:disabled="actionLoading === `imp-${item.id}`"
-						:title="`Impersona ${item.name}`"
-						:aria-label="`Impersona ${item.name}`"
-						@click="emit('impersonate', item)">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M10,17V14H3V10H10V7L15,12L10,17M10,2H19A2,2 0 0,1 21,4V20A2,2 0 0,1 19,22H10A2,2 0 0,1 8,20V18H10V20H19V4H10V6H8V4A2,2 0 0,1 10,2Z"/></svg>
-					</button>
+				<td class="py-3 px-3">
+					<div class="flex items-center gap-1">
+						<button
+							type="button"
+							class="inline-flex items-center justify-center w-8 h-8 rounded-control border border-brand-primary/40 bg-brand-soft-bg text-brand-primary cursor-pointer transition hover:bg-brand-primary hover:text-white"
+							:title="`Dettaglio ${item.name}`"
+							:aria-label="`Dettaglio ${item.name}`"
+							@click="emit('view', item)">
+							<UIcon name="mdi:eye-outline" class="w-4 h-4" />
+						</button>
+						<button
+							type="button"
+							class="inline-flex items-center justify-center w-8 h-8 rounded-control border border-brand-border bg-brand-card text-brand-text-secondary cursor-pointer transition hover:bg-brand-bg-alt hover:text-brand-text"
+							:title="`Modifica ${item.name}`"
+							:aria-label="`Modifica ${item.name}`"
+							@click="emit('edit', item)">
+							<UIcon name="mdi:pencil" class="w-4 h-4" />
+						</button>
+						<button
+							v-if="canImpersonate"
+							type="button"
+							class="inline-flex items-center justify-center w-8 h-8 rounded-control border border-brand-accent bg-brand-accent text-white cursor-pointer transition hover:brightness-95 disabled:opacity-50"
+							:disabled="actionLoading === `imp-${item.id}`"
+							:title="`Impersona ${item.name}`"
+							:aria-label="`Impersona ${item.name}`"
+							@click="emit('impersonate', item)">
+							<UIcon name="mdi:account-arrow-right" class="w-4 h-4" />
+						</button>
+					</div>
 				</td>
 			</tr>
 		</template>

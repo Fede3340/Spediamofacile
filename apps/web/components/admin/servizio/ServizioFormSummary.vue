@@ -1,43 +1,47 @@
-<script setup>defineProps({
-  checklistItems: { type: Array, required: true },
-  completedCount: { type: Number, required: true },
-  saving: { type: Boolean, default: false },
-  submitLabel: { type: String, default: '' },
+<script setup>
+defineProps({
+	checklistItems: { type: Array, required: true },
+	completedCount: { type: Number, required: true },
+	saving: { type: Boolean, default: false },
+	submitLabel: { type: String, default: '' },
 });
 const emit = defineEmits(['save']);
 </script>
 
 <template>
-	<aside class="service-editor-side">
-		<div class="sf-account-panel service-editor-summary rounded-[16px] p-[20px]">
-			<div class="service-editor-summary__top">
-				<p class="service-editor-summary__eyebrow">Checklist</p>
-				<h2 class="service-editor-summary__title">Pronto alla pubblicazione</h2>
-				<p class="service-editor-summary__text">
+	<aside class="min-w-0">
+		<SfCard padding="md" class="grid gap-4 desktop:sticky desktop:top-32">
+			<div class="grid gap-1.5">
+				<p class="text-xs font-bold uppercase tracking-wider text-brand-text-muted">Checklist</p>
+				<h2 class="font-display text-xl font-extrabold text-brand-text leading-tight">Pronto alla pubblicazione</h2>
+				<p class="text-sm text-brand-text-secondary">
 					{{ completedCount }}/{{ checklistItems.length }} elementi chiave completati.
 				</p>
 			</div>
-			<ul class="service-editor-summary__list">
+			<ul class="grid gap-2.5 m-0 p-0 list-none">
 				<li
 					v-for="item in checklistItems"
 					:key="item.label"
-					class="service-editor-summary__item"
-					:class="{ 'service-editor-summary__item--done': item.done }">
-					<span class="service-editor-summary__dot" aria-hidden="true"/>
+					:class="[
+						'inline-flex items-center gap-2.5 text-sm leading-relaxed',
+						item.done ? 'text-brand-text font-bold' : 'text-brand-text-secondary',
+					]">
+					<span :class="['w-3 h-3 shrink-0 rounded-full border-2', item.done ? 'border-brand-primary bg-brand-primary' : 'border-brand-border bg-brand-card']" aria-hidden="true" />
 					<span>{{ item.label }}</span>
 				</li>
 			</ul>
-			<div class="service-editor-summary__note">
-				<p class="service-editor-summary__note-title">Promemoria rapido</p>
-				<p class="service-editor-summary__note-text">
+			<div class="grid gap-1 p-3.5 rounded-card border border-brand-border bg-brand-bg-alt">
+				<p class="text-xs font-bold uppercase tracking-wider text-brand-text-muted">Promemoria rapido</p>
+				<p class="text-sm text-brand-text-secondary">
 					Salva in bozza per mantenere URL e struttura stabili.
 				</p>
 			</div>
-			<button type="button" :disabled="saving" class="btn-primary btn-compact inline-flex w-full items-center justify-center gap-[6px] disabled:opacity-50" @click="emit('save')">
-				<svg v-if="saving" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[18px] h-[18px] animate-spin" fill="currentColor"><path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/></svg>
-				<svg v-else aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="currentColor"><path d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/></svg>
+			<SfButton :loading="saving" :disabled="saving" full @click="emit('save')">
+				<template #leading>
+					<UIcon name="mdi:content-save" class="w-4 h-4" />
+				</template>
 				{{ saving ? "Salvataggio..." : (submitLabel || 'Crea servizio') }}
-			</button>
-		</div>
+			</SfButton>
+		</SfCard>
 	</aside>
 </template>

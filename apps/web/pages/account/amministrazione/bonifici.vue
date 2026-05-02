@@ -57,7 +57,6 @@ const closeConfirm = () => {
 	selected.value = null;
 };
 
-// Riceve il reference dal modal AdminBankTransferConfirmModal (P5 estratto)
 const confirmWithReference = async (referenceValue) => {
 	if (!selected.value || confirming.value) return;
 	confirming.value = true;
@@ -65,9 +64,7 @@ const confirmWithReference = async (referenceValue) => {
 	try {
 		await sanctum(`/api/admin/orders/${selected.value.id}/confirm-bank-transfer`, {
 			method: 'POST',
-			body: {
-				bank_transfer_reference: referenceValue || null,
-			},
+			body: { bank_transfer_reference: referenceValue || null },
 		});
 		feedback.value = `Bonifico confermato per ordine #${selected.value.id}. Etichetta BRT in generazione.`;
 		feedbackType.value = 'success';
@@ -98,7 +95,7 @@ const summaryItems = computed(() => {
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-[24px] tablet:py-[28px] desktop:py-[28px]">
+	<section class="sf-account-shell min-h-[600px] py-6 tablet:py-7">
 		<div class="my-container">
 			<AccountPageHeader
 				eyebrow="Area amministrazione"
@@ -108,116 +105,90 @@ const summaryItems = computed(() => {
 				back-label="Torna al pannello admin"
 				:crumbs="[{ label: 'Account', to: '/account' }, { label: 'Amministrazione', to: '/account/amministrazione' }, { label: 'Bonifici' }]" />
 
-			<div
-				v-if="loadError || feedback"
-				:class="['mb-[16px] ux-alert', (loadError || feedbackType === 'error') ? 'ux-alert--critical' : 'ux-alert--success']">
-				<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="ux-alert__icon shrink-0" fill="currentColor">
-					<path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-				</svg>
-				<span>{{ loadError || feedback }}</span>
+			<SfAlert v-if="loadError || feedback" :tone="(loadError || feedbackType === 'error') ? 'danger' : 'success'" class="mb-4">
+				{{ loadError || feedback }}
+			</SfAlert>
+
+			<div class="grid grid-cols-1 tablet:grid-cols-3 gap-3 mb-5">
+				<SfStatCard
+					v-for="item in summaryItems"
+					:key="item.key"
+					:label="item.label"
+					:value="item.value"
+					icon="mdi:bank-transfer"
+					tone="primary"
+					:trend-label="item.meta" />
 			</div>
 
-			<div class="sf-account-summary-strip mb-[20px] sf-animate-in sf-animate-in-1">
-				<div v-for="item in summaryItems" :key="item.key" class="sf-account-summary-item">
-					<div class="sf-account-summary-item__icon">
-						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[15px] w-[15px]" fill="currentColor" style="color: var(--color-brand-primary);">
-							<path d="M5,6H23V18H5V6M14,9A3,3 0 0,1 17,12A3,3 0 0,1 14,15A3,3 0 0,1 11,12A3,3 0 0,1 14,9M9,8A2,2 0 0,1 7,10V14A2,2 0 0,1 9,16H19A2,2 0 0,1 21,14V10A2,2 0 0,1 19,8H9M1,10H3V20H19V22H1V10Z" />
-						</svg>
-					</div>
-					<div class="sf-account-summary-item__body">
-						<span class="sf-account-summary-item__value">{{ item.value }}</span>
-						<span class="sf-account-summary-item__label">{{ item.label }}</span>
-						<span class="sf-account-summary-item__meta">{{ item.meta }}</span>
-					</div>
-				</div>
-			</div>
-
-			<section class="sf-account-section sf-account-panel sf-animate-in sf-animate-in-2">
-				<div class="sf-account-section__header">
-					<div class="sf-account-section__title-wrap">
-						<p class="text-[0.7rem] font-semibold uppercase tracking-[1px] text-[var(--color-brand-primary)]">Coda bonifici</p>
-						<h2 class="sf-account-section__title">In attesa di ricezione</h2>
-						<p class="sf-account-section__description">
-							La causale del cliente è sempre <strong>ORD-{ID}</strong>. Verifica in banca e conferma per sbloccare la spedizione.
-						</p>
-					</div>
-					<SfButton variant="secondary" size="sm" @click="fetchPending">
-						<template #leading>
-							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[16px] w-[16px]" fill="currentColor">
-								<path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.57,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z" />
-							</svg>
-						</template>
-						Aggiorna
-					</SfButton>
-				</div>
-
-				<div class="sf-account-section__body">
-					<div v-if="loading" class="rounded-[16px] bg-[#F5F6F9] px-[18px] py-[20px] text-center">
-						<p class="text-[0.9375rem] font-semibold text-[var(--color-brand-text)]">Caricamento bonifici pendenti...</p>
-					</div>
-
-					<div v-else-if="!orders.length" class="rounded-[16px] bg-[#F5F6F9] px-[18px] py-[22px] text-center">
-						<div class="mx-auto mb-[12px] flex h-[46px] w-[46px] items-center justify-center rounded-full bg-[#E9F7EC] text-[#1F7A3A]">
-							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[24px] w-[24px]" fill="currentColor">
-								<path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M10,17L5,12L6.41,10.59L10,14.17L17.59,6.58L19,8L10,17Z" />
-							</svg>
+			<SfCard padding="md">
+				<template #header>
+					<div class="flex flex-col tablet:flex-row tablet:items-center tablet:justify-between gap-3">
+						<div>
+							<p class="text-[0.7rem] font-semibold uppercase tracking-wider text-brand-primary">Coda bonifici</p>
+							<h2 class="font-display text-xl font-bold text-brand-text mt-1">In attesa di ricezione</h2>
+							<p class="text-sm text-brand-text-secondary mt-1">
+								La causale del cliente è sempre <strong>ORD-{ID}</strong>. Verifica in banca e conferma per sbloccare la spedizione.
+							</p>
 						</div>
-						<p class="text-[0.9375rem] font-semibold text-[var(--color-brand-text)]">Nessun bonifico in attesa</p>
-						<p class="mx-auto mt-[6px] max-w-[520px] text-[0.8125rem] leading-[1.6] text-[var(--color-brand-text-secondary)]">
-							Tutti i pagamenti via bonifico sono stati riconciliati.
-						</p>
+						<SfButton variant="secondary" size="sm" @click="fetchPending">
+							<template #leading><UIcon name="mdi:refresh" class="w-4 h-4" /></template>
+							Aggiorna
+						</SfButton>
 					</div>
+				</template>
 
-					<!-- P14: card lista coerente con pattern /account/spedizioni (sf-order-card)
-					     stesso radius/border/padding/spacing per uniformità sitewide. -->
-					<div v-else class="space-y-[10px]">
-						<article
-							v-for="order in orders"
-							:key="order.id"
-							class="overflow-hidden rounded-[12px] border border-[#E2E8EE] bg-white transition-colors duration-150 hover:bg-[#FBFCFD]">
-							<div class="px-[14px] py-[12px] tablet:px-[16px] tablet:py-[14px]">
-								<div class="flex flex-col gap-[10px] tablet:flex-row tablet:items-center tablet:justify-between">
-									<div class="min-w-0 flex-1">
-										<!-- Riga 1: #ID + prezzo + status -->
-										<div class="flex flex-wrap items-center gap-[8px]">
-											<span class="font-mono text-[0.875rem] font-bold text-[var(--color-brand-text)]">#{{ order.id }}</span>
-											<span class="text-[0.875rem] font-bold text-[var(--color-brand-primary)]">
-												{{ formatAmount(order.payable_total_cents ?? order.subtotal_cents ?? (order.subtotal?.amount ? Number(order.subtotal.amount) * 100 : null)) }}
-											</span>
-											<span class="inline-flex items-center rounded-full bg-[#FFF1E8] px-[8px] py-[2px] text-[0.6875rem] font-[700] text-[#B45309]">
-												In attesa bonifico
-											</span>
-										</div>
-										<!-- Riga 2: cliente -->
-										<p class="mt-[4px] text-[0.8125rem] font-semibold text-[var(--color-brand-text)]">
-											<template v-if="order.user">{{ order.user.name }} {{ order.user.surname }}</template>
-											<template v-else>—</template>
-										</p>
-										<!-- Riga 3: meta -->
-										<div class="mt-[2px] flex flex-wrap items-center gap-x-[8px] text-[0.6875rem] text-[var(--color-brand-text-muted)]">
-											<span class="font-mono">Causale: ORD-{{ order.id }}</span>
-											<span aria-hidden="true">·</span>
-											<span>{{ formatDate(order.created_at) }}</span>
-										</div>
+				<div v-if="loading" class="rounded-card bg-brand-bg-alt px-4 py-5 text-center">
+					<p class="text-base font-semibold text-brand-text">Caricamento bonifici pendenti...</p>
+				</div>
+
+				<SfEmptyState
+					v-else-if="!orders.length"
+					icon="mdi:check-circle"
+					title="Nessun bonifico in attesa"
+					description="Tutti i pagamenti via bonifico sono stati riconciliati." />
+
+				<div v-else class="space-y-2.5">
+					<article
+						v-for="order in orders"
+						:key="order.id"
+						class="overflow-hidden rounded-card border border-brand-border bg-brand-card transition hover:bg-brand-bg-alt">
+						<div class="px-3.5 py-3 tablet:px-4 tablet:py-3.5">
+							<div class="flex flex-col gap-2.5 tablet:flex-row tablet:items-center tablet:justify-between">
+								<div class="min-w-0 flex-1">
+									<div class="flex flex-wrap items-center gap-2">
+										<span class="font-mono text-sm font-bold text-brand-text">#{{ order.id }}</span>
+										<span class="text-sm font-bold text-brand-primary">
+											{{ formatAmount(order.payable_total_cents ?? order.subtotal_cents ?? (order.subtotal?.amount ? Number(order.subtotal.amount) * 100 : null)) }}
+										</span>
+										<span class="inline-flex items-center rounded-full bg-amber-50 px-2 py-0.5 text-[0.6875rem] font-bold text-amber-700">
+											In attesa bonifico
+										</span>
 									</div>
-									<!-- Bottoni inline -->
-									<div class="shrink-0 flex flex-wrap gap-[6px]">
-										<SfButton variant="secondary" size="sm" class="text-[0.75rem]" :to="`/account/amministrazione/ordini?search=${order.id}`">
-											Apri
-										</SfButton>
-										<SfButton size="sm" class="text-[0.75rem]" @click="openConfirm(order)">
-											Conferma
-										</SfButton>
+									<p class="mt-1 text-sm font-semibold text-brand-text">
+										<template v-if="order.user">{{ order.user.name }} {{ order.user.surname }}</template>
+										<template v-else>—</template>
+									</p>
+									<div class="mt-0.5 flex flex-wrap items-center gap-x-2 text-[0.6875rem] text-brand-text-muted">
+										<span class="font-mono">Causale: ORD-{{ order.id }}</span>
+										<span aria-hidden="true">·</span>
+										<span>{{ formatDate(order.created_at) }}</span>
 									</div>
 								</div>
+								<div class="shrink-0 flex flex-wrap gap-1.5">
+									<SfButton variant="secondary" size="sm" :to="`/account/amministrazione/ordini?search=${order.id}`">
+										Apri
+									</SfButton>
+									<SfButton size="sm" @click="openConfirm(order)">
+										Conferma
+									</SfButton>
+								</div>
 							</div>
-						</article>
-					</div>
+						</div>
+					</article>
 				</div>
-			</section>
+			</SfCard>
 		</div>
 
-		<!-- Confirm Modal — estratto come AdminBankTransferConfirmModal (P5) -->
 		<AdminBankTransferConfirmModal
 			:order="selected"
 			:confirming="confirming"

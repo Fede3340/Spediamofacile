@@ -7,86 +7,20 @@ defineProps({
 </script>
 
 <template>
-	<div class="admin-drawer-tabpanel">
-		<div v-if="!transactions.length" class="admin-drawer-empty">Nessun movimento wallet.</div>
-		<ul v-else class="admin-drawer-list">
-			<li v-for="tx in transactions.slice(0, 10)" :key="tx.id" class="admin-drawer-list__item">
-				<div class="admin-drawer-list__main">
-					<p class="admin-drawer-list__title">{{ tx.description || tx.type || 'Movimento' }}</p>
-					<p class="admin-drawer-list__meta">{{ formatDate(tx.created_at) }}</p>
+	<div class="mt-2">
+		<div v-if="!transactions.length" class="px-6 py-6 text-center text-sm text-brand-text-muted bg-brand-bg-alt border border-dashed border-brand-border rounded-control">
+			Nessun movimento wallet.
+		</div>
+		<ul v-else class="list-none m-0 p-0 flex flex-col gap-1.5">
+			<li v-for="tx in transactions.slice(0, 10)" :key="tx.id" class="flex justify-between items-center gap-2.5 px-3 py-2.5 bg-brand-bg-alt border border-brand-border rounded-control">
+				<div class="min-w-0">
+					<p class="m-0 text-sm font-bold text-brand-text truncate max-w-[280px]">{{ tx.description || tx.type || 'Movimento' }}</p>
+					<p class="mt-0.5 text-[0.6875rem] text-brand-text-muted">{{ formatDate(tx.created_at) }}</p>
 				</div>
-				<span :class="['admin-drawer-list__value', Number(tx.amount) < 0 && 'admin-drawer-list__value--neg']">
+				<span :class="['text-sm font-bold tabular-nums', Number(tx.amount) < 0 ? 'text-red-700' : 'text-brand-primary']">
 					{{ formatPrice(tx.amount) }}
 				</span>
 			</li>
 		</ul>
 	</div>
 </template>
-
-<style scoped>
-.admin-drawer-tabpanel {
-	margin-top: 8px;
-}
-
-.admin-drawer-list {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	display: flex;
-	flex-direction: column;
-	gap: 6px;
-}
-
-.admin-drawer-list__item {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 10px;
-	padding: 10px 12px;
-	background: var(--admin-surface-muted);
-	border: 1px solid var(--admin-border);
-	border-radius: var(--admin-radius-sm);
-}
-
-.admin-drawer-list__main {
-	min-width: 0;
-}
-
-.admin-drawer-list__title {
-	margin: 0;
-	font-size: 0.8125rem;
-	font-weight: 700;
-	color: var(--admin-text-primary);
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	max-width: 280px;
-}
-
-.admin-drawer-list__meta {
-	margin: 2px 0 0;
-	font-size: 0.6875rem;
-	color: var(--admin-text-muted);
-}
-
-.admin-drawer-list__value {
-	font-size: 0.8125rem;
-	font-weight: 700;
-	color: var(--admin-status-success-text);
-	font-variant-numeric: tabular-nums;
-}
-
-.admin-drawer-list__value--neg {
-	color: var(--admin-status-danger-text, #b91c1c);
-}
-
-.admin-drawer-empty {
-	padding: 24px;
-	text-align: center;
-	color: var(--admin-text-muted);
-	font-size: 0.8125rem;
-	background: var(--admin-surface-muted);
-	border: 1px dashed var(--admin-border);
-	border-radius: var(--admin-radius-sm);
-}
-</style>

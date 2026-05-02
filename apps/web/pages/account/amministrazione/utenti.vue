@@ -1,6 +1,5 @@
 <!-- FILE: pages/account/amministrazione/utenti.vue -->
 <script setup>
-import '~/assets/css/admin.css';
 import { ref, computed, onMounted, watch } from 'vue';
 
 definePageMeta({
@@ -18,7 +17,6 @@ useSeoMeta({
 const sanctum = useSanctumClient();
 const { showSuccess, showError, formatDate, actionLoading, actionMessage } = useAdmin();
 
-/* === Composable legacy per Richieste Pro + alcune azioni === */
 const {
 	activeSubTab,
 	proRequests,
@@ -29,33 +27,27 @@ const {
 	proRequestStatusConfig,
 } = useAdminUtenti();
 
-/* === State principale lista utenti === */
 const usersData = ref([]);
 const loading = ref(false);
 const total = ref(0);
 
-/* Filtri */
 const search = ref('');
 const roleFilter = ref('');
 const statusFilter = ref('');
 const onlyVerified = ref(false);
 
-/* Paginazione (server quando supportato, altrimenti client) */
 const currentPage = ref(1);
 const perPage = 20;
 const serverPagination = ref(false);
 const totalPages = ref(1);
 
-/* Drawer dettaglio */
 const drawerOpen = ref(false);
 const drawerUserId = ref(null);
 
-/* Capability admin-master (per impersonate / cambio email) */
 const auth = (typeof useSanctumAuth === 'function') ? useSanctumAuth() : { user: ref(null) };
 const currentUser = computed(() => auth?.user?.value || null);
 const canMaster = computed(() => Boolean(currentUser.value?.is_master_admin || currentUser.value?.role === 'Admin'));
 
-/* === Fetch lista === */
 const fetchUsers = async () => {
 	loading.value = true;
 	try {
@@ -66,7 +58,6 @@ const fetchUsers = async () => {
 		params.set('page', String(currentPage.value));
 
 		const res = await sanctum(`/api/admin/users?${params.toString()}`);
-		// Compatibilita con paginator Laravel { data, current_page, last_page, total }
 		if (res && typeof res === 'object' && Array.isArray(res.data) && res.last_page !== undefined) {
 			usersData.value = res.data;
 			total.value = res.total || res.data.length;
@@ -92,15 +83,14 @@ const fetchUsers = async () => {
 	}
 };
 
-/* === Filtro client-side (fallback) === */
 const filteredClient = computed(() => {
 	let list = usersData.value || [];
 	if (!serverPagination.value) {
 		if (search.value) {
 			const s = search.value.toLowerCase();
 			list = list.filter(u =>
-				`${u.name || ''} ${u.surname || ''}`.toLowerCase().includes(s) ||
-				(u.email || '').toLowerCase().includes(s),
+				`${u.name || ''} ${u.surname || ''}`.toLowerCase().includes(s)
+				|| (u.email || '').toLowerCase().includes(s),
 			);
 		}
 		if (roleFilter.value) {
@@ -126,7 +116,6 @@ const paginatedUsers = computed(() => {
 	return filteredClient.value.slice(start, start + perPage);
 });
 
-/* === Mini-stats (calcolate sul dataset corrente) === */
 const stats = computed(() => {
 	const list = usersData.value || [];
 	const now = Date.now();
@@ -149,7 +138,6 @@ const stats = computed(() => {
 	};
 });
 
-/* === Watchers === */
 watch([search, roleFilter, statusFilter], () => {
 	currentPage.value = 1;
 	if (serverPagination.value) fetchUsers();
@@ -159,7 +147,6 @@ watch(currentPage, () => {
 	if (serverPagination.value) fetchUsers();
 });
 
-/* === Handlers === */
 const handleViewUser = (user) => {
 	drawerUserId.value = user.id;
 	drawerOpen.value = true;
@@ -197,7 +184,6 @@ const resetFilters = () => {
 	if (serverPagination.value) fetchUsers();
 };
 
-/* === Export CSV (dataset filtrato) === */
 const exportCsv = () => {
 	const list = filteredClient.value;
 	if (!list.length) {
@@ -223,7 +209,7 @@ const exportCsv = () => {
 		];
 		lines.push(row.join(';'));
 	}
-	const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+	const blob = new Blob(['﻿' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
 	const url = URL.createObjectURL(blob);
 	const a = document.createElement('a');
 	a.href = url;
@@ -233,11 +219,19 @@ const exportCsv = () => {
 	showSuccess('Export CSV scaricato.');
 };
 
-/* === Sub-tabs === */
 const subTabs = computed(() => [
 	{ key: 'users', label: 'Utenti' },
 	{ key: 'pro_requests', label: 'Richieste Pro', count: pendingProRequestsCount.value || undefined },
 ]);
+
+const statsCards = computed(() => [
+	{ key: 'total', label: 'Totale utenti', value: stats.value.total, icon: 'mdi:account-group', tone: 'primary' },
+	{ key: 'pro', label: 'Partner Pro', value: stats.value.pro, icon: 'mdi:star', tone: 'accent' },
+	{ key: 'azienda', label: 'Aziendali', value: stats.value.azienda, icon: 'mdi:domain', tone: 'success' },
+	{ key: 'newWeek', label: 'Nuovi (7gg)', value: stats.value.newWeek, icon: 'mdi:calendar-plus', tone: 'warning' },
+]);
+
+const inputClass = 'h-10 px-3 rounded-control border border-brand-border bg-brand-card text-sm text-brand-text focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20';
 
 onMounted(() => {
 	fetchUsers();
@@ -246,8 +240,8 @@ onMounted(() => {
 </script>
 
 <template>
-	<section class="sf-account-shell admin-utenti-page">
-		<div class="my-container admin-utenti-container">
+	<section class="sf-account-shell min-h-[600px] py-6 tablet:py-7">
+		<div class="my-container space-y-4">
 			<AccountPageHeader
 				eyebrow="Area amministrazione"
 				title="Utenti"
@@ -262,105 +256,69 @@ onMounted(() => {
 
 			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
 
-			<!-- ====== Mini stats ====== -->
-			<div class="admin-utenti-stats">
-				<article class="admin-utenti-stat">
-					<div class="admin-utenti-stat__icon admin-utenti-stat__icon--primary" aria-hidden="true">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/></svg>
-					</div>
-					<div class="admin-utenti-stat__copy">
-						<p class="admin-utenti-stat__label">Totale utenti</p>
-						<p class="admin-utenti-stat__value">{{ stats.total }}</p>
-					</div>
-				</article>
-				<article class="admin-utenti-stat">
-					<div class="admin-utenti-stat__icon admin-utenti-stat__icon--accent" aria-hidden="true">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2 8.61 8.59 1 9.27l5.5 4.27L4.91 21 12 16.9 19.09 21l-1.59-7.46L23 9.27l-7.61-.68z"/></svg>
-					</div>
-					<div class="admin-utenti-stat__copy">
-						<p class="admin-utenti-stat__label">Partner Pro</p>
-						<p class="admin-utenti-stat__value">{{ stats.pro }}</p>
-					</div>
-				</article>
-				<article class="admin-utenti-stat">
-					<div class="admin-utenti-stat__icon admin-utenti-stat__icon--success" aria-hidden="true">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/></svg>
-					</div>
-					<div class="admin-utenti-stat__copy">
-						<p class="admin-utenti-stat__label">Aziendali</p>
-						<p class="admin-utenti-stat__value">{{ stats.azienda }}</p>
-					</div>
-				</article>
-				<article class="admin-utenti-stat">
-					<div class="admin-utenti-stat__icon admin-utenti-stat__icon--warning" aria-hidden="true">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19,3H18V1H16V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M19,19H5V8H19V19Z"/></svg>
-					</div>
-					<div class="admin-utenti-stat__copy">
-						<p class="admin-utenti-stat__label">Nuovi (7gg)</p>
-						<p class="admin-utenti-stat__value">{{ stats.newWeek }}</p>
-					</div>
-				</article>
+			<div class="grid grid-cols-2 desktop:grid-cols-4 gap-3">
+				<SfStatCard
+					v-for="card in statsCards"
+					:key="card.key"
+					:label="card.label"
+					:value="card.value"
+					:icon="card.icon"
+					:tone="card.tone" />
 			</div>
 
-			<!-- Sub-tabs -->
-			<div class="admin-utenti-subtabs-wrap">
-				<AdminFilterBar
-					:filters="subTabs"
-					:active-filter="activeSubTab"
-					@change="(key) => activeSubTab = key" />
-			</div>
+			<AdminFilterBar
+				:filters="subTabs"
+				:active-filter="activeSubTab"
+				@change="(key) => activeSubTab = key" />
 
-			<!-- ===== USERS SUB-TAB ===== -->
-			<div v-if="activeSubTab === 'users'" class="admin-utenti-panel">
-				<!-- Filter bar -->
-				<div class="admin-utenti-filterbar">
-					<label class="admin-utenti-search">
-						<span class="sr-only">Cerca utente</span>
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
-						<input
-							v-model="search"
-							type="search"
-							placeholder="Cerca per nome o email..."
-							class="admin-utenti-search__input" >
-					</label>
+			<div v-if="activeSubTab === 'users'" class="space-y-4">
+				<SfCard padding="md">
+					<div class="grid grid-cols-1 tablet:grid-cols-[minmax(0,1fr)_180px_180px_auto] gap-3 items-center">
+						<label class="relative">
+							<span class="sr-only">Cerca utente</span>
+							<UIcon name="mdi:magnify" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-text-muted" />
+							<input
+								v-model="search"
+								type="search"
+								placeholder="Cerca per nome o email..."
+								class="w-full h-10 pl-9 pr-3 rounded-control border border-brand-border bg-brand-card text-sm text-brand-text focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20">
+						</label>
 
-					<select v-model="roleFilter" class="admin-utenti-select" aria-label="Filtra per ruolo">
-						<option value="">Tutti i ruoli</option>
-						<option value="Admin">Admin</option>
-						<option value="Partner Pro">Partner Pro</option>
-						<option value="Partner">Partner</option>
-						<option value="User">Privato</option>
-					</select>
+						<select v-model="roleFilter" :class="inputClass" aria-label="Filtra per ruolo">
+							<option value="">Tutti i ruoli</option>
+							<option value="Admin">Admin</option>
+							<option value="Partner Pro">Partner Pro</option>
+							<option value="Partner">Partner</option>
+							<option value="User">Privato</option>
+						</select>
 
-					<select v-model="statusFilter" class="admin-utenti-select" aria-label="Filtra per stato">
-						<option value="">Tutti gli stati</option>
-						<option value="active">Attivo</option>
-						<option value="pending-verification">In verifica</option>
-						<option value="banned">Bannato</option>
-					</select>
+						<select v-model="statusFilter" :class="inputClass" aria-label="Filtra per stato">
+							<option value="">Tutti gli stati</option>
+							<option value="active">Attivo</option>
+							<option value="pending-verification">In verifica</option>
+							<option value="banned">Bannato</option>
+						</select>
 
-					<label class="admin-utenti-toggle">
-						<input v-model="onlyVerified" type="checkbox" >
-						<span class="admin-utenti-toggle__track"><span class="admin-utenti-toggle__thumb" /></span>
-						<span class="admin-utenti-toggle__label">Solo verificati</span>
-					</label>
-
-					<div class="admin-utenti-filterbar__actions">
-						<button type="button" class="admin-utenti-btn-ghost" @click="resetFilters">Pulisci</button>
-						<button type="button" class="admin-utenti-btn-ghost" :disabled="loading" @click="fetchUsers">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"/></svg>
+						<label class="inline-flex items-center gap-2 cursor-pointer">
+							<input v-model="onlyVerified" type="checkbox" class="rounded border-brand-border text-brand-primary focus:ring-brand-primary">
+							<span class="text-sm text-brand-text-secondary">Solo verificati</span>
+						</label>
+					</div>
+					<div class="flex flex-wrap items-center gap-2 mt-3">
+						<SfButton variant="secondary" size="sm" @click="resetFilters">Pulisci</SfButton>
+						<SfButton variant="secondary" size="sm" :disabled="loading" @click="fetchUsers">
+							<template #leading><UIcon name="mdi:refresh" class="w-3.5 h-3.5" /></template>
 							Ricarica
-						</button>
-						<button type="button" class="admin-utenti-btn-primary" @click="exportCsv">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg>
+						</SfButton>
+						<SfButton size="sm" @click="exportCsv">
+							<template #leading><UIcon name="mdi:download" class="w-3.5 h-3.5" /></template>
 							Esporta CSV
-						</button>
+						</SfButton>
 					</div>
-				</div>
+				</SfCard>
 
-				<!-- Tabella -->
-				<div v-if="loading" class="admin-utenti-loading">
-					<div class="admin-drawer__spinner" />
+				<div v-if="loading" class="flex flex-col items-center gap-3 py-10 text-brand-text-secondary">
+					<UIcon name="mdi:loading" class="w-8 h-8 text-brand-primary animate-spin" />
 					<p>Caricamento utenti...</p>
 				</div>
 
@@ -374,32 +332,22 @@ onMounted(() => {
 					@edit="handleEditUser"
 					@impersonate="handleImpersonate" />
 
-				<!-- Paginazione -->
-				<nav v-if="effectiveTotalPages > 1" class="admin-utenti-pager" aria-label="Paginazione utenti">
-					<button
-						type="button"
-						class="admin-utenti-pager__btn"
-						:disabled="currentPage <= 1"
-						@click="goToPage(currentPage - 1)">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"/></svg>
+				<nav v-if="effectiveTotalPages > 1" class="flex items-center justify-center gap-3" aria-label="Paginazione utenti">
+					<SfButton variant="secondary" size="sm" :disabled="currentPage <= 1" @click="goToPage(currentPage - 1)">
+						<template #leading><UIcon name="mdi:chevron-left" class="w-3.5 h-3.5" /></template>
 						Precedente
-					</button>
-					<span class="admin-utenti-pager__info">
-						Pagina <strong>{{ currentPage }}</strong> di <strong>{{ effectiveTotalPages }}</strong>
+					</SfButton>
+					<span class="text-sm text-brand-text-secondary">
+						Pagina <strong class="text-brand-text">{{ currentPage }}</strong> di <strong class="text-brand-text">{{ effectiveTotalPages }}</strong>
 					</span>
-					<button
-						type="button"
-						class="admin-utenti-pager__btn"
-						:disabled="currentPage >= effectiveTotalPages"
-						@click="goToPage(currentPage + 1)">
+					<SfButton variant="secondary" size="sm" :disabled="currentPage >= effectiveTotalPages" @click="goToPage(currentPage + 1)">
 						Successiva
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/></svg>
-					</button>
+						<template #trailing><UIcon name="mdi:chevron-right" class="w-3.5 h-3.5" /></template>
+					</SfButton>
 				</nav>
 			</div>
 
-			<!-- ===== PRO REQUESTS SUB-TAB ===== -->
-			<div v-if="activeSubTab === 'pro_requests'" class="admin-utenti-panel">
+			<div v-if="activeSubTab === 'pro_requests'">
 				<AdminProRequestsList
 					:requests="proRequests"
 					:pro-request-status-config="proRequestStatusConfig"
@@ -410,7 +358,6 @@ onMounted(() => {
 			</div>
 		</div>
 
-		<!-- Drawer dettaglio -->
 		<AdminUserDetailDrawer
 			v-model:open="drawerOpen"
 			:user-id="drawerUserId"

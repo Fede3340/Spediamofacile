@@ -1,4 +1,4 @@
-<!-- AdminStatusBadge.vue — Badge stato admin unificato. -->
+<!-- AdminStatusBadge.vue — Badge stato admin unificato (status ordini + ruoli utente). -->
 <script setup>
 import { computed } from 'vue';
 
@@ -12,7 +12,6 @@ const props = defineProps({
 	label: { type: String, default: '' },
 });
 
-/* Mappa stato ordine → tone + label italiano */
 const ORDER_STATUS_MAP = {
 	pending: { tone: 'warning', label: 'In attesa' },
 	processing: { tone: 'info', label: 'In lavorazione' },
@@ -30,7 +29,6 @@ const ORDER_STATUS_MAP = {
 	refused: { tone: 'danger', label: 'Rifiutato' },
 };
 
-/* Mappa ruolo utente → tone + label italiano */
 const ROLE_MAP = {
 	Admin: { tone: 'warning', label: 'Admin' },
 	admin: { tone: 'warning', label: 'Admin' },
@@ -38,6 +36,14 @@ const ROLE_MAP = {
 	partner_pro: { tone: 'success', label: 'Partner Pro' },
 	User: { tone: 'neutral', label: 'Cliente' },
 	user: { tone: 'neutral', label: 'Cliente' },
+};
+
+const TONE_CLASS = {
+	success: 'bg-brand-success-bg text-brand-success-fg',
+	warning: 'bg-amber-50 text-amber-700',
+	info: 'bg-brand-soft-bg text-brand-soft-text',
+	neutral: 'bg-brand-bg-alt text-brand-text-secondary',
+	danger: 'bg-red-50 text-red-700',
 };
 
 const entry = computed(() => {
@@ -51,9 +57,7 @@ const label = computed(() => props.label || entry.value.label);
 </script>
 
 <template>
-	<span :class="['admin-status-badge', `admin-status-badge--${tone}`]">
+	<span :class="['inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold', TONE_CLASS[tone]]">
 		{{ label }}
 	</span>
 </template>
-
-<!-- Stili estratti in assets/css/admin.css (importato da main.css). -->

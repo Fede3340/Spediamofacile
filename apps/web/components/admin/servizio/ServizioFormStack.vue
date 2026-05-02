@@ -1,64 +1,76 @@
-<script setup>const props = defineProps({
-  items: { type: Array, required: true },
-  panelTitle: { type: String, required: true },
-  panelDescription: { type: String, required: true },
-  indexLabel: { type: String, required: true },
-  addButtonLabel: { type: String, required: true },
-  headingPlaceholder: { type: String, required: true },
-  textPlaceholder: { type: String, required: true },
-  textRows: { type: Number, default: 4 },
-  iconPath: { type: String, required: true },
-  fieldKey: { type: String, required: true },
+<script setup>
+const props = defineProps({
+	items: { type: Array, required: true },
+	panelTitle: { type: String, required: true },
+	panelDescription: { type: String, required: true },
+	indexLabel: { type: String, required: true },
+	addButtonLabel: { type: String, required: true },
+	headingPlaceholder: { type: String, required: true },
+	textPlaceholder: { type: String, required: true },
+	textRows: { type: Number, default: 4 },
+	iconPath: { type: String, required: true },
+	fieldKey: { type: String, required: true },
 });
 const emit = defineEmits(['update:items', 'add', 'remove']);
 const onHeadingInput = (index, event) => {
-    const value = event.target.value;
-    const next = [...props.items];
-    next[index] = { ...next[index], [props.fieldKey]: value };
-    emit('update:items', next);
+	const value = event.target.value;
+	const next = [...props.items];
+	next[index] = { ...next[index], [props.fieldKey]: value };
+	emit('update:items', next);
 };
 const onTextInput = (index, event) => {
-    const value = event.target.value;
-    const next = [...props.items];
-    next[index] = { ...next[index], text: value };
-    emit('update:items', next);
+	const value = event.target.value;
+	const next = [...props.items];
+	next[index] = { ...next[index], text: value };
+	emit('update:items', next);
 };
 </script>
 
 <template>
-	<section class="sf-account-panel service-editor-panel service-editor-panel--teal rounded-[16px] p-[20px]">
-		<div class="service-editor-panel__header service-editor-panel__header--split">
-			<div>
-				<h2 class="service-editor-panel__title">
-					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="service-editor-panel__icon" fill="currentColor"><path :d="iconPath"/></svg>
+	<SfCard padding="md" class="grid gap-4">
+		<div class="grid grid-cols-1 desktop:grid-cols-[minmax(0,1fr)_auto] items-start gap-4">
+			<div class="grid gap-2">
+				<h2 class="m-0 inline-flex items-center gap-2.5 text-lg font-extrabold text-brand-text leading-tight">
+					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 shrink-0" fill="currentColor"><path :d="iconPath" /></svg>
 					{{ panelTitle }}
 				</h2>
-				<p class="service-editor-panel__text">{{ panelDescription }}</p>
+				<p class="m-0 max-w-[46rem] text-sm text-brand-text-secondary">{{ panelDescription }}</p>
 			</div>
 			<SfButton variant="secondary" size="sm" @click="emit('add')">
 				<template #leading>
-					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[16px] h-[16px]" fill="currentColor"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg>
+					<UIcon name="mdi:plus" class="w-4 h-4" />
 				</template>
 				{{ addButtonLabel }}
 			</SfButton>
 		</div>
-		<div class="service-editor-stack">
-			<div v-for="(item, idx) in items" :key="idx" class="service-editor-stack-card service-editor-stack-card--teal">
-				<div class="service-editor-stack-card__head">
-					<span class="service-editor-stack-card__index">{{ indexLabel }} {{ idx + 1 }}</span>
+		<div class="grid gap-3.5">
+			<div v-for="(item, idx) in items" :key="idx" class="relative grid gap-3.5 p-4 rounded-card border border-brand-border bg-brand-bg-alt overflow-hidden">
+				<span class="absolute inset-y-0 left-0 w-1 bg-brand-primary" aria-hidden="true" />
+				<div class="flex flex-col gap-3 tablet:flex-row tablet:items-center tablet:justify-between">
+					<span class="text-sm font-extrabold uppercase tracking-wider text-brand-text-muted">{{ indexLabel }} {{ idx + 1 }}</span>
 					<button
 						v-if="items.length > 1"
 						type="button"
-						class="service-editor-remove"
+						class="inline-flex items-center justify-center min-h-8 px-3 border border-red-200 rounded-pill bg-red-50 text-red-600 text-xs font-extrabold transition hover:bg-red-100"
 						@click="emit('remove', idx)">
 						Rimuovi
 					</button>
 				</div>
-				<div class="service-editor-stack-card__body">
-					<input :value="item[fieldKey]" type="text" class="service-editor-input" :placeholder="headingPlaceholder" @input="onHeadingInput(idx, $event)" >
-					<textarea :value="item.text" :rows="textRows" class="service-editor-textarea" :placeholder="textPlaceholder" @input="onTextInput(idx, $event)"/>
+				<div class="grid gap-2.5">
+					<input
+						:value="item[fieldKey]"
+						type="text"
+						class="w-full px-3.5 py-3 rounded-control border border-brand-border bg-brand-card text-sm text-brand-text shadow-inner focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+						:placeholder="headingPlaceholder"
+						@input="onHeadingInput(idx, $event)">
+					<textarea
+						:value="item.text"
+						:rows="textRows"
+						class="w-full px-3.5 py-3 rounded-control border border-brand-border bg-brand-card text-sm text-brand-text shadow-inner resize-y focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+						:placeholder="textPlaceholder"
+						@input="onTextInput(idx, $event)" />
 				</div>
 			</div>
 		</div>
-	</section>
+	</SfCard>
 </template>

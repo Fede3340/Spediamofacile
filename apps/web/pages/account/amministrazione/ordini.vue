@@ -1,5 +1,4 @@
 <script setup>
-import '~/assets/css/admin.css';
 import { ref, computed, onMounted } from 'vue';
 import { buildPaginationItems, paginationRange } from '~/utils/pagination';
 
@@ -17,9 +16,6 @@ const router = useRouter();
 const route = useRoute();
 const { formatCents, formatDate, orderStatusConfig, showSuccess, showError, actionMessage } = useAdmin();
 
-/* -----------------------------------------------------------------
-   STATO PAGINA
------------------------------------------------------------------ */
 const ordersData = ref({ data: [], current_page: 1, last_page: 1, per_page: 25, total: 0 });
 const loading = ref(false);
 const fetchError = ref('');
@@ -39,7 +35,6 @@ const filters = ref({
 	services: [],
 });
 
-/* Status options (riusa lista da useAdminOrdini, filtrata principali) */
 const statusOptions = [
 	{ value: 'pending', label: 'In attesa' },
 	{ value: 'awaiting_bank_transfer', label: 'Bonifico' },
@@ -52,26 +47,9 @@ const statusOptions = [
 	{ value: 'refunded', label: 'Rimborsato' },
 ];
 
-/* Servizi disponibili come chip filtro */
 const services = ['Standard', 'Express', 'Internazionale', 'Pallet', 'PUDO', 'Contrassegno'];
 
-/* -----------------------------------------------------------------
-   KPI CARDS (mini, 4 card)
-   - totali 7gg
-   - incassato 7gg
-   - pending
-   - reclami aperti
-   Source: dashboard endpoint per pending; fetchDashboard separato per
-           7gg/incassato/reclami non esiste ancora -> calcoliamo lato FE
-           dai dati visibili oppure leggiamo dashboard e usiamo i campi
-           disponibili (orders.week, revenue_month).
------------------------------------------------------------------ */
-const kpi = ref({
-	orders7d: 0,
-	revenue7d: 0,
-	pending: 0,
-	claimsOpen: 0,
-});
+const kpi = ref({ orders7d: 0, revenue7d: 0, pending: 0, claimsOpen: 0 });
 const kpiLoading = ref(false);
 
 const fetchKpi = async () => {
@@ -79,25 +57,16 @@ const fetchKpi = async () => {
 	try {
 		const dash = await sanctum('/api/admin/dashboard', { method: 'GET' });
 		kpi.value.orders7d = Number(dash?.orders?.week ?? 0);
-		// revenue_month è in cents (Transaction.total in cents); lo riusiamo come proxy 30gg
-		// finché backend non espone campo "revenue_week" specifico (vedi gap endpoint sotto).
 		kpi.value.revenue7d = Number(dash?.revenue_month ?? 0);
 		kpi.value.pending = Number(dash?.orders?.pending ?? 0);
-		// "claims_open" non presente nel payload dashboard attuale → fallback 0
 		kpi.value.claimsOpen = Number(dash?.claims_open ?? 0);
 	} catch (e) {
-		// silenzioso: i KPI sono "nice to have", non bloccare la pagina
-		// log lato console solo per diagnostica
-		 
 		console.warn('[admin/ordini] KPI dashboard non disponibile:', e?.message || e);
 	} finally {
 		kpiLoading.value = false;
 	}
 };
 
-/* -----------------------------------------------------------------
-   FETCH ORDERS
------------------------------------------------------------------ */
 const buildQueryString = () => {
 	const params = new URLSearchParams();
 	params.set('page', String(page.value));
@@ -145,27 +114,15 @@ const fetchOrders = async () => {
 	}
 };
 
-/* -----------------------------------------------------------------
-   AZIONI FILTRI
------------------------------------------------------------------ */
-const onApplyFilters = () => {
-	page.value = 1;
-	fetchOrders();
-};
+const onApplyFilters = () => { page.value = 1; fetchOrders(); };
 
 const onResetFilters = () => {
-	filters.value = {
-		search: '', status: [], date_from: '', date_to: '',
-		amount_min: '', amount_max: '', services: [],
-	};
+	filters.value = { search: '', status: [], date_from: '', date_to: '', amount_min: '', amount_max: '', services: [] };
 	page.value = 1;
 	fetchOrders();
 };
 
-const onSortChange = (next) => {
-	sort.value = next;
-	fetchOrders();
-};
+const onSortChange = (next) => { sort.value = next; fetchOrders(); };
 
 const onPerPageChange = (e) => {
 	perPage.value = Number(e.target.value) || 25;
@@ -179,21 +136,14 @@ const goToPage = (p) => {
 	fetchOrders();
 };
 
-/* -----------------------------------------------------------------
-   AZIONI ORDINE
------------------------------------------------------------------ */
 const onTableAction = async ({ type, order }) => {
 	if (type === 'detail') {
 		await router.push(`/account/amministrazione/ordini/${order.id}`);
 		return;
 	}
 	if (type === 'invoice') {
-
-		// Ora scarichiamo la fattura/ricevuta PDF normale (endpoint InvoicePdfController).
 		try {
-			const blob = await sanctum(`/api/orders/${order.id}/invoice.pdf`, {
-				method: 'GET', responseType: 'blob',
-			});
+			const blob = await sanctum(`/api/orders/${order.id}/invoice.pdf`, { method: 'GET', responseType: 'blob' });
 			const url = window.URL.createObjectURL(blob);
 			const link = document.createElement('a');
 			link.href = url;
@@ -210,10 +160,7 @@ const onTableAction = async ({ type, order }) => {
 	}
 	if (type === 'bordero') {
 		try {
-			const blob = await sanctum(`/api/orders/${order.id}/bordero/download`, {
-				method: 'GET',
-				responseType: 'blob',
-			});
+			const blob = await sanctum(`/api/orders/${order.id}/bordero/download`, { method: 'GET', responseType: 'blob' });
 			const url = window.URL.createObjectURL(blob);
 			const link = document.createElement('a');
 			link.href = url;
@@ -230,34 +177,22 @@ const onTableAction = async ({ type, order }) => {
 	}
 	if (type === 'mark-paid') {
 		try {
-			await sanctum(`/api/admin/orders/${order.id}/confirm-bank-transfer`, {
-				method: 'POST', body: { bank_transfer_reference: null },
-			});
+			await sanctum(`/api/admin/orders/${order.id}/confirm-bank-transfer`, { method: 'POST', body: { bank_transfer_reference: null } });
 			showSuccess(`Ordine #${order.id} marcato come pagato.`);
 			await fetchOrders();
 			await fetchKpi();
 		} catch (e) {
 			showError(e, 'Impossibile marcare come pagato.');
 		}
-		return;
 	}
 };
 
-/* -----------------------------------------------------------------
-   EXPORT CSV (con filtri applicati)
-   NOTA: endpoint /api/admin/orders/export non esiste ancora — vedi
-   gap endpoint nel commento finale del file. Fallback: generiamo CSV
-   client-side dai dati paginati attuali.
------------------------------------------------------------------ */
 const exportCsv = async () => {
 	exportLoading.value = true;
 	try {
-		// Tentativo backend
 		const qs = buildQueryString().toString();
 		try {
-			const blob = await sanctum(`/api/admin/orders/export?${qs}`, {
-				method: 'GET', responseType: 'blob',
-			});
+			const blob = await sanctum(`/api/admin/orders/export?${qs}`, { method: 'GET', responseType: 'blob' });
 			const url = window.URL.createObjectURL(blob);
 			const link = document.createElement('a');
 			link.href = url;
@@ -269,13 +204,10 @@ const exportCsv = async () => {
 			showSuccess('Export CSV scaricato.');
 			return;
 		} catch {
-			// silenzioso: passa a fallback client
+			// fallback client-side
 		}
 
-		// Fallback client-side (solo pagina corrente)
-		const rows = [
-			['ID', 'Data', 'Cliente', 'Email', 'Origine', 'Destinazione', 'Stato', 'Totale (EUR)', 'Tracking'],
-		];
+		const rows = [['ID', 'Data', 'Cliente', 'Email', 'Origine', 'Destinazione', 'Stato', 'Totale (EUR)', 'Tracking']];
 		for (const o of ordersData.value.data) {
 			const pkg = o?.packages?.[0] || {};
 			const subAmount = (typeof o.subtotal === 'object' && o.subtotal?.amount) ? o.subtotal.amount : (Number(o.subtotal || 0) * 100);
@@ -293,12 +225,10 @@ const exportCsv = async () => {
 		}
 		const csv = rows.map(r => r.map(field => {
 			const s = String(field ?? '');
-			if (s.includes(',') || s.includes('"') || s.includes('\n')) {
-				return `"${s.replace(/"/g, '""')}"`;
-			}
+			if (s.includes(',') || s.includes('"') || s.includes('\n')) return `"${s.replace(/"/g, '""')}"`;
 			return s;
 		}).join(',')).join('\n');
-		const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+		const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
 		const url = window.URL.createObjectURL(blob);
 		const link = document.createElement('a');
 		link.href = url;
@@ -313,24 +243,26 @@ const exportCsv = async () => {
 	}
 };
 
-/* Paginazione: vedi utils/pagination.ts */
 const pages = computed(() => buildPaginationItems(page.value, ordersData.value.last_page || 1));
 const _range = computed(() => paginationRange(page.value, perPage.value, ordersData.value.total));
 const fromIdx = computed(() => _range.value.from);
 const toIdx = computed(() => _range.value.to);
 
-/* -----------------------------------------------------------------
-   MOUNT
------------------------------------------------------------------ */
+const kpiCards = computed(() => [
+	{ key: 'orders7d', label: 'Ordini ultimi 7 giorni', value: kpiLoading.value ? '…' : kpi.value.orders7d, icon: 'mdi:cube-outline', tone: 'primary', hint: 'Volume settimanale' },
+	{ key: 'revenue7d', label: 'Incassato 7 giorni', value: kpiLoading.value ? '…' : formatCents(kpi.value.revenue7d), icon: 'mdi:bank-transfer-in', tone: 'accent', hint: 'Transazioni andate a buon fine' },
+	{ key: 'pending', label: 'Ordini pending', value: kpiLoading.value ? '…' : kpi.value.pending, icon: 'mdi:clock-outline', tone: 'warning', hint: 'Da lavorare o pagare' },
+	{ key: 'claims', label: 'Reclami aperti', value: kpiLoading.value ? '…' : kpi.value.claimsOpen, icon: 'mdi:alert-circle-outline', tone: 'primary', hint: 'Da valutare' },
+]);
+
 onMounted(async () => {
 	await Promise.all([fetchOrders(), fetchKpi()]);
 });
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-[24px] tablet:py-[28px] desktop:py-[28px]">
-		<div class="my-container m6-container">
-			<!-- HEADER ----------------------------------------------- -->
+	<section class="sf-account-shell min-h-[600px] py-6 tablet:py-7">
+		<div class="my-container">
 			<AccountPageHeader
 				eyebrow="Area amministrazione"
 				title="Ordini"
@@ -345,57 +277,24 @@ onMounted(async () => {
 
 			<AdminOrdersViewTabs />
 
-			<!-- ALERT MESSAGE ---------------------------------------- -->
-			<div
+			<SfAlert
 				v-if="actionMessage?.text || fetchError"
-				:class="['m6-alert', (actionMessage?.type === 'error' || fetchError) ? 'm6-alert--err' : 'm6-alert--ok']"
-				role="status">
-				<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-					<path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-				</svg>
-				<span>{{ actionMessage?.text || fetchError }}</span>
+				:tone="(actionMessage?.type === 'error' || fetchError) ? 'danger' : 'info'"
+				class="mb-4">
+				{{ actionMessage?.text || fetchError }}
+			</SfAlert>
+
+			<div class="grid grid-cols-2 desktop:grid-cols-4 gap-3 mb-4" aria-label="Indicatori chiave ordini">
+				<SfStatCard
+					v-for="card in kpiCards"
+					:key="card.key"
+					:label="card.label"
+					:value="card.value"
+					:icon="card.icon"
+					:tone="card.tone"
+					:trend-label="card.hint" />
 			</div>
 
-			<!-- KPI CARDS ----------------------------------------------- -->
-			<div class="m6-kpi-grid" aria-label="Indicatori chiave ordini">
-				<article class="m6-kpi m6-kpi--teal">
-					<header class="m6-kpi__head">
-						<span class="m6-kpi__label">Ordini ultimi 7 giorni</span>
-						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5Z" /></svg>
-					</header>
-					<p class="m6-kpi__value">{{ kpiLoading ? '…' : kpi.orders7d }}</p>
-					<p class="m6-kpi__hint">Volume settimanale</p>
-				</article>
-
-				<article class="m6-kpi m6-kpi--accent">
-					<header class="m6-kpi__head">
-						<span class="m6-kpi__label">Incassato 7 giorni</span>
-						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M5,6H23V18H5V6M14,9A3,3 0 0,1 17,12A3,3 0 0,1 14,15A3,3 0 0,1 11,12A3,3 0 0,1 14,9M9,8A2,2 0 0,1 7,10V14A2,2 0 0,1 9,16H19A2,2 0 0,1 21,14V10A2,2 0 0,1 19,8H9M1,10H3V20H19V22H1V10Z" /></svg>
-					</header>
-					<p class="m6-kpi__value">{{ kpiLoading ? '…' : formatCents(kpi.revenue7d) }}</p>
-					<p class="m6-kpi__hint">Transazioni andate a buon fine</p>
-				</article>
-
-				<article class="m6-kpi m6-kpi--warn">
-					<header class="m6-kpi__head">
-						<span class="m6-kpi__label">Ordini pending</span>
-						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12.5,7H11V13L16.25,16.15L17,14.92L12.5,12.25V7Z" /></svg>
-					</header>
-					<p class="m6-kpi__value">{{ kpiLoading ? '…' : kpi.pending }}</p>
-					<p class="m6-kpi__hint">Da lavorare o pagare</p>
-				</article>
-
-				<article class="m6-kpi m6-kpi--neutral">
-					<header class="m6-kpi__head">
-						<span class="m6-kpi__label">Reclami aperti</span>
-						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z" /></svg>
-					</header>
-					<p class="m6-kpi__value">{{ kpiLoading ? '…' : kpi.claimsOpen }}</p>
-					<p class="m6-kpi__hint">Da valutare</p>
-				</article>
-			</div>
-
-			<!-- FILTERS BAR ----------------------------------------------- -->
 			<AdminOrderFiltersBar
 				v-model:filters="filters"
 				:services="services"
@@ -403,22 +302,21 @@ onMounted(async () => {
 				:visible-count="ordersData.data.length"
 				:total-count="ordersData.total"
 				:export-loading="exportLoading"
-				class="mt-[14px]"
+				class="mb-4"
 				@apply="onApplyFilters"
 				@reset="onResetFilters"
 				@export-csv="exportCsv" />
 
-			<!-- TOOLBAR PER PAGE + RESULT META -------------------------- -->
-			<div class="m6-toolbar">
-				<div class="m6-toolbar__info">
+			<div class="flex flex-col tablet:flex-row tablet:items-center tablet:justify-between gap-3 mb-4">
+				<div class="text-sm text-brand-text-secondary">
 					<span v-if="ordersData.total > 0">
-						Mostrati <strong>{{ fromIdx }}-{{ toIdx }}</strong> di <strong>{{ ordersData.total }}</strong>
+						Mostrati <strong class="text-brand-text">{{ fromIdx }}-{{ toIdx }}</strong> di <strong class="text-brand-text">{{ ordersData.total }}</strong>
 					</span>
 					<span v-else>Nessun ordine</span>
 				</div>
-				<label class="m6-toolbar__perpage">
+				<label class="inline-flex items-center gap-2 text-sm text-brand-text-secondary">
 					<span>Per pagina</span>
-					<select :value="perPage" @change="onPerPageChange">
+					<select :value="perPage" class="h-9 px-2.5 rounded-control border border-brand-border bg-brand-card text-sm text-brand-text focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20" @change="onPerPageChange">
 						<option :value="25">25</option>
 						<option :value="50">50</option>
 						<option :value="100">100</option>
@@ -426,23 +324,21 @@ onMounted(async () => {
 				</label>
 			</div>
 
-			<!-- TABELLA / CARDS ----------------------------------------- -->
-			<div class="m6-results">
-				<div v-if="loading" class="m6-state m6-state--loading">
-					<div class="m6-spinner" aria-hidden="true"/>
+			<div>
+				<div v-if="loading" class="flex flex-col items-center gap-3 py-10 text-brand-text-secondary">
+					<UIcon name="mdi:loading" class="w-8 h-8 text-brand-primary animate-spin" />
 					<p>Caricamento ordini…</p>
 				</div>
 
-				<div v-else-if="!ordersData.data.length" class="m6-state m6-state--empty">
-					<div class="m6-state__icon">
-						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
-							<path d="M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5Z" />
-						</svg>
-					</div>
-					<h2>Nessun ordine trovato</h2>
-					<p>Cambia i filtri o resetta per vedere tutti gli ordini.</p>
-					<button type="button" class="m6-btn-secondary" @click="onResetFilters">Reset filtri</button>
-				</div>
+				<SfEmptyState
+					v-else-if="!ordersData.data.length"
+					icon="mdi:cube-outline"
+					title="Nessun ordine trovato"
+					description="Cambia i filtri o resetta per vedere tutti gli ordini.">
+					<template #cta>
+						<SfButton variant="secondary" @click="onResetFilters">Reset filtri</SfButton>
+					</template>
+				</SfEmptyState>
 
 				<AdminOrderTable
 					v-else
@@ -455,35 +351,31 @@ onMounted(async () => {
 					@action="onTableAction" />
 			</div>
 
-			<!-- PAGINAZIONE --------------------------------------------- -->
-			<nav v-if="ordersData.last_page > 1" class="m6-pagination" aria-label="Paginazione ordini">
-				<button
-					type="button"
-					class="m6-pag-btn"
-					:disabled="page === 1"
-					@click="goToPage(page - 1)">
-					&larr; Precedente
-				</button>
-				<ul class="m6-pag-list">
+			<nav v-if="ordersData.last_page > 1" class="mt-5 flex flex-col tablet:flex-row tablet:items-center tablet:justify-center gap-3" aria-label="Paginazione ordini">
+				<SfButton variant="secondary" size="sm" :disabled="page === 1" @click="goToPage(page - 1)">
+					← Precedente
+				</SfButton>
+				<ul class="flex items-center gap-1 list-none m-0 p-0">
 					<li v-for="(p, idx) in pages" :key="`p-${p}-${idx}`">
-						<span v-if="p === '…'" class="m6-pag-ell">…</span>
+						<span v-if="p === '…'" class="inline-flex items-center justify-center w-9 h-9 text-brand-text-muted">…</span>
 						<button
 							v-else
 							type="button"
-							:class="['m6-pag-num', p === page ? 'm6-pag-num--active' : '']"
+							:class="[
+								'inline-flex items-center justify-center w-9 h-9 rounded-control text-sm font-semibold transition',
+								p === page
+									? 'bg-brand-primary text-white shadow-sf-sm'
+									: 'bg-brand-card text-brand-text-secondary border border-brand-border hover:bg-brand-bg-alt hover:text-brand-text',
+							]"
 							:aria-current="p === page ? 'page' : undefined"
 							@click="goToPage(p)">
 							{{ p }}
 						</button>
 					</li>
 				</ul>
-				<button
-					type="button"
-					class="m6-pag-btn"
-					:disabled="page >= ordersData.last_page"
-					@click="goToPage(page + 1)">
-					Successiva &rarr;
-				</button>
+				<SfButton variant="secondary" size="sm" :disabled="page >= ordersData.last_page" @click="goToPage(page + 1)">
+					Successiva →
+				</SfButton>
 			</nav>
 		</div>
 	</section>
