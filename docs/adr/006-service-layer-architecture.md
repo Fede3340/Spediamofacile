@@ -67,16 +67,35 @@ Se appare in un solo dominio, vive nel relativo service (`Cart/`, `Brt/`, ...).
 
 ## File critici (>limite LOC, motivati)
 
-Vivono sopra il budget perché toccarli senza E2E rompe pagamenti o stampa borderò:
+Vivono sopra il budget perché toccarli senza E2E rompe pagamenti o stampa borderò.
+Lista aggiornata post-refactor agency-grade (commit `a944261`):
 
 | File | LOC | Perché intoccabile |
 |---|---|---|
-| `Checkout/StripeCheckoutController` | 517 | Stripe-critical, vedi ADR 005 |
-| `Checkout/StripeWebhookController` | 436 | Stripe-critical, vedi ADR 005 |
-| `Brt/BrtBordereauGenerator` | 527 | Generatore PDF borderò BRT con layout fisso, splittarlo non aiuta lettura |
-| `InvoicePdfService` | 424 | Generatore PDF fattura con counter atomico, contesto unico |
-| `CartService` | 438 | Logica carrello con cleanup duplicati, pivot, surcharge — splittarlo introdurrebbe N service che si chiamano fra loro |
-| `CheckoutSubmissionContextService` | 402 | Snapshot context checkout (Stripe-critical input building) |
+| `Checkout/StripeCheckoutController` | ~333 | Stripe-critical, vedi ADR 005. Già ridotto dal monolite originale (517) ma resta sopra budget per coerenza con webhook/idempotency. |
+| `Checkout/StripeWebhookController` | ~113 | Stripe-critical, ora thin (handler-pattern per event-type) |
+| `Brt/BrtBordereauGenerator` | ~250 | Già splittato. Resto è layout fisso PDF borderò BRT |
+| `InvoicePdfService` | ~330 | Già ridotto. Counter atomico + render PDF contesto unico |
+| `CartService` | ~267 | Già ridotto a facade. Sub-service in `Cart/` per item/totals/discount |
+
+**Pattern post-refactor (Round 4 backend agency-grade):**
+
+Tutti i controller domain (Cart, Order, Shipping, Gdpr, Catalog, Admin) sono ora **thin** (<200 LOC)
+con dependency injection del rispettivo service:
+
+| Controller | LOC pre | LOC post | Service estratto |
+|---|---|---|---|
+| `Cart/CartItemController` | 306 | 93 | `Cart/CartItemService` |
+| `Order/OrderActionsController` | 265 | 131 | `Order/OrderActionsService` |
+| `Order/OrderDetailController` | 416 | 70 | `Traits/HandlesOrderSubmissionContext` |
+| `Catalog/PriceBandController` | 274 | 89 | `Pricing/PriceBandService` + `Requests/BulkUpdatePriceBandsRequest` |
+| `Catalog/LocationController` | 364 | (split) | `Catalog/LocationLookupService` + 2 sub-controller |
+| `Gdpr/GdprController` | 271 | 43 | `Gdpr/GdprService` |
+| `Shipping/SavedShipmentController` | 269 | 82 | `Shipping/SavedShipmentService` |
+| `Shipping/ShipmentExecutionController` | 299 | 161 | `Shipping/ShipmentExecutionService` (helper) |
+| `Shipping/SessionDataController` | 362 | 167 | `Shipping/SessionDataService` |
+| `Admin/OrderManagementController` | 256 | 92 | `Admin/OrderManagementService` |
+| `Auth/GoogleController` | 371 | 161 | `Auth/GoogleOAuthService` |
 
 ## Conseguenze
 
@@ -89,8 +108,10 @@ Vivono sopra il budget perché toccarli senza E2E rompe pagamenti o stampa borde
 
 ## Riferimenti
 
-- `app/Services/` — 30 service attivi
-- `app/Http/Controllers/` — 9 domini × ~3-5 controller
+- `app/Services/` — 30+ service attivi (post Round 4 backend: +7 nuovi service per dominio)
+- `app/Http/Controllers/` — 9 domini × ~3-5 controller, ora tutti thin <200 LOC
+- `app/Http/Requests/` — FormRequest classes per validation centralizzata
 - `app/Support/AuthUiCookie.php` — helper statico riusato
 - ADR 002 — moneyphp cents (precisione monetaria)
 - ADR 005 — Stripe Elements + idempotency
+- Validato 2026 con: [Modular Monolith Laravel — Sevalla](https://sevalla.com/blog/building-modular-systems-laravel/), [Modularizing Monolith — Mateus Guimaraes](https://mateusguimaraes.com/posts/modularizing-the-monolith-a-real-world-experience), [Clean Architecture Laravel — Shazeedul](https://blog.shazeedul.dev/modular-monolith-with-clean-architecture)

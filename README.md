@@ -83,7 +83,7 @@ cd apps/web && npm install && cd ..
 - [`CLAUDE.md`](CLAUDE.md) — istruzioni AI + convenzioni codice + design system
 - [`docs/ONBOARDING.md`](docs/ONBOARDING.md) — setup completo nuovo dev
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — overview backend + frontend
-- [`docs/adr/`](docs/adr/) — Architectural Decision Records (6 ADR)
+- [`docs/adr/`](docs/adr/) — Architectural Decision Records (7 ADR)
 - `pages/__design-system.vue` — showcase live componenti `Sf*` (dev-only)
 
 ## Design system
