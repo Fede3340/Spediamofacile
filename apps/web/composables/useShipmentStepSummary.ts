@@ -1,9 +1,6 @@
 /**
  * useShipmentStepSummary — orchestra le ~30 computed del riepilogo funnel
- * (cart, session, store, props).
- *
- * Helper puri (parse/format prezzo, cleanDisplayText, ecc.) sono in
- * utils/shipmentSummaryHelpers.ts per testabilita' isolata.
+ * (cart, session, store, props). Helper puri in utils/shipmentSummaryHelpers.ts.
  */
 import { calculateShipmentServiceSurcharge } from "~/utils/shipmentServicePricing";
 import {
@@ -15,97 +12,52 @@ import {
 } from "~/utils/shipmentSummaryHelpers";
 import type { Ref } from 'vue';
 
+type Nullable<T> = T | null;
+type StrOrNum = number | string | null;
 type SummaryAddress = {
-	name?: string | null;
-	surname?: string | null;
-	city?: string | null;
-	postal_code?: string | null;
-	zip_code?: string | null;
-	address?: string | null;
-	address_number?: string | null;
-	province?: string | null;
+	name?: Nullable<string>; surname?: Nullable<string>; city?: Nullable<string>;
+	postal_code?: Nullable<string>; zip_code?: Nullable<string>; address?: Nullable<string>;
+	address_number?: Nullable<string>; province?: Nullable<string>;
 	[key: string]: unknown;
 };
 type SummaryPackage = {
-	package_type?: string | null;
-	quantity?: number | string | null;
-	weight?: number | string | null;
-	first_size?: number | string | null;
-	second_size?: number | string | null;
-	third_size?: number | string | null;
-	length?: number | string | null;
-	width?: number | string | null;
-	height?: number | string | null;
-	single_price?: number | string | null;
-	single_priceOrig?: number | string | null;
-	weight_price?: number | string | null;
-	volume_price?: number | string | null;
+	package_type?: Nullable<string>; quantity?: StrOrNum;
+	weight?: StrOrNum; first_size?: StrOrNum; second_size?: StrOrNum; third_size?: StrOrNum;
+	length?: StrOrNum; width?: StrOrNum; height?: StrOrNum;
+	single_price?: StrOrNum; single_priceOrig?: StrOrNum; weight_price?: StrOrNum; volume_price?: StrOrNum;
 	[key: string]: unknown;
 };
-type SummaryPudo = SummaryAddress & {
-	pudo_id?: string | null;
-	name?: string | null;
-};
+type SummaryPudo = SummaryAddress & { pudo_id?: Nullable<string>; name?: Nullable<string> };
 type SummaryServices = {
-	service_type?: string | null;
-	serviceData?: Record<string, unknown>;
-	sms_email_notification?: boolean;
-	[key: string]: unknown;
+	service_type?: Nullable<string>; serviceData?: Record<string, unknown>;
+	sms_email_notification?: boolean; [key: string]: unknown;
 };
 type SummarySessionData = {
-	packages?: SummaryPackage[];
-	shipment_details?: Record<string, unknown>;
-	origin_address?: SummaryAddress;
-	destination_address?: SummaryAddress;
-	selected_pudo?: SummaryPudo | null;
-	services?: SummaryServices;
-	total_price?: number | string | null;
-	sms_email_notification?: boolean;
-	delivery_mode?: string;
+	packages?: SummaryPackage[]; shipment_details?: Record<string, unknown>;
+	origin_address?: SummaryAddress; destination_address?: SummaryAddress;
+	selected_pudo?: Nullable<SummaryPudo>; services?: SummaryServices;
+	total_price?: StrOrNum; sms_email_notification?: boolean; delivery_mode?: string;
 };
-type SummarySession = {
-	data?: SummarySessionData;
-};
+type SummarySession = { data?: SummarySessionData };
 type PendingShipment = {
-	packages?: SummaryPackage[];
-	origin_address?: SummaryAddress;
-	destination_address?: SummaryAddress;
-	selected_pudo?: SummaryPudo | null;
-	services?: SummaryServices;
-	delivery_mode?: string;
+	packages?: SummaryPackage[]; origin_address?: SummaryAddress; destination_address?: SummaryAddress;
+	selected_pudo?: Nullable<SummaryPudo>; services?: SummaryServices; delivery_mode?: string;
 };
 type ShipmentFlowStoreLike = {
-	originAddressData?: SummaryAddress | null;
-	destinationAddressData?: SummaryAddress | null;
-	selectedPudo?: SummaryPudo | null;
-	shipmentDetails?: Record<string, unknown>;
-	pendingShipment?: PendingShipment | null;
-	servicesArray?: string[];
-	serviceData?: Record<string, unknown>;
-	smsEmailNotification?: boolean;
-	totalPrice?: number | string | null;
-	packages?: SummaryPackage[] | Ref<SummaryPackage[]>;
-	deliveryMode?: string;
+	originAddressData?: Nullable<SummaryAddress>; destinationAddressData?: Nullable<SummaryAddress>;
+	selectedPudo?: Nullable<SummaryPudo>; shipmentDetails?: Record<string, unknown>;
+	pendingShipment?: Nullable<PendingShipment>; servicesArray?: string[];
+	serviceData?: Record<string, unknown>; smsEmailNotification?: boolean;
+	totalPrice?: StrOrNum; packages?: SummaryPackage[] | Ref<SummaryPackage[]>; deliveryMode?: string;
 };
-type MiniStep = {
-	id: number;
-	label: string;
-	to: string;
-	isActive?: boolean;
-	isCompleted?: boolean;
-	isClickable?: boolean;
-};
+type MiniStep = { id: number; label: string; to: string; isActive?: boolean; isCompleted?: boolean; isClickable?: boolean };
 type SummaryPanel = 'services' | 'dimensions' | null;
 type UseShipmentStepSummaryArgs = {
-	destinationAddress: Ref<SummaryAddress>;
-	editablePackages: Ref<SummaryPackage[]>;
-	normalizeLocationText: (value: string) => string;
-	originAddress: Ref<SummaryAddress>;
-	session: Ref<SummarySession | null>;
-	showAddressFields: Ref<boolean>;
-	status: Ref<string>;
-	stepsRef: Ref<HTMLElement | null>;
-	shipmentFlowStore?: ShipmentFlowStoreLike | null;
+	destinationAddress: Ref<SummaryAddress>; editablePackages: Ref<SummaryPackage[]>;
+	normalizeLocationText: (value: string) => string; originAddress: Ref<SummaryAddress>;
+	session: Ref<Nullable<SummarySession>>; showAddressFields: Ref<boolean>;
+	status: Ref<string>; stepsRef: Ref<Nullable<HTMLElement>>;
+	shipmentFlowStore?: Nullable<ShipmentFlowStoreLike>;
 };
 
 const PACKAGE_TYPE_VISUAL_MAP: Record<string, { label: string; icon: string }> = {
@@ -119,8 +71,23 @@ const DEFAULT_PACKAGE_VISUAL = PACKAGE_TYPE_VISUAL_MAP.pacco as { label: string;
 
 const getStorePackages = (source?: SummaryPackage[] | Ref<SummaryPackage[]>): SummaryPackage[] => {
 	if (Array.isArray(source)) return source;
-	if (source && Array.isArray(source.value)) return source.value;
-	return [];
+	return source && Array.isArray(source.value) ? source.value : [];
+};
+
+const normalizePackageTypeLabel = (value: unknown): string => (value ? String(value).trim().toLowerCase() : 'pacco');
+
+const capitalize = (value: string): string => (value ? value.charAt(0).toUpperCase() + value.slice(1) : '');
+
+const normalizeDimensionValue = (value: unknown): number | null => {
+	const parsed = Number(value);
+	return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+};
+
+const getPackageDimensionLabel = (pack: SummaryPackage): string | null => {
+	const s1 = normalizeDimensionValue(pack?.first_size ?? pack?.length);
+	const s2 = normalizeDimensionValue(pack?.second_size ?? pack?.width);
+	const s3 = normalizeDimensionValue(pack?.third_size ?? pack?.height);
+	return s1 && s2 && s3 ? `${s1}×${s2}×${s3} cm` : null;
 };
 
 export const useShipmentStepSummary = ({
@@ -142,21 +109,14 @@ export const useShipmentStepSummary = ({
 
 	onMounted(() => {
 		loadPriceBands();
-		nextTick(() => {
-			clientDraftSummaryReady.value = true;
-		});
+		nextTick(() => { clientDraftSummaryReady.value = true; });
 	});
 
-	// firstMeaningfulValue inietta normalizeLocationText (Ref) nell'helper puro.
-	// parsePriceAmount, formatPriceAmount, pickBestPriceAmount, getPackagesTotal:
-	// importati da utils/shipmentSummaryHelpers (puri, no dependency injection).
 	const firstMeaningfulValue = (...candidates: unknown[]): string => firstMeaningfulValueHelper(candidates, normalizeLocationText);
 
 	const summaryPackagesSource = computed(() => {
-		if (clientDraftSummaryReady.value) {
-			return Array.isArray(editablePackages.value) ? editablePackages.value : [];
-		}
-		return Array.isArray(session.value?.data?.packages) ? session.value.data.packages : [];
+		const src = clientDraftSummaryReady.value ? editablePackages.value : session.value?.data?.packages;
+		return Array.isArray(src) ? src : [];
 	});
 
 	const summaryPackageLabel = computed(() => {
@@ -164,300 +124,180 @@ export const useShipmentStepSummary = ({
 		return `${count} ${count === 1 ? 'collo' : 'colli'}`;
 	});
 
-	const normalizePackageTypeLabel = (value: unknown): string => {
-		if (!value) return 'pacco';
-		return String(value).trim().toLowerCase();
-	};
-
 	const getPackageTypeLabel = (pack: SummaryPackage): string => {
 		const normalized = normalizePackageTypeLabel(pack?.package_type || 'Pacco');
-		const mapped = PACKAGE_TYPE_VISUAL_MAP[normalized];
-		if (mapped?.label) return mapped.label;
-		return normalized ? normalized.charAt(0).toUpperCase() + normalized.slice(1) : 'Pacco';
+		return PACKAGE_TYPE_VISUAL_MAP[normalized]?.label || capitalize(normalized) || 'Pacco';
 	};
 
 	const getPackageTypeIcon = (pack: SummaryPackage): string => {
 		const normalized = normalizePackageTypeLabel(pack?.package_type || 'Pacco');
-		const mapped = PACKAGE_TYPE_VISUAL_MAP[normalized];
-		return mapped?.icon || DEFAULT_PACKAGE_VISUAL.icon;
+		return PACKAGE_TYPE_VISUAL_MAP[normalized]?.icon || DEFAULT_PACKAGE_VISUAL.icon;
 	};
 
 	const summaryPackageTypeInfo = computed(() => {
-		const types = (summaryPackagesSource.value || [])
-			.map((pack) => normalizePackageTypeLabel(pack?.package_type || 'Pacco'))
-			.filter(Boolean);
-
-		if (!types.length) {
-			return DEFAULT_PACKAGE_VISUAL;
-		}
-
-		const uniqueTypes = [...new Set(types)];
-		if (uniqueTypes.length === 1) {
-			const normalized = uniqueTypes[0] || 'pacco';
-			const match = PACKAGE_TYPE_VISUAL_MAP[normalized];
-			if (match) return match;
-
-			const label = normalized.charAt(0).toUpperCase() + normalized.slice(1);
-			return { label, icon: DEFAULT_PACKAGE_VISUAL.icon };
-		}
-
-		return { label: 'Misto', icon: DEFAULT_PACKAGE_VISUAL.icon };
+		const uniqueTypes = [...new Set(
+			summaryPackagesSource.value.map((p) => normalizePackageTypeLabel(p?.package_type || 'Pacco')).filter(Boolean),
+		)];
+		if (!uniqueTypes.length) return DEFAULT_PACKAGE_VISUAL;
+		if (uniqueTypes.length > 1) return { label: 'Misto', icon: DEFAULT_PACKAGE_VISUAL.icon };
+		const normalized = uniqueTypes[0] || 'pacco';
+		return PACKAGE_TYPE_VISUAL_MAP[normalized] || { label: capitalize(normalized), icon: DEFAULT_PACKAGE_VISUAL.icon };
 	});
 
 	const summaryOriginCity = computed(() => {
-		if (!clientDraftSummaryReady.value) {
-			return session.value?.data?.shipment_details?.origin_city || 'â€”';
-		}
+		if (!clientDraftSummaryReady.value) return session.value?.data?.shipment_details?.origin_city || 'â€”';
 		const liveCity = String(originAddress.value?.city || '').trim();
 		if (liveCity) return liveCity;
 		if (showAddressFields.value) return '—';
-		return (
-			shipmentFlowStore?.originAddressData?.city
+		return shipmentFlowStore?.originAddressData?.city
 			|| shipmentFlowStore?.shipmentDetails?.origin_city
-			|| session.value?.data?.shipment_details?.origin_city
-			|| '—'
-		);
+			|| session.value?.data?.shipment_details?.origin_city || '—';
 	});
 
 	const summaryDestinationCity = computed(() => {
-		if (!clientDraftSummaryReady.value) {
-			return session.value?.data?.shipment_details?.destination_city || 'â€”';
-		}
+		if (!clientDraftSummaryReady.value) return session.value?.data?.shipment_details?.destination_city || 'â€”';
 		const pudoCity = String(shipmentFlowStore?.selectedPudo?.city || '').trim();
 		if (pudoCity) return pudoCity;
-
 		const liveCity = String(destinationAddress.value?.city || '').trim();
 		if (liveCity) return liveCity;
 		if (showAddressFields.value) return '—';
-		return (
-			shipmentFlowStore?.destinationAddressData?.city
+		return shipmentFlowStore?.destinationAddressData?.city
 			|| shipmentFlowStore?.shipmentDetails?.destination_city
-			|| session.value?.data?.shipment_details?.destination_city
-			|| '—'
-		);
+			|| session.value?.data?.shipment_details?.destination_city || '—';
 	});
 
-	const resolvedSummaryOriginCity = computed(() => (
-		firstMeaningfulValue(
-			originAddress.value?.city,
-			shipmentFlowStore?.originAddressData?.city,
-			shipmentFlowStore?.pendingShipment?.origin_address?.city,
-			session.value?.data?.origin_address?.city,
-			shipmentFlowStore?.shipmentDetails?.origin_city,
-			session.value?.data?.shipment_details?.origin_city,
-			summaryOriginCity.value,
-		) || '—'
-	));
+	const resolvedSummaryOriginCity = computed(() => firstMeaningfulValue(
+		originAddress.value?.city,
+		shipmentFlowStore?.originAddressData?.city,
+		shipmentFlowStore?.pendingShipment?.origin_address?.city,
+		session.value?.data?.origin_address?.city,
+		shipmentFlowStore?.shipmentDetails?.origin_city,
+		session.value?.data?.shipment_details?.origin_city,
+		summaryOriginCity.value,
+	) || '—');
 
-	const resolvedSummaryDestinationCity = computed(() => (
-		firstMeaningfulValue(
-			shipmentFlowStore?.selectedPudo?.city,
-			shipmentFlowStore?.pendingShipment?.selected_pudo?.city,
-			session.value?.data?.selected_pudo?.city,
-			destinationAddress.value?.city,
-			shipmentFlowStore?.destinationAddressData?.city,
-			shipmentFlowStore?.pendingShipment?.destination_address?.city,
-			session.value?.data?.destination_address?.city,
-			shipmentFlowStore?.shipmentDetails?.destination_city,
-			session.value?.data?.shipment_details?.destination_city,
-			summaryDestinationCity.value,
-		) || '—'
-	));
+	const resolvedSummaryDestinationCity = computed(() => firstMeaningfulValue(
+		shipmentFlowStore?.selectedPudo?.city,
+		shipmentFlowStore?.pendingShipment?.selected_pudo?.city,
+		session.value?.data?.selected_pudo?.city,
+		destinationAddress.value?.city,
+		shipmentFlowStore?.destinationAddressData?.city,
+		shipmentFlowStore?.pendingShipment?.destination_address?.city,
+		session.value?.data?.destination_address?.city,
+		shipmentFlowStore?.shipmentDetails?.destination_city,
+		session.value?.data?.shipment_details?.destination_city,
+		summaryDestinationCity.value,
+	) || '—');
 
 	const resolvedSummaryRouteLabel = computed(() => `${resolvedSummaryOriginCity.value} → ${resolvedSummaryDestinationCity.value}`);
+
 	const normalizeRouteText = (value: unknown): string => normalizeLocationText(String(value || '').replace(/\s+/g, ' '));
 	const normalizeRouteNumber = (value: unknown): string => String(value || '').trim().toLowerCase().replace(/\s+/g, '');
+
 	const routeConsistencyState = computed(() => {
+		const empty = { blocking: false, warning: false, message: '' };
 		const originCity = normalizeRouteText(originAddress.value?.city);
 		const destinationCity = normalizeRouteText(
 			shipmentFlowStore?.selectedPudo?.city
 			|| destinationAddress.value?.city
 			|| shipmentFlowStore?.shipmentDetails?.destination_city
 		);
-		if (!originCity || !destinationCity) {
-			return { blocking: false, warning: false, message: '' };
-		}
+		if (!originCity || !destinationCity) return empty;
 
 		const originCap = String(originAddress.value?.postal_code || '').trim();
 		const destinationCap = String(
 			shipmentFlowStore?.selectedPudo?.zip_code
 			|| destinationAddress.value?.postal_code
-			|| shipmentFlowStore?.shipmentDetails?.destination_postal_code
-			|| ''
+			|| shipmentFlowStore?.shipmentDetails?.destination_postal_code || ''
 		).trim();
 		const sameCity = originCity === destinationCity;
 		const sameCap = !!originCap && !!destinationCap && originCap === destinationCap;
 
 		const originStreet = normalizeRouteText(originAddress.value?.address);
-		const destinationStreet = normalizeRouteText(
-			shipmentFlowStore?.selectedPudo?.address
-			|| destinationAddress.value?.address
-		);
+		const destinationStreet = normalizeRouteText(shipmentFlowStore?.selectedPudo?.address || destinationAddress.value?.address);
 		const originNumber = normalizeRouteNumber(originAddress.value?.address_number);
-		const destinationNumber = normalizeRouteNumber(
-			shipmentFlowStore?.selectedPudo ? 'SNC' : destinationAddress.value?.address_number
-		);
-		const sameAddress =
-			sameCity
-			&& sameCap
-			&& !!originStreet
-			&& !!destinationStreet
-			&& originStreet === destinationStreet
-			&& !!originNumber
-			&& !!destinationNumber
-			&& originNumber === destinationNumber;
+		const destinationNumber = normalizeRouteNumber(shipmentFlowStore?.selectedPudo ? 'SNC' : destinationAddress.value?.address_number);
+		const sameAddress = sameCity && sameCap
+			&& !!originStreet && !!destinationStreet && originStreet === destinationStreet
+			&& !!originNumber && !!destinationNumber && originNumber === destinationNumber;
 
-		if (sameAddress) {
-			return {
-				blocking: true,
-				warning: true,
-				message: 'Partenza e destinazione coincidono. Inserisci una destinazione diversa prima di continuare.',
-			};
-		}
-
-		if (sameCity && sameCap) {
-			return {
-				blocking: false,
-				warning: true,
-				message: 'Tratta locale: verifica disponibilità del servizio BRT per questa combinazione di indirizzi.',
-			};
-		}
-
-		return { blocking: false, warning: false, message: '' };
+		if (sameAddress) return { blocking: true, warning: true, message: 'Partenza e destinazione coincidono. Inserisci una destinazione diversa prima di continuare.' };
+		if (sameCity && sameCap) return { blocking: false, warning: true, message: 'Tratta locale: verifica disponibilità del servizio BRT per questa combinazione di indirizzi.' };
+		return empty;
 	});
 
-	const routeWarningMessage = computed(() => (
-		routeConsistencyState.value.warning ? routeConsistencyState.value.message : ''
-	));
+	const routeWarningMessage = computed(() => routeConsistencyState.value.warning ? routeConsistencyState.value.message : '');
+
 	const selectedServicesFromState = computed(() => {
-		const local = Array.isArray(shipmentFlowStore?.servicesArray) ? shipmentFlowStore?.servicesArray.filter(Boolean) : [];
+		const local = Array.isArray(shipmentFlowStore?.servicesArray) ? shipmentFlowStore.servicesArray.filter(Boolean) : [];
 		if (local.length) return local;
-
-		const persisted = String(
-			shipmentFlowStore?.pendingShipment?.services?.service_type
-			|| session.value?.data?.services?.service_type
-			|| "",
-		)
-			.split(",")
-			.map((service) => service.trim())
-			.filter(Boolean);
-
-		return persisted;
-	});
-	const summaryServicesLabel = computed(() => {
-		const selected = selectedServicesFromState.value;
-		return selected.length ? selected.join(', ') : 'Nessun servizio';
-	});
-	const summaryServicesItems = computed(() => {
-		const selected = selectedServicesFromState.value;
-		return selected.length ? selected : ['Nessun servizio selezionato'];
+		return String(shipmentFlowStore?.pendingShipment?.services?.service_type || session.value?.data?.services?.service_type || "")
+			.split(",").map((s) => s.trim()).filter(Boolean);
 	});
 
-	const normalizeDimensionValue = (value: unknown): number | null => {
-		const parsed = Number(value);
-		return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
-	};
-
-	const getPackageDimensionLabel = (pack: SummaryPackage): string | null => {
-		const side1 = normalizeDimensionValue(pack?.first_size ?? pack?.length);
-		const side2 = normalizeDimensionValue(pack?.second_size ?? pack?.width);
-		const side3 = normalizeDimensionValue(pack?.third_size ?? pack?.height);
-		if (!side1 || !side2 || !side3) return null;
-		return `${side1}×${side2}×${side3} cm`;
-	};
+	const summaryServicesLabel = computed(() => selectedServicesFromState.value.length
+		? selectedServicesFromState.value.join(', ') : 'Nessun servizio');
+	const summaryServicesItems = computed(() => selectedServicesFromState.value.length
+		? selectedServicesFromState.value : ['Nessun servizio selezionato']);
 
 	const summaryDimensionsLabel = computed(() => {
-		const dimensionRows: Array<{ label: string; qty: number }> = [];
-		for (const pack of editablePackages.value || []) {
-			const label = getPackageDimensionLabel(pack);
-			if (!label) continue;
-			const qty = Math.max(1, Number(pack?.quantity) || 1);
-			dimensionRows.push({ label, qty });
-		}
-
-		if (!dimensionRows.length) return '—';
-
-		const totalQty = dimensionRows.reduce((sum, item) => sum + item.qty, 0);
-		const primary = dimensionRows[0]?.label || 'Misure non definite';
-
-		if (dimensionRows.length === 1 && totalQty === 1) return primary;
-		if (dimensionRows.length === 1) return `${primary} × ${totalQty}`;
+		const rows = (editablePackages.value || [])
+			.map((pack) => ({ label: getPackageDimensionLabel(pack), qty: Math.max(1, Number(pack?.quantity) || 1) }))
+			.filter((r): r is { label: string; qty: number } => !!r.label);
+		if (!rows.length) return '—';
+		const totalQty = rows.reduce((sum, item) => sum + item.qty, 0);
+		const primary = rows[0]?.label || 'Misure non definite';
+		if (rows.length === 1 && totalQty === 1) return primary;
+		if (rows.length === 1) return `${primary} × ${totalQty}`;
 		return `${primary} +${Math.max(totalQty - 1, 1)}`;
 	});
+
 	const summaryDimensionsItems = computed(() => {
 		const grouped = new Map<string, { type: string; dimension: string; icon: string; count: number }>();
 		for (const pack of (editablePackages.value || [])) {
-			const dimensionLabel = getPackageDimensionLabel(pack) || 'Misure non definite';
-			const qty = Math.max(1, Number(pack?.quantity) || 1);
-			const typeLabel = getPackageTypeLabel(pack);
-			const groupKey = `${normalizePackageTypeLabel(typeLabel)}|${dimensionLabel}`;
-			if (!grouped.has(groupKey)) {
-				grouped.set(groupKey, {
-					type: typeLabel,
-					dimension: dimensionLabel,
-					icon: getPackageTypeIcon(pack),
-					count: 0,
-				});
-			}
-			const current = grouped.get(groupKey);
-			if (!current) continue;
-			current.count += qty;
+			const dimension = getPackageDimensionLabel(pack) || 'Misure non definite';
+			const type = getPackageTypeLabel(pack);
+			const key = `${normalizePackageTypeLabel(type)}|${dimension}`;
+			const current = grouped.get(key) || { type, dimension, icon: getPackageTypeIcon(pack), count: 0 };
+			current.count += Math.max(1, Number(pack?.quantity) || 1);
+			grouped.set(key, current);
 		}
-
-		const rows = Array.from(grouped.values()).map((item) => ({
-			label: item.count > 1 ? `${item.count}x ${item.type}: ${item.dimension}` : `${item.type}: ${item.dimension}`,
-			icon: item.icon,
-			type: item.type,
+		const rows = Array.from(grouped.values()).map(({ type, dimension, icon, count }) => ({
+			label: count > 1 ? `${count}x ${type}: ${dimension}` : `${type}: ${dimension}`,
+			icon, type,
 		}));
-
-		return rows.length
-			? rows
-			: [{ label: 'Misure non disponibili', icon: DEFAULT_PACKAGE_VISUAL.icon, type: 'Pacco' }];
+		return rows.length ? rows : [{ label: 'Misure non disponibili', icon: DEFAULT_PACKAGE_VISUAL.icon, type: 'Pacco' }];
 	});
 
-	const canExpandSummaryServices = computed(() => (
-		summaryServicesItems.value.length > 1 || summaryServicesLabel.value.length > 26
-	));
-	const canExpandSummaryDimensions = computed(() => (
-		summaryDimensionsItems.value.length > 1 || summaryDimensionsLabel.value.length > 20
-	));
+	const canExpandSummaryServices = computed(() => summaryServicesItems.value.length > 1 || summaryServicesLabel.value.length > 26);
+	const canExpandSummaryDimensions = computed(() => summaryDimensionsItems.value.length > 1 || summaryDimensionsLabel.value.length > 20);
 
 	const summaryTotalPrice = computed(() => {
-		const sessionPackagesAmount = getPackagesTotal(session.value?.data?.packages);
-		const storePackagesAmount = getPackagesTotal(getStorePackages(shipmentFlowStore?.packages));
-		const pendingAmount = getPackagesTotal(shipmentFlowStore?.pendingShipment?.packages);
-		const editableAmount = getPackagesTotal(editablePackages.value);
-
+		const pendingServices = shipmentFlowStore?.pendingShipment?.services || {};
+		const sessionServices = session.value?.data?.services || {};
 		const baseAmount = pickBestPriceAmount([
-			pendingAmount,
-			editableAmount,
-			sessionPackagesAmount,
-			storePackagesAmount,
+			getPackagesTotal(shipmentFlowStore?.pendingShipment?.packages),
+			getPackagesTotal(editablePackages.value),
+			getPackagesTotal(session.value?.data?.packages),
+			getPackagesTotal(getStorePackages(shipmentFlowStore?.packages)),
 			parsePriceAmount(shipmentFlowStore?.totalPrice),
 			parsePriceAmount(session.value?.data?.total_price),
 		]);
-
-		const pendingServices = shipmentFlowStore?.pendingShipment?.services || {};
-		const sessionServices = session.value?.data?.services || {};
-		const selectedServices = Array.isArray(shipmentFlowStore?.servicesArray) && shipmentFlowStore?.servicesArray.length
-			? shipmentFlowStore?.servicesArray
-			: (pendingServices.service_type || sessionServices.service_type || "");
-		const selectedServiceData = Object.keys(shipmentFlowStore?.serviceData || {}).length
-			? shipmentFlowStore?.serviceData
-			: (pendingServices.serviceData || sessionServices.serviceData || {});
-		const notificationsEnabled = Boolean(
-			shipmentFlowStore?.smsEmailNotification
-			|| pendingServices.sms_email_notification
-			|| pendingServices.serviceData?.sms_email_notification
-			|| session.value?.data?.sms_email_notification
-			|| sessionServices.sms_email_notification
-			|| sessionServices.serviceData?.sms_email_notification
-		);
-
 		const serviceSurcharge = calculateShipmentServiceSurcharge({
-			selectedServices,
-			serviceData: selectedServiceData,
-			smsEmailNotification: notificationsEnabled,
+			selectedServices: Array.isArray(shipmentFlowStore?.servicesArray) && shipmentFlowStore?.servicesArray.length
+				? shipmentFlowStore?.servicesArray
+				: (pendingServices.service_type || sessionServices.service_type || ""),
+			serviceData: Object.keys(shipmentFlowStore?.serviceData || {}).length
+				? shipmentFlowStore?.serviceData
+				: (pendingServices.serviceData || sessionServices.serviceData || {}),
+			smsEmailNotification: Boolean(
+				shipmentFlowStore?.smsEmailNotification
+				|| pendingServices.sms_email_notification
+				|| pendingServices.serviceData?.sms_email_notification
+				|| session.value?.data?.sms_email_notification
+				|| sessionServices.sms_email_notification
+				|| sessionServices.serviceData?.sms_email_notification
+			),
 			pricingConfig: priceBands.value,
 			packages: editablePackages.value?.length
 				? editablePackages.value
@@ -467,13 +307,10 @@ export const useShipmentStepSummary = ({
 			deliveryMode: shipmentFlowStore?.deliveryMode || shipmentFlowStore?.pendingShipment?.delivery_mode || session.value?.data?.delivery_mode || "home",
 			selectedPudo: shipmentFlowStore?.selectedPudo || shipmentFlowStore?.pendingShipment?.selected_pudo || session.value?.data?.selected_pudo || null,
 		}).total;
-
 		return formatPriceAmount(baseAmount + serviceSurcharge);
 	});
 
-	const currentShipmentStep = computed(() => (
-		showAddressFields.value ? 3 : 2
-	));
+	const currentShipmentStep = computed(() => showAddressFields.value ? 3 : 2);
 
 	const summaryMiniSteps = computed(() => {
 		const defs = [
@@ -482,17 +319,12 @@ export const useShipmentStepSummary = ({
 			{ id: 3, label: 'Indirizzi', to: '/la-tua-spedizione/2?step=indirizzi' },
 			{ id: 4, label: 'Pagamento', to: '/la-tua-spedizione/2?step=pagamento' },
 		];
-
-		return defs.map((step) => {
-			const isActive = step.id === currentShipmentStep.value;
-			const isCompleted = step.id < currentShipmentStep.value;
-			return {
-				...step,
-				isActive,
-				isCompleted,
-				isClickable: isCompleted,
-			};
-		});
+		return defs.map((step) => ({
+			...step,
+			isActive: step.id === currentShipmentStep.value,
+			isCompleted: step.id < currentShipmentStep.value,
+			isClickable: step.id < currentShipmentStep.value,
+		}));
 	});
 
 	const showSummaryMiniSteps = computed(() => !stepsVisible.value);
@@ -506,55 +338,34 @@ export const useShipmentStepSummary = ({
 		if (!import.meta.client || !stepsRef.value) return;
 		const rect = stepsRef.value.getBoundingClientRect();
 		const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-		const visibleTop = Math.max(rect.top, 0);
-		const visibleBottom = Math.min(rect.bottom, viewportHeight);
-		const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+		const visibleHeight = Math.max(0, Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0));
 		const visibleRatio = rect.height > 0 ? visibleHeight / rect.height : 0;
-		const isClearlyVisible = rect.bottom > 0 && rect.top < viewportHeight && visibleRatio >= 0.55;
-		stepsVisible.value = isClearlyVisible;
+		stepsVisible.value = rect.bottom > 0 && rect.top < viewportHeight && visibleRatio >= 0.55;
 	};
 
 	const scheduleStepsVisibilityUpdate = () => {
 		if (!import.meta.client) return;
 		if (stepsVisibilityRaf) cancelAnimationFrame(stepsVisibilityRaf);
-		stepsVisibilityRaf = requestAnimationFrame(() => {
-			updateStepsVisibility();
-			stepsVisibilityRaf = null;
-		});
+		stepsVisibilityRaf = requestAnimationFrame(() => { updateStepsVisibility(); stepsVisibilityRaf = null; });
 	};
 
 	const teardownStepsVisibilityObserver = () => {
 		if (!import.meta.client) return;
 		window.removeEventListener('scroll', scheduleStepsVisibilityUpdate);
 		window.removeEventListener('resize', scheduleStepsVisibilityUpdate);
-		if (stepsVisibilityRaf) {
-			cancelAnimationFrame(stepsVisibilityRaf);
-			stepsVisibilityRaf = null;
-		}
-		if (stepsObserver) {
-			stepsObserver.disconnect();
-			stepsObserver = null;
-		}
+		if (stepsVisibilityRaf) { cancelAnimationFrame(stepsVisibilityRaf); stepsVisibilityRaf = null; }
+		if (stepsObserver) { stepsObserver.disconnect(); stepsObserver = null; }
 	};
 
 	const initStepsVisibilityObserver = () => {
 		if (!import.meta.client || !stepsRef.value) return;
 		teardownStepsVisibilityObserver();
-
 		if ('IntersectionObserver' in window) {
-			stepsObserver = new IntersectionObserver(
-				() => {
-					scheduleStepsVisibilityUpdate();
-				},
-				{
-					root: null,
-					threshold: [0, 0.2, 0.4, 0.55, 0.75, 1],
-					rootMargin: '0px',
-				}
-			);
+			stepsObserver = new IntersectionObserver(() => scheduleStepsVisibilityUpdate(), {
+				root: null, threshold: [0, 0.2, 0.4, 0.55, 0.75, 1], rootMargin: '0px',
+			});
 			stepsObserver.observe(stepsRef.value);
 		}
-
 		window.addEventListener('scroll', scheduleStepsVisibilityUpdate, { passive: true });
 		window.addEventListener('resize', scheduleStepsVisibilityUpdate);
 		scheduleStepsVisibilityUpdate();
@@ -571,77 +382,39 @@ export const useShipmentStepSummary = ({
 		if (!isOpen) summaryDetailPanel.value = null;
 		scheduleStepsVisibilityUpdate();
 	});
-
-	watch(
-		() => stepsRef.value,
-		(el) => {
-			if (!import.meta.client || !el) return;
-			nextTick(() => initStepsVisibilityObserver());
-		},
-		{ flush: 'post' }
-	);
-
-	watch(
-		() => status.value,
-		(newStatus) => {
-			if (!import.meta.client || newStatus === 'pending') return;
-			nextTick(() => initStepsVisibilityObserver());
-		}
-	);
-
-	onMounted(() => {
-		nextTick(() => initStepsVisibilityObserver());
+	watch(() => stepsRef.value, (el) => {
+		if (import.meta.client && el) nextTick(() => initStepsVisibilityObserver());
+	}, { flush: 'post' });
+	watch(() => status.value, (newStatus) => {
+		if (import.meta.client && newStatus !== 'pending') nextTick(() => initStepsVisibilityObserver());
 	});
 
-	onBeforeUnmount(() => {
-		teardownStepsVisibilityObserver();
-	});
+	onMounted(() => { nextTick(() => initStepsVisibilityObserver()); });
+	onBeforeUnmount(() => { teardownStepsVisibilityObserver(); });
 
-	const onAccordionEnter = (el: Element) => {
+	const setAccordionStyle = (el: Element, height: string, overflow: string) => {
 		const target = el as HTMLElement;
-		target.style.height = '0';
-		target.style.overflow = 'hidden';
+		target.style.height = height;
+		target.style.overflow = overflow;
 	};
-
-	const onAccordionAfterEnter = (el: Element) => {
-		const target = el as HTMLElement;
-		target.style.height = 'auto';
-		target.style.overflow = 'visible';
-	};
-
+	const onAccordionEnter = (el: Element) => setAccordionStyle(el, '0', 'hidden');
+	const onAccordionAfterEnter = (el: Element) => setAccordionStyle(el, 'auto', 'visible');
 	const onAccordionLeave = (el: Element) => {
-		const target = el as HTMLElement;
-		target.style.height = `${target.scrollHeight}px`;
-		target.style.overflow = 'hidden';
-		requestAnimationFrame(() => {
-			target.style.height = '0';
-		});
+		setAccordionStyle(el, `${(el as HTMLElement).scrollHeight}px`, 'hidden');
+		requestAnimationFrame(() => { (el as HTMLElement).style.height = '0'; });
 	};
 
 	return {
-		canExpandSummaryDimensions,
-		canExpandSummaryServices,
-		currentShipmentStep,
-		goToSummaryMiniStep,
-		onAccordionAfterEnter,
-		onAccordionEnter,
-		onAccordionLeave,
-		routeConsistencyState,
-		routeWarningMessage,
-		showSummaryMiniSteps,
-		summaryDetailPanel,
-		summaryDimensionsItems,
-		summaryDimensionsLabel,
+		canExpandSummaryDimensions, canExpandSummaryServices, currentShipmentStep,
+		goToSummaryMiniStep, onAccordionAfterEnter, onAccordionEnter, onAccordionLeave,
+		routeConsistencyState, routeWarningMessage, showSummaryMiniSteps,
+		summaryDetailPanel, summaryDimensionsItems, summaryDimensionsLabel,
 		summaryDestinationCity: resolvedSummaryDestinationCity,
-		summaryExpanded,
-		summaryMiniSteps,
+		summaryExpanded, summaryMiniSteps,
 		summaryOriginCity: resolvedSummaryOriginCity,
-		summaryPackageLabel,
-		summaryPackageTypeInfo,
+		summaryPackageLabel, summaryPackageTypeInfo,
 		summaryRouteLabel: resolvedSummaryRouteLabel,
-		summaryServicesItems,
-		summaryServicesLabel,
-		summaryTotalPrice,
+		summaryServicesItems, summaryServicesLabel, summaryTotalPrice,
 		toggleSummaryDetailPanel,
 	};
 };

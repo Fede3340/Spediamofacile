@@ -1,8 +1,5 @@
 /**
- * Shipment addresses step boundary.
- *
- * It owns the form state for sender/receiver addresses, saved-address lookup
- * and the small persistence actions used by authenticated users.
+ * Shipment addresses step boundary: form state, saved-address lookup, persistence.
  */
 import { computed, ref, watch, type ComputedRef, type Ref } from 'vue';
 
@@ -78,166 +75,116 @@ type UseShipmentStepAddressesArgs = {
 	submitError: Ref<string | null>;
 };
 
-type CreateStepAddressArgs = {
-	storedAddress?: StepAddress | null;
-	sessionAddress?: AddressBookAddress | null;
-	sessionDetails?: ShipmentSessionDetails;
-	type: string;
-	cityKey: keyof ShipmentSessionDetails;
-	postalCodeKey: keyof ShipmentSessionDetails;
-	countryKey: keyof ShipmentSessionDetails;
-};
+const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
 
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-	typeof value === 'object' && value !== null;
-
-const createBaseAddress = (): StepAddress => ({
-	full_name: '',
-	additional_information: '',
-	address: '',
-	address_number: '',
-	intercom_code: '',
-	country: 'Italia',
-	city: '',
-	postal_code: '',
-	province: '',
-	telephone_number: '',
-	email: '',
+const baseAddress = (): StepAddress => ({
+	full_name: '', additional_information: '', address: '', address_number: '', intercom_code: '',
+	country: 'Italia', city: '', postal_code: '', province: '', telephone_number: '', email: '',
 });
 
-const fromSessionAddress = (sessionAddress: AddressBookAddress | null | undefined, type: string): StepAddress => ({
-	...createBaseAddress(),
-	type,
-	full_name: sessionAddress?.name || '',
-	additional_information: sessionAddress?.additional_information || '',
-	address: sessionAddress?.address || '',
-	address_number: sessionAddress?.address_number || '',
-	intercom_code: sessionAddress?.intercom_code || '',
-	country: sessionAddress?.country || 'Italia',
-	city: sessionAddress?.city || '',
-	postal_code: sessionAddress?.postal_code || '',
-	province: sessionAddress?.province || '',
-	telephone_number: sessionAddress?.telephone_number || '',
-	email: sessionAddress?.email || '',
+const fromSessionAddress = (a: AddressBookAddress | null | undefined, type: string): StepAddress => ({
+	...baseAddress(), type,
+	full_name: a?.name || '',
+	additional_information: a?.additional_information || '',
+	address: a?.address || '',
+	address_number: a?.address_number || '',
+	intercom_code: a?.intercom_code || '',
+	country: a?.country || 'Italia',
+	city: a?.city || '',
+	postal_code: a?.postal_code || '',
+	province: a?.province || '',
+	telephone_number: a?.telephone_number || '',
+	email: a?.email || '',
 });
 
-const createStepAddress = ({
-	storedAddress,
-	sessionAddress,
-	sessionDetails,
-	type,
-	cityKey,
-	postalCodeKey,
-	countryKey,
-}: CreateStepAddressArgs): StepAddress => {
-	if (storedAddress) return { ...storedAddress };
-	if (sessionAddress) return fromSessionAddress(sessionAddress, type);
-
+const initStepAddress = (
+	stored: StepAddress | null | undefined,
+	sessAddr: AddressBookAddress | null | undefined,
+	details: ShipmentSessionDetails | undefined,
+	type: string,
+	cityKey: keyof ShipmentSessionDetails,
+	pcKey: keyof ShipmentSessionDetails,
+	countryKey: keyof ShipmentSessionDetails,
+): StepAddress => {
+	if (stored) return { ...stored };
+	if (sessAddr) return fromSessionAddress(sessAddr, type);
 	return {
-		...createBaseAddress(),
-		type,
-		city: String(sessionDetails?.[cityKey] || ''),
-		postal_code: String(sessionDetails?.[postalCodeKey] || ''),
-		country: String(sessionDetails?.[countryKey] || 'Italia'),
+		...baseAddress(), type,
+		city: String(details?.[cityKey] || ''),
+		postal_code: String(details?.[pcKey] || ''),
+		country: String(details?.[countryKey] || 'Italia'),
 	};
 };
 
-const hasMinimumAddressData = (address: StepAddress) =>
-	Boolean(address.full_name.trim() && address.address.trim() && address.city.trim() && address.postal_code.trim());
+const hasMinAddress = (a: StepAddress) =>
+	Boolean(a.full_name.trim() && a.address.trim() && a.city.trim() && a.postal_code.trim());
 
-const normalizePostalCode = (address: Pick<StepAddress | AddressBookAddress, 'country' | 'postal_code'>) => {
-	const country = String(address.country || 'Italia').trim().toLowerCase();
-	const rawPostalCode = String(address.postal_code || '');
-	if (country === 'italia') return rawPostalCode.replace(/\D/g, '');
-	return rawPostalCode.toUpperCase().replace(/[^A-Z0-9-\s]/g, '').trim();
+const normPostal = (a: Pick<StepAddress | AddressBookAddress, 'country' | 'postal_code'>) => {
+	const country = String(a.country || 'Italia').trim().toLowerCase();
+	const raw = String(a.postal_code || '');
+	return country === 'italia' ? raw.replace(/\D/g, '') : raw.toUpperCase().replace(/[^A-Z0-9-\s]/g, '').trim();
 };
 
-const normalizeAddressText = (value: unknown) => String(value || '').trim().replace(/\s+/g, ' ').toLowerCase();
-const normalizeAddressCountry = (value: unknown) => {
-	const normalized = normalizeAddressText(value);
-	return normalized === 'italia' || normalized === 'it' ? 'it' : normalized;
+const normText = (v: unknown) => String(v || '').trim().replace(/\s+/g, ' ').toLowerCase();
+const normCountry = (v: unknown) => {
+	const n = normText(v);
+	return n === 'italia' || n === 'it' ? 'it' : n;
 };
-const normalizeAddressEmail = (value: unknown) => String(value || '').trim().toLowerCase();
-const normalizeAddressPhone = (value: unknown) => String(value || '').replace(/\s+/g, '');
+const normEmail = (v: unknown) => String(v || '').trim().toLowerCase();
+const normPhone = (v: unknown) => String(v || '').replace(/\s+/g, '');
 
-const toAddressBookPayload = (address: StepAddress): Required<AddressBookAddress> & { number_type: string } => ({
-	name: address.full_name.trim(),
-	additional_information: address.additional_information || '',
-	address: address.address.trim(),
+const toBookPayload = (a: StepAddress): Required<AddressBookAddress> & { number_type: string } => ({
+	name: a.full_name.trim(),
+	additional_information: a.additional_information || '',
+	address: a.address.trim(),
 	number_type: 'Numero Civico',
-	address_number: address.address_number.trim(),
-	intercom_code: address.intercom_code || '',
-	country: address.country || 'Italia',
-	city: address.city.trim(),
-	postal_code: normalizePostalCode(address),
-	province: address.province.trim(),
-	telephone_number: address.telephone_number.trim(),
-	email: address.email || '',
+	address_number: a.address_number.trim(),
+	intercom_code: a.intercom_code || '',
+	country: a.country || 'Italia',
+	city: a.city.trim(),
+	postal_code: normPostal(a),
+	province: a.province.trim(),
+	telephone_number: a.telephone_number.trim(),
+	email: a.email || '',
 });
 
-const getAddressBookSignature = (address: StepAddress | AddressBookAddress) => {
-	const payload = 'full_name' in address ? toAddressBookPayload(address) : address;
+const bookSignature = (a: StepAddress | AddressBookAddress) => {
+	const p = 'full_name' in a ? toBookPayload(a) : a;
 	return JSON.stringify({
-		name: normalizeAddressText(payload.name),
-		additional_information: normalizeAddressText(payload.additional_information),
-		address: normalizeAddressText(payload.address),
-		address_number: normalizeAddressText(payload.address_number),
-		intercom_code: normalizeAddressText(payload.intercom_code),
-		country: normalizeAddressCountry(payload.country),
-		city: normalizeAddressText(payload.city),
-		postal_code: normalizePostalCode(payload),
-		province: normalizeAddressText(payload.province),
-		telephone_number: normalizeAddressPhone(payload.telephone_number),
-		email: normalizeAddressEmail(payload.email),
+		name: normText(p.name),
+		additional_information: normText(p.additional_information),
+		address: normText(p.address),
+		address_number: normText(p.address_number),
+		intercom_code: normText(p.intercom_code),
+		country: normCountry(p.country),
+		city: normText(p.city),
+		postal_code: normPostal(p),
+		province: normText(p.province),
+		telephone_number: normPhone(p.telephone_number),
+		email: normEmail(p.email),
 	});
 };
 
-const getApiErrorMessage = (error: unknown, fallback: string) => {
+const apiErrorMessage = (error: unknown, fallback: string) => {
 	if (!isRecord(error)) return fallback;
 	const data = isRecord(error.data) ? error.data : null;
-	const message = data?.message;
-	return typeof message === 'string' && message ? message : fallback;
+	const msg = data?.message;
+	return typeof msg === 'string' && msg ? msg : fallback;
 };
 
 export const useShipmentStepAddresses = ({
-	shipmentFlowStore,
-	session,
-	route,
-	isAuthenticated,
-	sanctumClient,
-	deliveryMode,
-	submitError,
+	shipmentFlowStore, session, route, isAuthenticated, sanctumClient, deliveryMode, submitError,
 }: UseShipmentStepAddressesArgs) => {
 	const storedOrigin = shipmentFlowStore?.originAddressData;
 	const storedDest = shipmentFlowStore?.destinationAddressData;
 	const sessionDetails = session.value?.data?.shipment_details;
-	const sessionOriginAddress = session.value?.data?.origin_address;
-	const sessionDestinationAddress = session.value?.data?.destination_address;
+	const sessionOrigin = session.value?.data?.origin_address;
+	const sessionDest = session.value?.data?.destination_address;
 
-	const originAddress = ref<StepAddress>(
-		createStepAddress({
-			storedAddress: storedOrigin,
-			sessionAddress: sessionOriginAddress,
-			sessionDetails,
-			type: 'Partenza',
-			cityKey: 'origin_city',
-			postalCodeKey: 'origin_postal_code',
-			countryKey: 'origin_country',
-		}),
-	);
-	const destinationAddress = ref<StepAddress>(
-		createStepAddress({
-			storedAddress: storedDest,
-			sessionAddress: sessionDestinationAddress,
-			sessionDetails,
-			type: 'Destinazione',
-			cityKey: 'destination_city',
-			postalCodeKey: 'destination_postal_code',
-			countryKey: 'destination_country',
-		}),
-	);
+	const originAddress = ref<StepAddress>(initStepAddress(storedOrigin, sessionOrigin, sessionDetails, 'Partenza', 'origin_city', 'origin_postal_code', 'origin_country'));
+	const destinationAddress = ref<StepAddress>(initStepAddress(storedDest, sessionDest, sessionDetails, 'Destinazione', 'destination_city', 'destination_postal_code', 'destination_country'));
 
-	const shouldAutoShowAddressFields = route.query.step === 'ritiro' || Boolean(storedOrigin || sessionOriginAddress);
+	const shouldAutoShowAddressFields = route.query.step === 'ritiro' || Boolean(storedOrigin || sessionOrigin);
 	const savedAddresses = ref<AddressBookAddress[]>([]);
 	const loadingSavedAddresses = ref(false);
 	const showOriginAddressSelector = ref(false);
@@ -260,24 +207,24 @@ export const useShipmentStepAddresses = ({
 	const originSavedSnapshot = ref<string | null>(null);
 	const destSavedSnapshot = ref<string | null>(null);
 
-	const getRequestedPath = () => {
-		const redirectQuery = Array.isArray(route.query.redirect) ? route.query.redirect[0] : route.query.redirect;
+	const requestedPath = () => {
+		const r = Array.isArray(route.query.redirect) ? route.query.redirect[0] : route.query.redirect;
 		if (route.path === '/autenticazione' || route.path === '/login' || route.path === '/registrazione') {
-			return typeof redirectQuery === 'string' && redirectQuery.startsWith('/') ? redirectQuery : '/';
+			return typeof r === 'string' && r.startsWith('/') ? r : '/';
 		}
 		return route.fullPath;
 	};
 
 	const authRedirectPath = computed(() => {
-		const requestedPath = getRequestedPath();
-		return requestedPath === '/' ? '/autenticazione' : `/autenticazione?redirect=${encodeURIComponent(requestedPath)}`;
+		const p = requestedPath();
+		return p === '/' ? '/autenticazione' : `/autenticazione?redirect=${encodeURIComponent(p)}`;
 	});
 
 	const authRegisterRedirectPath = computed(() => {
-		const requestedPath = getRequestedPath();
-		const query = new URLSearchParams({ mode: 'register' });
-		if (requestedPath !== '/') query.set('redirect', requestedPath);
-		return `/autenticazione?${query.toString()}`;
+		const p = requestedPath();
+		const q = new URLSearchParams({ mode: 'register' });
+		if (p !== '/') q.set('redirect', p);
+		return `/autenticazione?${q.toString()}`;
 	});
 
 	const clearAddressSelectorsAndPrompts = () => {
@@ -295,202 +242,131 @@ export const useShipmentStepAddresses = ({
 		try {
 			const result = await sanctumClient<{ data?: AddressBookAddress[] }>('/api/user-addresses');
 			savedAddresses.value = result.data || [];
-		} catch {
-			// The address selector stays optional: failing to load it must not block checkout.
-		} finally {
+		} catch { /* selector optional: never block checkout */ } finally {
 			loadingSavedAddresses.value = false;
 		}
 	};
 
-	watch(
-		isAuthenticated,
-		(authenticated) => {
-			if (!authenticated) {
-				savedAddresses.value = [];
-				return;
-			}
-			void loadSavedAddresses();
-		},
-		{ immediate: true },
-	);
+	watch(isAuthenticated, (auth) => {
+		if (!auth) { savedAddresses.value = []; return; }
+		void loadSavedAddresses();
+	}, { immediate: true });
 
 	const applySavedAddress = (address: AddressBookAddress, target: AddressTarget) => {
-		const addressRef = target === 'origin' ? originAddress : destinationAddress;
-		const isDestPudoContactOnly = target === 'dest' && deliveryMode.value === 'pudo';
-		addressRef.value.full_name = address.name || '';
-		addressRef.value.telephone_number = address.telephone_number || '';
-		addressRef.value.email = address.email || '';
-		addressRef.value.additional_information = address.additional_information || '';
-
-		if (!isDestPudoContactOnly) {
-			addressRef.value.address = address.address || '';
-			addressRef.value.address_number = address.address_number || '';
-			addressRef.value.city = address.city || '';
-			addressRef.value.postal_code = address.postal_code || '';
-			addressRef.value.province = address.province || '';
-			addressRef.value.intercom_code = address.intercom_code || '';
+		const ref_ = target === 'origin' ? originAddress : destinationAddress;
+		const contactOnly = target === 'dest' && deliveryMode.value === 'pudo';
+		ref_.value.full_name = address.name || '';
+		ref_.value.telephone_number = address.telephone_number || '';
+		ref_.value.email = address.email || '';
+		ref_.value.additional_information = address.additional_information || '';
+		if (!contactOnly) {
+			ref_.value.address = address.address || '';
+			ref_.value.address_number = address.address_number || '';
+			ref_.value.city = address.city || '';
+			ref_.value.postal_code = address.postal_code || '';
+			ref_.value.province = address.province || '';
+			ref_.value.intercom_code = address.intercom_code || '';
 		}
-
-		if (target === 'origin') {
-			showOriginAddressSelector.value = false;
-			originFromSaved.value = true;
-			originSaveSuccess.value = false;
-			originSavedSnapshot.value = getAddressBookSignature(addressRef.value);
-			return;
-		}
-
-		showDestAddressSelector.value = false;
-		destFromSaved.value = true;
-		destSaveSuccess.value = false;
-		destSavedSnapshot.value = getAddressBookSignature(addressRef.value);
+		const isOrigin = target === 'origin';
+		(isOrigin ? showOriginAddressSelector : showDestAddressSelector).value = false;
+		(isOrigin ? originFromSaved : destFromSaved).value = true;
+		(isOrigin ? originSaveSuccess : destSaveSuccess).value = false;
+		(isOrigin ? originSavedSnapshot : destSavedSnapshot).value = bookSignature(ref_.value);
 	};
 
-	watch(
-		originAddress,
-		(newValue) => {
-			if (!originSavedSnapshot.value || getAddressBookSignature(newValue) === originSavedSnapshot.value) return;
-			originFromSaved.value = false;
-			originSaveSuccess.value = false;
-			originSavedSnapshot.value = null;
-		},
-		{ deep: true },
-	);
+	const watchSavedDrift = (snapshot: Ref<string | null>, fromSaved: Ref<boolean>, success: Ref<boolean>) =>
+		(newValue: StepAddress) => {
+			if (!snapshot.value || bookSignature(newValue) === snapshot.value) return;
+			fromSaved.value = false;
+			success.value = false;
+			snapshot.value = null;
+		};
 
-	watch(
-		destinationAddress,
-		(newValue) => {
-			if (!destSavedSnapshot.value || getAddressBookSignature(newValue) === destSavedSnapshot.value) return;
-			destFromSaved.value = false;
-			destSaveSuccess.value = false;
-			destSavedSnapshot.value = null;
-		},
-		{ deep: true },
-	);
+	watch(originAddress, watchSavedDrift(originSavedSnapshot, originFromSaved, originSaveSuccess), { deep: true });
+	watch(destinationAddress, watchSavedDrift(destSavedSnapshot, destFromSaved, destSaveSuccess), { deep: true });
 
-	const isOriginDuplicateAddress = computed(() => {
-		if (!isAuthenticated.value || !savedAddresses.value.length || !hasMinimumAddressData(originAddress.value)) return false;
-		const originSignature = getAddressBookSignature(originAddress.value);
-		return savedAddresses.value.some((savedAddress) => getAddressBookSignature(savedAddress) === originSignature);
-	});
+	const isDuplicate = (addr: Ref<StepAddress>) => () => {
+		if (!isAuthenticated.value || !savedAddresses.value.length || !hasMinAddress(addr.value)) return false;
+		const sig = bookSignature(addr.value);
+		return savedAddresses.value.some((s) => bookSignature(s) === sig);
+	};
 
-	const isDestDuplicateAddress = computed(() => {
-		if (!isAuthenticated.value || !savedAddresses.value.length || !hasMinimumAddressData(destinationAddress.value)) return false;
-		const destinationSignature = getAddressBookSignature(destinationAddress.value);
-		return savedAddresses.value.some((savedAddress) => getAddressBookSignature(savedAddress) === destinationSignature);
-	});
+	const isOriginDuplicateAddress = computed(isDuplicate(originAddress));
+	const isDestDuplicateAddress = computed(isDuplicate(destinationAddress));
 
-	const canSaveOriginAddress = computed(
-		() =>
-			isAuthenticated.value &&
-			!originFromSaved.value &&
-			!originSaveSuccess.value &&
-			!isOriginDuplicateAddress.value &&
-			hasMinimumAddressData(originAddress.value),
-	);
-	const canSaveDestAddress = computed(
-		() =>
-			isAuthenticated.value &&
-			!destFromSaved.value &&
-			!destSaveSuccess.value &&
-			!isDestDuplicateAddress.value &&
-			hasMinimumAddressData(destinationAddress.value),
-	);
+	const canSave = (addr: Ref<StepAddress>, fromSaved: Ref<boolean>, success: Ref<boolean>, dup: ComputedRef<boolean>) => () =>
+		isAuthenticated.value && !fromSaved.value && !success.value && !dup.value && hasMinAddress(addr.value);
+
+	const canSaveOriginAddress = computed(canSave(originAddress, originFromSaved, originSaveSuccess, isOriginDuplicateAddress));
+	const canSaveDestAddress = computed(canSave(destinationAddress, destFromSaved, destSaveSuccess, isDestDuplicateAddress));
 
 	const saveAddressToBook = async (target: AddressTarget) => {
-		const address = target === 'origin' ? originAddress.value : destinationAddress.value;
-		const savingRef: Ref<boolean> = target === 'origin' ? savingOriginAddress : savingDestAddress;
-		const successRef: Ref<boolean> = target === 'origin' ? originSaveSuccess : destSaveSuccess;
-		const duplicateRef: ComputedRef<boolean> = target === 'origin' ? isOriginDuplicateAddress : isDestDuplicateAddress;
-		const snapshotRef: Ref<string | null> = target === 'origin' ? originSavedSnapshot : destSavedSnapshot;
+		const isOrigin = target === 'origin';
+		const address = (isOrigin ? originAddress : destinationAddress).value;
+		const savingRef = isOrigin ? savingOriginAddress : savingDestAddress;
+		const successRef = isOrigin ? originSaveSuccess : destSaveSuccess;
+		const dupRef = isOrigin ? isOriginDuplicateAddress : isDestDuplicateAddress;
+		const snapshotRef = isOrigin ? originSavedSnapshot : destSavedSnapshot;
 
-		if (duplicateRef.value) {
+		if (dupRef.value) {
 			submitError.value = 'Questo indirizzo e gia presente tra gli indirizzi salvati.';
 			return;
 		}
-
 		savingRef.value = true;
 		try {
-			await sanctumClient('/api/user-addresses', { method: 'POST', body: toAddressBookPayload(address) });
+			await sanctumClient('/api/user-addresses', { method: 'POST', body: toBookPayload(address) });
 			successRef.value = true;
 			savedAddresses.value = [];
-			snapshotRef.value = getAddressBookSignature(address);
+			snapshotRef.value = bookSignature(address);
 			await loadSavedAddresses();
 		} catch (error) {
-			submitError.value = getApiErrorMessage(error, "Errore nel salvataggio dell'indirizzo.");
+			submitError.value = apiErrorMessage(error, "Errore nel salvataggio dell'indirizzo.");
 		} finally {
 			savingRef.value = false;
 		}
 	};
 
 	const toggleAddressSelector = (target: AddressTarget) => {
+		const isOrigin = target === 'origin';
 		if (!isAuthenticated.value) {
-			showOriginGuestPrompt.value = target === 'origin' ? !showOriginGuestPrompt.value : false;
-			showDestGuestPrompt.value = target === 'dest' ? !showDestGuestPrompt.value : false;
+			showOriginGuestPrompt.value = isOrigin ? !showOriginGuestPrompt.value : false;
+			showDestGuestPrompt.value = !isOrigin ? !showDestGuestPrompt.value : false;
 			showOriginAddressSelector.value = false;
 			showDestAddressSelector.value = false;
 			return;
 		}
-
 		void loadSavedAddresses();
 		showOriginGuestPrompt.value = false;
 		showDestGuestPrompt.value = false;
-		showOriginAddressSelector.value = target === 'origin' ? !showOriginAddressSelector.value : false;
-		showDestAddressSelector.value = target === 'dest' ? !showDestAddressSelector.value : false;
+		showOriginAddressSelector.value = isOrigin ? !showOriginAddressSelector.value : false;
+		showDestAddressSelector.value = !isOrigin ? !showDestAddressSelector.value : false;
 	};
 
-	watch(
-		() => session.value?.data?.shipment_details,
-		(details) => {
-			if (!details) return;
-			if (!originAddress.value.city) originAddress.value.city = details.origin_city || '';
-			if (!originAddress.value.postal_code) originAddress.value.postal_code = details.origin_postal_code || '';
-			if (!originAddress.value.province && details.origin_province) originAddress.value.province = details.origin_province;
-			if (!destinationAddress.value.city) destinationAddress.value.city = details.destination_city || '';
-			if (!destinationAddress.value.postal_code) destinationAddress.value.postal_code = details.destination_postal_code || '';
-			if (!destinationAddress.value.province && details.destination_province) destinationAddress.value.province = details.destination_province;
-		},
-		{ immediate: true },
-	);
+	const fillFromDetails = (d: ShipmentSessionDetails | null | undefined) => {
+		if (!d) return;
+		const o = originAddress.value;
+		const t = destinationAddress.value;
+		if (!o.city) o.city = d.origin_city || '';
+		if (!o.postal_code) o.postal_code = d.origin_postal_code || '';
+		if (!o.province && d.origin_province) o.province = d.origin_province;
+		if (!t.city) t.city = d.destination_city || '';
+		if (!t.postal_code) t.postal_code = d.destination_postal_code || '';
+		if (!t.province && d.destination_province) t.province = d.destination_province;
+	};
 
-	watch(
-		() => session.value?.data?.origin_address,
-		(address) => {
-			if (!address || originAddress.value.full_name) return;
-			originAddress.value = fromSessionAddress(address, 'Partenza');
-		},
-		{ immediate: true },
-	);
+	watch(() => session.value?.data?.shipment_details, fillFromDetails, { immediate: true });
 
-	watch(
-		() => session.value?.data?.destination_address,
-		(address) => {
-			if (!address || destinationAddress.value.full_name) return;
-			destinationAddress.value = fromSessionAddress(address, 'Destinazione');
-		},
-		{ immediate: true },
-	);
+	watch(() => session.value?.data?.origin_address, (a) => {
+		if (!a || originAddress.value.full_name) return;
+		originAddress.value = fromSessionAddress(a, 'Partenza');
+	}, { immediate: true });
 
-	watch(
-		() => shipmentFlowStore?.shipmentDetails,
-		(shipmentDetails) => {
-			if (!shipmentDetails) return;
-			if (shipmentDetails.origin_city && !originAddress.value.city) originAddress.value.city = shipmentDetails.origin_city;
-			if (shipmentDetails.origin_postal_code && !originAddress.value.postal_code) {
-				originAddress.value.postal_code = shipmentDetails.origin_postal_code;
-			}
-			if (shipmentDetails.origin_province && !originAddress.value.province) originAddress.value.province = shipmentDetails.origin_province;
-			if (shipmentDetails.destination_city && !destinationAddress.value.city) {
-				destinationAddress.value.city = shipmentDetails.destination_city;
-			}
-			if (shipmentDetails.destination_postal_code && !destinationAddress.value.postal_code) {
-				destinationAddress.value.postal_code = shipmentDetails.destination_postal_code;
-			}
-			if (shipmentDetails.destination_province && !destinationAddress.value.province) {
-				destinationAddress.value.province = shipmentDetails.destination_province;
-			}
-		},
-		{ immediate: true, deep: true },
-	);
+	watch(() => session.value?.data?.destination_address, (a) => {
+		if (!a || destinationAddress.value.full_name) return;
+		destinationAddress.value = fromSessionAddress(a, 'Destinazione');
+	}, { immediate: true });
+
+	watch(() => shipmentFlowStore?.shipmentDetails, fillFromDetails, { immediate: true, deep: true });
 
 	return {
 		authRedirectPath,
