@@ -7,98 +7,80 @@ const props = defineProps({
 	invoiceSubjectType: { type: String, required: true },
 	fatturaData: { type: Object, required: true },
 	billingShippingFullAddress: { type: String, default: '' },
-	// Indirizzo di destinazione della spedizione (sorgente del toggle "stesso indirizzo").
 	destinationAddress: { type: Object, default: () => ({}) },
 });
 
 const emit = defineEmits(['update:fatturazioneType', 'update:invoiceSubjectType', 'update:fatturaData']);
 
-// Toggle "Usa lo stesso indirizzo della spedizione" per i campi indirizzo/città/prov/CAP
-// della fatturazione. Quando attivo copia i valori da `destinationAddress` e disabilita
-// i quattro input fisici (UX coerente con i pattern di billing moderni).
+// Toggle "stesso indirizzo della spedizione": copia da destinationAddress e disabilita gli input.
 const useShippingAsBilling = ref(false);
-
-// Compone la riga indirizzo (via + civico) come fa useCheckoutBilling.applyShippingDataToBilling.
-const buildAddressLine = (address) => {
-	if (!address) return '';
-	return [address.address, address.address_number].filter(Boolean).join(' ').trim();
-};
-
-// Snapshot dei valori precedenti per ripristino quando l'utente disattiva il toggle.
 const previousBillingSnapshot = ref(null);
 
-const updateFatturaData = (patch) => {
-	emit('update:fatturaData', {
-		...props.fatturaData,
-		...patch,
-	});
-};
-
+const buildAddressLine = (a) => (a ? [a.address, a.address_number].filter(Boolean).join(' ').trim() : '');
 const fatturaField = (field) => props.fatturaData?.[field] || '';
+const updateFatturaData = (patch) => emit('update:fatturaData', { ...props.fatturaData, ...patch });
+const setFatturaField = (field, value) => updateFatturaData({ [field]: value });
 
-const setFatturaField = (field, value) => {
-	updateFatturaData({ [field]: value });
+const addressFromShipping = () => {
+	const d = props.destinationAddress || {};
+	return { indirizzo: buildAddressLine(d), city: d.city || '', province: d.province || '', postal_code: d.postal_code || '' };
 };
-
-const applyShippingToBillingFields = () => {
-	const dest = props.destinationAddress || {};
-	updateFatturaData({
-		indirizzo: buildAddressLine(dest),
-		city: dest.city || '',
-		province: dest.province || '',
-		postal_code: dest.postal_code || '',
-	});
-};
-
-watch(useShippingAsBilling, (active) => {
-	if (active) {
-		// Memorizza i valori attuali prima di sovrascriverli, così possiamo ripristinarli.
-		previousBillingSnapshot.value = {
-			indirizzo: props.fatturaData.indirizzo || '',
-			city: props.fatturaData.city || '',
-			province: props.fatturaData.province || '',
-			postal_code: props.fatturaData.postal_code || '',
-		};
-		applyShippingToBillingFields();
-	} else if (previousBillingSnapshot.value) {
-		// Ripristina i valori precedenti al toggle (preserva eventuale compilazione manuale).
-		updateFatturaData(previousBillingSnapshot.value);
-		previousBillingSnapshot.value = null;
-	}
+const snapshotAddress = () => ({
+	indirizzo: fatturaField('indirizzo'), city: fatturaField('city'),
+	province: fatturaField('province'), postal_code: fatturaField('postal_code'),
 });
 
-// Se l'utente cambia i dati della destinazione mentre il toggle è attivo, li risincronizza.
+watch(useShippingAsBilling, (active) => {
+	if (active) { previousBillingSnapshot.value = snapshotAddress(); updateFatturaData(addressFromShipping()); }
+	else if (previousBillingSnapshot.value) { updateFatturaData(previousBillingSnapshot.value); previousBillingSnapshot.value = null; }
+});
+
 watch(
-	() => [
-		props.destinationAddress?.address,
-		props.destinationAddress?.address_number,
-		props.destinationAddress?.city,
-		props.destinationAddress?.province,
-		props.destinationAddress?.postal_code,
-	],
 	() => {
-		if (useShippingAsBilling.value) applyShippingToBillingFields();
+		const d = props.destinationAddress || {};
+		return [d.address, d.address_number, d.city, d.province, d.postal_code];
 	},
+	() => { if (useShippingAsBilling.value) updateFatturaData(addressFromShipping()); },
 );
+
+// Config dei campi: una sola fonte di verità per gli input (label, name, attrs).
+const ADDRESS_FIELDS = [
+	{ name: 'indirizzo', label: 'Indirizzo', placeholder: 'Indirizzo' },
+	{ name: 'city', label: 'Città', placeholder: 'Città' },
+	{ name: 'province', label: 'Prov.', placeholder: 'Prov.', maxlength: 2 },
+	{ name: 'postal_code', label: 'CAP', placeholder: 'CAP', maxlength: 10 },
+];
+const COMPANY_TOP_FIELDS = [
+	{ name: 'ragione_sociale', label: 'Ragione Sociale *', placeholder: 'SpediamoFacile S.r.l.', required: true },
+	{ name: 'p_iva', label: 'Partita IVA *', placeholder: 'IT 01234567890', required: true, maxlength: 13 },
+	{ name: 'codice_fiscale', label: 'Codice Fiscale', placeholder: '01234567890' },
+];
+const COMPANY_MID_FIELDS = [
+	{ name: 'codice_sdi', label: 'Codice SDI', placeholder: 'XXXXXXX', maxlength: 7 },
+	{ name: 'pec', label: 'PEC (alternativa)', type: 'email', placeholder: 'fattura@pec.azienda.it (almeno una tra SDI e PEC)' },
+];
+const PRIVATE_TOP_FIELDS = [
+	{ name: 'nome_completo', label: 'Nome completo *', placeholder: 'Nome e Cognome', required: true },
+	{ name: 'codice_fiscale', label: 'Codice Fiscale *', placeholder: 'RSSMRA80A01H501U', required: true, maxlength: 16 },
+];
+
+const SWITCH_PRIMARY = [
+	{ value: 'ricevuta', label: 'Ricevuta' },
+	{ value: 'fattura', label: 'Fattura' },
+];
+const SWITCH_SUBJECT = [
+	{ value: 'azienda', label: 'Azienda' },
+	{ value: 'privato', label: 'Privato' },
+];
 </script>
 
 <template>
 	<div class="checkout-stage-card checkout-stage-card--billing checkout-motion-card [--checkout-delay:140ms]">
 		<div class="checkout-panel-head">
 			<span class="checkout-panel-head__icon">
-				<svg
-					width="18"
-					height="18"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round">
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 					<rect x="4" y="3" width="16" height="18" rx="2" />
-					<path d="M8 7h8" />
-					<path d="M8 11h8" />
-					<path d="M8 15h5" />
+					<path d="M8 7h8" /><path d="M8 11h8" /><path d="M8 15h5" />
 				</svg>
 			</span>
 			<div class="checkout-panel-head__copy">
@@ -110,38 +92,19 @@ watch(
 		<div class="checkout-mini-switch-block checkout-mini-switch-block--billing-primary">
 			<div class="checkout-mini-switch checkout-mini-switch--billing checkout-mini-switch--shared" role="tablist" aria-label="Documento fiscale">
 				<button
-					type="button"
-					role="tab"
+v-for="opt in SWITCH_PRIMARY" :key="opt.value" type="button" role="tab"
 					class="checkout-mini-switch__option"
-					:aria-pressed="fatturazioneType === 'ricevuta'"
-					:aria-selected="fatturazioneType === 'ricevuta'"
-					:class="{ 'checkout-mini-switch__option--active': fatturazioneType === 'ricevuta' }"
-					@click="emit('update:fatturazioneType', 'ricevuta')">
-					Ricevuta
-				</button>
-				<button
-					type="button"
-					role="tab"
-					class="checkout-mini-switch__option"
-					:aria-pressed="fatturazioneType === 'fattura'"
-					:aria-selected="fatturazioneType === 'fattura'"
-					:class="{ 'checkout-mini-switch__option--active': fatturazioneType === 'fattura' }"
-					@click="emit('update:fatturazioneType', 'fattura')">
-					Fattura
+					:aria-pressed="fatturazioneType === opt.value" :aria-selected="fatturazioneType === opt.value"
+					:class="{ 'checkout-mini-switch__option--active': fatturazioneType === opt.value }"
+					@click="emit('update:fatturazioneType', opt.value)">
+					{{ opt.label }}
 				</button>
 			</div>
 		</div>
 
 		<div v-if="fatturazioneType === 'fattura'" class="checkout-billing-reveal">
 			<div class="checkout-billing-context-note">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 24 24"
-					width="18"
-					height="18"
-					class="shrink-0 mt-[1px]"
-					fill="var(--color-brand-primary)"
-					aria-hidden="true">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" class="shrink-0 mt-[1px]" fill="var(--color-brand-primary)" aria-hidden="true">
 					<path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,17H11V11H13M13,9H11V7H13" />
 				</svg>
 				<div>
@@ -154,86 +117,36 @@ watch(
 			</div>
 
 			<div class="checkout-mini-switch-block checkout-mini-switch-block--sub checkout-mini-switch-block--billing-secondary">
-				<div
-					class="checkout-mini-switch checkout-mini-switch--billing checkout-mini-switch--subject checkout-mini-switch--tight checkout-mini-switch--shared"
-					role="tablist"
-					aria-label="Intestatario fattura">
+				<div class="checkout-mini-switch checkout-mini-switch--billing checkout-mini-switch--subject checkout-mini-switch--tight checkout-mini-switch--shared" role="tablist" aria-label="Intestatario fattura">
 					<button
-						type="button"
-						role="tab"
+v-for="opt in SWITCH_SUBJECT" :key="opt.value" type="button" role="tab"
 						class="checkout-mini-switch__option checkout-mini-switch__option--compact"
-						:aria-pressed="invoiceSubjectType === 'azienda'"
-						:aria-selected="invoiceSubjectType === 'azienda'"
-						:class="{ 'checkout-mini-switch__option--active': invoiceSubjectType === 'azienda' }"
-						@click="emit('update:invoiceSubjectType', 'azienda')">
-						Azienda
-					</button>
-					<button
-						type="button"
-						role="tab"
-						class="checkout-mini-switch__option checkout-mini-switch__option--compact"
-						:aria-pressed="invoiceSubjectType === 'privato'"
-						:aria-selected="invoiceSubjectType === 'privato'"
-						:class="{ 'checkout-mini-switch__option--active': invoiceSubjectType === 'privato' }"
-						@click="emit('update:invoiceSubjectType', 'privato')">
-						Privato
+						:aria-pressed="invoiceSubjectType === opt.value" :aria-selected="invoiceSubjectType === opt.value"
+						:class="{ 'checkout-mini-switch__option--active': invoiceSubjectType === opt.value }"
+						@click="emit('update:invoiceSubjectType', opt.value)">
+						{{ opt.label }}
 					</button>
 				</div>
 			</div>
 
 			<div v-if="invoiceSubjectType === 'azienda'" class="checkout-billing-fields">
 				<div class="checkout-billing-grid checkout-billing-grid--company-top">
-					<div>
-						<label class="checkout-billing-label">Ragione Sociale *</label>
+					<div v-for="f in COMPANY_TOP_FIELDS" :key="f.name">
+						<label class="checkout-billing-label">{{ f.label }}</label>
 						<input
-							:value="fatturaField('ragione_sociale')"
-							type="text"
-							placeholder="SpediamoFacile S.r.l."
-							required
-							class="checkout-billing-input"
-							@input="setFatturaField('ragione_sociale', $event.target.value)" >
-					</div>
-					<div>
-						<label class="checkout-billing-label">Partita IVA *</label>
-						<input
-							:value="fatturaField('p_iva')"
-							type="text"
-							maxlength="13"
-							placeholder="IT 01234567890"
-							required
-							class="checkout-billing-input"
-							@input="setFatturaField('p_iva', $event.target.value)" >
-					</div>
-					<div>
-						<label class="checkout-billing-label">Codice Fiscale</label>
-						<input
-							:value="fatturaField('codice_fiscale')"
-							type="text"
-							placeholder="01234567890"
-							class="checkout-billing-input"
-							@input="setFatturaField('codice_fiscale', $event.target.value)" >
+:value="fatturaField(f.name)" :type="f.type || 'text'" :placeholder="f.placeholder"
+							:required="f.required" :maxlength="f.maxlength" class="checkout-billing-input"
+							@input="setFatturaField(f.name, $event.target.value)" >
 					</div>
 				</div>
 
 				<div class="checkout-billing-grid checkout-billing-grid--company-mid">
-					<div>
-						<label class="checkout-billing-label">Codice SDI</label>
+					<div v-for="f in COMPANY_MID_FIELDS" :key="f.name">
+						<label class="checkout-billing-label">{{ f.label }}</label>
 						<input
-							:value="fatturaField('codice_sdi')"
-							type="text"
-							maxlength="7"
-							placeholder="XXXXXXX"
-							class="checkout-billing-input"
-							@input="setFatturaField('codice_sdi', $event.target.value)" >
-					</div>
-					<div>
-						<label class="checkout-billing-label">PEC (alternativa)</label>
-						<input
-							:value="fatturaField('pec')"
-							type="email"
-							placeholder="fattura@pec.azienda.it (almeno una tra SDI e PEC)"
-							class="checkout-billing-input"
-							@input="setFatturaField('pec', $event.target.value)" >
+:value="fatturaField(f.name)" :type="f.type || 'text'" :placeholder="f.placeholder"
+							:maxlength="f.maxlength" class="checkout-billing-input"
+							@input="setFatturaField(f.name, $event.target.value)" >
 					</div>
 				</div>
 
@@ -251,80 +164,26 @@ watch(
 					<span>Usa lo stesso indirizzo della spedizione</span>
 				</label>
 
-				<div
-					class="checkout-billing-grid checkout-billing-grid--address"
-					:class="{ 'checkout-billing-grid--locked': useShippingAsBilling }">
-					<div>
-						<label class="checkout-billing-label">Indirizzo</label>
+				<div class="checkout-billing-grid checkout-billing-grid--address" :class="{ 'checkout-billing-grid--locked': useShippingAsBilling }">
+					<div v-for="f in ADDRESS_FIELDS" :key="f.name">
+						<label class="checkout-billing-label">{{ f.label }}</label>
 						<input
-							:value="fatturaField('indirizzo')"
-							type="text"
-							placeholder="Indirizzo"
-							class="checkout-billing-input"
-							:disabled="useShippingAsBilling"
+:value="fatturaField(f.name)" type="text" :placeholder="f.placeholder" :maxlength="f.maxlength"
+							class="checkout-billing-input" :disabled="useShippingAsBilling"
 							:aria-disabled="useShippingAsBilling ? 'true' : 'false'"
-							@input="setFatturaField('indirizzo', $event.target.value)" >
-					</div>
-					<div>
-						<label class="checkout-billing-label">Città</label>
-						<input
-							:value="fatturaField('city')"
-							type="text"
-							placeholder="Città"
-							class="checkout-billing-input"
-							:disabled="useShippingAsBilling"
-							:aria-disabled="useShippingAsBilling ? 'true' : 'false'"
-							@input="setFatturaField('city', $event.target.value)" >
-					</div>
-					<div>
-						<label class="checkout-billing-label">Prov.</label>
-						<input
-							:value="fatturaField('province')"
-							type="text"
-							maxlength="2"
-							placeholder="Prov."
-							class="checkout-billing-input"
-							:disabled="useShippingAsBilling"
-							:aria-disabled="useShippingAsBilling ? 'true' : 'false'"
-							@input="setFatturaField('province', $event.target.value)" >
-					</div>
-					<div>
-						<label class="checkout-billing-label">CAP</label>
-						<input
-							:value="fatturaField('postal_code')"
-							type="text"
-							maxlength="10"
-							placeholder="CAP"
-							class="checkout-billing-input"
-							:disabled="useShippingAsBilling"
-							:aria-disabled="useShippingAsBilling ? 'true' : 'false'"
-							@input="setFatturaField('postal_code', $event.target.value)" >
+							@input="setFatturaField(f.name, $event.target.value)" >
 					</div>
 				</div>
 			</div>
 
 			<div v-else class="checkout-billing-fields">
 				<div class="checkout-billing-grid checkout-billing-grid--private-top">
-					<div>
-						<label class="checkout-billing-label">Nome completo *</label>
+					<div v-for="f in PRIVATE_TOP_FIELDS" :key="f.name">
+						<label class="checkout-billing-label">{{ f.label }}</label>
 						<input
-							:value="fatturaField('nome_completo')"
-							type="text"
-							placeholder="Nome e Cognome"
-							required
-							class="checkout-billing-input"
-							@input="setFatturaField('nome_completo', $event.target.value)" >
-					</div>
-					<div>
-						<label class="checkout-billing-label">Codice Fiscale *</label>
-						<input
-							:value="fatturaField('codice_fiscale')"
-							type="text"
-							placeholder="RSSMRA80A01H501U"
-							maxlength="16"
-							required
-							class="checkout-billing-input"
-							@input="setFatturaField('codice_fiscale', $event.target.value)" >
+:value="fatturaField(f.name)" type="text" :placeholder="f.placeholder"
+							:required="f.required" :maxlength="f.maxlength" class="checkout-billing-input"
+							@input="setFatturaField(f.name, $event.target.value)" >
 					</div>
 				</div>
 
@@ -338,54 +197,14 @@ watch(
 					<span>Usa lo stesso indirizzo della spedizione</span>
 				</label>
 
-				<div
-					class="checkout-billing-grid checkout-billing-grid--address"
-					:class="{ 'checkout-billing-grid--locked': useShippingAsBilling }">
-					<div>
-						<label class="checkout-billing-label">Indirizzo</label>
+				<div class="checkout-billing-grid checkout-billing-grid--address" :class="{ 'checkout-billing-grid--locked': useShippingAsBilling }">
+					<div v-for="f in ADDRESS_FIELDS" :key="f.name">
+						<label class="checkout-billing-label">{{ f.label }}</label>
 						<input
-							:value="fatturaField('indirizzo')"
-							type="text"
-							placeholder="Indirizzo"
-							class="checkout-billing-input"
-							:disabled="useShippingAsBilling"
+:value="fatturaField(f.name)" type="text" :placeholder="f.placeholder" :maxlength="f.maxlength"
+							class="checkout-billing-input" :disabled="useShippingAsBilling"
 							:aria-disabled="useShippingAsBilling ? 'true' : 'false'"
-							@input="setFatturaField('indirizzo', $event.target.value)" >
-					</div>
-					<div>
-						<label class="checkout-billing-label">Città</label>
-						<input
-							:value="fatturaField('city')"
-							type="text"
-							placeholder="Città"
-							class="checkout-billing-input"
-							:disabled="useShippingAsBilling"
-							:aria-disabled="useShippingAsBilling ? 'true' : 'false'"
-							@input="setFatturaField('city', $event.target.value)" >
-					</div>
-					<div>
-						<label class="checkout-billing-label">Prov.</label>
-						<input
-							:value="fatturaField('province')"
-							type="text"
-							maxlength="2"
-							placeholder="Prov."
-							class="checkout-billing-input"
-							:disabled="useShippingAsBilling"
-							:aria-disabled="useShippingAsBilling ? 'true' : 'false'"
-							@input="setFatturaField('province', $event.target.value)" >
-					</div>
-					<div>
-						<label class="checkout-billing-label">CAP</label>
-						<input
-							:value="fatturaField('postal_code')"
-							type="text"
-							maxlength="10"
-							placeholder="CAP"
-							class="checkout-billing-input"
-							:disabled="useShippingAsBilling"
-							:aria-disabled="useShippingAsBilling ? 'true' : 'false'"
-							@input="setFatturaField('postal_code', $event.target.value)" >
+							@input="setFatturaField(f.name, $event.target.value)" >
 					</div>
 				</div>
 			</div>

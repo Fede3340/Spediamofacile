@@ -1,9 +1,6 @@
 /**
- * Account shipment detail boundary.
- *
- * This composable keeps the page controller small: it fetches the persisted
- * order, exposes readable labels, and calls the operational endpoints used by
- * BRT documents, pickup and cancellation actions.
+ * Account shipment detail boundary: fetch persisted order, expose readable
+ * labels, and call BRT/pickup/cancellation endpoints.
  */
 import type { Ref } from 'vue';
 import type { CartItem, Order } from '~/types';
@@ -14,94 +11,64 @@ type ApiMessageResponse = { message?: string; error?: string };
 type ApiErrorPayload = { message?: string; error?: string };
 type SanctumRequestOptions = { method?: string; body?: unknown; responseType?: string };
 type SanctumClient = <T = unknown>(url: string, options?: SanctumRequestOptions) => Promise<T>;
-
-type AddressLike = {
-	city?: string | null;
-	province?: string | null;
-};
-
-type OrderPackage = CartItem & {
-	origin_address?: AddressLike | null;
-	destination_address?: AddressLike | null;
-};
-
+type AddressLike = { city?: string | null; province?: string | null };
+type OrderPackage = CartItem & { origin_address?: AddressLike | null; destination_address?: AddressLike | null };
 type OrderDetail = Omit<Order, 'packages'> & {
 	payable_total?: string | number | null;
 	payable_total_cents?: number | null;
 	packages?: OrderPackage[];
 };
+type ExecutionDetail = { bordero_document_filename?: string | null };
+type ExecutionActionPayload = { endpoint: string; busyRef: Ref<boolean>; successMessage: string; body?: unknown };
 
-type ExecutionDetail = {
-	bordero_document_filename?: string | null;
-};
-
-type ExecutionActionPayload = {
-	endpoint: string;
-	busyRef: Ref<boolean>;
-	successMessage: string;
-	body?: unknown;
-};
-
+const STATUS_TEAL = 'bg-[#eef8fa] text-[#095866]';
+const STATUS_GREEN = 'bg-[#f0fdf4] text-[#0a8a7a]';
+const STATUS_ORANGE = 'bg-orange-100 text-orange-700';
 const statusClasses: Record<string, string> = {
 	'In attesa': 'bg-yellow-100 text-yellow-700',
-	'In lavorazione': 'bg-[#eef8fa] text-[#095866]',
-	Completato: 'bg-[#f0fdf4] text-[#0a8a7a]',
+	'In lavorazione': STATUS_TEAL,
+	Completato: STATUS_GREEN,
 	Fallito: 'bg-red-100 text-red-700',
-	Pagato: 'bg-[#f0fdf4] text-[#0a8a7a]',
+	Pagato: STATUS_GREEN,
 	Annullato: 'bg-gray-200 text-gray-600',
-	Rimborsato: 'bg-orange-100 text-orange-700',
-	'In transito': 'bg-[#eef8fa] text-[#095866]',
-	Consegnato: 'bg-[#f0fdf4] text-[#0a8a7a]',
-	'In giacenza': 'bg-orange-100 text-orange-700',
+	Rimborsato: STATUS_ORANGE,
+	'In transito': STATUS_TEAL,
+	Consegnato: STATUS_GREEN,
+	'In giacenza': STATUS_ORANGE,
 };
-
 const paymentLabels: Record<string, string> = {
 	stripe: 'Carta di credito (Stripe)',
 	wallet: 'Portafoglio',
 	bonifico: 'Bonifico',
 };
+const EMPTY_PACKAGE = { package_type: 'Pacco', quantity: 1, weight: '', first_size: '', second_size: '', third_size: '', content_description: '' };
 
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-	typeof value === 'object' && value !== null;
-
+const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
 const unwrapData = <T>(payload: ApiEnvelope<T>): T | null => {
 	if (!payload) return null;
-	if (isRecord(payload) && Object.prototype.hasOwnProperty.call(payload, 'data')) {
-		const record = payload as Record<string, unknown>;
-		return (record.data as T | null | undefined) ?? null;
-	}
+	if (isRecord(payload) && Object.prototype.hasOwnProperty.call(payload, 'data')) return ((payload as Record<string, unknown>).data as T | null | undefined) ?? null;
 	return payload as T;
 };
-
 const extractApiError = (error: unknown): ApiErrorPayload => {
 	if (!isRecord(error)) return {};
-	const response = isRecord(error.response) ? error.response : null;
-	const responseData = response && isRecord(response._data) ? response._data : null;
+	const responseData = isRecord(error.response) && isRecord(error.response._data) ? error.response._data : null;
 	const data = isRecord(error.data) ? error.data : null;
 	return (responseData ?? data ?? {}) as ApiErrorPayload;
+};
+const formatLocation = (addr?: AddressLike | null) => {
+	const city = addr?.city || '';
+	const province = addr?.province ? ` (${addr.province})` : '';
+	return `${city}${province}`;
 };
 
 export default function useOrderDetail(orderId: string | number) {
 	const sanctum = useSanctumClient() as SanctumClient;
+	const { data: order, status: orderStatus, refresh } = useSanctumFetch<ApiEnvelope<OrderDetail>>(`/api/orders/${orderId}`, undefined, { lazy: true });
+	const { data: execution, status: executionStatus, refresh: refreshExecution } = useSanctumFetch<ApiEnvelope<ExecutionDetail>>(`/api/orders/${orderId}/execution`, undefined, { lazy: true });
 
-	const { data: order, status: orderStatus, refresh } = useSanctumFetch<ApiEnvelope<OrderDetail>>(
-		`/api/orders/${orderId}`,
-		undefined,
-		{ lazy: true },
-	);
-	const {
-		data: execution,
-		status: executionStatus,
-		refresh: refreshExecution,
-	} = useSanctumFetch<ApiEnvelope<ExecutionDetail>>(`/api/orders/${orderId}/execution`, undefined, { lazy: true });
-
-	const statusColor = (status: unknown) =>
-		typeof status === 'string' ? statusClasses[status] ?? 'bg-gray-100 text-gray-700' : 'bg-gray-100 text-gray-700';
-
-	const paymentMethodLabel = (method: unknown) => {
-		if (typeof method !== 'string' || !method) return 'Non specificato';
-		return paymentLabels[method] ?? method;
-	};
+	const fallback = 'bg-gray-100 text-gray-700';
+	const statusColor = (status: unknown) => (typeof status === 'string' ? statusClasses[status] ?? fallback : fallback);
+	const paymentMethodLabel = (method: unknown) => (typeof method === 'string' && method ? paymentLabels[method] ?? method : 'Non specificato');
 
 	const downloadFile = (blob: Blob, filename: string) => {
 		const url = window.URL.createObjectURL(blob);
@@ -122,46 +89,23 @@ export default function useOrderDetail(orderId: string | number) {
 		if (typeof payable === 'string' && payable.trim()) return payable.replace(/\s*EUR$/i, 'EUR');
 		return formatPrice(orderData.value?.payable_total_cents ?? orderData.value?.subtotal_cents ?? 0);
 	});
-
 	const orderRouteLabel = computed(() => {
-		const firstPackage = orderData.value?.packages?.[0];
-		if (!firstPackage) return '-';
-		const originCity = firstPackage.origin_address?.city || '';
-		const originProvince = firstPackage.origin_address?.province || '';
-		const destinationCity = firstPackage.destination_address?.city || '';
-		const destinationProvince = firstPackage.destination_address?.province || '';
-		return `${originCity}${originProvince ? ` (${originProvince})` : ''} -> ${destinationCity}${destinationProvince ? ` (${destinationProvince})` : ''}`;
+		const pkg = orderData.value?.packages?.[0];
+		return pkg ? `${formatLocation(pkg.origin_address)} -> ${formatLocation(pkg.destination_address)}` : '-';
 	});
-
 	const orderPackageCountLabel = computed(() => {
 		const count = Number(orderData.value?.packages?.length || 0);
-		if (!count) return 'Nessun collo';
-		return count === 1 ? '1 collo' : `${count} colli`;
+		return !count ? 'Nessun collo' : count === 1 ? '1 collo' : `${count} colli`;
 	});
-
-	const isPendingPayment = computed(() => {
-		const raw = orderData.value?.raw_status;
-		return raw === 'pending' || raw === 'payment_failed';
-	});
+	const isPendingPayment = computed(() => ['pending', 'payment_failed'].includes(String(orderData.value?.raw_status)));
 	const isCancellable = computed(() => orderData.value?.cancellable === true);
-	const isCancelledOrRefunded = computed(() => {
-		const raw = orderData.value?.raw_status;
-		return raw === 'cancelled' || raw === 'refunded';
-	});
+	const isCancelledOrRefunded = computed(() => ['cancelled', 'refunded'].includes(String(orderData.value?.raw_status)));
 
 	const showAddPackageForm = ref(false);
 	const addingPackage = ref(false);
 	const addPackageError = ref<string | null>(null);
 	const addPackageSuccess = ref(false);
-	const newPackage = ref({
-		package_type: 'Pacco',
-		quantity: 1,
-		weight: '',
-		first_size: '',
-		second_size: '',
-		third_size: '',
-		content_description: '',
-	});
+	const newPackage = ref({ ...EMPTY_PACKAGE });
 
 	const submitAddPackage = async () => {
 		addPackageError.value = null;
@@ -171,15 +115,7 @@ export default function useOrderDetail(orderId: string | number) {
 			await sanctum(`/api/orders/${orderId}/add-package`, { method: 'POST', body: newPackage.value });
 			addPackageSuccess.value = true;
 			showAddPackageForm.value = false;
-			newPackage.value = {
-				package_type: 'Pacco',
-				quantity: 1,
-				weight: '',
-				first_size: '',
-				second_size: '',
-				third_size: '',
-				content_description: '',
-			};
+			newPackage.value = { ...EMPTY_PACKAGE };
 			await refresh();
 		} catch (error) {
 			const data = extractApiError(error);
@@ -198,10 +134,7 @@ export default function useOrderDetail(orderId: string | number) {
 		if (!orderData.value?.id) return;
 		downloadError.value = null;
 		try {
-			const blob = await sanctum<Blob>(`/api/brt/label/${orderData.value.id}`, {
-				method: 'GET',
-				responseType: 'blob',
-			});
+			const blob = await sanctum<Blob>(`/api/brt/label/${orderData.value.id}`, { method: 'GET', responseType: 'blob' });
 			downloadFile(blob, `etichetta-brt-${orderData.value.id}.pdf`);
 		} catch (error) {
 			const data = extractApiError(error);
@@ -219,8 +152,7 @@ export default function useOrderDetail(orderId: string | number) {
 			regenerateSuccess.value = true;
 			await refresh();
 		} catch (error) {
-			const data = extractApiError(error);
-			regenerateError.value = data.error || "Errore durante la rigenerazione dell'etichetta.";
+			regenerateError.value = extractApiError(error).error || "Errore durante la rigenerazione dell'etichetta.";
 		} finally {
 			regenerating.value = false;
 		}
@@ -242,8 +174,7 @@ export default function useOrderDetail(orderId: string | number) {
 		try {
 			refundEligibility.value = await sanctum(`/api/orders/${orderId}/refund-eligibility`, { method: 'GET' });
 		} catch (error) {
-			const data = extractApiError(error);
-			cancelError.value = data.error || "Errore nel controllo dell'idoneita' al rimborso.";
+			cancelError.value = extractApiError(error).error || "Errore nel controllo dell'idoneita' al rimborso.";
 		} finally {
 			loadingEligibility.value = false;
 		}
@@ -253,10 +184,7 @@ export default function useOrderDetail(orderId: string | number) {
 		cancelling.value = true;
 		cancelError.value = null;
 		try {
-			const result = await sanctum<ApiMessageResponse>(`/api/orders/${orderId}/cancel`, {
-				method: 'POST',
-				body: { reason: cancelReason.value || undefined },
-			});
+			const result = await sanctum<ApiMessageResponse>(`/api/orders/${orderId}/cancel`, { method: 'POST', body: { reason: cancelReason.value || undefined } });
 			cancelSuccess.value = result.message || 'Ordine annullato con successo.';
 			showCancelModal.value = false;
 			cancelReason.value = '';
@@ -296,28 +224,17 @@ export default function useOrderDetail(orderId: string | number) {
 		}
 	};
 
-	const requestPickup = async (pickupRequest: unknown = null) => {
-		await runExecutionAction({
+	const requestPickup = (pickupRequest: unknown = null) =>
+		runExecutionAction({
 			endpoint: `/api/orders/${orderId}/pickup`,
 			busyRef: pickupBusy,
 			successMessage: 'Richiesta ritiro elaborata.',
 			body: pickupRequest ? { pickup_request: pickupRequest } : undefined,
 		});
-	};
-
 	const createBordero = () =>
-		runExecutionAction({
-			endpoint: `/api/orders/${orderId}/bordero`,
-			busyRef: borderoBusy,
-			successMessage: 'Bordero generato.',
-		});
-
+		runExecutionAction({ endpoint: `/api/orders/${orderId}/bordero`, busyRef: borderoBusy, successMessage: 'Bordero generato.' });
 	const sendDocuments = () =>
-		runExecutionAction({
-			endpoint: `/api/orders/${orderId}/send-documents`,
-			busyRef: documentsBusy,
-			successMessage: 'Documenti inviati.',
-		});
+		runExecutionAction({ endpoint: `/api/orders/${orderId}/send-documents`, busyRef: documentsBusy, successMessage: 'Documenti inviati.' });
 
 	const downloadBordero = async () => {
 		if (!orderData.value?.id) return;
@@ -325,10 +242,7 @@ export default function useOrderDetail(orderId: string | number) {
 		executionError.value = null;
 		executionSuccess.value = null;
 		try {
-			const blob = await sanctum<Blob>(`/api/orders/${orderId}/bordero/download`, {
-				method: 'GET',
-				responseType: 'blob',
-			});
+			const blob = await sanctum<Blob>(`/api/orders/${orderId}/bordero/download`, { method: 'GET', responseType: 'blob' });
 			downloadFile(blob, executionData.value?.bordero_document_filename || `bordero-${orderId}.pdf`);
 			executionSuccess.value = 'Bordero scaricato.';
 		} catch (error) {
@@ -352,55 +266,17 @@ export default function useOrderDetail(orderId: string | number) {
 	};
 
 	return {
-		order,
-		orderStatus,
-		orderData,
-		refresh,
-		execution,
-		executionStatus,
-		executionData,
-		refreshExecution,
-		orderSubtotalLabel,
-		orderRouteLabel,
-		orderPackageCountLabel,
-		isPendingPayment,
-		isCancellable,
-		isCancelledOrRefunded,
+		order, orderStatus, orderData, refresh,
+		execution, executionStatus, executionData, refreshExecution,
+		orderSubtotalLabel, orderRouteLabel, orderPackageCountLabel,
+		isPendingPayment, isCancellable, isCancelledOrRefunded,
 		formatDate: (dateStr: string | null | undefined) => formatDateTimeIt(dateStr, '-'),
-		statusColor,
-		formatPrice,
-		paymentMethodLabel,
-		showAddPackageForm,
-		addingPackage,
-		addPackageError,
-		addPackageSuccess,
-		newPackage,
-		submitAddPackage,
-		regenerating,
-		regenerateError,
-		regenerateSuccess,
-		downloadError,
-		downloadLabel,
-		regenerateLabel,
-		showCancelModal,
-		refundEligibility,
-		loadingEligibility,
-		cancelling,
-		cancelError,
-		cancelSuccess,
-		cancelReason,
-		openCancelModal,
-		confirmCancellation,
-		pickupBusy,
-		borderoBusy,
-		documentsBusy,
-		downloadBorderoBusy,
-		executionError,
-		executionSuccess,
-		requestPickup,
-		createBordero,
-		sendDocuments,
-		downloadBordero,
-		openBordero,
+		statusColor, formatPrice, paymentMethodLabel,
+		showAddPackageForm, addingPackage, addPackageError, addPackageSuccess, newPackage, submitAddPackage,
+		regenerating, regenerateError, regenerateSuccess, downloadError, downloadLabel, regenerateLabel,
+		showCancelModal, refundEligibility, loadingEligibility, cancelling, cancelError, cancelSuccess, cancelReason,
+		openCancelModal, confirmCancellation,
+		pickupBusy, borderoBusy, documentsBusy, downloadBorderoBusy, executionError, executionSuccess,
+		requestPickup, createBordero, sendDocuments, downloadBordero, openBordero,
 	};
 }
