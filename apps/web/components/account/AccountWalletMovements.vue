@@ -1,5 +1,5 @@
 <script setup>
-import { formatDateTimeIt } from '~/utils/date.js';
+import { formatDateTimeIt as formatDate } from '~/utils/date.js';
 
 const props = defineProps({
 	movements: { type: Array, default: () => [] },
@@ -8,8 +8,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['retry-movements']);
-
-const formatDate = (dateStr) => formatDateTimeIt(dateStr);
 
 const hasMovements = computed(() => props.movements?.length > 0);
 const hasBlockingError = computed(() => Boolean(props.movementsError) && !hasMovements.value);

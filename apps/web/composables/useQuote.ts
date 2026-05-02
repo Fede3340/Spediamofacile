@@ -17,43 +17,15 @@
  */
 
 import {
-	buildQuoteComparableSignature as buildQuoteComparableSignatureCanonical,
-	clonePackagesForQuote as clonePackagesForQuoteCanonical,
-	cloneShipmentDetailsForQuote as cloneShipmentDetailsForQuoteCanonical,
-	extractSessionComparablePayload as extractSessionComparablePayloadCanonical,
-	formatResolvedLocation as formatResolvedLocationCanonical,
+	buildQuoteComparableSignature,
+	clonePackagesForQuote,
+	cloneShipmentDetailsForQuote,
+	extractSessionComparablePayload,
+	formatResolvedLocation,
 } from "~/utils/quickQuoteHelpers";
 
 type QuoteFlowStore = ReturnType<typeof useShipmentStore>;
 type QuoteTimer = ReturnType<typeof setTimeout> | null;
-
-// =============================================================================
-// SEZIONE 1: QUOTE SNAPSHOT — helper puri + composable snapshot
-// (ex useQuoteSnapshot.js)
-// =============================================================================
-
-/** Clona i campi rilevanti di `shipmentDetails` normalizzandoli per il quote payload. */
-const cloneShipmentDetailsForQuote = cloneShipmentDetailsForQuoteCanonical;
-
-/** Clona un array di pacchi usando clonePackageForQuote. */
-const clonePackagesForQuote = clonePackagesForQuoteCanonical;
-
-/**
- * Costruisce una signature JSON-stabile da un payload preventivo,
- * usata per dedup richieste e confronto con lo stato sessione.
- */
-const buildQuoteComparableSignature = buildQuoteComparableSignatureCanonical;
-
-/** Estrae da una sessione backend i campi comparabili con il payload locale. */
-const extractSessionComparablePayload = extractSessionComparablePayloadCanonical;
-
-/** Formatta una location risolta ("Citta · CAP") per confronti UI. */
-const formatResolvedLocation = formatResolvedLocationCanonical;
-	/* legacy local formatter body retired in favor of quickQuoteContract.js
-	const trimmedCap = String(cap || "").trim();
-	if (trimmedCity && trimmedCap) return `${trimmedCity} · ${trimmedCap}`;
-	return trimmedCity || trimmedCap || "";
-	*/
 
 /**
  * Composable snapshot: espone `buildQuotePayloadSnapshot` + `quoteSignature`

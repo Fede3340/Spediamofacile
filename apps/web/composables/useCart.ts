@@ -7,7 +7,7 @@
  */
 import { computed, ref, watch, type Ref } from 'vue';
 import type { Address, AddressGroup, CartItem, CartResponse, Order } from '~/types';
-import { parseEuroAmount, buildDiscountOrderContext } from '~/utils/cartHelpers';
+import { centsToEuro, parseEuroAmount, buildDiscountOrderContext } from '~/utils/cartHelpers';
 import { useCheckoutPromoPreview } from '~/composables/useCheckoutPromoPreview';
 import {
 	deriveShipmentFlowStateFromUserStore,
@@ -52,11 +52,6 @@ const emptyCart = (): CartResponse => ({
 	data: [],
 	meta: { total: '0,00 €', address_groups: [] },
 });
-
-const centsToEuro = (value: unknown) => {
-	const cents = Number(value);
-	return Number.isFinite(cents) ? Math.max(0, cents) / 100 : 0;
-};
 
 const formatEuro = (num: number | string) => {
 	const n = Number(num);

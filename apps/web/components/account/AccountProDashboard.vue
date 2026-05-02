@@ -1,5 +1,5 @@
 <script setup>
-import { formatDateIt } from '~/utils/date.js';
+import { formatDateIt as formatDate } from '~/utils/date.js';
 import { formatEuro, formatPrice } from '~/utils/price.js';
 
 const props = defineProps({
@@ -12,8 +12,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['copy-code', 'copy-link', 'copy-account-code', 'share-whatsapp']);
-
-const formatDate = (dateStr) => formatDateIt(dateStr);
 
 const referralCode = computed(() => props.referralData?.referral_code || '--------');
 const referralLink = computed(() => props.referralData?.referral_link || '');

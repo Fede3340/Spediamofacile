@@ -5,7 +5,7 @@
 import { computed, onMounted, ref, watch, type Ref } from 'vue';
 import type { AddressGroup, CartItem, CartResponse } from '~/types';
 import type { AuthModalTab } from '~/stores/authStore';
-import { formatPrice as formatPriceCents } from '~/utils/price';
+import { formatPrice } from '~/utils/price';
 import { formatDateIt } from '~/utils/date';
 import { useCartPromoPreview } from '~/composables/useCartPromoPreview';
 
@@ -139,9 +139,6 @@ export function useCarrello() {
             emptyCartLoading.value = false;
         }
     };
-    // formatPrice: usa la utility centsâ†’â‚¬ da utils/price (import in cima al file).
-    // Alias locale per non scontrarsi con la formatPrice(num: euro) definita in useCart().
-    const formatPrice = formatPriceCents;
     const unitPrice = (item: CartItem) => {
         const total = Number(item.single_price) || 0;
         const qty = Math.max(1, Number(item.quantity) || 1);
