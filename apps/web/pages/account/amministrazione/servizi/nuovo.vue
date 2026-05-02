@@ -90,8 +90,8 @@ const FAQ_ICON_PATH = 'M18,15H6L2,19V3A1,1 0 0,1 3,2H18A1,1 0 0,1 19,3V14A1,1 0 
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-[24px] tablet:py-[28px] desktop:py-[28px]">
-		<div class="my-container">
+	<section class="sf-account-shell min-h-[600px] py-6 tablet:py-7 desktop:py-7">
+		<div class="my-container sf-stack-section">
 			<AccountPageHeader
 				eyebrow="Area amministrazione"
 				title="Nuovo servizio"
@@ -113,7 +113,7 @@ const FAQ_ICON_PATH = 'M18,15H6L2,19V3A1,1 0 0,1 3,2H18A1,1 0 0,1 19,3V14A1,1 0 
 
 			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
 
-			<div class="grid grid-cols-1 desktop:grid-cols-[minmax(0,1fr)_320px] gap-5 items-start">
+			<div class="grid grid-cols-1 desktop:grid-cols-[minmax(0,1fr)_320px] gap-5 items-start mt-2">
 				<div class="grid gap-5 min-w-0">
 					<ServizioFormBase
 						:title="form.title"

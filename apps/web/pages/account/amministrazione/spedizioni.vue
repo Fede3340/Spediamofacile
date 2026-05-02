@@ -28,8 +28,8 @@ onMounted(() => { fetchShipments(); });
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-6 tablet:py-7">
-		<div class="my-container">
+	<section class="sf-account-shell min-h-[600px] py-6 md:py-8">
+		<div class="max-w-7xl mx-auto px-4 md:px-6 space-y-6 md:space-y-8">
 			<AccountPageHeader
 				eyebrow="Area amministrazione"
 				title="Coda BRT"
@@ -46,7 +46,7 @@ onMounted(() => { fetchShipments(); });
 
 			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
 
-			<SfCard padding="md" class="mt-4">
+			<SfCard padding="md">
 				<div class="flex flex-col tablet:flex-row tablet:items-start tablet:justify-between gap-4 mb-4">
 					<div class="space-y-1 min-w-0">
 						<h2 class="text-lg font-bold text-brand-text">Coda spedizioni BRT</h2>
@@ -70,30 +70,25 @@ onMounted(() => { fetchShipments(); });
 				</div>
 
 				<div class="flex flex-col tablet:flex-row gap-3">
-					<label class="flex flex-col gap-1 flex-1 min-w-0">
-						<span class="text-[0.6875rem] font-bold uppercase tracking-wider text-brand-text-muted">Ricerca</span>
-						<div class="relative">
-							<UIcon name="mdi:magnify" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-text-muted pointer-events-none" />
-							<input
-								v-model="shipmentsSearch"
-								type="text"
-								placeholder="Cerca per utente, Parcel ID, tratta..."
-								class="w-full h-10 pl-9 pr-3 rounded-control border border-brand-border bg-brand-card text-sm text-brand-text focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
-								@input="onShipmentsSearch">
-						</div>
-					</label>
-					<div class="flex flex-col gap-1 flex-1 min-w-0">
-						<span class="text-[0.6875rem] font-bold uppercase tracking-wider text-brand-text-muted">Filtro rapido</span>
+					<SfFormGroup label="Ricerca" class="flex-1 min-w-0">
+						<SfInput
+							v-model="shipmentsSearch"
+							type="search"
+							placeholder="Cerca per utente, Parcel ID, tratta..."
+							leading-icon="mdi:magnify"
+							@update:model-value="onShipmentsSearch" />
+					</SfFormGroup>
+					<SfFormGroup label="Filtro rapido" class="flex-1 min-w-0">
 						<AdminFilterBar
 							:filters="statusFilters"
 							:active-filter="activeFilter"
 							size="sm"
 							@change="setActiveFilter" />
-					</div>
+					</SfFormGroup>
 				</div>
 			</SfCard>
 
-			<div class="mt-4 desktop:mt-5">
+			<div>
 				<div v-if="tabLoading" class="py-6 flex justify-center">
 					<UIcon name="mdi:loading" class="w-8 h-8 text-brand-primary animate-spin" />
 				</div>

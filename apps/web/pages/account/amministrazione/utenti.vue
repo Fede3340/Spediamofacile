@@ -231,7 +231,20 @@ const statsCards = computed(() => [
 	{ key: 'newWeek', label: 'Nuovi (7gg)', value: stats.value.newWeek, icon: 'mdi:calendar-plus', tone: 'warning' },
 ]);
 
-const inputClass = 'h-10 px-3 rounded-control border border-brand-border bg-brand-card text-sm text-brand-text focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20';
+const roleOptions = [
+	{ value: '', label: 'Tutti i ruoli' },
+	{ value: 'Admin', label: 'Admin' },
+	{ value: 'Partner Pro', label: 'Partner Pro' },
+	{ value: 'Partner', label: 'Partner' },
+	{ value: 'User', label: 'Privato' },
+];
+
+const statusOptions = [
+	{ value: '', label: 'Tutti gli stati' },
+	{ value: 'active', label: 'Attivo' },
+	{ value: 'pending-verification', label: 'In verifica' },
+	{ value: 'banned', label: 'Bannato' },
+];
 
 onMounted(() => {
 	fetchUsers();
@@ -240,8 +253,8 @@ onMounted(() => {
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-6 tablet:py-7">
-		<div class="my-container space-y-4">
+	<section class="sf-account-shell min-h-[600px] py-6 md:py-8">
+		<div class="max-w-7xl mx-auto px-4 md:px-6 space-y-6 md:space-y-8">
 			<AccountPageHeader
 				eyebrow="Area amministrazione"
 				title="Utenti"
@@ -271,40 +284,28 @@ onMounted(() => {
 				:active-filter="activeSubTab"
 				@change="(key) => activeSubTab = key" />
 
-			<div v-if="activeSubTab === 'users'" class="space-y-4">
+			<div v-if="activeSubTab === 'users'" class="space-y-6">
 				<SfCard padding="md">
-					<div class="grid grid-cols-1 tablet:grid-cols-[minmax(0,1fr)_180px_180px_auto] gap-3 items-center">
-						<label class="relative">
-							<span class="sr-only">Cerca utente</span>
-							<UIcon name="mdi:magnify" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-text-muted" />
-							<input
+					<div class="grid grid-cols-1 tablet:grid-cols-[minmax(0,1fr)_180px_180px_auto] gap-3 items-end">
+						<SfFormGroup label="Cerca utente">
+							<SfInput
 								v-model="search"
 								type="search"
 								placeholder="Cerca per nome o email..."
-								class="w-full h-10 pl-9 pr-3 rounded-control border border-brand-border bg-brand-card text-sm text-brand-text focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20">
-						</label>
+								leading-icon="mdi:magnify" />
+						</SfFormGroup>
 
-						<select v-model="roleFilter" :class="inputClass" aria-label="Filtra per ruolo">
-							<option value="">Tutti i ruoli</option>
-							<option value="Admin">Admin</option>
-							<option value="Partner Pro">Partner Pro</option>
-							<option value="Partner">Partner</option>
-							<option value="User">Privato</option>
-						</select>
+						<SfFormGroup label="Ruolo">
+							<SfSelect v-model="roleFilter" :options="roleOptions" />
+						</SfFormGroup>
 
-						<select v-model="statusFilter" :class="inputClass" aria-label="Filtra per stato">
-							<option value="">Tutti gli stati</option>
-							<option value="active">Attivo</option>
-							<option value="pending-verification">In verifica</option>
-							<option value="banned">Bannato</option>
-						</select>
+						<SfFormGroup label="Stato">
+							<SfSelect v-model="statusFilter" :options="statusOptions" />
+						</SfFormGroup>
 
-						<label class="inline-flex items-center gap-2 cursor-pointer">
-							<input v-model="onlyVerified" type="checkbox" class="rounded border-brand-border text-brand-primary focus:ring-brand-primary">
-							<span class="text-sm text-brand-text-secondary">Solo verificati</span>
-						</label>
+						<SfCheckbox v-model="onlyVerified" label="Solo verificati" />
 					</div>
-					<div class="flex flex-wrap items-center gap-2 mt-3">
+					<div class="flex flex-wrap items-center gap-2 mt-4">
 						<SfButton variant="secondary" size="sm" @click="resetFilters">Pulisci</SfButton>
 						<SfButton variant="secondary" size="sm" :disabled="loading" @click="fetchUsers">
 							<template #leading><UIcon name="mdi:refresh" class="w-3.5 h-3.5" /></template>

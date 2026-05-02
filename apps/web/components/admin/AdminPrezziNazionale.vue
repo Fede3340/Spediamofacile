@@ -60,15 +60,34 @@ const bandTableShared = computed(() => ({
 	moveBand: props.moveBand,
 }));
 
-const innerInputClass = 'mt-1 w-full h-9 px-2.5 rounded-control border border-brand-border bg-brand-card text-sm focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20';
-const innerLabelClass = 'text-xs text-brand-text-secondary';
+const baseModeOptions = [
+	{ value: 'last_band_effective', label: 'Ultima fascia effettiva' },
+	{ value: 'manual', label: 'Manuale' },
+];
+
+const incrementEuroValue = computed(() =>
+	(Number(props.extraRules?.increment_cents || 0) / 100).toFixed(2).replace('.', ','),
+);
+const manualBaseEuroValue = computed(() => {
+	const raw = props.extraRules?.base_price_cents_manual;
+	return raw == null ? '' : (Number(raw || 0) / 100).toFixed(2).replace('.', ',');
+});
+
+const previewCaseColumns = [
+	{ key: 'label', label: 'Caso' },
+	{ key: 'weight', label: 'Peso' },
+	{ key: 'volume', label: 'Volume' },
+	{ key: 'weightPriceLabel', label: 'Prezzo peso' },
+	{ key: 'volumePriceLabel', label: 'Prezzo volume' },
+	{ key: 'totalLabel', label: 'Totale (MAX)' },
+];
 </script>
 
 <template>
 	<div class="space-y-6">
 		<SfAlert v-if="!bandsFromDb" tone="warning" title="Fasce di prezzo non ancora nel database">
 			<p class="mb-3">Stai vedendo i valori predefiniti del calcolatore. Premi il pulsante per salvarli nel database e poterli modificare.</p>
-			<SfButton variant="accent" :loading="seeding" :disabled="seeding" @click="seedBands">
+			<SfButton variant="primary" :loading="seeding" :disabled="seeding" @click="seedBands">
 				<template #leading><UIcon name="mdi:plus-circle" class="w-[18px] h-[18px]" /></template>
 				{{ seeding ? "Inizializzazione..." : "Inizializza fasce nel database" }}
 			</SfButton>
@@ -104,12 +123,8 @@ const innerLabelClass = 'text-xs text-brand-text-secondary';
 			</template>
 		</AdminBandTable>
 
-		<SfCard padding="md">
-			<div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-				<div>
-					<h2 class="text-lg font-bold text-brand-text mb-1">Regole oltre 7ª fascia</h2>
-					<p class="text-xs text-brand-text-muted">Configurazione scaglioni dinamici (es. 101-150, 151-200 e 0,401-0,600, 0,601-0,800).</p>
-				</div>
+		<SfCard padding="md" title="Regole oltre 7ª fascia" description="Configurazione scaglioni dinamici (es. 101-150, 151-200 e 0,401-0,600, 0,601-0,800).">
+			<template #actions>
 				<button
 					type="button"
 					role="switch"
@@ -120,21 +135,33 @@ const innerLabelClass = 'text-xs text-brand-text-secondary';
 					@click="updateExtraRule('enabled', !extraRuleValue('enabled'))">
 					<span :class="extraRuleValue('enabled') ? 'translate-x-[28px]' : 'translate-x-[2px]'" class="inline-block h-[26px] w-[26px] transform rounded-full bg-white transition-transform shadow-sm" />
 				</button>
-			</div>
+			</template>
 
 			<div class="grid grid-cols-1 desktop:grid-cols-2 gap-4">
 				<div class="space-y-3 p-3.5 rounded-card border border-brand-border bg-brand-bg-alt">
 					<h3 class="text-sm font-semibold text-brand-text">Scaglioni Peso</h3>
 					<div class="grid grid-cols-3 gap-2.5">
-						<label :class="innerLabelClass">Start
-							<input :value="extraRuleValue('weight_start')" type="number" min="0" step="1" :class="innerInputClass" @input="updateExtraRuleNumber('weight_start', $event.target.value)">
-						</label>
-						<label :class="innerLabelClass">Step
-							<input :value="extraRuleValue('weight_step')" type="number" min="0.0001" step="1" :class="innerInputClass" @input="updateExtraRuleNumber('weight_step', $event.target.value)">
-						</label>
-						<label :class="innerLabelClass">Risoluzione
-							<input :value="extraRuleValue('weight_resolution')" type="number" min="0.0001" step="1" :class="innerInputClass" @input="updateExtraRuleNumber('weight_resolution', $event.target.value)">
-						</label>
+						<SfFormGroup label="Start">
+							<SfInput
+								type="number"
+								size="sm"
+								:model-value="extraRuleValue('weight_start')"
+								@update:model-value="(v) => updateExtraRuleNumber('weight_start', v)" />
+						</SfFormGroup>
+						<SfFormGroup label="Step">
+							<SfInput
+								type="number"
+								size="sm"
+								:model-value="extraRuleValue('weight_step')"
+								@update:model-value="(v) => updateExtraRuleNumber('weight_step', v)" />
+						</SfFormGroup>
+						<SfFormGroup label="Risoluzione">
+							<SfInput
+								type="number"
+								size="sm"
+								:model-value="extraRuleValue('weight_resolution')"
+								@update:model-value="(v) => updateExtraRuleNumber('weight_resolution', v)" />
+						</SfFormGroup>
 					</div>
 					<p class="text-xs text-brand-text-secondary">Preview: {{ extraRuleExamples.firstWeightFrom }}-{{ extraRuleExamples.firstWeightTo }} / {{ extraRuleExamples.secondWeightFrom }}-{{ extraRuleExamples.secondWeightTo }}</p>
 				</div>
@@ -142,15 +169,27 @@ const innerLabelClass = 'text-xs text-brand-text-secondary';
 				<div class="space-y-3 p-3.5 rounded-card border border-brand-border bg-brand-bg-alt">
 					<h3 class="text-sm font-semibold text-brand-text">Scaglioni Volume (m³)</h3>
 					<div class="grid grid-cols-3 gap-2.5">
-						<label :class="innerLabelClass">Start
-							<input :value="extraRuleValue('volume_start')" type="number" min="0" step="0.001" :class="innerInputClass" @input="updateExtraRuleNumber('volume_start', $event.target.value)">
-						</label>
-						<label :class="innerLabelClass">Step
-							<input :value="extraRuleValue('volume_step')" type="number" min="0.0001" step="0.001" :class="innerInputClass" @input="updateExtraRuleNumber('volume_step', $event.target.value)">
-						</label>
-						<label :class="innerLabelClass">Risoluzione
-							<input :value="extraRuleValue('volume_resolution')" type="number" min="0.0001" step="0.001" :class="innerInputClass" @input="updateExtraRuleNumber('volume_resolution', $event.target.value)">
-						</label>
+						<SfFormGroup label="Start">
+							<SfInput
+								type="number"
+								size="sm"
+								:model-value="extraRuleValue('volume_start')"
+								@update:model-value="(v) => updateExtraRuleNumber('volume_start', v)" />
+						</SfFormGroup>
+						<SfFormGroup label="Step">
+							<SfInput
+								type="number"
+								size="sm"
+								:model-value="extraRuleValue('volume_step')"
+								@update:model-value="(v) => updateExtraRuleNumber('volume_step', v)" />
+						</SfFormGroup>
+						<SfFormGroup label="Risoluzione">
+							<SfInput
+								type="number"
+								size="sm"
+								:model-value="extraRuleValue('volume_resolution')"
+								@update:model-value="(v) => updateExtraRuleNumber('volume_resolution', v)" />
+						</SfFormGroup>
 					</div>
 					<p class="text-xs text-brand-text-secondary">Preview: {{ extraRuleExamples.firstVolumeFrom.toFixed(3) }}-{{ extraRuleExamples.firstVolumeTo.toFixed(3) }} / {{ extraRuleExamples.secondVolumeFrom.toFixed(3) }}-{{ extraRuleExamples.secondVolumeTo.toFixed(3) }}</p>
 				</div>
@@ -158,71 +197,56 @@ const innerLabelClass = 'text-xs text-brand-text-secondary';
 				<div class="space-y-3 p-3.5 rounded-card border border-brand-border bg-brand-bg-alt">
 					<h3 class="text-sm font-semibold text-brand-text">Incrementi oltre 7ª fascia</h3>
 					<div class="grid grid-cols-1 tablet:grid-cols-2 gap-2.5">
-						<label :class="innerLabelClass">Base prezzo extra
-							<select :value="extraRuleValue('base_price_cents_mode')" :class="innerInputClass" @change="updateExtraRule('base_price_cents_mode', $event.target.value)">
-								<option value="last_band_effective">Ultima fascia effettiva</option>
-								<option value="manual">Manuale</option>
-							</select>
-						</label>
-						<label :class="innerLabelClass">Incremento fisso per ogni fascia extra (€)
-							<input
-								:value="(Number(extraRules.increment_cents || 0) / 100).toFixed(2).replace('.', ',')"
+						<SfFormGroup label="Base prezzo extra">
+							<SfSelect
+								size="sm"
+								:model-value="extraRuleValue('base_price_cents_mode')"
+								:options="baseModeOptions"
+								@update:model-value="(v) => updateExtraRule('base_price_cents_mode', v)" />
+						</SfFormGroup>
+						<SfFormGroup label="Incremento fisso per ogni fascia extra (€)">
+							<SfInput
 								type="text"
-								:class="innerInputClass"
-								@input="updateExtraRule('increment_cents', Math.max(0, euroToCents($event.target.value) ?? 0))">
-						</label>
+								size="sm"
+								:model-value="incrementEuroValue"
+								@update:model-value="(v) => updateExtraRule('increment_cents', Math.max(0, euroToCents(v) ?? 0))" />
+						</SfFormGroup>
 					</div>
-					<label v-if="extraRuleValue('base_price_cents_mode') === 'manual'" :class="innerLabelClass">Prezzo base extra manuale (€)
-						<input
-							:value="extraRules.base_price_cents_manual == null ? '' : (Number(extraRules.base_price_cents_manual || 0) / 100).toFixed(2).replace('.', ',')"
+					<SfFormGroup v-if="extraRuleValue('base_price_cents_mode') === 'manual'" label="Prezzo base extra manuale (€)">
+						<SfInput
 							type="text"
-							:class="innerInputClass"
-							@input="updateExtraRuleCents('base_price_cents_manual', $event.target.value)">
-					</label>
+							size="sm"
+							:model-value="manualBaseEuroValue"
+							@update:model-value="(v) => updateExtraRuleCents('base_price_cents_manual', v)" />
+					</SfFormGroup>
 				</div>
 
 				<div class="p-3.5 rounded-card border border-brand-soft-border bg-brand-soft-bg">
 					<h3 class="text-sm font-semibold text-brand-primary mb-2.5">Casi rapidi</h3>
-					<div class="overflow-x-auto">
-						<table class="w-full min-w-[450px] text-xs">
-							<thead>
-								<tr class="text-left text-brand-text-secondary border-b border-brand-border">
-									<th class="py-1.5">Caso</th>
-									<th class="py-1.5">Peso</th>
-									<th class="py-1.5">Volume</th>
-									<th class="py-1.5">Prezzo peso</th>
-									<th class="py-1.5">Prezzo volume</th>
-									<th class="py-1.5">Totale (MAX)</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr v-for="row in pricingPreviewCases" :key="row.id" class="border-b border-brand-border last:border-0 text-brand-text">
-									<td class="py-2 font-semibold">{{ row.label }}</td>
-									<td class="py-2">{{ row.weight }}</td>
-									<td class="py-2">{{ row.volume }}</td>
-									<td class="py-2">{{ row.weightPriceLabel }}</td>
-									<td class="py-2">{{ row.volumePriceLabel }}</td>
-									<td class="py-2 font-bold text-brand-primary">{{ row.totalLabel }}</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+					<UTable
+						:rows="pricingPreviewCases"
+						:columns="previewCaseColumns"
+						:ui="{ wrapper: 'overflow-x-auto', th: { base: 'text-left text-brand-text-secondary text-xs py-1.5' }, td: { base: 'py-2 text-xs text-brand-text' } }">
+						<template #label-data="{ row }">
+							<span class="font-semibold">{{ row.label }}</span>
+						</template>
+						<template #totalLabel-data="{ row }">
+							<span class="font-bold text-brand-primary">{{ row.totalLabel }}</span>
+						</template>
+					</UTable>
 				</div>
 			</div>
 		</SfCard>
 
-		<SfCard padding="md">
-			<div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-				<div>
-					<h2 class="text-lg font-bold text-brand-text mb-1">Supplementi CAP</h2>
-					<p class="text-xs text-brand-text-muted">Prefisso CAP + importo + applicazione (origine / destinazione / entrambi).</p>
-				</div>
+		<SfCard padding="md" title="Supplementi CAP" description="Prefisso CAP + importo + applicazione (origine / destinazione / entrambi).">
+			<template #actions>
 				<SfButton size="sm" @click="addSupplement">Aggiungi supplemento</SfButton>
-			</div>
+			</template>
 
-			<div v-if="!supplementRules.length" class="p-3.5 rounded-card border border-dashed border-brand-border text-brand-text-muted text-sm">
-				Nessun supplemento attivo. Aggiungi una regola se necessario.
-			</div>
+			<SfEmptyState
+				v-if="!supplementRules.length"
+				title="Nessun supplemento attivo"
+				description="Aggiungi una regola se necessario." />
 
 			<div v-else class="space-y-2.5">
 				<AdminSupplementRow

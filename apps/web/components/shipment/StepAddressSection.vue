@@ -224,19 +224,24 @@ const showDestActions = computed(() => props.deliveryMode !== 'pudo' && (canUseD
 
 .address-stage-grid {
 	display: grid;
-	gap: 28px;
+	gap: 16px;
 }
 
 .address-entry-card {
 	display: grid;
-	gap: 18px;
-	background: #e5e9ef;
-	border: 1px solid rgba(9, 88, 102, 0.12);
-	border-radius: 20px;
-	padding: 26px 24px 24px;
-	box-shadow:
-		inset 0 1px 1px rgba(255, 255, 255, 0.46),
-		0 8px 22px rgba(15, 23, 42, 0.03);
+	gap: 16px;
+	background: var(--color-brand-card);
+	border: 1px solid var(--color-brand-border);
+	border-radius: var(--sf-radius-card, 16px);
+	padding: 20px 20px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (min-width: 768px) {
+	.address-entry-card {
+		padding: 24px;
+	}
 }
 
 .address-entry-card__head {
@@ -244,8 +249,8 @@ const showDestActions = computed(() => props.deliveryMode !== 'pudo' && (canUseD
 	align-items: center;
 	justify-content: flex-start;
 	gap: 12px;
-	padding-bottom: 14px;
-	border-bottom: 1px solid rgba(9, 88, 102, 0.08);
+	padding-bottom: 12px;
+	border-bottom: 1px solid var(--color-brand-border);
 }
 
 .address-entry-card__header-menu {
@@ -270,6 +275,11 @@ const showDestActions = computed(() => props.deliveryMode !== 'pudo' && (canUseD
 
 .address-entry-card__title {
 	margin: 0;
+	font-family: 'Montserrat', 'Inter', system-ui, sans-serif;
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: var(--color-brand-text);
+	line-height: 1.3;
 }
 
 .address-entry-card--stacked :deep(.address-entry-card__title::before) {
@@ -289,13 +299,8 @@ const showDestActions = computed(() => props.deliveryMode !== 'pudo' && (canUseD
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: flex-end;
-	gap: 6px;
+	gap: 8px;
 	position: relative;
-	padding: 4px 5px;
-	border-radius: 999px;
-	background: rgba(255, 255, 255, 0.78);
-	border: 1px solid rgba(9, 88, 102, 0.09);
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52);
 }
 
 .address-entry-card__actions--footer {
@@ -333,7 +338,7 @@ const showDestActions = computed(() => props.deliveryMode !== 'pudo' && (canUseD
 	align-items: center;
 	gap: 14px;
 	padding-top: 14px;
-	border-top: 1px solid rgba(9, 88, 102, 0.08);
+	border-top: 1px solid var(--color-brand-border);
 }
 
 .address-entry-card__footer-copy {
@@ -345,12 +350,8 @@ const showDestActions = computed(() => props.deliveryMode !== 'pudo' && (canUseD
 }
 
 @media (min-width: 768px) {
-	.address-entry-card {
-		padding: 26px 24px 24px;
-	}
-
 	.address-stage-grid {
-		gap: 28px;
+		gap: 16px;
 	}
 }
 

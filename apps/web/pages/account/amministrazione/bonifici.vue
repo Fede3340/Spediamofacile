@@ -95,8 +95,8 @@ const summaryItems = computed(() => {
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-6 tablet:py-7">
-		<div class="my-container">
+	<section class="sf-account-shell min-h-[600px] py-6 md:py-8">
+		<div class="max-w-7xl mx-auto px-4 md:px-6 space-y-6 md:space-y-8">
 			<AccountPageHeader
 				eyebrow="Area amministrazione"
 				title="Bonifici in attesa"
@@ -105,11 +105,11 @@ const summaryItems = computed(() => {
 				back-label="Torna al pannello admin"
 				:crumbs="[{ label: 'Account', to: '/account' }, { label: 'Amministrazione', to: '/account/amministrazione' }, { label: 'Bonifici' }]" />
 
-			<SfAlert v-if="loadError || feedback" :tone="(loadError || feedbackType === 'error') ? 'danger' : 'success'" class="mb-4">
+			<SfAlert v-if="loadError || feedback" :tone="(loadError || feedbackType === 'error') ? 'danger' : 'success'">
 				{{ loadError || feedback }}
 			</SfAlert>
 
-			<div class="grid grid-cols-1 tablet:grid-cols-3 gap-3 mb-5">
+			<div class="grid grid-cols-1 tablet:grid-cols-3 gap-3">
 				<SfStatCard
 					v-for="item in summaryItems"
 					:key="item.key"

@@ -205,7 +205,7 @@ onMounted(() => { mounted.value = true; });
 <style scoped>
 .packages-stage-shell {
 	display: grid;
-	gap: 14px;
+	gap: 16px;
 }
 
 .packages-stage-grid {
@@ -214,14 +214,14 @@ onMounted(() => { mounted.value = true; });
 
 .packages-stage-shell__notice {
 	margin: 0;
-	padding: 10px 12px;
-	border-radius: 12px;
-	border: 1px solid rgba(9, 88, 102, 0.12);
+	padding: 12px 14px;
+	border-radius: var(--sf-radius-card, 16px);
+	border: 1px solid var(--color-brand-border);
 	background: rgba(9, 88, 102, 0.05);
 	color: var(--color-brand-primary);
-	font-size: 0.8125rem;
+	font-size: 0.875rem;
 	line-height: 1.45;
-	font-weight: 650;
+	font-weight: 600;
 }
 
 .packages-stage-shell__feedback-slot {

@@ -21,18 +21,16 @@ const togglePromo = (field) => updatePromo(field, !promoValue(field));
 </script>
 
 <template>
-	<SfCard padding="md">
-		<h2 class="text-lg font-bold text-brand-text mb-1.5 flex items-center gap-2">
+	<SfCard padding="md" title="Promozione Sito" description="Gestisci etichetta, badge e preview promo senza uscire dalla console prezzi.">
+		<template #icon>
 			<UIcon name="mdi:tag-outline" class="w-5 h-5 text-brand-primary" />
-			Promozione Sito
-		</h2>
-		<p class="text-xs text-brand-text-muted mb-4">Gestisci etichetta, badge e preview promo senza uscire dalla console prezzi.</p>
+		</template>
 
 		<div v-if="promoLoading" class="py-6 flex justify-center">
 			<UIcon name="mdi:loading" class="w-8 h-8 text-brand-primary animate-spin" />
 		</div>
 
-		<div v-else class="space-y-5">
+		<div v-else class="space-y-6">
 			<div class="flex items-center justify-between p-4 bg-brand-bg-alt rounded-card border border-brand-border">
 				<div>
 					<p class="text-base font-semibold text-brand-text">Promozione attiva</p>
@@ -52,44 +50,41 @@ const togglePromo = (field) => updatePromo(field, !promoValue(field));
 				</button>
 			</div>
 
-			<div>
-				<label class="block text-sm font-medium text-brand-text mb-1.5">Testo etichetta</label>
-				<input
-					type="text"
-					:value="promoValue('label_text')"
-					placeholder="es. OFFERTA LANCIO"
-					maxlength="100"
-					class="w-full max-w-[400px] bg-brand-bg-alt border border-brand-border rounded-pill h-12 tablet:h-11 px-4 text-base tablet:text-sm text-brand-text placeholder:text-brand-text-muted focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/20"
-					@input="updatePromo('label_text', $event.target.value)">
-			</div>
+			<SfFormGroup label="Testo etichetta">
+				<div class="max-w-[400px]">
+					<SfInput
+						type="text"
+						:model-value="promoValue('label_text')"
+						placeholder="es. OFFERTA LANCIO"
+						@update:model-value="(v) => updatePromo('label_text', v)" />
+				</div>
+			</SfFormGroup>
 
-			<div>
-				<label class="block text-sm font-medium text-brand-text mb-1.5">Descrizione sconto (mostrata nell'header)</label>
-				<textarea
-					:value="promoValue('description')"
-					placeholder="es. Sconto del 20% su tutte le spedizioni nazionali! Valido fino al 31 marzo."
-					maxlength="300"
-					rows="3"
-					class="w-full max-w-[500px] bg-brand-bg-alt border border-brand-border rounded-card px-4 py-3 text-sm text-brand-text placeholder:text-brand-text-muted focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/20 resize-y"
-					@input="updatePromo('description', $event.target.value)" />
-				<p class="text-[0.6875rem] text-brand-text-muted mt-1">Massimo 300 caratteri. Questo testo appare sotto il prezzo nella homepage.</p>
-			</div>
+			<SfFormGroup label="Descrizione sconto (mostrata nell'header)" hint="Massimo 300 caratteri. Questo testo appare sotto il prezzo nella homepage.">
+				<div class="max-w-[500px]">
+					<SfTextarea
+						:model-value="promoValue('description')"
+						placeholder="es. Sconto del 20% su tutte le spedizioni nazionali! Valido fino al 31 marzo."
+						:maxlength="300"
+						:rows="3"
+						@update:model-value="(v) => updatePromo('description', v)" />
+				</div>
+			</SfFormGroup>
 
-			<div>
-				<label class="block text-sm font-medium text-brand-text mb-1.5">Colore etichetta</label>
+			<SfFormGroup label="Colore etichetta">
 				<div class="flex flex-wrap items-center gap-3">
 					<input
 						type="color"
 						:value="promoValue('label_color')"
 						class="w-11 h-11 rounded-control border border-brand-border cursor-pointer"
 						@input="updatePromo('label_color', $event.target.value)">
-					<input
-						type="text"
-						:value="promoValue('label_color')"
-						placeholder="#095866"
-						maxlength="20"
-						class="w-[140px] bg-brand-bg-alt border border-brand-border rounded-pill h-11 px-4 text-sm text-brand-text font-mono focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/20"
-						@input="updatePromo('label_color', $event.target.value)">
+					<div class="w-[140px]">
+						<SfInput
+							type="text"
+							:model-value="promoValue('label_color')"
+							placeholder="#095866"
+							@update:model-value="(v) => updatePromo('label_color', v)" />
+					</div>
 					<span
 						v-if="promo.label_text"
 						:style="{ backgroundColor: promo.label_color }"
@@ -97,10 +92,9 @@ const togglePromo = (field) => updatePromo(field, !promoValue(field));
 						{{ promo.label_text }}
 					</span>
 				</div>
-			</div>
+			</SfFormGroup>
 
-			<div>
-				<label class="block text-sm font-medium text-brand-text mb-1.5">Immagine promozionale (opzionale)</label>
+			<SfFormGroup label="Immagine promozionale (opzionale)">
 				<div class="flex flex-wrap items-center gap-3 tablet:gap-4">
 					<label class="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-bg-alt border border-brand-border rounded-pill text-sm text-brand-text hover:bg-brand-soft-bg transition cursor-pointer">
 						<UIcon name="mdi:image-plus" class="w-[18px] h-[18px] text-brand-primary" />
@@ -109,10 +103,10 @@ const togglePromo = (field) => updatePromo(field, !promoValue(field));
 					</label>
 					<div v-if="promo.label_image" class="flex items-center gap-2">
 						<img :src="promo.label_image" alt="Promo" loading="lazy" decoding="async" width="80" height="40" class="h-10 w-auto rounded border border-brand-border">
-						<button type="button" class="text-red-500 text-xs hover:opacity-80 cursor-pointer" @click="updatePromo('label_image', null)">Rimuovi</button>
+						<SfButton variant="ghost" size="sm" @click="updatePromo('label_image', null)">Rimuovi</SfButton>
 					</div>
 				</div>
-			</div>
+			</SfFormGroup>
 
 			<div class="flex items-center justify-between p-4 bg-brand-bg-alt rounded-card border border-brand-border">
 				<div>
@@ -158,7 +152,7 @@ const togglePromo = (field) => updatePromo(field, !promoValue(field));
 			</div>
 
 			<div class="flex justify-end">
-				<SfButton variant="accent" :loading="promoSaving" :disabled="promoSaving" @click="savePromo">
+				<SfButton variant="primary" :loading="promoSaving" :disabled="promoSaving" @click="savePromo">
 					<template #leading>
 						<UIcon name="mdi:content-save" class="w-[18px] h-[18px]" />
 					</template>

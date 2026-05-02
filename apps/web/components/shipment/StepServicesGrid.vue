@@ -111,18 +111,16 @@ const isServiceInteractionLocked = (serviceKey) =>
 			@toggle="handleToggleFeatured" />
 
 		<section class="service-stage-section">
-			<div class="service-stage-section__header">
-				<div class="service-stage-section__icon">
-					<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2">
+			<div class="service-stage-section__header flex items-center gap-2.5 mb-3">
+				<div class="w-8 h-8 rounded-control bg-brand-primary/[0.08] flex items-center justify-center shrink-0">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-brand-primary">
 						<line x1="16.5" y1="9.4" x2="7.5" y2="4.21" />
 						<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
 						<polyline points="3.27 6.96 12 12.01 20.73 6.96" />
 						<line x1="12" y1="22.08" x2="12" y2="12" />
 					</svg>
 				</div>
-				<div>
-					<h4 class="service-stage-section__title">Servizi aggiuntivi</h4>
-				</div>
+				<h4 class="service-stage-section__title font-display text-lg font-semibold text-brand-text m-0">Servizi aggiuntivi</h4>
 			</div>
 
 			<div class="service-stage-list">
