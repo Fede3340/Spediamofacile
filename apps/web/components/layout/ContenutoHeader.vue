@@ -1,5 +1,4 @@
 <script setup>
-import '~/assets/css/layout.css';
 import { formatEuro } from '~/utils/price.js';
 
 const route = useRoute();
@@ -250,3 +249,196 @@ function scrollToPreventivo() {
 	</div>
 
 </template>
+
+<style scoped>
+.hero-homepage {
+	padding: 16px 0 4px;
+}
+
+.hero-title {
+	font-family: var(--font-montserrat);
+	font-weight: 800;
+	color: var(--color-brand-text);
+	font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+	line-height: 1.05;
+	letter-spacing: -1.5px;
+}
+
+.hero-title-highlight {
+	position: relative;
+	display: inline-block;
+}
+.hero-title-highlight::after {
+	content: '';
+	position: absolute;
+	left: -4px;
+	right: -4px;
+	bottom: 2px;
+	height: 10px;
+	border-radius: 3px;
+	z-index: -1;
+	opacity: 0.20;
+	background: linear-gradient(90deg, var(--color-brand-accent), var(--color-brand-primary));
+}
+
+.hero-subtitle {
+	margin-top: 12px;
+	color: #777;
+	font-weight: 450;
+	font-size: 15px;
+	line-height: 1.55;
+	max-width: 380px;
+}
+
+.hero-price-cta-box {
+	margin-top: 22px;
+	border-radius: 16px;
+	padding: 14px 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 12px;
+	background: var(--color-brand-primary);
+}
+
+.hero-image-wrapper {
+	position: relative;
+	z-index: 2;
+	flex: 1 1 0%;
+	width: 100%;
+}
+.hero-image-gradient-border {
+	padding: 3px;
+	border-radius: 22px;
+	background: linear-gradient(135deg, var(--color-brand-accent) 0%, rgba(228, 66, 3, 0.3) 35%, rgba(9, 88, 102, 0.3) 65%, var(--color-brand-primary) 100%);
+}
+.hero-image-frame {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	height: 240px;
+	overflow: hidden;
+	border-radius: 19px;
+	background: #fff;
+}
+.hero-image {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	pointer-events: none;
+	user-select: none;
+}
+
+.hero-trust-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 14px;
+	margin-top: 16px;
+}
+.hero-trust-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	color: var(--color-brand-text-secondary, #777);
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+}
+.hero-trust-item svg {
+	color: var(--color-brand-primary, #095866);
+	flex-shrink: 0;
+}
+
+@media (min-width: 40rem) {
+	.hero-homepage {
+		padding: 24px 0 4px;
+	}
+	.hero-subtitle {
+		font-size: 16px;
+	}
+	.hero-price-cta-box {
+		flex-direction: row;
+		align-items: center;
+		gap: 16px;
+		padding: 16px 24px;
+	}
+	.hero-trust-row {
+		gap: 18px;
+		margin-top: 18px;
+	}
+	.hero-trust-item {
+		font-size: 13px;
+	}
+	.hero-image,
+	.hero-image-frame {
+		height: 280px;
+	}
+}
+
+@media (min-width: 64rem) {
+	.hero-image-wrapper {
+		width: auto;
+	}
+	.hero-image,
+	.hero-image-frame {
+		height: 320px;
+	}
+}
+
+@media (max-width: 23.4375rem) {
+	.hero-homepage {
+		padding: 12px 0 4px;
+	}
+	.hero-title {
+		font-size: clamp(1.75rem, 7vw, 2.4rem);
+		letter-spacing: -1px;
+	}
+	.hero-subtitle {
+		font-size: 13px;
+		margin-top: 8px;
+		max-width: 100%;
+	}
+	.hero-price-cta-box {
+		margin-top: 16px;
+		padding: 12px 14px;
+		border-radius: 14px;
+		gap: 10px;
+	}
+	.hero-trust-row {
+		gap: 8px 12px;
+		margin-top: 12px;
+	}
+	.hero-trust-item {
+		font-size: 11px;
+		gap: 4px;
+	}
+	.hero-trust-item svg {
+		width: 12px;
+		height: 12px;
+	}
+	.hero-image-frame {
+		height: 180px;
+		border-radius: 13px;
+	}
+	.hero-image {
+		height: 180px;
+	}
+	.hero-image-gradient-border {
+		border-radius: 16px;
+	}
+}
+
+@media (max-width: 39.99rem) {
+	.hero-image-frame,
+	.hero-image {
+		height: 200px;
+	}
+	.hero-price-cta-box {
+		flex-direction: column;
+		align-items: stretch;
+	}
+}
+</style>

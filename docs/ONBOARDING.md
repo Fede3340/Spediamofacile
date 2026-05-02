@@ -28,7 +28,25 @@ Laravel
 
 **Backend Laravel alla root**, **frontend Nuxt in `apps/web/`**, **Caddy** reverse proxy split-routing.
 
-## Setup (10 min)
+## Setup (2 min con Docker — consigliato)
+
+```bash
+git clone <repo> spediamofacile && cd spediamofacile
+
+# 5 servizi (postgres + redis + laravel + nuxt + caddy) in un comando
+make dev
+
+# Apri http://127.0.0.1:8787 quando "caddy: healthy"
+make logs    # tail dei log
+make test    # PHPUnit + Vitest
+make down    # stop (mantiene volumi)
+make clean   # reset completo
+```
+
+Vedi `make help` per tutti i target. File: [`docker-compose.yml`](../docker-compose.yml) +
+[`infra/docker/`](../infra/docker/) Dockerfile per ciascun servizio.
+
+## Setup (10 min host nativo — alternativa)
 
 ```bash
 git clone <repo> spediamofacile && cd spediamofacile
@@ -139,12 +157,43 @@ npm run test:unit                  # Vitest
 npx playwright test                # E2E
 ```
 
+## Design system frontend
+
+Una sola strada per ogni cosa: **Tailwind utility puro + 23 componenti `Sf*` + Nuxt UI 4**.
+
+| Categoria | Componenti `Sf*` |
+|---|---|
+| Form | `SfButton`, `SfInput`, `SfTextarea`, `SfSelect`, `SfCheckbox`, `SfRadio`, `SfSegmented`, `SfFormGroup` |
+| Surface | `SfCard`, `SfModal`, `SfConfirmDialog`, `SfTooltip`, `SfDropdown`, `SfSkeleton` |
+| Feedback | `SfBadge`, `SfStatusPill`, `SfStatCard`, `SfAvatar`, `SfAlert`, `SfEmptyState`, `SfAddressChip` |
+| Navigation | `SfTabs`, `SfBreadcrumbs`, `SfPagination`, `SfTable` |
+
+I `Sf*` sono auto-imported (Nuxt) — usabili direttamente in template. Showcase live in
+[`pages/__design-system.vue`](../apps/web/pages/__design-system.vue) (dev-only).
+
+**Token brand**: `bg-brand-primary` (teal), `bg-brand-accent` (arancione), `text-brand-text*`,
+`shadow-sf*`, `rounded-button|control|card|pill`. CSS variables in
+[`apps/web/assets/css/main.css`](../apps/web/assets/css/main.css) `:root` → mappate a Tailwind in
+[`tailwind.config.js`](../apps/web/tailwind.config.js).
+
+**Vietato**: `<style scoped>` con classi page-specific (`.account-*`, `.admin-*`, `.lp-*`),
+mischiare CSS custom + Tailwind nello stesso componente, palette `blue-*`/`indigo-*`/`sky-*`.
+
+Vedi [`docs/adr/004-tailwind-utility-design-system.md`](adr/004-tailwind-utility-design-system.md).
+
+## Architettura backend
+
+Modular monolith — controller HTTP magri, service per business logic, model Eloquent puri.
+Per la regola di dove va cosa, e quando si può usare `DB::table()` invece di Eloquent, vedi
+[`docs/adr/006-service-layer-architecture.md`](adr/006-service-layer-architecture.md).
+
 ## File da leggere PRIMA di scrivere codice
 
-1. `CLAUDE.md` — convenzioni progetto
-2. `routes/api.php` + `routes/api/*.php` — capire mapping API
+1. [`CLAUDE.md`](../CLAUDE.md) — convenzioni progetto
+2. `routes/api.php` + `routes/api/*.php` — mapping API
 3. `apps/web/pages/preventivo.vue` — page con widget quick quote
 4. `apps/web/pages/la-tua-spedizione/[step].vue` — funnel orchestrator
-5. `app/Http/Controllers/Checkout/StripeCheckoutController.php` — esempio controller con CRITICAL gating
+5. `app/Http/Controllers/Checkout/StripeCheckoutController.php` — esempio controller Stripe-critical
+6. [`docs/adr/`](adr/) — 6 Architectural Decision Records
 
 Buon lavoro.

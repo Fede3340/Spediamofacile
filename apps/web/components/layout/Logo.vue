@@ -1,6 +1,4 @@
 <script setup>
-import '~/assets/css/layout.css';
-
 const props = defineProps({
 	isNavbar: Boolean,
 });
@@ -38,4 +36,71 @@ const showDivider = computed(() => showNavbarDivider.value || !isNavbarLogo.valu
 		SpediamoFacile
 	</span>
 </template>
+
+<style scoped>
+.logo-mark {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	border-radius: 999px;
+	background: var(--color-brand-accent);
+	color: #ffffff;
+}
+
+.logo-mark--navbar,
+.logo-mark--footer {
+	width: 38px;
+	height: 38px;
+}
+
+.logo-mark__glyph {
+	font-size: 14px;
+	line-height: 1;
+	font-weight: 800;
+	letter-spacing: -0.03em;
+}
+
+.logo-mark--with-divider::after,
+.logo-mark--with-divider-light::after {
+	content: "";
+	position: absolute;
+	right: -12px;
+	top: 0;
+	width: 2px;
+	height: 100%;
+}
+.logo-mark--with-divider::after {
+	background: #333333;
+}
+.logo-mark--with-divider-light::after {
+	background: #ffffff;
+}
+
+@media (min-width: 640px) {
+	.logo-mark--navbar,
+	.logo-mark--footer {
+		width: 50px;
+		height: 50px;
+	}
+	.logo-mark__glyph { font-size: 18px; }
+	.logo-mark--with-divider::after,
+	.logo-mark--with-divider-light::after { right: -15px; }
+}
+
+@media (min-width: 1024px) {
+	.logo-mark--navbar,
+	.logo-mark--footer {
+		width: 62px;
+		height: 62px;
+	}
+	.logo-mark__glyph { font-size: 22px; }
+	.logo-mark--with-divider::after,
+	.logo-mark--with-divider-light::after {
+		right: -19px;
+		width: 4px;
+	}
+}
+</style>
 

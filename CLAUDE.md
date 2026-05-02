@@ -96,9 +96,15 @@ Eccezioni documentate inline con `// CRITICAL:` + motivazione.
 
 ## DB::table() autorizzati
 
-Pivot pure (`cart_user`, `package_order`, `saved_shipments`), Laravel internals
-(`password_reset_tokens`, `sessions`, `cache`, `jobs`), bulk import (`locations`),
-lock esplicito Stripe (`users` con `lockForUpdate`).
+Vedi [`docs/adr/006-service-layer-architecture.md`](docs/adr/006-service-layer-architecture.md) per il razionale completo. In sintesi:
+
+- **Pivot pure**: `cart_user`, `package_order`, `saved_shipments`
+- **Laravel internals**: `password_reset_tokens`, `sessions`, `cache`, `jobs`, `cookie_consents`
+- **Bulk import / counter atomico**: `locations` (GeoNames), `invoice_counters` (counter fattura)
+- **Lock pessimistico esplicito**: `users` con `lockForUpdate` (Stripe payment + wallet)
+- **Cleanup massivo / report aggregato**: comandi console (`CleanupOrders`, `SendAbandonedCartEmails`)
+
+Tutti gli altri accessi DB usano Eloquent.
 
 ## Test
 

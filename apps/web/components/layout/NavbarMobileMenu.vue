@@ -105,3 +105,94 @@ const emit = defineEmits(['close', 'open-auth', 'open-register'])
     </Teleport>
   </ClientOnly>
 </template>
+
+<style scoped>
+.navbar-mobile-backdrop {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.navbar-mobile-panel {
+  border-radius: 18px;
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(9, 88, 102, 0.06);
+}
+
+.navbar-mobile-menu-link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  padding: 16px 20px;
+  font-size: 16px;
+  color: var(--color-brand-text-secondary);
+  font-weight: 600;
+  transition: background-color var(--sf-t1) var(--sf-ease), color var(--sf-t1) var(--sf-ease);
+}
+.navbar-mobile-menu-link:hover {
+  background: var(--interaction-hover-teal);
+  color: var(--color-brand-primary);
+}
+.navbar-mobile-menu-link:active {
+  background: var(--interaction-press-teal);
+}
+.navbar-mobile-menu-link--active {
+  color: var(--color-brand-primary);
+  background: var(--interaction-active-teal);
+  box-shadow: inset 3px 0 0 var(--color-brand-primary);
+  font-weight: 700;
+}
+
+.navbar-mobile-menu-link__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 36px;
+  background: var(--color-brand-bg-alt);
+  color: var(--color-brand-text-muted);
+  transition: background-color var(--sf-t1) var(--sf-ease), color var(--sf-t1) var(--sf-ease);
+}
+.navbar-mobile-menu-link__icon--active {
+  background: rgba(9, 88, 102, 0.08);
+  color: var(--color-brand-primary);
+}
+
+.navbar-mobile-menu-link__chevron {
+  color: var(--color-brand-text-muted);
+  transition: color var(--sf-t1) var(--sf-ease), transform var(--sf-t1) var(--sf-ease);
+}
+.navbar-mobile-menu-link:hover .navbar-mobile-menu-link__chevron {
+  color: var(--color-brand-text-muted);
+  transform: translateX(2px);
+}
+
+.navbar-mobile-menu-separator {
+  height: 1px;
+  background: var(--surface-soft);
+}
+
+.navbar-mobile-btn-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  width: 100%;
+  height: 48px;
+  border-radius: 9999px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--color-brand-primary);
+  transition: color var(--sf-t1) var(--sf-ease), background-color var(--sf-t1) var(--sf-ease), border-color var(--sf-t1) var(--sf-ease), box-shadow var(--sf-t1) var(--sf-ease), transform var(--sf-t1) var(--sf-ease);
+}
+.navbar-mobile-btn-login:hover {
+  background-color: var(--color-brand-primary-light);
+}
+</style>
