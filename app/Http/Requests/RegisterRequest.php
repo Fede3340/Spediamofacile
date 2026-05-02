@@ -20,7 +20,7 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\StrongPassword;
+use App\Support\StrongPassword;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
@@ -46,7 +46,7 @@ class RegisterRequest extends FormRequest
             // generica di successo senza rivelare se l'email e' gia' registrata.
             // Ref: Sprint 6.4 anti-enumeration (OWASP Auth Cheatsheet).
             'email' => 'required|string|email|max:255|confirmed',
-            // Password policy uniforme: vedi App\Rules\StrongPassword
+            // Password policy uniforme: vedi App\Support\StrongPassword
             // (>=10 char, 1 maiuscola, 1 numero, 1 simbolo, no blocklist, no email/nome).
             'password' => [
                 'required',

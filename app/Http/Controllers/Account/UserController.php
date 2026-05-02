@@ -9,7 +9,7 @@ use App\Models\Order;
 use App\Models\Setting;
 use App\Models\User;
 use App\Services\Security\ImageSanitizer;
-use App\Utils\CustomResponse;
+use App\Support\CustomResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;

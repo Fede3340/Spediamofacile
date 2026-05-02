@@ -22,8 +22,6 @@
 
 ## Funnel spedizione (step 2: servizi + indirizzi dettaglio)
 
-- `useShipmentForm` *(deprecated, rimosso)* — sostituito da `useShipmentStep*` family.
-- `useShipmentFormFieldAssist` *(deprecated, rimosso)* — assistenza inline campi rimossa.
 - `useShipmentFormValidation` — validazione form completo (errori, focus management, summary).
 - `useShipmentLocationAutocomplete` — autocomplete CAP/citta'/provincia per sezione mittente/destinatario.
 - `useShipmentStepFlow` — stato globale step (current step, navigazione avanti/indietro).
@@ -91,7 +89,6 @@
 - `useSiteSchema` — JSON-LD organization/site (schema.org).
 - `useContenutoHeader` — header sezione "Contenuto" (titoli pagina).
 - `useShellRouteState` — stato route layout (transitions, loading).
-- `useStatusBadge` — mapping status order → tone+icon centralizzato (usato da admin + account).
 - `useUiFeedback` — toast/alert globali.
 
 ## Form helpers

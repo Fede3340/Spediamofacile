@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue'
 
-import { buildCartDiscountPreviewState, parseEuroAmount } from '~/utils/discountPreview'
+import { buildCartDiscountPreviewState, parseEuroAmount } from '~/utils/cartHelpers'
 
 type ValueRef<T> = { value: T }
 type CouponApiResponse = {

@@ -14,7 +14,7 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\StrongPassword;
+use App\Support\StrongPassword;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePasswordRequest extends FormRequest

@@ -34,7 +34,7 @@ import {
   PENDING_PAYMENT_TTL_MS,
   safeLocalSet,
   clearPendingPayment,
-} from '~/utils/pendingPayment'
+} from '~/utils/cartHelpers'
 
 type PaymentMethodKey = 'carta' | 'bonifico' | 'wallet'
 type CartLike = {

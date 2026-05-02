@@ -32,7 +32,7 @@ import {
 	buildPricingRulesPayload,
 	normalizeEuropePricingForAdmin,
 	normalizePricingGroupForAdmin,
-} from '~/utils/adminPricingNormalize';
+} from '~/utils/adminPricingHelpers';
 
 type AdminApiClient = <T = unknown>(url: string, options?: Record<string, unknown>) => Promise<T>;
 type ActionMessage = (message: string) => void;

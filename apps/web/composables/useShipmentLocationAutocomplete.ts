@@ -18,7 +18,7 @@ import {
 	formatCapSuggestionLabel,
 	isLocationCoherent,
 	extractUniqueProvinces,
-} from '~/utils/locationMatch';
+} from '~/utils/location';
 import type { Ref } from 'vue';
 
 type AddressSection = 'origin' | 'dest';

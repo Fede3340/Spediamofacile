@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Utils;
+namespace App\Support;
 
 class CustomResponse
 {
     public static function setSuccessResponse($message, $code, $objName = null, $data = null)
     {
-
         $params = [
             'success' => true,
             'status_code' => $code,
@@ -26,7 +25,6 @@ class CustomResponse
 
     public static function setFailResponse($message, $code, $errors = null)
     {
-
         $params = [
             'success' => false,
             'message' => $message,

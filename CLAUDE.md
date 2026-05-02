@@ -50,6 +50,7 @@ Cookie sessione Laravel (Sanctum SPA) emessi su `127.0.0.1:8787` → condivisi t
 - **Components Nuxt**: in `apps/web/components/`, auto-import abilitato (`<ServizioGrid>` direttamente).
 - **Palette**: teal `#095866` + arancione `#E44203` + neutri. **Mai blu** (no `blue-*`, `indigo-*`, `sky-*`, `slate-*`).
 - **Italiano** per stringhe utente (commenti, label, errori). **English** per identifier (variabili, funzioni, tabelle).
+- **TypeScript strategy**: TS in `composables/*.ts` + `utils/*.ts` + `stores/*.ts` (logica riusata, tipi cross-domain). JS in `components/**/*.vue` + `pages/**/*.vue` (props validate runtime). Vedi [`docs/adr/007-typescript-strategy.md`](docs/adr/007-typescript-strategy.md).
 
 ## Design system (regola d'oro UI)
 

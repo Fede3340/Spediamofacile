@@ -17,7 +17,7 @@ use App\Jobs\SendVerificationEmailJob;
 use App\Models\User;
 use App\Services\GuestCartMergeService;
 use App\Support\AuthUiCookie;
-use App\Utils\CustomResponse;
+use App\Support\CustomResponse;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;

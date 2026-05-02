@@ -5,7 +5,7 @@ import {
 	buildDiscountPreviewState,
 	calculateDiscountAmount,
 	parseEuroAmount,
-} from '~/utils/discountPreview'
+} from '~/utils/cartHelpers'
 
 describe('discountPreview utils', () => {
 	it('parseEuroAmount normalizes italian formatted totals', () => {

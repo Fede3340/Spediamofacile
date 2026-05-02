@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Concerns\LogsAudit;
+use App\Support\LogsAudit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRoleRequest;
 use App\Http\Requests\UpdateUserTypeRequest;

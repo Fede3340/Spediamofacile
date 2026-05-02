@@ -7,7 +7,7 @@
  */
 import { computed, ref, watch, type Ref } from 'vue';
 import type { Address, AddressGroup, CartItem, CartResponse, Order } from '~/types';
-import { parseEuroAmount, buildDiscountOrderContext } from '~/utils/discountPreview';
+import { parseEuroAmount, buildDiscountOrderContext } from '~/utils/cartHelpers';
 import { useCheckoutPromoPreview } from '~/composables/useCheckoutPromoPreview';
 import {
 	deriveShipmentFlowStateFromUserStore,

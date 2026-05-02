@@ -1,7 +1,7 @@
 /**
  * @file useQuickQuoteLocations — Composable useQuickQuoteLocations.
  */
-import { formatResolvedLocation } from "~/utils/quickQuoteContract";
+import { formatResolvedLocation } from "~/utils/quickQuoteHelpers";
 import type { Ref } from "vue";
 import type { LocationRecord } from "~/utils/location";
 

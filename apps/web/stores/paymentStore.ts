@@ -4,7 +4,7 @@ import {
 	PENDING_PAYMENT_TTL_MS,
 	type PendingPaymentDraft,
 	safeLocalSet,
-} from '~/utils/pendingPayment'
+} from '~/utils/cartHelpers'
 
 type PaymentMethodKey = 'carta' | 'wallet' | 'bonifico'
 

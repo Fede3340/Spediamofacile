@@ -20,7 +20,7 @@
  *   ]);
  */
 
-namespace App\Rules;
+namespace App\Support;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;

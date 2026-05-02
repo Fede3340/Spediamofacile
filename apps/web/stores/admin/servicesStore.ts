@@ -8,11 +8,11 @@
  */
 import { defineStore } from 'pinia'
 import {
+	buildPricingRulesPayload,
 	cloneForSnapshot,
 	ADMIN_DEFAULT_SERVICE_PRICING,
 	normalizePricingGroup,
-} from '~/utils/adminPrezziHelpers'
-import { buildPricingRulesPayload } from '~/utils/adminPricingNormalize'
+} from '~/utils/adminPricingHelpers'
 import { useAdminSupplementsStore } from '~/stores/admin/supplementsStore'
 
 type PricingRule = {

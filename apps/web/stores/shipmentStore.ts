@@ -19,12 +19,12 @@ import type {
 	ShipmentDetails,
 	ShipmentFlowStoreState,
 } from '~/types';
-import { buildQuotePayloadSnapshotFor } from '~/utils/preventivoHelpers';
 import {
 	buildQuoteComparableSignature,
+	buildQuotePayloadSnapshotFor,
 	extractSessionComparablePayload,
 	formatResolvedLocation,
-} from '~/utils/quickQuoteContract';
+} from '~/utils/quickQuoteHelpers';
 import { buildShipmentFlowLocation } from '~/utils/shipment';
 
 // ── Tipi per orchestrazione preventivo (ex preventivoStore) ────────────────

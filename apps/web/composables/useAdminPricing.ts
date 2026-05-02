@@ -25,10 +25,10 @@ import {
 import {
 	normalizeEuropePricingForAdmin,
 	normalizePricingGroupForAdmin,
-} from '~/utils/adminPricingNormalize';
+} from '~/utils/adminPricingHelpers';
 import type { EuropePricing, ExtraRules, PriceBand, PricingRuleGroup, SupplementRule } from '~/types/pricing';
 
-// Normalizzatori puri estratti in `~/utils/adminPricingNormalize.js`.
+// Normalizzatori puri estratti in `~/utils/adminPricingHelpers.ts`.
 
 // Sezioni Form/Import/List estratte in file dedicati.
 import { createFormSection } from '~/composables/useAdminPricingForm';

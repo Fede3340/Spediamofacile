@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserAddressStoreRequest;
 use App\Http\Resources\UserAddressResource;
 use App\Models\UserAddress;
-use App\Utils\CustomResponse;
+use App\Support\CustomResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;

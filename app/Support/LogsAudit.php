@@ -8,7 +8,7 @@
  *
  * USO:
  *   class UserManagementController extends Controller {
- *       use \App\Concerns\LogsAudit;
+ *       use \App\Support\LogsAudit;
  *
  *       public function approveUser(User $user) {
  *           $user->update(['approved_at' => now()]);
@@ -18,7 +18,7 @@
  *   }
  */
 
-namespace App\Concerns;
+namespace App\Support;
 
 use App\Models\AuditLog;
 use App\Services\AuditLogService;

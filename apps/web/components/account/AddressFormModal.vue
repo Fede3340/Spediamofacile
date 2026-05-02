@@ -1,5 +1,5 @@
 <script setup>
-import { provinceList } from '~/utils/provinceList';
+import { provinceList } from '~/utils/location';
 
 const props = defineProps({
 	modelValue: { type: Boolean, default: false },

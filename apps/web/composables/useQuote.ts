@@ -22,7 +22,7 @@ import {
 	cloneShipmentDetailsForQuote as cloneShipmentDetailsForQuoteCanonical,
 	extractSessionComparablePayload as extractSessionComparablePayloadCanonical,
 	formatResolvedLocation as formatResolvedLocationCanonical,
-} from "~/utils/quickQuoteContract";
+} from "~/utils/quickQuoteHelpers";
 
 type QuoteFlowStore = ReturnType<typeof useShipmentStore>;
 type QuoteTimer = ReturnType<typeof setTimeout> | null;

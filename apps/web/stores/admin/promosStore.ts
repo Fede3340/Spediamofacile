@@ -7,7 +7,7 @@
  *   - POST /api/admin/promo-settings/upload-image
  */
 import { defineStore } from 'pinia';
-import { ADMIN_DEFAULT_PROMO } from '~/utils/adminPrezziHelpers';
+import { ADMIN_DEFAULT_PROMO } from '~/utils/adminPricingHelpers';
 const VALID_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
 const MAX_IMAGE_SIZE_BYTES = 2 * 1024 * 1024;
 type PromoSettings = typeof ADMIN_DEFAULT_PROMO;
