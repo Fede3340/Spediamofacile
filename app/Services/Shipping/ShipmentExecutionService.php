@@ -83,7 +83,9 @@ class ShipmentExecutionService
     {
         $min = now()->startOfDay()->addWeekday();
         $max = $min->copy();
-        for ($i = 1; $i < 10; $i++) { $max->addWeekday(); }
+        for ($i = 1; $i < 10; $i++) {
+            $max->addWeekday();
+        }
 
         return [$min, $max];
     }

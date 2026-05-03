@@ -130,15 +130,4 @@ class GuestCartController extends Controller
 
         return response()->json(['message' => 'Carrello svuotato']);
     }
-
-    // Delegato a CartService — mantenuti come wrapper per retrocompatibilita'
-    private function calculateGroupedServiceSurchargeCents(array $packages): int
-    {
-        return $this->cartService->calculateGroupedSurchargeFromArray($packages);
-    }
-
-    private function buildServiceSignatureFromGuest(array $services = []): string
-    {
-        return $this->cartService->buildServiceSignatureFromGuest($services);
-    }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Support\LogsAudit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRoleRequest;
 use App\Http\Requests\UpdateUserTypeRequest;
 use App\Models\User;
+use App\Support\LogsAudit;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 

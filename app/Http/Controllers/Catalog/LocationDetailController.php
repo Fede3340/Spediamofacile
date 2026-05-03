@@ -13,9 +13,7 @@ use Illuminate\Http\Request;
  */
 class LocationDetailController extends Controller
 {
-    public function __construct(private readonly LocationLookupService $lookup)
-    {
-    }
+    public function __construct(private readonly LocationLookupService $lookup) {}
 
     public function byCap(Request $request)
     {

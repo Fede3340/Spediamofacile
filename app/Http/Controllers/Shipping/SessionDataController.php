@@ -15,9 +15,7 @@ class SessionDataController extends Controller
 {
     use BuildsSessionPayload;
 
-    public function __construct(private readonly SessionDataService $sessionData)
-    {
-    }
+    public function __construct(private readonly SessionDataService $sessionData) {}
 
     public static function findBandPrice(string $type, float $value): float
     {

@@ -25,8 +25,7 @@ class OrderActionsService
         private readonly DirectOrderService $directOrder,
         private readonly CartService $cartService,
         private readonly RefundService $refundService,
-    ) {
-    }
+    ) {}
 
     /**
      * Pre-elabora i dati per la creazione diretta dell'ordine (pricing,

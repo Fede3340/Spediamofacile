@@ -21,9 +21,7 @@ class OrderDetailController extends Controller
 {
     use HandlesOrderSubmissionContext;
 
-    public function __construct(private readonly CheckoutSubmissionContextService $submissionContext)
-    {
-    }
+    public function __construct(private readonly CheckoutSubmissionContextService $submissionContext) {}
 
     protected function submissionContextService(): CheckoutSubmissionContextService
     {

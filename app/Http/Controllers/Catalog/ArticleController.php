@@ -15,8 +15,6 @@ use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
-    private const ALLOWED_TYPES = 'guide,service';
-
     // Lista articoli, filtrabile per tipo (guide o service)
     public function index(Request $request): JsonResponse
     {

@@ -40,8 +40,7 @@ class StripeWebhookController extends Controller
         private readonly PaymentFailedHandler $paymentFailed,
         private readonly AccountUpdatedHandler $accountUpdated,
         private readonly AccountDisconnectedHandler $accountDisconnected,
-    ) {
-    }
+    ) {}
 
     public function handle(Request $request)
     {

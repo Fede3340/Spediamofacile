@@ -22,8 +22,7 @@ class CheckoutSubmissionContextService
     public function __construct(
         private readonly CheckoutDiscountContextResolver $discountResolver,
         private readonly CartTotalsService $cartTotals,
-    ) {
-    }
+    ) {}
 
     public function fromRequestArray(array $input): array
     {

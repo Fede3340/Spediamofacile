@@ -167,7 +167,7 @@ class LoginController extends Controller
             abort(Response::HTTP_FORBIDDEN, 'Solo un amministratore può confermare l\'accesso fuori flusso.');
         }
 
-        if (! $user || ! Hash::check((string) $request->password, (string) $user->password)) {
+        if (! Hash::check((string) $request->password, (string) $user->password)) {
             throw ValidationException::withMessages([
                 'password' => ['La password inserita non è corretta.'],
             ]);

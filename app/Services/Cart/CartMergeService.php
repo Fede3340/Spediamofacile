@@ -15,8 +15,7 @@ class CartMergeService
     public function __construct(
         private readonly CartItemPricingService $pricing,
         private readonly CartSignatureService $signature,
-    ) {
-    }
+    ) {}
 
     public function buildMergeKey(Package $pkg): string
     {

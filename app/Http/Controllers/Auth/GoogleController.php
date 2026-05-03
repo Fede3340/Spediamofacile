@@ -13,9 +13,7 @@ use Laravel\Socialite\Two\GoogleProvider;
 
 class GoogleController extends Controller
 {
-    public function __construct(private readonly GoogleOAuthService $oauth)
-    {
-    }
+    public function __construct(private readonly GoogleOAuthService $oauth) {}
 
     public function redirectToGoogle(Request $request)
     {

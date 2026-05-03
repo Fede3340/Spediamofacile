@@ -175,20 +175,24 @@ class StripePaymentService
         $stripe = $this->client();
         $intent = $stripe->paymentIntents->retrieve($paymentIntentId);
 
-        // Verifica che il payment intent corrisponda all'ordine
-        if (isset($intent->metadata['order_id']) && (int) $intent->metadata['order_id'] !== $order->id) {
-            throw new \RuntimeException('Payment intent non corrisponde all\'ordine.');
-        }
-
         $metadata = is_object($intent->metadata ?? null)
             ? (array) $intent->metadata
             : (array) ($intent->metadata ?? []);
 
+        // Verifica STRETTA: order_id deve esistere e corrispondere (no condizionale).
+        $intentOrderId = $metadata['order_id'] ?? null;
+        if ($intentOrderId === null || (int) $intentOrderId !== $order->id) {
+            throw new \RuntimeException('Payment intent non corrisponde all\'ordine.');
+        }
+
+        // Verifica STRETTA dei metadata identità — se l'ordine ha il valore, il PI deve averlo identico.
         foreach (['client_submission_id', 'pricing_signature'] as $field) {
             $orderValue = $order->getAttribute($field);
+            if (! filled($orderValue)) {
+                continue;
+            }
             $intentValue = $metadata[$field] ?? null;
-
-            if (filled($orderValue) && filled($intentValue) && (string) $orderValue !== (string) $intentValue) {
+            if (! filled($intentValue) || (string) $orderValue !== (string) $intentValue) {
                 throw new \RuntimeException('Metadati dell\'ordine non corrispondono al payment intent.');
             }
         }

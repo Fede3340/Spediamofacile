@@ -11,9 +11,7 @@ use App\Services\PriceEngineService;
  */
 class CartItemPricingService
 {
-    public function __construct(private readonly PriceEngineService $priceEngine)
-    {
-    }
+    public function __construct(private readonly PriceEngineService $priceEngine) {}
 
     public function euroToCents(float|int|null $euro): int
     {

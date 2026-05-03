@@ -29,8 +29,7 @@ class OrderActionsController extends Controller
     public function __construct(
         private readonly CheckoutSubmissionContextService $submissionContext,
         private readonly OrderActionsService $actions,
-    ) {
-    }
+    ) {}
 
     protected function submissionContextService(): CheckoutSubmissionContextService
     {

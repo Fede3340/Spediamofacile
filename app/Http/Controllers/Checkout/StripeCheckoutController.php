@@ -41,8 +41,7 @@ class StripeCheckoutController extends Controller
         private readonly CheckoutSubmissionContextService $submissionContext,
         private readonly CartService $cartService,
         private readonly WalletOrderLinkService $walletOrderLink,
-    ) {
-    }
+    ) {}
 
     public function markOrderCompleted(PayWithExternalProviderRequest $request)
     {

@@ -16,6 +16,7 @@
 namespace Tests\Feature\Payments;
 
 use App\Models\User;
+use App\Services\Stripe\Webhook\AccountUpdatedHandler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -123,7 +124,7 @@ class StripeAccountEncryptionTest extends TestCase
         $user->save();
 
         // Invochiamo il helper protected tramite reflection sul handler che lo usa.
-        $handler = app(\App\Services\Stripe\Webhook\AccountUpdatedHandler::class);
+        $handler = app(AccountUpdatedHandler::class);
         $ref = new \ReflectionMethod($handler, 'findUserByStripeAccountId');
         $ref->setAccessible(true);
 

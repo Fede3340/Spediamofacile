@@ -18,8 +18,7 @@ class SessionDataService
     public function __construct(
         private readonly PriceEngineService $priceEngine,
         private readonly EuropePriceEngineService $europePriceEngine,
-    ) {
-    }
+    ) {}
 
     /**
      * Normalizza shipment_details (paesi/codici) e applica regole cross-field.

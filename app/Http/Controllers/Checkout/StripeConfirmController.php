@@ -32,8 +32,7 @@ class StripeConfirmController extends Controller
     public function __construct(
         private readonly StripePaymentService $stripe,
         private readonly CheckoutSubmissionContextService $submissionContext,
-    ) {
-    }
+    ) {}
 
     public function orderPaid(OrderPaidRequest $request)
     {

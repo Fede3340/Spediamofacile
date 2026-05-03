@@ -17,8 +17,7 @@ class LocationSearchController extends Controller
     public function __construct(
         private readonly LocationLookupService $lookup,
         private readonly PhotonLocationFallback $photonFallback,
-    ) {
-    }
+    ) {}
 
     public function search(Request $request)
     {

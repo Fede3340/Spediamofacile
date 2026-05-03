@@ -69,3 +69,12 @@ docs/ai/
 
 # Helper locali Windows (avvio rapido dev, non parte della repo)
 AVVIA_LOCALE.cmd
+
+# Tooling AI/IDE — non parte del repo
+.claude/
+.codex/
+.local/
+!.codex/.gitignore
+
+# Env locali (DB, config dev)
+.env.local.postgres

@@ -25,8 +25,7 @@ class CartService
         private readonly CartTotalsService $totals,
         private readonly CartMergeService $merge,
         private readonly CartSignatureService $signature,
-    ) {
-    }
+    ) {}
 
     // --- Duplicate detection ---
 

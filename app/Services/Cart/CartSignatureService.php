@@ -11,9 +11,7 @@ use App\Services\ShipmentServicePricingService;
  */
 class CartSignatureService
 {
-    public function __construct(private readonly ShipmentServicePricingService $servicePricing)
-    {
-    }
+    public function __construct(private readonly ShipmentServicePricingService $servicePricing) {}
 
     public function buildFromService(Service $service): string
     {
