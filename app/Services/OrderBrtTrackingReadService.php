@@ -28,7 +28,12 @@ class OrderBrtTrackingReadService
         private readonly TrackingService $tracking,
     ) {}
 
-    /** Lookup pubblico per tracking: accetta SF-123, #123, brt_parcel_id, brt_tracking_number. */
+    /**
+     * Lookup pubblico per tracking. Priorità:
+     * 1. public_tracking_token (ULID 26 char base32, opaco anti-IDOR — OWASP A01)
+     * 2. brt_parcel_id / brt_tracking_number / brt_numeric_sender_reference (codici corriere reali)
+     * 3. SF-{id} legacy (BACK-COMPAT solo per ordini vecchi senza token, deprecato)
+     */
     private function findPublicTrackingOrder(string $code): ?Order
     {
         $normalized = trim($code);
@@ -36,6 +41,12 @@ class OrderBrtTrackingReadService
             return null;
         }
 
+        // 1. ULID base32 (26 char, A-Z + 0-9, opaco non sequenziale)
+        if (preg_match('/^[0-9A-Z]{26}$/', $normalized)) {
+            return Order::where('public_tracking_token', $normalized)->first();
+        }
+
+        // 2. Codici corriere reali (BRT-issued, non enumerabili)
         $byRef = Order::where('brt_parcel_id', $normalized)->first()
             ?? Order::where('brt_tracking_number', $normalized)->first()
             ?? Order::where('brt_numeric_sender_reference', $normalized)->first();
@@ -43,9 +54,13 @@ class OrderBrtTrackingReadService
             return $byRef;
         }
 
+        // 3. SF-{id} legacy: ammesso SOLO per ordini privi di token (back-compat)
         $cleanCode = preg_replace('/^(SF-|#|sf-)/i', '', $normalized);
         if (is_numeric($cleanCode)) {
-            return Order::where('id', (int) $cleanCode)->whereNotNull('brt_parcel_id')->first();
+            return Order::where('id', (int) $cleanCode)
+                ->whereNull('public_tracking_token')
+                ->whereNotNull('brt_parcel_id')
+                ->first();
         }
 
         return null;
@@ -83,7 +98,8 @@ class OrderBrtTrackingReadService
 
         return [
             'found' => true,
-            'order_id' => $order->id,
+            // OWASP IDOR: NO order_id interno esposto. Solo token opaco.
+            'public_tracking_token' => $order->public_tracking_token,
             'status' => $statusInfo['label'],
             'status_description' => $statusInfo['description'],
             'raw_status' => $rawStatus,

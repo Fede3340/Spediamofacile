@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 /**
  * @property-read User|null $user
@@ -81,6 +82,9 @@ class Order extends Model
         'bank_transfer_confirmed_at',    // Quando admin ha confermato la ricezione del bonifico
         'bank_transfer_reference',       // Riferimento bonifico (CRO/altro) inserito da admin
         'bank_transfer_confirmed_by',    // User ID admin che ha confermato
+        // Tracking pubblico (audit P1 OWASP IDOR — 2026-05-03)
+        'public_tracking_token',         // ULID 26 char base32, opaco non sequenziale (anti-enumerazione)
+        'refund_state',                  // Saga lifecycle: none|requested|external_cancelled|refunded|failed|compensation_needed
         // SICUREZZA: i seguenti campi NON sono in $fillable (assegnare con $order->campo = valore):
         // - payment_method: metodo di pagamento (stripe, wallet) — impostato solo dal server
         // - stripe_payment_intent_id: ID PaymentIntent Stripe — impostato solo dal server
@@ -187,6 +191,10 @@ class Order extends Model
         static::creating(function ($order) {
             if (empty($order->status)) {
                 $order->status = self::PENDING;
+            }
+            // OWASP IDOR: token opaco non sequenziale per tracking pubblico
+            if (empty($order->public_tracking_token)) {
+                $order->public_tracking_token = Str::ulid()->toBase32();
             }
         });
     }

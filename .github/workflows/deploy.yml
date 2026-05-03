@@ -76,7 +76,6 @@ jobs:
 
       - name: Build Laravel Docker image
         run: docker build -f Dockerfile -t spedizionefacile-api:staging-${{ github.sha }} .
-        continue-on-error: true
 
       - name: Trigger Render deploy (Laravel API)
         if: secrets.RENDER_DEPLOY_HOOK_STAGING != ''

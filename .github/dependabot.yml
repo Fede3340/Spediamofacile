@@ -5,7 +5,7 @@ updates:
   # Composer (Laravel backend)
   # ────────────────────────────────────────────────
   - package-ecosystem: "composer"
-    directory: "/apps/api"
+    directory: "/"
     schedule:
       interval: "daily"
       time: "06:00"

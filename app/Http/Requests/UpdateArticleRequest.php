@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Controllers\Catalog\ArticleController;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
  * Validazione per PUT/PATCH /api/admin/articles/{article}.
@@ -23,7 +24,7 @@ class UpdateArticleRequest extends FormRequest
         return [
             'title' => ['sometimes', 'required', 'string', 'max:255'],
             'slug' => ['sometimes', 'required', 'string', 'max:255', 'unique:articles,slug,'.$articleId],
-            'type' => ['sometimes', 'required', 'in:'.ArticleController::ALLOWED_TYPES],
+            'type' => ['sometimes', 'required', Rule::in(ArticleController::ALLOWED_TYPES)],
             'meta_description' => ['nullable', 'string'],
             'intro' => ['nullable', 'string'],
             'sections' => ['nullable', 'array'],

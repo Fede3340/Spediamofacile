@@ -12,8 +12,9 @@ class BrtTrackingReadControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_public_tracking_search_finds_order_by_sf_reference_and_builds_fallback_tracking_url(): void
+    public function test_public_tracking_search_finds_order_by_public_tracking_token(): void
     {
+        // OWASP IDOR: lookup canonico via public_tracking_token (ULID opaco), no order_id esposto.
         $order = Order::factory()->create([
             'status' => Order::LABEL_GENERATED,
             'brt_parcel_id' => 'PARCEL-READ-1',
@@ -21,15 +22,30 @@ class BrtTrackingReadControllerTest extends TestCase
             'brt_tracking_url' => null,
         ]);
 
-        $this->getJson('/api/tracking/search?code=SF-'.$order->id)
+        $this->getJson('/api/tracking/search?code='.$order->public_tracking_token)
             ->assertOk()
             ->assertJsonPath('found', true)
-            ->assertJsonPath('order_id', $order->id)
+            ->assertJsonPath('public_tracking_token', $order->public_tracking_token)
+            ->assertJsonMissingPath('order_id')
             ->assertJsonPath('raw_status', Order::LABEL_GENERATED)
             ->assertJsonPath('status', 'Etichetta generata')
             ->assertJsonPath('brt_parcel_id', 'PARCEL-READ-1')
             ->assertJsonPath('brt_tracking_number', 'TRACK-READ-1')
             ->assertJsonPath('brt_tracking_url', 'https://vas.brt.it/vas/sped_det_show.hsm?refnr=TRACK-READ-1');
+    }
+
+    public function test_public_tracking_rejects_sf_id_when_order_has_token(): void
+    {
+        // SF-{id} BLOCCATO se l'ordine ha public_tracking_token (anti-enumerazione).
+        $order = Order::factory()->create([
+            'status' => Order::LABEL_GENERATED,
+            'brt_parcel_id' => 'PARCEL-READ-3',
+        ]);
+        $this->assertNotNull($order->public_tracking_token);
+
+        $this->getJson('/api/tracking/search?code=SF-'.$order->id)
+            ->assertOk()
+            ->assertJsonPath('found', false);
     }
 
     public function test_authenticated_order_tracking_uses_canonical_tracking_url_fallback(): void

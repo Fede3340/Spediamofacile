@@ -91,18 +91,6 @@ parameters:
 			path: app/Http/Middleware/SentryContext.php
 
 		-
-			message: '#^Access to private constant ALLOWED_TYPES of class App\\Http\\Controllers\\Catalog\\ArticleController\.$#'
-			identifier: classConstant.private
-			count: 1
-			path: app/Http/Requests/StoreArticleRequest.php
-
-		-
-			message: '#^Access to private constant ALLOWED_TYPES of class App\\Http\\Controllers\\Catalog\\ArticleController\.$#'
-			identifier: classConstant.private
-			count: 1
-			path: app/Http/Requests/UpdateArticleRequest.php
-
-		-
 			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1

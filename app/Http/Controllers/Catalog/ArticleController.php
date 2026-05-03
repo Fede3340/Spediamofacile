@@ -15,6 +15,9 @@ use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
+    /** Tipi articolo ammessi (riusato da FormRequest validation). */
+    public const ALLOWED_TYPES = ['guide', 'service', 'faq'];
+
     // Lista articoli, filtrabile per tipo (guide o service)
     public function index(Request $request): JsonResponse
     {

@@ -20,7 +20,7 @@ services:
     env: docker
     plan: starter  # starter minimo per evitare cold start, risparmio vs prod
     region: frankfurt
-    rootDir: apps/api
+    rootDir: .
     dockerfilePath: ./Dockerfile
     autoDeploy: true
     branch: staging  # deploy solo da branch staging
@@ -29,7 +29,16 @@ services:
 
     buildFilter:
       paths:
-        - apps/api/**
+        - app/**
+        - routes/**
+        - config/**
+        - database/**
+        - bootstrap/**
+        - public/**
+        - composer.json
+        - composer.lock
+        - Dockerfile
+        - docker-entrypoint.sh
 
     envVars:
       # ---- Applicazione -----------------------------------------------------
