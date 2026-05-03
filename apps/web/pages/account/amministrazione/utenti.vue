@@ -1,6 +1,5 @@
 <!-- FILE: pages/account/amministrazione/utenti.vue -->
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
 
 definePageMeta({
 	middleware: ['app-auth', 'admin'],

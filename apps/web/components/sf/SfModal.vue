@@ -1,4 +1,4 @@
-<script setup>import { computed, nextTick, onBeforeUnmount, ref, useId, watch } from 'vue';
+<script setup>
 const props = defineProps({
   modelValue: { type: Boolean, default: false },
   title: { type: String, default: '' },

@@ -1,6 +1,5 @@
 <!-- AdminStatusBadge.vue — Badge stato admin unificato (status ordini + ruoli utente). -->
 <script setup>
-import { computed } from 'vue';
 
 const props = defineProps({
 	status: { type: String, required: true },

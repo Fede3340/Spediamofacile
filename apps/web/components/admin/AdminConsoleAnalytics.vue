@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+
 import AdminChartOrders from '~/components/admin/AdminChartOrders.vue';
 import AdminChartRevenue from '~/components/admin/AdminChartRevenue.vue';
 import AdminChartStatus from '~/components/admin/AdminChartStatus.vue';

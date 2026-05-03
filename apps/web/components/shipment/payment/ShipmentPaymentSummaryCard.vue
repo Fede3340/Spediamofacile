@@ -1,6 +1,4 @@
 <script setup>
-import { computed } from 'vue';
-
 const props = defineProps({
 	paymentSuccess: { type: Boolean, default: false },
 	paymentSummaryExpanded: { type: Boolean, default: false },

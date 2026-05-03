@@ -10,7 +10,6 @@
  * Si autobinda all'id passato dal SfFormGroup parent (tramite slot scope) o ne
  * genera uno proprio. Stato error attivato passando :invalid="true".
  */
-import { computed, useId } from 'vue';
 
 type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date';
 

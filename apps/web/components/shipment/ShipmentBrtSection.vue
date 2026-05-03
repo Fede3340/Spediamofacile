@@ -3,7 +3,7 @@
   Sezione BRT: tracking, download etichetta, rigenerazione etichetta, messaggi errore/successo.
 -->
 <script setup>
-import { computed } from 'vue';
+
 import {
 	getBrtTrackingReference,
 	getBrtTrackingSearchHref,

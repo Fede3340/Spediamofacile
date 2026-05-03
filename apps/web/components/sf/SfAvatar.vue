@@ -2,7 +2,6 @@
 /**
  * SfAvatar — avatar utente con fallback iniziali.
  */
-import { computed } from 'vue';
 
 interface Props {
 	src?: string;

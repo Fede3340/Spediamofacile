@@ -1,4 +1,4 @@
-<script setup>import { computed } from 'vue';
+<script setup>
 const props = defineProps({
   pudo: { type: Object, default: null },
   open: { type: Boolean, default: false },

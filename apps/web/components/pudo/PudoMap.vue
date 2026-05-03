@@ -1,4 +1,4 @@
-<script setup>import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+<script setup>
 import { escapeHtml } from '~/utils/html';
 const props = defineProps({
   points: { type: Array, required: true },

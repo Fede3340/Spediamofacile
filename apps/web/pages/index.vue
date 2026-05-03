@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onBeforeUnmount } from 'vue';
+
 import Preventivo from '~/components/shipment/Preventivo.vue';
 
 useSeoMeta({

@@ -28,22 +28,13 @@ import {
 } from '~/utils/adminPricingHelpers';
 import type { EuropePricing, ExtraRules, PriceBand, PricingRuleGroup, SupplementRule } from '~/types/pricing';
 
-// Normalizzatori puri estratti in `~/utils/adminPricingHelpers.ts`.
-
-// Sezioni Form/Import/List estratte in file dedicati.
 import { createFormSection } from '~/composables/useAdminPricingForm';
 import { createImportSection } from '~/composables/useAdminPricingImport';
 import { createListSection } from '~/composables/useAdminPricingList';
 
-// ────────────────────────────────────────────────────────────
-// 6. Facade
-// API pubblica preservata: invariata rispetto alla versione pre-consolidamento.
-// ────────────────────────────────────────────────────────────
-
 export const useAdminPricing = () => {
 	const { actionMessage, showSuccess, showError } = useAdmin();
 
-	// ── Shared reactive state (owned here, passed to sections) ──
 	const weightBands = ref<PriceBand[]>([]);
 	const volumeBands = ref<PriceBand[]>([]);
 	const bandsFromDb = ref(false);
@@ -65,7 +56,6 @@ export const useAdminPricing = () => {
 	const originalAutomaticSupplements = ref<PricingRuleGroup>({});
 	const originalOperationalFees = ref<PricingRuleGroup>({});
 
-	// ── Form section (editing, CRUD, utility) ────────
 	const form = createFormSection({
 		weightBands,
 		volumeBands,
@@ -74,7 +64,6 @@ export const useAdminPricing = () => {
 		showError,
 	});
 
-	// ── Import section (fetch, save, seed, promo, payloads) ──
 	const importC = createImportSection({
 		weightBands,
 		volumeBands,
@@ -99,7 +88,6 @@ export const useAdminPricing = () => {
 		showError,
 	});
 
-	// ── List section (view state, filters, computed) ──
 	const list = createListSection({
 		servicePricing,
 		automaticSupplements,
@@ -123,9 +111,7 @@ export const useAdminPricing = () => {
 		calculateBandPriceCentsLocal: form.calculateBandPriceCentsLocal,
 	});
 
-	// ── Return unified interface (backward compatible) ──
 	return {
-		// State
 		isLoading: importC.isLoading,
 		saving: importC.saving,
 		seeding: importC.seeding,
@@ -154,7 +140,6 @@ export const useAdminPricing = () => {
 		editingCell: form.editingCell,
 		editValue: form.editValue,
 		actionMessage,
-		// Computed
 		hasChanges: list.hasChanges,
 		servicePricingEntries: list.servicePricingEntries,
 		automaticSupplementEntries: list.automaticSupplementEntries,
@@ -164,7 +149,6 @@ export const useAdminPricing = () => {
 		filteredEuropeBands: list.filteredEuropeBands,
 		extraRuleExamples: list.extraRuleExamples,
 		pricingPreviewCases: list.pricingPreviewCases,
-		// Utility
 		centsToEuro: form.centsToEuro,
 		euroToCents: form.euroToCents,
 		effectivePrice: form.effectivePrice,
@@ -172,7 +156,6 @@ export const useAdminPricing = () => {
 		formatApplicationLabel: form.formatApplicationLabel,
 		incrementCentsToEuro: form.incrementCentsToEuro,
 		updateLadderIncrementFromEuro: form.updateLadderIncrementFromEuro,
-		// Band actions
 		startEdit: form.startEdit,
 		confirmEdit: form.confirmEdit,
 		cancelEdit: form.cancelEdit,
@@ -180,17 +163,14 @@ export const useAdminPricing = () => {
 		addBand: form.addBand,
 		removeBand: form.removeBand,
 		moveBand: form.moveBand,
-		// Supplement actions
 		addSupplement: form.addSupplement,
 		removeSupplement: form.removeSupplement,
 		supplementAmountToEuro: form.supplementAmountToEuro,
 		updateSupplementAmountFromEuro: form.updateSupplementAmountFromEuro,
-		// Ladder actions
 		addLadderRow: form.addLadderRow,
 		removeLadderRow: form.removeLadderRow,
 		ensureLadderContinuity: form.ensureLadderContinuity,
 		ladderRowsFor: form.ladderRowsFor,
-		// Service/keyed rule helpers
 		keyedRuleAmountToEuro: form.keyedRuleAmountToEuro,
 		updateKeyedRuleAmountFromEuro: form.updateKeyedRuleAmountFromEuro,
 		keyedRuleMinFeeToEuro: form.keyedRuleMinFeeToEuro,
@@ -198,10 +178,8 @@ export const useAdminPricing = () => {
 		updateArrayField: form.updateArrayField,
 		addTierRow: form.addTierRow,
 		removeTierRow: form.removeTierRow,
-		// Europe helpers
 		updateEuropeRateAmountFromEuro: form.updateEuropeRateAmountFromEuro,
 		toggleEuropeRateQuote: form.toggleEuropeRateQuote,
-		// Fetch/save
 		fetchPriceBands: importC.fetchPriceBands,
 		fetchPromoSettings: importC.fetchPromoSettings,
 		seedBands: importC.seedBands,

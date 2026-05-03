@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+
 import { faqs, categories } from '~/utils/faqs';
 
 const searchQuery = ref('');

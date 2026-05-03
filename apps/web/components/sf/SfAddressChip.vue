@@ -2,7 +2,6 @@
 /**
  * SfAddressChip — chip semantico per indirizzi (Origine, Destinazione, Predefinito).
  */
-import { computed } from 'vue';
 
 type Variant = 'origin' | 'destination' | 'default' | 'neutral';
 

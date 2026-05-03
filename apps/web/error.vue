@@ -10,8 +10,6 @@
 	radius 14px, shadow soft. Mai blu.
 -->
 <script setup>
-import { computed } from 'vue'
-
 const props = defineProps({
 	error: { type: Object, required: true },
 })

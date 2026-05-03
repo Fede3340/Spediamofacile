@@ -18,7 +18,7 @@ const {
   couponCode, couponMessage, couponApplied, couponDiscount, appliedTotal,
   showCouponField, showCouponPanel, applyCoupon, removeCoupon, displayTotal,
   openCheckoutWithAuthGate,
-} = useCarrello();
+} = useCartPage();
 </script>
 
 <template>
@@ -239,6 +239,6 @@ v-model:open="showEmptyConfirm" title="Svuota carrello"
       description="Sei sicuro di voler svuotare tutto il carrello? Tutte le spedizioni verranno rimosse."
       confirm-label="Svuota tutto" :loading="emptyCartLoading" @confirm="emptyCart" />
 
-    <!-- Auth: AuthOverlayModal globale aperto via useAuthModal (vedi useCarrello.openCheckoutWithAuthGate) -->
+    <!-- Auth: AuthOverlayModal globale aperto via useAuthModal (vedi useCartPage.openCheckoutWithAuthGate) -->
   </div>
 </template>

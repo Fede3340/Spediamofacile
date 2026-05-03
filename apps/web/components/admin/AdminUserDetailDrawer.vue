@@ -1,7 +1,6 @@
 <!-- AdminUserDetailDrawer.vue — Drawer dettaglio utente admin.
      Orchestratore: usa i sub-component in `components/admin/user-detail/`. -->
 <script setup>
-import { ref, computed, watch } from 'vue';
 
 const props = defineProps({
 	open: { type: Boolean, default: false },
@@ -172,8 +171,13 @@ const close = () => emit('update:open', false);
 			leave-active-class="transition-opacity duration-200"
 			enter-from-class="opacity-0"
 			leave-to-class="opacity-0">
-			<div v-if="open" class="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex justify-end" @click.self="close">
-				<aside class="bg-brand-card w-full max-w-[640px] h-screen flex flex-col shadow-sf-lg overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+			<div v-if="open" class="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex justify-end" role="presentation">
+				<button
+					type="button"
+					class="absolute inset-0 cursor-default focus:outline-none"
+					aria-label="Chiudi pannello dettaglio utente"
+					@click="close" />
+				<aside class="relative bg-brand-card w-full max-w-[640px] h-screen flex flex-col shadow-sf-lg overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
 					<UserDetailHeader :user="user" @close="close" />
 
 					<div class="flex-1 overflow-y-auto p-5 flex flex-col gap-4">

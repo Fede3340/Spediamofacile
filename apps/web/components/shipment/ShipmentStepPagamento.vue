@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+
 import CheckoutBilling from '~/components/checkout/Billing.vue';
 import CheckoutSuccess from '~/components/checkout/Success.vue';
 import CheckoutPaymentMethods from '~/components/checkout/PaymentMethods.vue';

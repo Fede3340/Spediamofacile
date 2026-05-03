@@ -1,6 +1,6 @@
 <script setup>
 /** AdminChartRevenue.vue */
-import { computed, ref } from 'vue';
+
 import {
 	chartToNumber,
 	formatCurrency as formatEur,

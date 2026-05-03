@@ -10,7 +10,6 @@
  *     <SfButton variant="ghost" size="sm">Azioni</SfButton>
  *   </SfDropdown>
  */
-import { onBeforeUnmount, onMounted, ref } from 'vue';
 
 interface DropdownItem {
 	label: string;

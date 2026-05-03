@@ -1,6 +1,6 @@
 <script setup>
 /** AdminChartStatus.vue */
-import { computed } from 'vue';
+
 import { chartToNumber, formatInteger, formatPercentage as formatPercent, computeSegments } from '~/utils/chart';
 
 const props = defineProps({

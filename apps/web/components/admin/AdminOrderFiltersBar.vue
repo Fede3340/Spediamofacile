@@ -1,6 +1,5 @@
 <!-- AdminOrderFiltersBar.vue — Barra filtri ordini admin -->
 <script setup>
-import { ref, computed } from 'vue';
 
 const props = defineProps({
 	filters: { type: Object, required: true },

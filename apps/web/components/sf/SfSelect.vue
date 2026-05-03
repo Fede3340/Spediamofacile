@@ -2,7 +2,6 @@
 /**
  * SfSelect — select native unificato (no dropdown JS, accessibile out-of-the-box).
  */
-import { computed, useId } from 'vue';
 
 interface Option {
 	value: string | number;

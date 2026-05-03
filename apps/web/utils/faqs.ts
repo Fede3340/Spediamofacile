@@ -1,11 +1,5 @@
 import { escapeHtml as escapeHtmlUtil } from '~/utils/html';
 
-/**
- * useFaqs — dataset statico FAQ + helpers highlight (no Fuse.js). Puro/serializzabile.
- *
- *
- */
-
 export const FAQ_CATEGORIES = [
 	'Spedizione',
 	'Preventivi',
@@ -17,7 +11,6 @@ export const FAQ_CATEGORIES = [
 ];
 
 const FAQS = [
-	// ── Spedizione ──────────────────────────────────────────────
 	{
 		id: 'sped-italia-brt',
 		category: 'Spedizione',
@@ -75,7 +68,6 @@ const FAQS = [
 			'Sono vietati: contanti, gioielli e oggetti di valore non assicurabili, armi e munizioni, droghe e sostanze illegali, animali vivi, alimenti deperibili, liquidi infiammabili, esplosivi, materiale pornografico e merci contraffatte. La lista completa è nelle Condizioni di trasporto BRT. In caso di dubbio chiedi prima al supporto: spedire merce vietata comporta il blocco del pacco e l\'addebito delle spese.',
 	},
 
-	// ── Preventivi ─────────────────────────────────────────────
 	{
 		id: 'prev-come-calcolato',
 		category: 'Preventivi',
@@ -105,7 +97,6 @@ const FAQS = [
 			'Al momento SpedizioneFacile lavora in esclusiva con BRT (Bartolini), il che ci permette di garantire tariffe più basse del listino pubblico, supporto in italiano e una rete capillare in tutta Italia. Stiamo valutando l\'integrazione di altri corrieri per le tratte internazionali: chi è registrato riceverà un\'email appena saranno disponibili.',
 	},
 
-	// ── Pagamenti ──────────────────────────────────────────────
 	{
 		id: 'pag-metodi',
 		category: 'Pagamenti',
@@ -142,7 +133,6 @@ const FAQS = [
 			'Il portafoglio è un credito prepagato in euro che usi per pagare le spedizioni con un click, senza reinserire la carta ogni volta. Lo ricarichi da 10€ in su con carta o bonifico, vedi saldo e movimenti in tempo reale e per ricariche superiori a 200€ ricevi un bonus del 2-5%. Il saldo non scade e puoi richiedere il prelievo residuo in qualsiasi momento.',
 	},
 
-	// ── Tracking ───────────────────────────────────────────────
 	{
 		id: 'trk-come-tracciare',
 		category: 'Tracking',
@@ -165,7 +155,6 @@ const FAQS = [
 			'Verifica prima con vicini, portineria, familiari e custode: nel 70% dei casi il pacco è stato consegnato a una persona presente all\'indirizzo. Se non lo trovi, apri subito (entro 24 ore) una segnalazione di "consegna non avvenuta" dal pannello. Forniremo a BRT la prova di consegna firmata e, se necessario, attiveremo la procedura di ricerca.',
 	},
 
-	// ── Reclami ────────────────────────────────────────────────
 	{
 		id: 'rec-danno',
 		category: 'Reclami',
@@ -195,7 +184,6 @@ const FAQS = [
 			'Per i reclami semplici (danni evidenti, documentazione completa) la risposta arriva in 7-15 giorni lavorativi. Per smarrimenti o casi complessi (consegne contestate, indirizzi errati) i tempi salgono a 30-45 giorni perché serve l\'istruttoria BRT. Riceverai email a ogni avanzamento dello stato e dal pannello vedi sempre la fase corrente.',
 	},
 
-	// ── Account ────────────────────────────────────────────────
 	{
 		id: 'acc-registrazione',
 		category: 'Account',
@@ -225,7 +213,6 @@ const FAQS = [
 			'Sì. Dalla sezione "Profilo > Privacy" trovi il pulsante "Elimina account": dopo conferma, eliminiamo definitivamente i tuoi dati personali entro 30 giorni, nel rispetto del GDPR. Restano archiviati solo i dati fiscali obbligatori per legge (fatture emesse) per 10 anni come prescritto dalla normativa italiana.',
 	},
 
-	// ── Pro ────────────────────────────────────────────────────
 	{
 		id: 'pro-diventare',
 		category: 'Pro',
@@ -256,7 +243,6 @@ const FAQS = [
 	},
 ];
 
-// escapeHtml centralizzato in utils/html.ts (re-export per retro-compat dei caller).
 const escapeFaqHtml = (value: unknown) => escapeHtmlUtil(value);
 
 /** Evidenzia con tag <mark> le occorrenze case-insensitive della query. */
@@ -269,8 +255,7 @@ export function highlightMatch(text: unknown, query: string) {
 	return safeText.replace(re, '<mark class="faq-mark">$1</mark>');
 }
 
-// Export diretti: dataset FAQ + helpers puri (no reattivita').
-// `escapeHtml` resta canonico in utils/html.ts: qui non lo riesportiamo per
+// `escapeHtml` non è ri-esportato qui: resta canonico in utils/html.ts per
 // evitare collisioni con auto-import Nuxt.
 export const faqs = FAQS;
 export const categories = FAQ_CATEGORIES;

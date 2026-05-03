@@ -5,7 +5,6 @@
  * Pattern:
  *   <SfStatCard label="Ordini" :value="42" trend="up" trend-label="+8% rispetto a mese scorso" icon="mdi:package-variant" />
  */
-import { computed } from 'vue';
 
 interface Props {
 	label: string;

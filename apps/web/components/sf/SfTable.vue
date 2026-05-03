@@ -13,7 +13,6 @@
  *     </template>
  *   </SfTable>
  */
-import { computed } from 'vue';
 
 interface Column {
 	key: string;

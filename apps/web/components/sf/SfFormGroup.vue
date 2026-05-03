@@ -10,7 +10,6 @@
  * Genera id automatico, lo lega a aria-describedby (hint) e aria-errormessage (error).
  * Slot default = control (input/select/textarea/checkbox).
  */
-import { computed, useId } from 'vue';
 
 interface Props {
 	label?: string;

@@ -6,7 +6,6 @@
  *   <SfRadio v-model="payment" value="stripe" label="Carta" />
  *   <SfRadio v-model="payment" value="bonifico" label="Bonifico" />
  */
-import { computed, useId } from 'vue';
 
 interface Props {
 	modelValue?: string | number | null;

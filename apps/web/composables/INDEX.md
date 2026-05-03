@@ -44,11 +44,10 @@
 
 ## Carrello & Checkout
 
-- `useCart` — orchestratore carrello (count, items, totale, add/remove/update).
-- `useCarrello` — alias italiano usato in pagine (delega a `useCart`).
+- `useCart` — orchestratore checkout (cart/order loading, billing, wallet, promo).
+- `useCartPage` — composable pagina /carrello (filtri, raggruppamento, quantita', auth gate guest).
 - `useCartFetch` — fetch carrello da API.
 - `useCartPromoPreview` — preview applicazione coupon/promo.
-- `useCheckoutBilling` — gestione dati fatturazione (privato/azienda, P.IVA, SDI, PEC).
 - `useCheckoutOrderContext` — contesto ordine in checkout (payment_intent, idempotency).
 - `useCheckoutPromoPreview` — preview promo/coupon nel form checkout.
 

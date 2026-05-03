@@ -2,7 +2,6 @@
 /**
  * SfTextarea — textarea unificata.
  */
-import { computed, useId } from 'vue';
 
 interface Props {
 	modelValue?: string;

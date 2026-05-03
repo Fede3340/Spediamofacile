@@ -3,7 +3,7 @@
  *
  * `useCart()` is used by the payment step. It owns cart/order loading, billing
  * defaults, wallet balance and checkout promo preview. The `/carrello` page has
- * its own composable (`useCarrello`) because it has different UI concerns.
+ * its own composable (`useCartPage`) because it has different UI concerns.
  */
 import { computed, ref, watch, type Ref } from 'vue';
 import type { Address, AddressGroup, CartItem, CartResponse, Order } from '~/types';

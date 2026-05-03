@@ -1,5 +1,5 @@
 /**
- * @file useCarrello — composable pagina /carrello.
+ * @file useCartPage — composable pagina /carrello.
  * Distinto da useCart (checkout) perche' la pagina ha contesto e API diverse.
  */
 import { computed, onMounted, ref, watch, type Ref } from 'vue';
@@ -21,7 +21,7 @@ type DisplayGroupEntry = {
 type DisplaySingleEntry = { type: 'single'; groupIndex: number; item: CartItem };
 type DisplayEntry = DisplayGroupEntry | DisplaySingleEntry;
 
-// SEZIONE 3 â€” useCarrello(): logica pagina /carrello
+// SEZIONE 3 — useCartPage(): logica pagina /carrello
 // ============================================================================
 // State e API distinti da useCart perche' la pagina /carrello ha:
 //  - couponApplied SEMANTICA DIVERSA (boolean vs object di useCart)
@@ -29,7 +29,7 @@ type DisplayEntry = DisplayGroupEntry | DisplaySingleEntry;
 //  - usa useCartFetch (reattivo a prerender/route) invece di fetch diretto
 // Tentare di unificare rompeva la retro-compat dei consumer in pages/carrello.vue.
 /** Composable carrello: filtri, raggruppamento indirizzi, coupon, auth gate checkout per guest. */
-export function useCarrello() {
+export function useCartPage() {
     const { cart: rawCart, refresh, status } = useCartFetch();
     const cart = rawCart as Ref<CartResponse | null | undefined>;
     const { isAuthenticated } = useSanctumAuth();

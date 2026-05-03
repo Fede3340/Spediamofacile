@@ -52,7 +52,6 @@ export const createFormSection = ({ weightBands, volumeBands, extraRules, supple
 	const editValue = ref('');
 	const bandsOf = (type: BandType) => type === 'weight' ? weightBands.value : volumeBands.value;
 
-	// ── Utility cents/euro ───────────────────────────────
 	const centsToEuro = (cents: unknown): string => {
 		if (cents == null || cents === '') return '-';
 		return formatCentsLabel(cents) + '€';
@@ -70,7 +69,6 @@ export const createFormSection = ({ weightBands, volumeBands, extraRules, supple
 		target[field] = Math.max(0, euroToCentsImpl(rawValue) ?? 0);
 	};
 
-	// ── Ladder ───────────────────────────────────────────
 	const ladderRowsFor = (kind: BandType): IncrementLadderRow[] =>
 		kind === 'weight' ? extraRules.value.weight_increment_ladder : extraRules.value.volume_increment_ladder;
 
@@ -123,7 +121,6 @@ export const createFormSection = ({ weightBands, volumeBands, extraRules, supple
 		})));
 	};
 
-	// ── Preview price calc ───────────────────────────────
 	const ceilByResolutionLocal = (value: unknown, resolution: unknown): number => {
 		const safeResolution = Number(resolution) > 0 ? Number(resolution) : 1;
 		const m = 1 / safeResolution;
@@ -168,7 +165,6 @@ export const createFormSection = ({ weightBands, volumeBands, extraRules, supple
 		return extraPrice !== null ? extraPrice : effectivePriceCentsLocal(bands[bands.length - 1]);
 	};
 
-	// ── Band edit actions ────────────────────────────────
 	const startEdit = (type: BandType, idx: number, field: EditablePriceField) => {
 		const key = `${type}-${idx}-${field}`;
 		editingCell.value = key;
@@ -236,7 +232,6 @@ export const createFormSection = ({ weightBands, volumeBands, extraRules, supple
 		[bands[idx], bands[target]] = [next, current];
 	};
 
-	// ── Supplement actions ───────────────────────────────
 	const addSupplement = () => {
 		supplementRules.value.push({ id: `supplement-${Date.now()}`, prefix: '', amount_cents: 0, apply_to: 'both', enabled: true });
 	};
@@ -247,7 +242,6 @@ export const createFormSection = ({ weightBands, volumeBands, extraRules, supple
 		rule.amount_cents = (!Number.isFinite(value) || value < 0) ? 0 : Math.round(value * 100);
 	};
 
-	// ── Service / keyed rule helpers ─────────────────────
 	const keyedRuleAmountToEuro = (rule: KeyedRule): string => formatCentsLabel(rule?.price_cents);
 	const updateKeyedRuleAmountFromEuro = (rule: KeyedRule, rawValue: unknown) => setCentsFromEuro(rule, 'price_cents', rawValue);
 	const keyedRuleMinFeeToEuro = (rule: KeyedRule): string => formatCentsLabel(rule?.min_fee_cents);
@@ -272,7 +266,6 @@ export const createFormSection = ({ weightBands, volumeBands, extraRules, supple
 		rule.tiers.splice(idx, 1);
 	};
 
-	// ── Europe rate helpers ──────────────────────────────
 	const updateEuropeRateAmountFromEuro = (rate: EuropeRate, rawValue: unknown) => {
 		const cents = euroToCentsImpl(rawValue);
 		rate.price_cents = cents == null ? null : Math.max(0, cents);

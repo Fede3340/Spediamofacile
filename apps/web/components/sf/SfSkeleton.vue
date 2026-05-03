@@ -1,5 +1,5 @@
 <!-- COMPONENTE: SfSkeleton (atom) -->
-<script setup>import { computed } from 'vue';
+<script setup>
 const props = defineProps({
   variant: { type: Object, default: () => ({}) },
   width: { type: String, default: '100%' },

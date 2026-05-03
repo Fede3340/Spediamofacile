@@ -4,7 +4,6 @@
  *
  * Per stato ordini usare SfStatusPill (semantica ordine).
  */
-import { computed } from 'vue';
 
 type Tone = 'neutral' | 'primary' | 'accent' | 'success' | 'warning' | 'danger' | 'info';
 

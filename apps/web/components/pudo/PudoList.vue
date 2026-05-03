@@ -1,4 +1,4 @@
-<script setup>import { computed } from 'vue';
+<script setup>
 const props = defineProps({
   items: { type: Array, required: true },
   loading: { type: Boolean, default: false },

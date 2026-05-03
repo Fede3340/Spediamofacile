@@ -5,7 +5,7 @@
 	Stack: usePudoSearch composable, components/pudo/* per UI, Leaflet client-only mappa.
 -->
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+
 import { usePudoSearch } from '~/composables/usePudo'
 
 definePageMeta({

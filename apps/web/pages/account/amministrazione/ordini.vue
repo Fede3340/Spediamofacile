@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+
 import { buildPaginationItems, paginationRange } from '~/utils/pagination';
 
 definePageMeta({

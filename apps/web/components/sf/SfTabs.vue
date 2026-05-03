@@ -8,7 +8,6 @@
  *     { id: 'security', label: 'Sicurezza', icon: 'mdi:lock' },
  *   ]" />
  */
-import { computed } from 'vue';
 
 interface TabItem {
 	id: string;

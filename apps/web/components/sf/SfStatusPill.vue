@@ -5,7 +5,6 @@
  * Mapping centralizzato: lo stato passato come prop diventa colore + icona + label
  * tradotta. Usare ovunque appaia lo stato di un Order/Payment/Shipment.
  */
-import { computed } from 'vue';
 
 type OrderStatus =
 	| 'pending'

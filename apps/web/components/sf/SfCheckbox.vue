@@ -2,7 +2,6 @@
 /**
  * SfCheckbox — checkbox custom con label inline.
  */
-import { computed, useId } from 'vue';
 
 interface Props {
 	modelValue?: boolean;

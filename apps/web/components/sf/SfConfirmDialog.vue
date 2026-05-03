@@ -1,5 +1,5 @@
 <!-- COMPONENTE: SfConfirmDialog (organism) -->
-<script setup>import { computed, nextTick, onBeforeUnmount, ref, useId, watch } from 'vue';
+<script setup>
 import { storeToRefs } from 'pinia';
 import { useConfirmDialogStore } from '~/stores/confirmDialogStore';
 const store = useConfirmDialogStore();

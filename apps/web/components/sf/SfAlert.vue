@@ -7,7 +7,6 @@
  *     Hai 3 ordini in attesa di conferma.
  *   </SfAlert>
  */
-import { computed } from 'vue';
 
 type Tone = 'info' | 'success' | 'warning' | 'danger';
 

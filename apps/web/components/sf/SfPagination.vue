@@ -5,7 +5,6 @@
  * Pattern:
  *   <SfPagination v-model="page" :total="total" :per-page="20" />
  */
-import { computed } from 'vue';
 
 interface Props {
 	modelValue: number;

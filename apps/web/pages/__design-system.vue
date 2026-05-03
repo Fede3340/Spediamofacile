@@ -5,7 +5,6 @@
  * Solo accessibile in dev/staging. Non indicizzabile, non in sitemap.
  * Tieni qui un esempio dal vivo per ogni componente Sf* + sezione token.
  */
-import { ref } from 'vue';
 
 definePageMeta({
 	layout: 'default',
