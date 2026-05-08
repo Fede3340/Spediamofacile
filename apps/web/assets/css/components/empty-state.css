@@ -112,8 +112,17 @@
 }
 
 /* CTA secondary ghost — bordo teal trasparente (azione secondaria) */
-.sf-empty-state__cta--ghost,
-.sf-empty-state__cta--ghost:hover,
+.sf-empty-state__cta--ghost {
+	color: var(--color-brand-primary, #095866);
+	background: transparent;
+	border: 1px solid var(--color-brand-primary, #095866);
+}
+.sf-empty-state__cta--ghost:hover {
+	background: rgba(9, 88, 102, 0.08);
+	box-shadow: none;
+	color: var(--color-brand-primary, #095866);
+}
+
 /* Quando dentro card chiusa di account-shell evitiamo doppio padding orizzontale */
 .sf-empty-state.sf-empty-state--inset {
 	margin: 14px;

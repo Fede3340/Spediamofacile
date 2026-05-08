@@ -16,10 +16,10 @@ const toEditLocation = (itemId) => buildShipmentFlowEditLocation(itemId)
 </script>
 
 <template>
-  <div class="bg-[#F5F6F9] rounded-[16px] ring-[1.5px] ring-[#DFE2E7] overflow-hidden transition-all duration-300 hover:-translate-y-[4px] hover:ring-[var(--color-brand-primary)] hover:shadow-[0_8px_24px_rgba(9,88,102,0.12)]" style="box-shadow: 0 1px 4px rgba(0,0,0,0.03)">
+  <div class="bg-[#F5F6F9] rounded-card ring-[1.5px] ring-brand-border overflow-hidden transition-all duration-300 hover:-translate-y-[4px] hover:ring-[var(--color-brand-primary)] hover:shadow-[0_8px_24px_rgba(9,88,102,0.12)]" style="box-shadow: 0 1px 4px rgba(0,0,0,0.03)">
     <!-- Desktop layout -->
     <div class="hidden desktop:flex items-center gap-[16px] p-[16px_20px]">
-      <div class="w-[44px] h-[44px] rounded-[12px] bg-white ring-[1.5px] ring-[#DFE2E7] flex items-center justify-center shrink-0">
+      <div class="w-[44px] h-[44px] rounded-control bg-white ring-[1.5px] ring-brand-border flex items-center justify-center shrink-0">
         <NuxtImg :src="getPackageIcon(entry.item)" :alt="entry.item.package_type || 'Tipo collo'" width="28" height="28" loading="lazy" decoding="async" />
       </div>
       <div class="flex-1 min-w-0">
@@ -34,7 +34,7 @@ const toEditLocation = (itemId) => buildShipmentFlowEditLocation(itemId)
           {{ entry.item.first_size }}x{{ entry.item.second_size }}x{{ entry.item.third_size }} cm
         </p>
       </div>
-      <span class="text-[0.75rem] text-[var(--color-brand-text-secondary)] bg-white px-[8px] py-[3px] rounded-[8px] ring-[1px] ring-[#DFE2E7] shrink-0" style="font-weight:600">{{ entry.item.services?.service_type?.split(',')[0]?.trim() || 'BRT' }}</span>
+      <span class="text-[0.75rem] text-[var(--color-brand-text-secondary)] bg-white px-[8px] py-[3px] rounded-[8px] ring-[1px] ring-brand-border shrink-0" style="font-weight:600">{{ entry.item.services?.service_type?.split(',')[0]?.trim() || 'BRT' }}</span>
       <div class="text-[0.75rem] text-[var(--color-brand-text-secondary)] shrink-0 max-w-[200px]">
         <div class="flex items-center gap-[4px]">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-primary)" stroke-width="2" class="shrink-0"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>

@@ -30,7 +30,7 @@
 	margin: 0 auto;
 	padding: 48px 24px;
 	background: linear-gradient(135deg, rgba(9, 88, 102, 0.04) 0%, rgba(228, 66, 3, 0.04) 100%);
-	border-radius: 20px;
+	border-radius: 18px;
 	text-align: center;
 }
 

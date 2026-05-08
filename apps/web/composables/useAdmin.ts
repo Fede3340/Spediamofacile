@@ -7,12 +7,6 @@
 import { formatDateTimeIt } from '~/utils/date.js';
 import { formatEuro } from '~/utils/price.js';
 
-type AdminMessage = { type: 'success' | 'error'; text: string } | null
-type AdminError = {
-    response?: { _data?: { message?: string } }
-    data?: { message?: string }
-    message?: string
-}
 type LabelOrder = {
     id: string | number
     brt_parcel_id?: unknown
@@ -22,40 +16,11 @@ type LabelOrder = {
 export const useAdmin = () => {
     /* Stato delle azioni admin (approvazione, eliminazione, ecc.) */
     const actionLoading = ref<string | number | null>(null);
-    /* Messaggio di feedback dopo un'azione admin (successo o errore) */
-    const actionMessage = ref<AdminMessage>(null);
-    /* Tracciamo il timer per evitare accumulo: click rapidi senza track lasciavano N timer pendenti */
-    let clearMessageTimer: ReturnType<typeof setTimeout> | null = null;
-    /* Nasconde il messaggio dopo 5 secondi */
-    const clearMessage = () => {
-        if (clearMessageTimer)
-            clearTimeout(clearMessageTimer);
-        clearMessageTimer = setTimeout(() => {
-            actionMessage.value = null;
-            clearMessageTimer = null;
-        }, 5000);
-    };
-    /* Cleanup su unmount/HMR per evitare leak: timer pendente referenziava actionMessage di scope morta */
-    onScopeDispose(() => {
-        if (clearMessageTimer) {
-            clearTimeout(clearMessageTimer);
-            clearMessageTimer = null;
-        }
-    });
-    /* Mostra un messaggio verde di successo */
-    const showSuccess = (text: string) => {
-        actionMessage.value = { type: 'success', text };
-        clearMessage();
-    };
-    /* Mostra un messaggio rosso di errore */
-    const showError = (e: unknown, fallback: string) => {
-        const errObj = e as AdminError;
-        actionMessage.value = {
-            type: 'error',
-            text: errObj.response?._data?.message || errObj.data?.message || errObj.message || fallback,
-        };
-        clearMessage();
-    };
+    /* Feedback: delegato a useFlashMessage (pattern unico app-wide). */
+    const flash = useFlashMessage();
+    const actionMessage = flash.message;
+    const showSuccess = flash.showSuccess;
+    const showError = flash.showError;
     /* Formatta un valore come valuta con 2 decimali.
        Gestisce: oggetto MyMoney {amount (centesimi), formatted}, stringa formattata, numero in euro.
        Delega a formatEuro (~/utils/price.js) dove possibile. */

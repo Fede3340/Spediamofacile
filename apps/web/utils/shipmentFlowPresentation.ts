@@ -38,8 +38,19 @@ export const formatColloLabel = (packageItems?: PackageLike[] | null): string =>
 	return `${count} coll${count === 1 ? "o" : "i"}`;
 };
 
+/**
+ * Capitalizza un nome città mantenendo apostrofi e separatori (es. "milano due" -> "Milano Due",
+ * "sant'antimo" -> "Sant'Antimo", "reggio emilia" -> "Reggio Emilia").
+ */
+const toCityCase = (name?: string | null): string => {
+	if (!name) return "";
+	return String(name)
+		.toLowerCase()
+		.replace(/(^|[\s'\-/])([a-zà-ÿ])/g, (_, sep: string, ch: string) => sep + ch.toUpperCase());
+};
+
 export const formatTrattaLabel = (originCity?: string | null, destinationCity?: string | null): string =>
-	`${originCity || "Da definire"} -> ${destinationCity || "Da definire"}`;
+	`${toCityCase(originCity) || "Da definire"} -> ${toCityCase(destinationCity) || "Da definire"}`;
 
 export const formatPackageAccordionSummary = (packageLabel?: string | null, dimensionsLabel?: string | null): string => {
 	const parts = [packageLabel, dimensionsLabel].filter(Boolean);
@@ -111,13 +122,16 @@ export const formatAddressAccordionSummary = ({
 	summaryDestinationCity?: string | null;
 	pudoName?: string | null;
 }): string => {
+	const origin = toCityCase(summaryOriginCity);
+	const destination = toCityCase(summaryDestinationCity);
+	const pudo = toCityCase(pudoName);
 	if (deliveryMode === "pudo") {
-		if (summaryOriginCity && pudoName) return `${summaryOriginCity} \u00B7 ${pudoName}`;
-		if (summaryOriginCity) return `${summaryOriginCity} \u00B7 Punto BRT`;
+		if (origin && pudo) return `${origin} \u00B7 ${pudo}`;
+		if (origin) return `${origin} \u00B7 Punto BRT`;
 		return "Mittente e punto BRT";
 	}
-	if (summaryOriginCity && summaryDestinationCity) return `${summaryOriginCity} -> ${summaryDestinationCity}`;
-	if (summaryOriginCity) return `${summaryOriginCity} \u00B7 Destinazione da completare`;
+	if (origin && destination) return `${origin} -> ${destination}`;
+	if (origin) return `${origin} \u00B7 Destinazione da completare`;
 	return "Mittente e destinatario";
 };
 

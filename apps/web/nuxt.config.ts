@@ -80,6 +80,10 @@ export default defineNuxtConfig({
 			plausibleDomain: process.env.NUXT_PUBLIC_PLAUSIBLE_DOMAIN || '',
 			turnstileSiteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA',
 			siteUrl: String(process.env.NUXT_PUBLIC_SITE_URL || 'https://spediamofacile.it').replace(/\/+$/, ''),
+			// Sentry FE — vuoto = plugin no-op (vedi plugins/30.sentry.client.ts).
+			sentryDsn: process.env.NUXT_PUBLIC_SENTRY_DSN || '',
+			sentryEnvironment: process.env.NUXT_PUBLIC_SENTRY_ENVIRONMENT || process.env.NUXT_PUBLIC_SENTRY_ENV || 'production',
+			sentryRelease: process.env.NUXT_PUBLIC_SENTRY_RELEASE || '',
 		},
 	},
 
@@ -177,14 +181,17 @@ export default defineNuxtConfig({
 			contentSecurityPolicy: {
 				'default-src': ["'self'"],
 				'script-src': isProd
-					? ["'self'", 'https://js.stripe.com', 'https://m.stripe.network', 'https://plausible.io', 'https://challenges.cloudflare.com']
-					: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://js.stripe.com', 'https://m.stripe.network', 'https://plausible.io', 'https://challenges.cloudflare.com'],
+					? ["'self'", 'https://js.stripe.com', 'https://m.stripe.network', 'https://plausible.io', 'https://challenges.cloudflare.com', 'https://*.sentry.io']
+					: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://js.stripe.com', 'https://m.stripe.network', 'https://plausible.io', 'https://challenges.cloudflare.com', 'https://*.sentry.io'],
 				'style-src': ["'self'", "'unsafe-inline'"],
 				'img-src': ["'self'", 'data:', 'https:'],
 				'font-src': ["'self'", 'data:'],
+				// Sentry: ingest endpoint (errori + replay) su *.ingest.sentry.io + *.sentry.io.
 				'connect-src': isProd
-					? ["'self'", 'https://api.stripe.com', 'https://m.stripe.network', 'https://nominatim.openstreetmap.org', 'https://plausible.io', 'https://challenges.cloudflare.com']
-					: ["'self'", 'https://api.stripe.com', 'https://m.stripe.network', 'https://*.trycloudflare.com', 'https://nominatim.openstreetmap.org', 'https://plausible.io', 'https://challenges.cloudflare.com', 'ws:', 'wss:'],
+					? ["'self'", 'https://api.stripe.com', 'https://m.stripe.network', 'https://nominatim.openstreetmap.org', 'https://plausible.io', 'https://challenges.cloudflare.com', 'https://*.ingest.sentry.io', 'https://*.sentry.io']
+					: ["'self'", 'https://api.stripe.com', 'https://m.stripe.network', 'https://*.trycloudflare.com', 'https://nominatim.openstreetmap.org', 'https://plausible.io', 'https://challenges.cloudflare.com', 'https://*.ingest.sentry.io', 'https://*.sentry.io', 'ws:', 'wss:'],
+				// Replay worker (Sentry Session Replay usa Web Worker per compressione).
+				'worker-src': ["'self'", 'blob:'],
 				'frame-src': ["'self'", 'https://js.stripe.com', 'https://hooks.stripe.com', 'https://challenges.cloudflare.com'],
 				'object-src': ["'none'"],
 				'base-uri': ["'self'"],

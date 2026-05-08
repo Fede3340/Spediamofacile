@@ -138,7 +138,7 @@ const chartDescription = computed(() => chartMeta[activeChart.value].desc);
 	width: 100%;
 	min-height: 120px;
 	padding: 10px;
-	border-radius: 12px;
+	border-radius: 14px;
 	border: 1px solid rgba(9, 88, 102, 0.08);
 	background: var(--color-brand-card);
 }

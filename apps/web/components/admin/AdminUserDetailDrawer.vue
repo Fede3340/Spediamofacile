@@ -232,7 +232,7 @@ const close = () => emit('update:open', false);
 		:title="isBanned ? 'Rimuovi ban' : 'Banna utente'"
 		:description="isBanned
 			? `Stai per ripristinare l'accesso di ${fullName}.`
-			: `Stai per bannare ${fullName}. L'utente non potra piu accedere finche non rimuovi il ban.`"
+			: `Stai per bannare ${fullName}. L'utente non potra più accedere finche non rimuovi il ban.`"
 		:confirm-label="isBanned ? 'Rimuovi ban' : 'Banna'"
 		:tone="isBanned ? 'primary' : 'danger'"
 		:loading="saving"

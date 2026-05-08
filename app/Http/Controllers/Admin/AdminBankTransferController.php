@@ -54,6 +54,7 @@ class AdminBankTransferController extends Controller
             }
 
             // Aggiorna eventuale transazione bonifico pending → succeeded, oppure ne crea una nuova.
+            /** @var Transaction|null $existing */
             $existing = $lockedOrder->transactions()
                 ->where('type', 'bonifico')
                 ->latest('id')
@@ -62,7 +63,7 @@ class AdminBankTransferController extends Controller
             if ($existing) {
                 $existing->status = 'succeeded';
                 $existing->provider_status = 'succeeded';
-                $existing->total = $lockedOrder->payableTotalCents();
+                $existing->total = new \App\Cart\MyMoney($lockedOrder->payableTotalCents());
                 $existing->save();
                 $transaction = $existing;
             } else {

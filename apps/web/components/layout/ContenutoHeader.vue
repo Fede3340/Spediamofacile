@@ -60,10 +60,10 @@ const activeHero = computed(() => secondaryHeros.find((h) => h.match(route.path)
 				<div class="hero-price-cta-box">
 					<div class="flex flex-col gap-[2px] min-w-0">
 						<div class="flex items-baseline gap-[8px]">
-							<span class="text-white/70 text-[14px] font-semibold">Da</span>
+							<span class="text-white/70 text-sm font-semibold">Da</span>
 							<span class="text-white text-[18px] sm:text-[20px] tracking-[-0.5px] leading-[1] font-[800]">{{ minPriceFormatted }}<span class="text-[16px] text-white/70">&euro;</span></span>
 						</div>
-						<span class="text-white/70 text-[12px] sm:text-[13px] font-medium">IVA e ritiro incluso</span>
+						<span class="text-white/70 text-xs sm:text-[13px] font-medium">IVA e ritiro incluso</span>
 					</div>
 					<SfButton size="lg" class="w-full sm:w-auto" @click="scrollToPreventivo">
 						Calcola preventivo

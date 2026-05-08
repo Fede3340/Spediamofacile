@@ -232,7 +232,7 @@ const showDestActions = computed(() => props.deliveryMode !== 'pudo' && (canUseD
 	gap: 16px;
 	background: var(--color-brand-card);
 	border: 1px solid var(--color-brand-border);
-	border-radius: var(--sf-radius-card, 16px);
+	border-radius: var(--sf-radius-card, 18px);
 	padding: 20px 20px;
 	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
 	transition: border-color 0.2s ease, box-shadow 0.2s ease;

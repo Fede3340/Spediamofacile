@@ -88,6 +88,7 @@ class StripeConfirmController extends Controller
             $lockedOrder->stripe_payment_intent_id = $intent->id;
             $lockedOrder->save();
 
+            /** @var Transaction|null $existingTransaction */
             $existingTransaction = $lockedOrder->transactions()
                 ->where('ext_id', $intent->id)
                 ->first();

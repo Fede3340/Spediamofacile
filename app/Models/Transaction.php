@@ -7,6 +7,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $order_id
+ * @property MyMoney|int $total
+ * @property string|null $ext_id
+ * @property string $type
+ * @property string $status
+ * @property string|null $provider_status
+ * @property string|null $failure_code
+ * @property string|null $failure_message
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read Order|null $order
+ */
 class Transaction extends Model
 {
     use HasFactory;
@@ -48,6 +62,15 @@ class Transaction extends Model
     public function getTotalAttribute($total): MyMoney
     {
         return new MyMoney($total);
+    }
+
+    /**
+     * Setter mutator: accetta sia int (centesimi grezzi) che MyMoney
+     * e persiste sempre il valore in centesimi.
+     */
+    public function setTotalAttribute(MyMoney|int $value): void
+    {
+        $this->attributes['total'] = $value instanceof MyMoney ? (int) $value->amount() : $value;
     }
 
     public function order(): BelongsTo

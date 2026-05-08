@@ -355,7 +355,7 @@ class PriceEngineService
         // discount_price must be strictly > 0 to be treated as a real discount.
         // A value of 0 means "no discount configured" — fall back to base_price.
         // This prevents a misconfigured discount_price=0 from making shipments free.
-        if (isset($band['discount_price']) && $band['discount_price'] !== null && (int) $band['discount_price'] > 0) {
+        if (isset($band['discount_price']) && (int) $band['discount_price'] > 0) {
             return (int) $band['discount_price'];
         }
 

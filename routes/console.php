@@ -37,3 +37,11 @@ Schedule::call(function () {
 // F15 — Email abbandono carrello: ogni 6 ore seleziona utenti con carrello
 // abbandonato da almeno 24h e invia reminder con link di ripresa.
 Schedule::command('carts:send-abandoned-reminders')->everySixHours();
+
+// Pulizia batch jobs vecchi (>48h): mantiene la tabella job_batches snella.
+// I batch finiti restano consultabili 2gg per debug, poi pruned automaticamente.
+Schedule::command('queue:prune-batches --hours=48')->daily();
+
+// Pulizia failed jobs vecchi (>7gg = 168h): manteniamo i recenti per
+// retry manuale, eliminiamo gli antichi che non saranno mai recuperati.
+Schedule::command('queue:flush --hours=168')->weekly();

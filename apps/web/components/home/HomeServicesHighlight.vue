@@ -5,7 +5,7 @@
 				eyebrow="Servizi"
 				title="Una soluzione per ogni spedizione"
 				title-id="services-title"
-				subtitle="Italia, Europa o ritiro in PUDO: scegli la formula piu adatta a te." />
+				subtitle="Italia, Europa o ritiro in PUDO: scegli la formula più adatta a te." />
 
 			<div class="services__grid">
 				<article class="service-card" data-reveal>

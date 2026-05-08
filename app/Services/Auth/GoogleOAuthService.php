@@ -160,7 +160,7 @@ class GoogleOAuthService
     /**
      * Aggiorna utente esistente con dati Google (id/avatar/email_verified) o crea nuovo utente.
      */
-    public function upsertUserFromGoogle(\Laravel\Socialite\Two\User $googleUser, array $registrationContext = []): User
+    public function upsertUserFromGoogle(\Laravel\Socialite\Contracts\User $googleUser, array $registrationContext = []): User
     {
         $googleEmail = $googleUser->getEmail();
         $user = User::where('email', $googleEmail)->first();

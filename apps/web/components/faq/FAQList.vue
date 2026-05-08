@@ -96,7 +96,7 @@ const emit = defineEmits(['reset']);
 	margin-top: 24px;
 	padding: 32px 24px;
 	background: linear-gradient(135deg, rgba(9, 88, 102, 0.04), rgba(228, 66, 3, 0.04));
-	border-radius: 16px;
+	border-radius: 18px;
 	text-align: center;
 }
 

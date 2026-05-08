@@ -67,8 +67,9 @@ export function useShipmentFormValidation(args: UseShipmentFormValidationArgs) {
 
 	return {
 		applyFieldAssist,
-		contentFieldHint: () => null,
-		destinationSectionHint: () => null,
+		// Hint testuali per i 3 campi (vuoti per ora; saranno popolati dalla validation reale).
+		contentFieldHint: '',
+		destinationSectionHint: '',
 		fieldClass,
 		fieldErrorText,
 		focusContentDescriptionField,
@@ -77,7 +78,7 @@ export function useShipmentFormValidation(args: UseShipmentFormValidationArgs) {
 		formErrorSummary,
 		getFieldAssist,
 		getFieldError,
-		originSectionHint: () => null,
+		originSectionHint: '',
 		showGlobalFormSummary,
 		softenErrorMessage,
 		validateForm,

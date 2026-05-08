@@ -90,28 +90,27 @@ const FAQ_ICON_PATH = 'M18,15H6L2,19V3A1,1 0 0,1 3,2H18A1,1 0 0,1 19,3V14A1,1 0 
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-6 tablet:py-7 desktop:py-7">
-		<div class="my-container sf-stack-section">
-			<AccountPageHeader
-				eyebrow="Area amministrazione"
-				title="Nuovo servizio"
-				description="Crea un servizio con sezioni e FAQ, salva in bozza o pubblica."
-				:crumbs="[
-					{ label: 'Account', to: '/account' },
-					{ label: 'Amministrazione', to: '/account/amministrazione' },
-					{ label: 'Servizi', to: '/account/amministrazione/servizi' },
-					{ label: 'Nuovo servizio' },
-				]"
-				back-to="/account/amministrazione/servizi"
-				back-label="Torna ai servizi" />
+	<AccountPageSection spacing="sf-stack-section" padding="py-6 tablet:py-7 desktop:py-7">
+		<AccountPageHeader
+			eyebrow="Area amministrazione"
+			title="Nuovo servizio"
+			description="Crea un servizio con sezioni e FAQ, salva in bozza o pubblica."
+			:crumbs="[
+				{ label: 'Account', to: '/account' },
+				{ label: 'Amministrazione', to: '/account/amministrazione' },
+				{ label: 'Servizi', to: '/account/amministrazione/servizi' },
+				{ label: 'Nuovo servizio' },
+			]"
+			back-to="/account/amministrazione/servizi"
+			back-label="Torna ai servizi" />
 
-			<ServizioFormOverview
-				:publish-state-label="publishStateLabel"
-				:publish-state-hint="publishStateHint"
-				:section-count="sectionCount"
-				:faq-count="faqCount" />
+		<ServizioFormOverview
+			:publish-state-label="publishStateLabel"
+			:publish-state-hint="publishStateHint"
+			:section-count="sectionCount"
+			:faq-count="faqCount" />
 
-			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
+		<SfActionBanner :message="actionMessage" />
 
 			<div class="grid grid-cols-1 desktop:grid-cols-[minmax(0,1fr)_320px] gap-5 items-start mt-2">
 				<div class="grid gap-5 min-w-0">
@@ -165,8 +164,7 @@ const FAQ_ICON_PATH = 'M18,15H6L2,19V3A1,1 0 0,1 3,2H18A1,1 0 0,1 19,3V14A1,1 0 
 					:completed-count="completedChecklistCount"
 					:saving="saving"
 					submit-label="Crea servizio"
-					@save="saveService" />
-			</div>
+				@save="saveService" />
 		</div>
-	</section>
+	</AccountPageSection>
 </template>

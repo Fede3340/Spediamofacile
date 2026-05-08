@@ -10,6 +10,36 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property int $id
+ * @property string|null $name
+ * @property string|null $surname
+ * @property string|null $email
+ * @property string|null $telephone_number
+ * @property string|null $phone_number
+ * @property \Illuminate\Support\Carbon|null $phone_number_verified_at
+ * @property string|null $password
+ * @property string|null $identifier
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string|null $verification_code
+ * @property \Illuminate\Support\Carbon|null $verification_code_expires_at
+ * @property string $user_type
+ * @property string|null $avatar
+ * @property \Illuminate\Support\Carbon|null $privacy_accepted_at
+ * @property string|null $role
+ * @property string|null $stripe_account_id
+ * @property string|null $customer_id
+ * @property string|null $google_id
+ * @property string|null $facebook_id
+ * @property string|null $apple_id
+ * @property string|null $referral_code
+ * @property string|null $referred_by
+ * @property string|null $two_factor_secret
+ * @property array|null $two_factor_recovery_codes
+ * @property \Illuminate\Support\Carbon|null $two_factor_confirmed_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
@@ -64,6 +94,9 @@ class User extends Authenticatable
         'google_id',
         'facebook_id',
         'apple_id',
+        // P1.1 — 2FA: il secret e i recovery codes non vanno mai esposti in JSON
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
     /**
@@ -103,7 +136,22 @@ class User extends Authenticatable
             'password' => 'hashed',
             'stripe_account_id' => 'encrypted',
             'customer_id' => 'encrypted',
+            // P1.1 — 2FA TOTP: i campi non sono in $fillable, assegnazione esplicita.
+            // Il secret base32 e i recovery codes sono cifrati a riposo (AES-256 via APP_KEY).
+            'two_factor_secret' => 'encrypted',
+            'two_factor_recovery_codes' => 'encrypted:array',
+            'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    /**
+     * P1.1 — Verifica se l'utente ha completato il setup 2FA.
+     * Restituisce true solo dopo che `two_factor_confirmed_at` e' stato impostato.
+     * Usato dal middleware RequireTwoFactor per bloccare admin senza 2FA attivo.
+     */
+    public function hasTwoFactorEnabled(): bool
+    {
+        return ! is_null($this->two_factor_confirmed_at);
     }
 
     /* protected static function booted()

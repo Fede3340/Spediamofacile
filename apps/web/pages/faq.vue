@@ -105,20 +105,11 @@ useHead({
 </template>
 
 <style scoped>
+/* Shell verticale: header + chip + body. La colonna sidebar 280px è gestita dentro .faq-body__grid. */
 .faq-shell {
-	display: grid;
-	grid-template-columns: 1fr;
+	display: flex;
+	flex-direction: column;
 	gap: 24px;
-	max-width: 1200px;
-	margin: 40px auto;
-	padding: 0 24px;
-}
-
-@media (min-width: 1024px) {
-	.faq-shell {
-		grid-template-columns: 280px 1fr;
-		gap: 32px;
-	}
 }
 
 .faq-body {
@@ -154,6 +145,6 @@ useHead({
 	z-index: 100;
 	background: #ffffff;
 	padding: 8px 16px;
-	border-radius: 8px;
+	border-radius: 10px;
 }
 </style>

@@ -4,6 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property string|null $name
+ * @property bool $is_business
+ * @property string|null $company_name
+ * @property string|null $fiscal_code
+ * @property string|null $vat_number
+ * @property string|null $sdi_code
+ * @property string|null $pec_email
+ * @property string|null $address
+ * @property string|null $city
+ * @property string|null $province_name
+ * @property string|null $postal_code
+ * @property string|null $country
+ */
 class BillingAddress extends Model
 {
     /**

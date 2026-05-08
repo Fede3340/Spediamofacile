@@ -182,11 +182,11 @@ watch(() => props.selectedKey, () => {
 </script>
 
 <template>
-	<div class="relative w-full h-full min-h-[400px] rounded-[16px] overflow-hidden border border-[var(--color-brand-border,#E9EBEC)] bg-[#F2F8F9]">
+	<div class="relative w-full h-full min-h-[400px] rounded-card overflow-hidden border border-brand-border bg-[#F2F8F9]">
 		<div ref="mapEl" class="absolute inset-0" :aria-busy="!ready" aria-label="Mappa punti BRT" role="application"/>
 		<div
 			v-if="tileError"
-			class="absolute inset-x-3 bottom-3 z-[400] rounded-[10px] bg-white/95 px-3 py-2 text-[0.75rem] text-[var(--color-brand-text-secondary,#4b5563)] border border-[var(--color-brand-border,#E9EBEC)]">
+			class="absolute inset-x-3 bottom-3 z-[400] rounded-control bg-white/95 px-3 py-2 text-[0.75rem] text-[var(--color-brand-text-secondary,#4b5563)] border border-brand-border">
 			Tile mappa non disponibili. Verifica la connessione.
 		</div>
 	</div>
@@ -198,7 +198,7 @@ watch(() => props.selectedKey, () => {
 	background: #F2F8F9;
 }
 :deep(.leaflet-popup-content-wrapper) {
-	border-radius: 12px;
+	border-radius: 14px;
 	box-shadow: 0 8px 24px rgba(9, 88, 102, 0.18);
 }
 :deep(.leaflet-popup-tip) {

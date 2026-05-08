@@ -100,26 +100,27 @@ onMounted(() => { fetchArticle(); });
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-6 tablet:py-7 desktop:py-7">
-		<div class="my-container sf-stack-section">
-			<AccountPageHeader
-				eyebrow="Area amministrazione"
-				title="Modifica servizio"
-				description="Aggiorna contenuti, sezioni, FAQ e immagine del servizio."
-				:crumbs="[
-					{ label: 'Account', to: '/account' },
-					{ label: 'Amministrazione', to: '/account/amministrazione' },
-					{ label: 'Servizi', to: '/account/amministrazione/servizi' },
-					{ label: 'Modifica servizio' },
-				]"
-				back-to="/account/amministrazione/servizi"
-				back-label="Torna ai servizi" />
+	<AccountPageSection spacing="sf-stack-section" padding="py-6 tablet:py-7 desktop:py-7">
+		<AccountPageHeader
+			eyebrow="Area amministrazione"
+			title="Modifica servizio"
+			description="Aggiorna contenuti, sezioni, FAQ e immagine del servizio."
+			:crumbs="[
+				{ label: 'Account', to: '/account' },
+				{ label: 'Amministrazione', to: '/account/amministrazione' },
+				{ label: 'Servizi', to: '/account/amministrazione/servizi' },
+				{ label: 'Modifica servizio' },
+			]"
+			back-to="/account/amministrazione/servizi"
+			back-label="Torna ai servizi" />
 
-			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
+		<SfActionBanner :message="actionMessage" />
 
-			<div v-if="isLoading" class="py-8 flex justify-center">
-				<div class="w-10 h-10 border-3 border-brand-border border-t-brand-primary rounded-full animate-spin" />
-			</div>
+		<div v-if="isLoading" class="space-y-3">
+			<SfSkeleton variant="card" />
+			<SfSkeleton variant="card" />
+			<SfSkeleton variant="card" />
+		</div>
 
 			<template v-else>
 				<div class="grid gap-5">
@@ -269,8 +270,7 @@ onMounted(() => { fetchArticle(); });
 							Salva modifiche
 						</SfButton>
 					</div>
-				</div>
-			</template>
-		</div>
-	</section>
+			</div>
+		</template>
+	</AccountPageSection>
 </template>

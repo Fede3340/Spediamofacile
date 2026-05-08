@@ -75,7 +75,7 @@ const emit = defineEmits(['focus-search']);
 	gap: 12px;
 	padding: 20px;
 	background: #ffffff;
-	border-radius: 14px;
+	border-radius: 18px;
 	box-shadow: 0 2px 8px rgba(9, 88, 102, 0.05), 0 0 0 1px rgba(9, 88, 102, 0.06);
 }
 
@@ -112,7 +112,7 @@ const emit = defineEmits(['focus-search']);
 	color: var(--color-brand-text);
 	background: transparent;
 	border: none;
-	border-radius: 8px;
+	border-radius: 14px;
 	cursor: pointer;
 	transition: background 150ms ease, color 150ms ease;
 	width: 100%;
@@ -131,7 +131,7 @@ const emit = defineEmits(['focus-search']);
 	justify-content: center;
 	width: 40px;
 	height: 40px;
-	border-radius: 10px;
+	border-radius: 14px;
 	background: rgba(9, 88, 102, 0.1);
 	color: var(--color-brand-primary);
 }

@@ -193,7 +193,7 @@ d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13
 .sf-confirm__btn {
   flex: 1;
   height: 44px;
-  border-radius: 12px;
+  border-radius: 14px;
   font-family: var(--font-inter, 'Inter', sans-serif);
   font-weight: 600;
   font-size: 14px;

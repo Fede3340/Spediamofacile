@@ -5,6 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $buyer_id
+ * @property int $pro_user_id
+ * @property string $referral_code
+ * @property int $order_id
+ * @property string $order_amount
+ * @property string $discount_amount
+ * @property string $commission_amount
+ * @property string $status
+ * @property-read User|null $buyer
+ * @property-read User|null $proUser
+ * @property-read Order|null $order
+ */
 class ReferralUsage extends Model
 {
     /**

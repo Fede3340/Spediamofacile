@@ -13,7 +13,7 @@ defineProps({
 </script>
 
 <template>
-	<div class="bg-white rounded-[16px] p-[24px] border border-[var(--color-brand-border)]">
+	<div class="bg-white rounded-card p-[24px] border border-[var(--color-brand-border)]">
 		<h3 class="font-montserrat text-[1rem] font-[800] text-[var(--color-brand-text)] mb-[16px]">Collo #{{ index + 1 }}</h3>
 
 		<div class="grid grid-cols-2 desktop:grid-cols-4 gap-[14px] mb-[16px]">
@@ -36,7 +36,7 @@ defineProps({
 		</div>
 
 		<!-- Mittente -->
-		<div v-if="pkg.origin_address" class="bg-[#F8F9FB] rounded-[16px] p-[16px] mb-[10px]">
+		<div v-if="pkg.origin_address" class="bg-[#F8F9FB] rounded-card p-[16px] mb-[10px]">
 			<p class="text-[0.75rem] text-[var(--color-brand-text-secondary)] uppercase font-medium mb-[6px]">Mittente</p>
 			<p class="text-[0.875rem] font-semibold text-[var(--color-brand-text)]">{{ pkg.origin_address.name }}</p>
 			<p class="text-[0.8125rem] text-[var(--color-brand-text-secondary)]">{{ pkg.origin_address.address }} {{ pkg.origin_address.address_number }}</p>
@@ -51,7 +51,7 @@ defineProps({
 		</div>
 
 		<!-- Destinatario -->
-		<div v-if="pkg.destination_address" class="bg-[#F8F9FB] rounded-[16px] p-[16px]">
+		<div v-if="pkg.destination_address" class="bg-[#F8F9FB] rounded-card p-[16px]">
 			<p class="text-[0.75rem] text-[var(--color-brand-text-secondary)] uppercase font-medium mb-[6px]">Destinatario</p>
 			<p class="text-[0.875rem] font-semibold text-[var(--color-brand-text)]">{{ pkg.destination_address.name }}</p>
 			<p class="text-[0.8125rem] text-[var(--color-brand-text-secondary)]">{{ pkg.destination_address.address }} {{ pkg.destination_address.address_number }}</p>
@@ -60,7 +60,7 @@ defineProps({
 		</div>
 
 		<!-- Servizio -->
-		<div v-if="pkg.services" class="mt-[10px] bg-[#F8F9FB] rounded-[16px] p-[16px]">
+		<div v-if="pkg.services" class="mt-[10px] bg-[#F8F9FB] rounded-card p-[16px]">
 			<p class="text-[0.75rem] text-[var(--color-brand-text-secondary)] uppercase font-medium mb-[6px]">Servizio</p>
 			<p class="text-[0.875rem] text-[var(--color-brand-text)]">{{ pkg.services.service_type || 'Standard' }}</p>
 			<p v-if="pkg.services.date" class="text-[0.8125rem] text-[var(--color-brand-text-secondary)]">Data: {{ pkg.services.date }}</p>

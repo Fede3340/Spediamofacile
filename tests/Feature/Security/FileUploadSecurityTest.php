@@ -42,6 +42,8 @@ class FileUploadSecurityTest extends TestCase
         $admin = User::factory()->create([
             'role' => 'Admin',
             'email_verified_at' => now(),
+            // P1.1 — admin senza 2FA confermato verrebbe bloccato dal middleware RequireTwoFactor
+            'two_factor_confirmed_at' => now(),
         ]);
 
         Sanctum::actingAs($admin);

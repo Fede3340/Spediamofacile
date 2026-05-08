@@ -29,7 +29,8 @@ Route::middleware(['throttle:180,1'])->get('/locations/by-city', [LocationDetail
 
 /* ===== TRACKING PUBBLICO ===== */
 
-Route::middleware(['throttle:15,1'])->get('/tracking/search', [BrtController::class, 'publicTracking']);
+// P0.3 anti-scraping: chiave IP, 15/min — vedi RateLimiter "public-tracking" in AppServiceProvider
+Route::middleware(['throttle:public-tracking'])->get('/tracking/search', [BrtController::class, 'publicTracking']);
 
 /* ===== BRT PUDO PUBBLICO (Punti di ritiro/consegna) ===== */
 

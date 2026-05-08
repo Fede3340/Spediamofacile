@@ -20,7 +20,7 @@ class Setting extends Model
      * e letta con Crypt::decryptString(), con fallback su plaintext per
      * backward-compatibility con valori inseriti prima della cifratura.
      */
-    private static array $encryptedKeys = [
+    protected static array $encryptedKeys = [
         'stripe_secret',
         'stripe_secret_key',
         'stripe_webhook_secret',

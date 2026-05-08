@@ -32,7 +32,7 @@ class LogAuthenticationEvents
     {
         AuditLogService::log('auth.login', null, [
             'guard' => $event->guard,
-            'remember' => (bool) ($event->remember ?? false),
+            'remember' => (bool) $event->remember,
         ], ['user' => $event->user]);
     }
 

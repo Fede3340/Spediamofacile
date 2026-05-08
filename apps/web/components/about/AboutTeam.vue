@@ -55,7 +55,7 @@ const team = [
 	gap: 10px;
 	padding: 24px 16px;
 	background: #ffffff;
-	border-radius: 16px;
+	border-radius: 18px;
 	box-shadow: 0 2px 8px rgba(9, 88, 102, 0.05), 0 0 0 1px rgba(9, 88, 102, 0.06);
 	text-align: center;
 	list-style: none;

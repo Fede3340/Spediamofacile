@@ -1,8 +1,8 @@
 <!--
   Componente: ShipmentOrderCard
   Card singolo ordine nella lista spedizioni.
-  Versione riallineata al prototipo: struttura piu lineare, meno box interni,
-  priorita a riferimento, tratta, tracking e azioni davvero utili.
+  Versione riallineata al prototipo: struttura più lineare, meno box interni,
+  priorità a riferimento, tratta, tracking e azioni davvero utili.
 -->
 <script setup>
 defineProps({
@@ -97,17 +97,17 @@ defineProps({
 			</div>
 		</div>
 
-		<div v-if="isPendingPayment(order)" class="mx-[22px] mb-[12px] flex items-center gap-[12px] rounded-[16px] border border-amber-200 bg-amber-50 px-[16px] py-[12px]">
+		<div v-if="isPendingPayment(order)" class="mx-[22px] mb-[12px] flex items-center gap-[12px] rounded-card border border-amber-200 bg-amber-50 px-[16px] py-[12px]">
 			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#F59E0B" class="shrink-0"><path d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16"/></svg>
 			<p class="text-[0.8125rem] text-amber-800 flex-1">{{ getPendingReason(order) }}</p>
 		</div>
 
-		<div v-if="saveError[order.id]" class="mx-[22px] mb-[10px] flex items-center gap-[10px] rounded-[16px] border border-red-200 bg-red-50 px-[16px] py-[10px]">
+		<div v-if="saveError[order.id]" class="mx-[22px] mb-[10px] flex items-center gap-[10px] rounded-card border border-red-200 bg-red-50 px-[16px] py-[10px]">
 			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#EF4444" class="shrink-0"><path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/></svg>
 			<p class="text-red-600 text-[0.8125rem] font-medium">{{ saveError[order.id] }}</p>
 		</div>
 
-		<div v-if="statusRaw(order.status) === 'refunded' && order.refund_amount" class="mx-[22px] mb-[16px] flex items-center gap-[10px] rounded-[16px] border border-orange-200 bg-orange-50 px-[16px] py-[10px]">
+		<div v-if="statusRaw(order.status) === 'refunded' && order.refund_amount" class="mx-[22px] mb-[16px] flex items-center gap-[10px] rounded-card border border-orange-200 bg-orange-50 px-[16px] py-[10px]">
 			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
 			<p class="text-orange-700 text-[0.8125rem]">Rimborso di <span class="font-semibold">{{ order.refund_amount }}</span> effettuato<span v-if="order.refunded_at"> il {{ order.refunded_at }}</span></p>
 		</div>

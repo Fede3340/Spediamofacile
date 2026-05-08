@@ -54,7 +54,7 @@ defineProps({
 .faq-details {
 	display: block;
 	background: #ffffff;
-	border-radius: 12px;
+	border-radius: 18px;
 	box-shadow: 0 2px 8px rgba(9, 88, 102, 0.04), 0 0 0 1px rgba(9, 88, 102, 0.06);
 	overflow: hidden;
 	transition: box-shadow 200ms ease;

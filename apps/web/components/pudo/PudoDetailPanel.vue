@@ -83,7 +83,7 @@ const handleChoose = () => {
 				@click.self="emit('close')">
 				<div class="w-full tablet:w-[420px] max-h-[88vh] tablet:max-h-none tablet:h-full bg-white rounded-t-[20px] tablet:rounded-none shadow-[0_-12px_40px_rgba(9,88,102,0.18)] tablet:shadow-[-12px_0_32px_rgba(9,88,102,0.12)] flex flex-col overflow-hidden">
 					<!-- Header -->
-					<div class="px-[20px] pt-[18px] pb-[14px] border-b border-[var(--color-brand-border,#E9EBEC)]">
+					<div class="px-[20px] pt-[18px] pb-[14px] border-b border-brand-border">
 						<div class="flex items-start justify-between gap-[12px]">
 							<div class="min-w-0 flex-1">
 								<span class="inline-flex items-center text-[0.6875rem] font-semibold uppercase tracking-wide text-[var(--color-brand-primary,#095866)] bg-[#E6F0F2] rounded-full px-[8px] py-[2px] mb-[6px]">
@@ -140,7 +140,7 @@ width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 							<h3 class="text-[0.75rem] font-semibold uppercase tracking-wide text-[var(--color-brand-text-secondary,#4b5563)] mb-[8px]">
 								Orari di apertura
 							</h3>
-							<dl class="rounded-[12px] border border-[var(--color-brand-border,#E9EBEC)] overflow-hidden divide-y divide-[var(--color-brand-border,#E9EBEC)]">
+							<dl class="rounded-control border border-brand-border overflow-hidden divide-y divide-brand-border">
 								<div
 									v-for="row in weekHours"
 									:key="row.label"
@@ -161,7 +161,7 @@ width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 								Servizi disponibili
 							</h3>
 							<div class="flex flex-wrap gap-[8px]">
-								<span class="inline-flex items-center gap-[6px] text-[0.8125rem] font-medium text-[var(--color-brand-text,#0f172a)] bg-[#F2F8F9] border border-[var(--color-brand-border,#E9EBEC)] rounded-full px-[10px] py-[5px]">
+								<span class="inline-flex items-center gap-[6px] text-[0.8125rem] font-medium text-[var(--color-brand-text,#0f172a)] bg-[#F2F8F9] border border-brand-border rounded-full px-[10px] py-[5px]">
 									<svg
 width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 										stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -169,7 +169,7 @@ width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 									</svg>
 									Ritiro pacchi
 								</span>
-								<span class="inline-flex items-center gap-[6px] text-[0.8125rem] font-medium text-[var(--color-brand-text,#0f172a)] bg-[#F2F8F9] border border-[var(--color-brand-border,#E9EBEC)] rounded-full px-[10px] py-[5px]">
+								<span class="inline-flex items-center gap-[6px] text-[0.8125rem] font-medium text-[var(--color-brand-text,#0f172a)] bg-[#F2F8F9] border border-brand-border rounded-full px-[10px] py-[5px]">
 									<svg
 width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 										stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -192,10 +192,10 @@ width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 					</div>
 
 					<!-- Footer azione -->
-					<div class="px-[20px] py-[14px] border-t border-[var(--color-brand-border,#E9EBEC)] bg-white">
+					<div class="px-[20px] py-[14px] border-t border-brand-border bg-white">
 						<button
 							type="button"
-							class="w-full inline-flex items-center justify-center gap-[8px] h-[46px] rounded-[14px] bg-[var(--color-brand-primary,#095866)] text-white text-[0.9375rem] font-semibold hover:bg-[var(--color-brand-primary-hover,#074a56)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-accent)] cursor-pointer transition-colors"
+							class="w-full inline-flex items-center justify-center gap-[8px] h-[46px] rounded-control bg-[var(--color-brand-primary,#095866)] text-white text-[0.9375rem] font-semibold hover:bg-[var(--color-brand-primary-hover,#074a56)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-accent)] cursor-pointer transition-colors"
 							@click="handleChoose">
 							<svg
 width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"

@@ -24,7 +24,9 @@ use App\Http\Controllers\Catalog\PriceBandController;
 use App\Http\Middleware\CheckAdmin;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth:sanctum', CheckAdmin::class])->prefix('admin')->group(function () {
+// P1.1 — Tutte le rotte admin richiedono 2FA TOTP attivo (oltre a sanctum + admin role).
+// Se l'admin non ha completato il setup 2FA, RequireTwoFactor risponde 403 con code '2FA_REQUIRED'.
+Route::middleware(['auth:sanctum', CheckAdmin::class, '2fa.required', 'admin.audit'])->prefix('admin')->group(function () {
 
     // --- Dashboard ---
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard']);

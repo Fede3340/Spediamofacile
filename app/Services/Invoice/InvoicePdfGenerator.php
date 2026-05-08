@@ -5,7 +5,6 @@ namespace App\Services\Invoice;
 use App\Models\InvoiceArchive;
 use App\Models\Order;
 use App\Services\InvoicePdfService;
-use Barryvdh\DomPDF\PDF;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\DB;
@@ -214,10 +213,12 @@ class InvoicePdfGenerator
     private function renderPdfBinary(array $viewData, Order $order): string
     {
         // Tenta dompdf via facade (registrata con auto-discovery se package installato).
-        if (class_exists(\Barryvdh\DomPDF\Facade\Pdf::class)) {
+        // barryvdh/laravel-dompdf e' opzionale: usiamo riferimenti via stringa per
+        // evitare che PHPStan tenti di analizzare la classe quando assente.
+        $dompdfFacade = '\\Barryvdh\\DomPDF\\Facade\\Pdf';
+        if (class_exists($dompdfFacade)) {
             try {
-                /** @var PDF $pdf */
-                $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('invoices.pdf', $viewData)
+                $pdf = $dompdfFacade::loadView('invoices.pdf', $viewData)
                     ->setPaper('a4', 'portrait')
                     ->setOptions([
                         'isRemoteEnabled' => false,

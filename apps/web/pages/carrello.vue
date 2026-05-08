@@ -61,7 +61,7 @@ const {
                 v-model="filterRiferimento"
                 type="text"
                 placeholder="Cerca spedizione..."
-                class="w-full h-[40px] rounded-[12px] bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[3px] focus:ring-[var(--color-brand-primary)]/60 pl-[34px] pr-[12px] text-[13px] text-[var(--color-brand-text)] placeholder:text-[var(--color-brand-text-muted)] outline-none transition-all"
+                class="w-full h-[40px] rounded-control bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[3px] focus:ring-[var(--color-brand-primary)]/60 pl-[34px] pr-[12px] text-[13px] text-[var(--color-brand-text)] placeholder:text-[var(--color-brand-text-muted)] outline-none transition-all"
                 style="font-weight: 500"
               >
               <!-- Search icon -->
@@ -72,7 +72,7 @@ const {
             <div v-if="uniqueCities.length > 1" class="relative sm:w-[200px]">
               <select
                 v-model="filterProvenienza"
-                class="w-full h-[40px] rounded-[12px] bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[3px] focus:ring-[var(--color-brand-primary)]/60 pl-[34px] pr-[12px] text-[13px] text-[var(--color-brand-text)] appearance-none cursor-pointer outline-none transition-all"
+                class="w-full h-[40px] rounded-control bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[3px] focus:ring-[var(--color-brand-primary)]/60 pl-[34px] pr-[12px] text-[13px] text-[var(--color-brand-text)] appearance-none cursor-pointer outline-none transition-all"
                 style="font-weight: 500"
               >
                 <option value="">Tutte le provenienze</option>
@@ -220,7 +220,7 @@ v-else
           <div
             v-for="n in 3"
             :key="n"
-            class="rounded-[16px] border border-[rgba(9,88,102,0.08)] bg-white px-[18px] py-[16px]">
+            class="rounded-[18px] border border-[rgba(9,88,102,0.08)] bg-white px-[18px] py-[16px]">
             <SfSkeleton variant="text-block" />
           </div>
         </div>

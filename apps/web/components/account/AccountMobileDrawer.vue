@@ -26,7 +26,7 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 				<div class="flex items-center gap-2.5">
 					<button
 						type="button"
-						class="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] transition-colors hover:bg-brand-primary/[0.04]"
+						class="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-control transition-colors hover:bg-brand-primary/[0.04]"
 						aria-label="Apri menu account"
 						@click="emit('toggle')">
 						<svg v-if="mobileOpen" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5 text-brand-text" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -140,7 +140,7 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 								:key="`mobile-${item.to}`"
 								:to="item.to"
 								:class="[
-									'group flex items-center gap-2.5 rounded-[10px] px-2.5 py-[9px] text-left transition-colors duration-200',
+									'group flex items-center gap-2.5 rounded-control px-2.5 py-[9px] text-left transition-colors duration-200',
 									isItemActive(item)
 										? 'bg-brand-primary/[0.06]'
 										: 'hover:bg-brand-primary/[0.04]',
@@ -148,7 +148,7 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 								@click="emit('close')">
 								<span
 									:class="[
-										'inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] border transition-colors duration-200',
+										'inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-control border transition-colors duration-200',
 										isItemActive(item)
 											? 'border-brand-primary/15 bg-brand-primary/[0.08] text-brand-primary'
 											: 'border-brand-primary/10 bg-white text-brand-text-muted group-hover:border-brand-primary/15 group-hover:bg-brand-primary/[0.04] group-hover:text-brand-primary',
@@ -174,9 +174,9 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 
 				<button
 					type="button"
-					class="group mt-3.5 flex w-full items-center gap-2.5 rounded-[10px] px-2.5 py-[9px] text-left transition-colors duration-200 hover:bg-brand-error/5"
+					class="group mt-3.5 flex w-full items-center gap-2.5 rounded-control px-2.5 py-[9px] text-left transition-colors duration-200 hover:bg-brand-error/5"
 					@click="emit('logout')">
-					<span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] border border-brand-primary/10 bg-white text-brand-text-muted transition-colors duration-200 group-hover:border-brand-error/20 group-hover:bg-brand-error/5 group-hover:text-brand-error">
+					<span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-control border border-brand-primary/10 bg-white text-brand-text-muted transition-colors duration-200 group-hover:border-brand-error/20 group-hover:bg-brand-error/5 group-hover:text-brand-error">
 						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[15px] w-[15px]" fill="currentColor">
 							<path d="M10.08 15.59 11.5 17l5-5-5-5-1.42 1.41L12.67 11H3v2h9.67l-2.59 2.59ZM19 3H5a2 2 0 0 0-2 2v4h2V5h14v14H5v-4H3v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z" />
 						</svg>

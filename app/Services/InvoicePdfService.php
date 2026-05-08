@@ -35,6 +35,7 @@ class InvoicePdfService
 
         $ops = '';
         $y = 50.0;
+        $newY = 0.0;
 
         $ops .= $this->renderHeader($y);
         $y += 62;
@@ -64,7 +65,7 @@ class InvoicePdfService
         return $ops;
     }
 
-    private function renderOrderDetails(Order $order, float $y, ?float &$newY): string
+    private function renderOrderDetails(Order $order, float $y, float &$newY): string
     {
         $r = $this->r;
         $ops = $r->drawText($this->marginLeft, $y, 11, 'Dettagli ordine', 'F2');
@@ -95,7 +96,7 @@ class InvoicePdfService
         return $ops;
     }
 
-    private function renderCustomerData(Order $order, float $y, ?float &$newY): string
+    private function renderCustomerData(Order $order, float $y, float &$newY): string
     {
         $r = $this->r;
         $ops = $r->drawText($this->marginLeft, $y, 11, 'Dati cliente', 'F2');
@@ -117,7 +118,7 @@ class InvoicePdfService
             }
         }
 
-        $newY = $y + 8;
+        $newY = (float) ($y + 8);
 
         return $ops;
     }
@@ -176,7 +177,7 @@ class InvoicePdfService
         return [$ops, $y];
     }
 
-    private function renderShippingAddresses(Order $order, float $y, ?float &$newY): string
+    private function renderShippingAddresses(Order $order, float $y, float &$newY): string
     {
         $r = $this->r;
         $first = $order->packages->first();
@@ -211,7 +212,7 @@ class InvoicePdfService
         return $ops;
     }
 
-    private function renderPackagesTable(Order $order, float $y, ?float &$newY): string
+    private function renderPackagesTable(Order $order, float $y, float &$newY): string
     {
         $r = $this->r;
         $ops = $r->drawText($this->marginLeft, $y, 11, 'Pacchi', 'F2');
@@ -248,7 +249,7 @@ class InvoicePdfService
         return $ops;
     }
 
-    private function renderTotals(Order $order, float $y, ?float &$newY): string
+    private function renderTotals(Order $order, float $y, float &$newY): string
     {
         $r = $this->r;
         $grossSubtotalCents = $order->grossSubtotalCents();
@@ -286,7 +287,7 @@ class InvoicePdfService
         return $ops;
     }
 
-    private function renderPaymentMethod(Order $order, float $y, ?float &$newY): string
+    private function renderPaymentMethod(Order $order, float $y, float &$newY): string
     {
         $paymentMethod = $order->payment_method ?? null;
         if (! $paymentMethod) {

@@ -3,7 +3,7 @@
 		<div class="container">
 			<HomeSectionHead
 				eyebrow="Come funziona"
-				title="Spedire non e mai stato cosi semplice"
+				title="Spedire non è mai stato così semplice"
 				title-id="how-title"
 				subtitle="Tre passaggi, nessuna complicazione: dal preventivo alla consegna." />
 

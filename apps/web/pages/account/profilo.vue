@@ -17,8 +17,7 @@ const { clearSnapshot } = useAuthUiSnapshotPersistence();
 const { openAuthModal } = useAuthStore();
 const profileUiReady = ref(true);
 
-const messageError = ref(null);
-const messageSuccess = ref(null);
+const { message: flashMessage, showSuccess: showFlashSuccess, showError: showFlashError, clear: clearFlash } = useFlashMessage();
 const messageLoading = ref(null);
 const showEditForm = ref(true);
 
@@ -87,27 +86,17 @@ watch(
 
 const sanctum = useSanctumClient();
 
-// Auto-dismiss centralizzato per il flash di successo: previene leak su navigazione mid-message.
-let messageSuccessTimer = null;
-const dismissMessageSuccessAfter = (ms = 4000) => {
-	if (messageSuccessTimer) clearTimeout(messageSuccessTimer);
-	messageSuccessTimer = setTimeout(() => { messageSuccess.value = null; messageSuccessTimer = null; }, ms);
-};
-onBeforeUnmount(() => { if (messageSuccessTimer) clearTimeout(messageSuccessTimer); });
-
 const updateInfo = async () => {
-	messageError.value = null;
-	messageSuccess.value = null;
+	clearFlash();
 	messageLoading.value = 'Salvataggio in corso...';
 	try {
 		await sanctum(`/api/users/${user.value.id}`, { method: 'PATCH', body: userInfo.value });
 		await refreshIdentity();
-		messageSuccess.value = 'Dati aggiornati con successo!';
-		dismissMessageSuccessAfter(4000);
+		showFlashSuccess('Dati aggiornati con successo!');
 	} catch (error) {
 		if (error?.statusCode === 401) {
 			clearSnapshot();
-			messageError.value = 'Sessione scaduta. Accedi di nuovo per continuare a modificare il profilo.';
+			showFlashError(error, 'Sessione scaduta. Accedi di nuovo per continuare a modificare il profilo.');
 			openAuthModal({
 				redirect: '/account/profilo',
 				tab: 'login',
@@ -117,9 +106,9 @@ const updateInfo = async () => {
 		const data = error?.data || error?.response?._data;
 		if (data?.errors) {
 			const firstError = Object.values(data.errors)[0];
-			messageError.value = Array.isArray(firstError) ? firstError[0] : firstError;
+			showFlashError(null, Array.isArray(firstError) ? firstError[0] : firstError);
 		} else {
-			messageError.value = "Errore durante l'aggiornamento. Riprova.";
+			showFlashError(error, "Errore durante l'aggiornamento. Riprova.");
 		}
 	} finally {
 		messageLoading.value = null;
@@ -139,93 +128,43 @@ const handleLogout = async () => {
 </script>
 
 <template>
-	<section v-if="profileUiReady" class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
-		<div class="my-container max-w-7xl">
-			<AccountPageHeader
-				eyebrow="Profilo"
-				title="Il mio profilo"
-				description="Gestisci dati personali, sicurezza e fatturazione dell'account."
-				current="Profilo"/>
+	<AccountPageSection v-if="profileUiReady" spacing="space-y-4">
+		<AccountPageHeader
+			eyebrow="Profilo"
+			title="Il mio profilo"
+			description="Gestisci dati personali, sicurezza e fatturazione dell'account."
+			current="Profilo"/>
 
-			<!-- Messaggi -->
-			<div v-if="messageLoading" class="mb-[10px] ux-alert ux-alert--info">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="18"
-					height="18"
-					viewBox="0 0 24 24"
-					fill="none"
-					class="ux-alert__icon animate-spin"
-					aria-hidden="true">
-					<path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" fill="currentColor" />
-				</svg>
-				<span>{{ messageLoading }}</span>
-			</div>
-			<div v-if="messageSuccess" class="mb-[10px] ux-alert ux-alert--success">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="18"
-					height="18"
-					viewBox="0 0 24 24"
-					fill="currentColor"
-					class="ux-alert__icon shrink-0"
-					aria-hidden="true">
-					<path
-						d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M11,16.5L6.5,12L7.91,10.59L11,13.67L16.59,8.09L18,9.5L11,16.5Z" />
-				</svg>
-				<span>{{ messageSuccess }}</span>
-			</div>
-			<div v-if="messageError" class="mb-[10px] ux-alert ux-alert--critical">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="18"
-					height="18"
-					viewBox="0 0 24 24"
-					fill="currentColor"
-					class="ux-alert__icon shrink-0"
-					aria-hidden="true">
-					<path
-						d="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z" />
-				</svg>
-				<span>{{ messageError }}</span>
-			</div>
+		<SfAlert v-if="messageLoading" tone="info">{{ messageLoading }}</SfAlert>
+		<SfActionBanner :message="flashMessage" />
 
-			<!-- Vista profilo -->
-			<div class="sf-animate-in sf-animate-in-2">
-				<AccountProfiloView v-if="!showEditForm" :user="user" @edit="showEditForm = true" @logout="handleLogout" />
-			</div>
-
-			<!-- Form modifica -->
-			<AccountProfiloEditForm
-				v-if="showEditForm"
-				v-model="userInfo"
-				:loading="messageLoading"
-				@submit="updateInfo"
-				@cancel="showEditForm = false" />
+		<div class="sf-animate-in sf-animate-in-2">
+			<AccountProfiloView v-if="!showEditForm" :user="user" @edit="showEditForm = true" @logout="handleLogout" />
 		</div>
-	</section>
 
-	<!-- Skeleton -->
-	<section v-else class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
-		<div class="my-container max-w-7xl space-y-[8px]">
-			<div class="space-y-[8px] mb-[10px]">
-				<div class="h-[14px] w-[80px] rounded-full bg-[#EEF3F7] animate-pulse"/>
-				<div class="flex items-center gap-[12px]">
-					<div class="w-[44px] h-[44px] rounded-[14px] bg-[#EEF3F7] animate-pulse"/>
-					<div class="space-y-[5px]">
-						<div class="h-[22px] w-[200px] rounded-[10px] bg-[#EEF3F7] animate-pulse"/>
-						<div class="h-[13px] w-[260px] rounded-full bg-[#F2F5F8] animate-pulse"/>
-					</div>
-				</div>
-			</div>
-			<div class="rounded-card border border-brand-border bg-brand-card p-[18px] shadow-sf">
-				<div class="grid grid-cols-1 tablet:grid-cols-2 gap-[12px]">
-					<div
-						v-for="index in 6"
-						:key="`skel-${index}`"
-						class="h-[64px] rounded-[14px] bg-[#F5F6F9] animate-pulse"/>
+		<AccountProfiloEditForm
+			v-if="showEditForm"
+			v-model="userInfo"
+			:loading="messageLoading"
+			@submit="updateInfo"
+			@cancel="showEditForm = false" />
+	</AccountPageSection>
+
+	<AccountPageSection v-else spacing="space-y-3">
+		<div class="space-y-2">
+			<SfSkeleton width="80px" height="14px" rounded="9999px" />
+			<div class="flex items-center gap-3">
+				<SfSkeleton width="44px" height="44px" rounded="14px" />
+				<div class="space-y-1.5">
+					<SfSkeleton width="200px" height="22px" rounded="10px" />
+					<SfSkeleton width="260px" height="13px" rounded="9999px" />
 				</div>
 			</div>
 		</div>
-	</section>
+		<div class="rounded-card border border-brand-border bg-brand-card p-[18px] shadow-sf">
+			<div class="grid grid-cols-1 tablet:grid-cols-2 gap-3">
+				<SfSkeleton v-for="index in 6" :key="`skel-${index}`" height="64px" rounded="14px" />
+			</div>
+		</div>
+	</AccountPageSection>
 </template>

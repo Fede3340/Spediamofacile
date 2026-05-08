@@ -67,9 +67,8 @@ onMounted(fetchOrder);
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-6 tablet:py-7">
-		<div class="my-container space-y-6">
-			<AccountPageHeader
+	<AccountPageSection padding="py-6 tablet:py-7">
+		<AccountPageHeader
 				eyebrow="Area amministrazione"
 				:title="`Ordine #${orderId}`"
 				description="Dettaglio ordine cliente con pagamento, indirizzi e tracking BRT."
@@ -211,7 +210,6 @@ onMounted(fetchOrder);
 						Torna all'elenco ordini
 					</SfButton>
 				</template>
-			</SfEmptyState>
-		</div>
-	</section>
+		</SfEmptyState>
+	</AccountPageSection>
 </template>

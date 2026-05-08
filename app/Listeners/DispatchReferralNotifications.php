@@ -22,7 +22,7 @@ class DispatchReferralNotifications
         }
 
         $proUser = $usage->proUser;
-        $buyerName = trim((string) ($usage->buyer?->name ?? 'Un cliente'));
+        $buyerName = trim((string) ($usage->buyer->name ?? 'Un cliente'));
 
         $preferences = UserNotificationPreference::firstOrCreate(
             ['user_id' => $proUser->id],

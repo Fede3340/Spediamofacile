@@ -185,7 +185,7 @@ const accountTypeOptions = [
 			<div
 				v-else
 				role="note"
-				class="rounded-[14px] border border-dashed border-brand-primary/15 bg-brand-primary/[0.03] px-4 py-3.5 text-[13px] leading-snug text-brand-text-muted">
+				class="rounded-control border border-dashed border-brand-primary/15 bg-brand-primary/[0.03] px-4 py-3.5 text-[13px] leading-snug text-brand-text-muted">
 				I campi aziendali si attivano solo quando selezioni <strong class="font-bold text-brand-text">Azienda</strong>.
 			</div>
 		</section>

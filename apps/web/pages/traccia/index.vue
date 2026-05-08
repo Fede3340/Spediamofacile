@@ -15,9 +15,9 @@ const trackingError = ref(null);
 const isLoading = ref(false);
 
 const trackingTips = [
-	'Usa il codice ordine SF o il Parcel ID BRT piu recente.',
-	'Se la spedizione e appena stata creata, attendi qualche minuto prima di riprovare.',
-	'Per anomalie o giacenze, spesso il dettaglio finale e disponibile anche sul portale BRT.',
+	'Usa il codice ordine SF o il Parcel ID BRT più recente.',
+	'Se la spedizione è appena stata creata, attendi qualche minuto prima di riprovare.',
+	'Per anomalie o giacenze, spesso il dettaglio finale è disponibile anche sul portale BRT.',
 ];
 
 const statusTimeline = [
@@ -88,7 +88,7 @@ onMounted(() => { if (trackingCode.value) trackShipment(); });
 			:crumbs="[{ label: 'Home', to: '/' }, { label: 'Traccia' }]"
 			eyebrow="Tracking spedizioni"
 			title="Traccia spedizione"
-			description="Inserisci il codice e controlla lo stato della spedizione in una vista piu chiara, compatta e leggibile.">
+			description="Inserisci il codice e controlla lo stato della spedizione in una vista più chiara, compatta e leggibile.">
 			<template #icon>
 				<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
 					<path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
@@ -99,11 +99,11 @@ onMounted(() => { if (trackingCode.value) trackShipment(); });
 		<div class="py-[20px] sm:py-[24px]">
 			<div class="my-container" style="max-width: 680px">
 
-			<div class="rounded-[16px] overflow-hidden mb-[18px]" data-shadow="soft">
+			<div class="rounded-[18px] overflow-hidden mb-[18px]" data-shadow="soft">
 				<div class="h-[4px]" data-accent="bar" />
 				<div class="p-[18px] sm:p-[22px]" style="background: var(--gradient-page-surface)">
 					<label class="text-[#777] text-[11px] uppercase tracking-[0.4px] mb-[8px] block" style="font-weight:700">Codice tracking</label>
-					<div class="rounded-[16px] p-[12px]" data-surface="grey-inset">
+					<div class="rounded-control p-[12px]" data-surface="grey-inset">
 						<div class="flex gap-[10px]">
 							<div class="relative flex-1">
 								<svg class="absolute left-[14px] top-1/2 -translate-y-1/2 text-[#C0C5CC] pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -113,7 +113,7 @@ onMounted(() => { if (trackingCode.value) trackShipment(); });
 									v-model="trackingCode"
 									type="text"
 									placeholder="es. BRT-2026032801234, SF-000042..."
-									class="w-full h-[48px] sm:h-[50px] rounded-[12px] pl-[42px] pr-[14px] text-[15px] text-[var(--color-brand-text)] bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[3px] focus:ring-[var(--color-brand-primary)]/60 placeholder:text-[var(--color-brand-text-muted)] outline-none transition-all duration-200"
+									class="w-full h-[48px] sm:h-[50px] rounded-control pl-[42px] pr-[14px] text-[15px] text-[var(--color-brand-text)] bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[3px] focus:ring-[var(--color-brand-primary)]/60 placeholder:text-[var(--color-brand-text-muted)] outline-none transition-all duration-200"
 									style="font-weight:600"
 									@keyup.enter="trackShipment">
 							</div>
@@ -129,7 +129,7 @@ onMounted(() => { if (trackingCode.value) trackShipment(); });
 				</div>
 			</div>
 
-			<div v-if="trackingResult && trackingResult.found" class="rounded-[16px] overflow-hidden" data-shadow="soft">
+			<div v-if="trackingResult && trackingResult.found" class="rounded-[18px] overflow-hidden" data-shadow="soft">
 				<div class="h-[4px]" data-accent="bar" />
 				<div class="p-[20px] sm:p-[24px]" style="background: var(--gradient-page-surface)">
 					<div class="flex items-center justify-between mb-[18px] pb-[14px] border-b border-[#DFE2E7] flex-wrap gap-[10px]">
@@ -140,7 +140,7 @@ onMounted(() => { if (trackingCode.value) trackShipment(); });
 						<span :class="statusColorClass" class="px-[12px] py-[4px] rounded-full text-[0.8125rem]" style="font-weight:700">{{ trackingResult.status }}</span>
 					</div>
 
-					<div class="rounded-[16px] p-[14px] sm:p-[16px] mb-[16px]" data-surface="grey-inset">
+					<div class="rounded-control p-[14px] sm:p-[16px] mb-[16px]" data-surface="grey-inset">
 						<div class="grid grid-cols-1 tablet:grid-cols-2 gap-[10px]">
 							<div
 v-for="info in [
@@ -157,7 +157,7 @@ v-for="info in [
 
 					<div v-if="currentStepIndex >= 0" class="mb-[16px]">
 						<h3 class="font-montserrat text-[0.8125rem] text-[var(--color-brand-text)] uppercase tracking-[0.06em] mb-[14px]" style="font-weight:800">Avanzamento spedizione</h3>
-						<div class="rounded-[16px] p-[16px] sm:p-[20px]" data-surface="grey-inset">
+						<div class="rounded-control p-[16px] sm:p-[20px]" data-surface="grey-inset">
 							<div class="flex flex-col gap-0">
 								<div v-for="(step, idx) in statusTimeline" :key="step.key" class="flex gap-[14px]">
 									<div class="flex flex-col items-center">
@@ -202,7 +202,7 @@ v-for="info in [
 				</div>
 			</div>
 
-			<div v-else-if="trackingResult && !trackingResult.found" class="rounded-[16px] overflow-hidden text-center" data-shadow="soft">
+			<div v-else-if="trackingResult && !trackingResult.found" class="rounded-[18px] overflow-hidden text-center" data-shadow="soft">
 				<div class="h-[4px]" data-accent="bar" />
 				<div class="p-[22px] sm:p-[28px]" style="background: var(--gradient-page-surface)">
 					<div class="w-[60px] h-[60px] rounded-full flex items-center justify-center mx-auto mb-[14px]" style="background: rgba(9, 88, 102, 0.08)">
@@ -213,7 +213,7 @@ v-for="info in [
 					<p class="text-[1rem] text-[var(--color-brand-text)] mb-[6px]" style="font-weight:700">Spedizione non trovata</p>
 					<p class="text-[0.875rem] text-[#777] mb-[16px] max-w-[44ch] mx-auto">Il codice inserito non corrisponde a nessuna spedizione nel nostro archivio.</p>
 
-					<div class="rounded-[12px] p-[14px] text-left mb-[16px] max-w-[400px] mx-auto" data-surface="grey-inset">
+					<div class="rounded-control p-[14px] text-left mb-[16px] max-w-[400px] mx-auto" data-surface="grey-inset">
 						<p class="text-[12px] text-[var(--color-brand-text)] mb-[8px]" style="font-weight:700">Suggerimenti:</p>
 						<ul class="text-[12px] text-[var(--color-brand-text-secondary)] leading-[1.8] list-none m-0 p-0">
 							<li
@@ -246,7 +246,7 @@ v-for="hint in [
 			</div>
 
 			<div v-else-if="!trackingResult && !trackingError && !isLoading">
-				<div class="rounded-[16px] overflow-hidden mb-[18px]" data-shadow="soft">
+				<div class="rounded-[18px] overflow-hidden mb-[18px]" data-shadow="soft">
 					<div class="h-[3px]" data-accent="bar" />
 					<div class="p-[18px] sm:p-[22px]" style="background: var(--gradient-page-surface)">
 						<div class="grid gap-[14px]">
@@ -254,7 +254,7 @@ v-for="hint in [
 								<h3 class="text-[var(--color-brand-text)] text-[15px]" style="font-weight:700; font-family: var(--font-montserrat, Montserrat, sans-serif)">Prima della ricerca</h3>
 								<p class="text-[var(--color-brand-text-secondary)] text-[13px] leading-[1.6]">Questa pagina serve solo a trovare in fretta lo stato corretto: niente box dimostrativi inutili, solo i controlli minimi davvero utili.</p>
 							</div>
-							<div class="rounded-[12px] p-[14px] sm:p-[16px]" data-surface="grey-inset">
+							<div class="rounded-control p-[14px] sm:p-[16px]" data-surface="grey-inset">
 								<ul class="grid gap-[10px] m-0 p-0 list-none">
 									<li v-for="tip in trackingTips" :key="tip" class="flex items-start gap-[8px] text-[13px] leading-[1.55] text-[var(--color-brand-text-secondary)]">
 										<span class="mt-[6px] h-[6px] w-[6px] rounded-full bg-[var(--color-brand-primary)] shrink-0" aria-hidden="true"/>
@@ -271,7 +271,7 @@ v-for="hint in [
 						</p>
 					</div>
 				</div>
-				<div class="rounded-[16px] overflow-hidden" data-shadow="medium">
+				<div class="rounded-[18px] overflow-hidden" data-shadow="medium">
 					<div class="p-[16px] sm:p-[18px]" style="background: rgba(255,255,255,0.72)">
 						<div class="flex flex-col gap-[12px] sm:flex-row sm:items-center sm:justify-between">
 							<div class="grid gap-[4px]">

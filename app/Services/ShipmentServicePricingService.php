@@ -121,7 +121,7 @@ class ShipmentServicePricingService
 
         return [
             'total_cents' => (int) $totalCents,
-            'items' => array_values($items),
+            'items' => $items,
         ];
     }
 

@@ -181,7 +181,7 @@ useHead(() => {
 		<!-- Hero -->
 		<section class="py-[22px] desktop:py-[28px]">
 			<div class="my-container">
-				<div class="service-hero-card rounded-[16px] ring-[1px] ring-[#DFE2E7] px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[28px] desktop:py-[28px]">
+				<div class="service-hero-card rounded-[18px] ring-[1px] ring-[#DFE2E7] px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[28px] desktop:py-[28px]">
 					<div class="flex flex-col gap-[16px] desktop:grid desktop:grid-cols-[minmax(0,1.16fr)_minmax(300px,0.84fr)] desktop:items-center desktop:gap-[22px]">
 						<div class="space-y-[10px]">
 							<span class="inline-flex items-center h-[22px] px-[10px] rounded-full bg-[rgba(228,66,3,0.10)] text-[11px] font-[800] uppercase tracking-[0.08em] text-[var(--color-brand-accent)]">Servizio</span>
@@ -202,13 +202,13 @@ useHead(() => {
 							</div>
 						</div>
 
-						<div class="rounded-[16px] ring-[1px] ring-[#DFE2E7] bg-white/75 p-[16px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] backdrop-blur">
+						<div class="rounded-[18px] ring-[1px] ring-[#DFE2E7] bg-white/75 p-[16px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] backdrop-blur">
 							<p class="text-[0.75rem] font-[800] uppercase tracking-[0.12em] text-[var(--color-brand-primary)]">Quando usarlo</p>
 							<div class="mt-[10px] space-y-[10px]">
 								<div
 									v-for="item in supportChecklist"
 									:key="item"
-									class="rounded-[16px] ring-[1px] ring-[var(--color-brand-border)] bg-[var(--color-brand-secondary-soft-bg)] px-[14px] py-[10px] text-[0.8125rem] leading-[1.5] text-[var(--color-brand-text-secondary)]">
+									class="rounded-[18px] ring-[1px] ring-[var(--color-brand-border)] bg-[var(--color-brand-secondary-soft-bg)] px-[14px] py-[10px] text-[0.8125rem] leading-[1.5] text-[var(--color-brand-text-secondary)]">
 									{{ item }}
 								</div>
 							</div>
@@ -229,7 +229,7 @@ useHead(() => {
 					<article
 						v-for="card in overviewCards"
 						:key="card.heading"
-						class="rounded-[16px] ring-[1px] ring-[#DFE2E7] bg-white px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[22px] desktop:py-[22px]">
+						class="rounded-[18px] ring-[1px] ring-[#DFE2E7] bg-white px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[22px] desktop:py-[22px]">
 						<h2 class="font-montserrat text-[1.125rem] font-[800] tracking-[-0.02em] text-[var(--color-brand-text)]">{{ card.heading }}</h2>
 						<p class="mt-[10px] text-[0.875rem] leading-[1.65] text-[var(--color-brand-text-secondary)] desktop:text-[0.9375rem]">
 							{{ card.text }}
@@ -242,7 +242,7 @@ useHead(() => {
 		<!-- Detail sections -->
 		<section v-if="detailSections.length" class="py-[24px] desktop:py-[30px]">
 			<div class="my-container">
-				<div class="rounded-[16px] ring-[1px] ring-[#DFE2E7] bg-white px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[24px] desktop:py-[24px]">
+				<div class="rounded-[18px] ring-[1px] ring-[#DFE2E7] bg-white px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[24px] desktop:py-[24px]">
 					<div class="sf-page-intro">
 						<p class="sf-section-kicker">Approfondimento</p>
 						<h2 class="font-montserrat text-[1.4rem] font-[800] tracking-[-0.03em] text-[var(--color-brand-text)] desktop:text-[2rem]">Come entra nel flusso operativo</h2>
@@ -256,7 +256,7 @@ useHead(() => {
 						<article
 							v-for="section in detailSections"
 							:key="section.heading"
-							class="rounded-[16px] ring-[1px] ring-[#DFE2E7] bg-[var(--color-brand-secondary-soft-bg)] px-[16px] py-[16px]">
+							class="rounded-[18px] ring-[1px] ring-[#DFE2E7] bg-[var(--color-brand-secondary-soft-bg)] px-[16px] py-[16px]">
 							<h3 class="font-montserrat text-[1rem] font-[700] text-[var(--color-brand-text)]">{{ section.heading }}</h3>
 							<p class="mt-[10px] text-[0.875rem] leading-[1.65] text-[var(--color-brand-text-secondary)]">
 								{{ section.text }}
@@ -270,7 +270,7 @@ useHead(() => {
 		<!-- FAQ -->
 		<section v-if="serviceFaqs.length" class="py-[24px] desktop:py-[30px]">
 			<div class="my-container">
-				<div class="rounded-[16px] ring-[1px] ring-[#DFE2E7] bg-white px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[24px] desktop:py-[24px]">
+				<div class="rounded-[18px] ring-[1px] ring-[#DFE2E7] bg-white px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[24px] desktop:py-[24px]">
 					<div class="sf-page-intro">
 						<p class="sf-section-kicker">FAQ</p>
 						<h2 class="font-montserrat text-[1.4rem] font-[800] tracking-[-0.03em] text-[var(--color-brand-text)] desktop:text-[2rem]">
@@ -282,7 +282,7 @@ useHead(() => {
 						<article
 							v-for="faq in serviceFaqs"
 							:key="faq.title"
-							class="rounded-[16px] ring-[1px] ring-[#DFE2E7] bg-[var(--color-brand-secondary-soft-bg)] px-[16px] py-[16px]">
+							class="rounded-[18px] ring-[1px] ring-[#DFE2E7] bg-[var(--color-brand-secondary-soft-bg)] px-[16px] py-[16px]">
 							<h3 class="font-montserrat text-[1rem] font-[700] text-[var(--color-brand-text)]">{{ faq.title }}</h3>
 							<p class="mt-[10px] text-[0.875rem] leading-[1.65] text-[var(--color-brand-text-secondary)]">
 								{{ faq.text }}

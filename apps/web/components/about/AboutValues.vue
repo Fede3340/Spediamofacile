@@ -67,7 +67,7 @@ const values = [
 	gap: 12px;
 	padding: 24px;
 	background: #ffffff;
-	border-radius: 14px;
+	border-radius: 18px;
 	box-shadow: 0 2px 8px rgba(9, 88, 102, 0.05), 0 0 0 1px rgba(9, 88, 102, 0.06);
 	transition: box-shadow 200ms ease, transform 200ms ease;
 }
@@ -83,7 +83,7 @@ const values = [
 	justify-content: center;
 	width: 48px;
 	height: 48px;
-	border-radius: 12px;
+	border-radius: 14px;
 }
 
 .about-values__icon-bg {

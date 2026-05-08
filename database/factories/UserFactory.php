@@ -52,4 +52,20 @@ class UserFactory extends Factory
             'referral_code' => strtoupper(Str::random(8)),
         ]);
     }
+
+    /**
+     * P1.1 — Stato admin con 2FA gia' confermato.
+     * Usare nei test che hanno bisogno di superare il middleware RequireTwoFactor.
+     * Il secret e' un valore base32 fittizio, sufficiente perche' il middleware
+     * controlla solo `two_factor_confirmed_at`, non la validita' del secret.
+     */
+    public function adminWithTwoFactor(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'Admin',
+            'two_factor_secret' => 'JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP',
+            'two_factor_recovery_codes' => ['AAAAA-BBBBB', 'CCCCC-DDDDD'],
+            'two_factor_confirmed_at' => now(),
+        ]);
+    }
 }

@@ -261,9 +261,8 @@ onMounted(async () => {
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-6 tablet:py-7">
-		<div class="my-container">
-			<AccountPageHeader
+	<AccountPageSection spacing="">
+		<AccountPageHeader
 				eyebrow="Area amministrazione"
 				title="Ordini"
 				description="Filtri avanzati, ricerca per codice o cliente, KPI in tempo reale e gestione azioni in un'unica vista."
@@ -377,6 +376,5 @@ onMounted(async () => {
 					Successiva →
 				</SfButton>
 			</nav>
-		</div>
-	</section>
+	</AccountPageSection>
 </template>

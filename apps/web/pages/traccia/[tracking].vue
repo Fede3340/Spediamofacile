@@ -90,12 +90,12 @@ useSeoMeta({
 
 				<!-- Loading skeleton globale -->
 				<div v-if="isLoading" class="grid gap-[18px]" aria-busy="true">
-					<div class="rounded-[16px] p-[24px] animate-pulse" style="background:#fff; box-shadow: 0 2px 12px rgba(0,0,0,0.04)">
+					<div class="rounded-[18px] p-[24px] animate-pulse" style="background:#fff; box-shadow: 0 2px 12px rgba(0,0,0,0.04)">
 						<div class="h-[20px] w-[40%] rounded bg-[#E6E9EE] mb-[12px]"/>
 						<div class="h-[36px] w-[60%] rounded bg-[#E6E9EE] mb-[10px]"/>
 						<div class="h-[14px] w-[30%] rounded bg-[#EEF1F5]"/>
 					</div>
-					<div class="rounded-[16px] p-[24px] animate-pulse" style="background:#fff">
+					<div class="rounded-[18px] p-[24px] animate-pulse" style="background:#fff">
 						<div class="h-[60px] rounded bg-[#EEF1F5]"/>
 					</div>
 				</div>
@@ -120,7 +120,7 @@ useSeoMeta({
 							v-model="newSearchInput"
 							type="text"
 							placeholder="Inserisci un altro codice..."
-							class="flex-1 h-[46px] rounded-[12px] px-[14px] text-[14px] text-[var(--color-brand-text)] bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[3px] focus:ring-[var(--color-brand-primary)]/60 outline-none transition-all"
+							class="flex-1 h-[46px] rounded-control px-[14px] text-[14px] text-[var(--color-brand-text)] bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[3px] focus:ring-[var(--color-brand-primary)]/60 outline-none transition-all"
 							style="font-weight:600"
 						>
 						<button
@@ -154,13 +154,13 @@ useSeoMeta({
 				</div>
 
 				<!-- Stato errore di rete -->
-				<div v-else-if="errorState === 'network'" class="rounded-[16px] p-[24px] text-center" style="background:#fff">
+				<div v-else-if="errorState === 'network'" class="rounded-[18px] p-[24px] text-center" style="background:#fff">
 					<p class="text-[14px] text-[var(--color-brand-accent)] mb-[12px]" style="font-weight:600">
 						Impossibile contattare il server. Verifica la connessione.
 					</p>
 					<button
 						type="button"
-						class="px-[18px] py-[10px] rounded-[12px] text-[13px] text-white"
+						class="px-[18px] py-[10px] rounded-control text-[13px] text-white"
 						style="background:#095866; font-weight:700"
 						@click="fetchTracking()"
 					>
@@ -172,7 +172,7 @@ useSeoMeta({
 				<div v-else-if="data" class="grid gap-[18px]">
 
 					<!-- HERO compatto -->
-					<section class="rounded-[16px] overflow-hidden" data-shadow="soft" aria-label="Riepilogo spedizione">
+					<section class="rounded-[18px] overflow-hidden" data-shadow="soft" aria-label="Riepilogo spedizione">
 						<div class="h-[4px]" data-accent="bar"/>
 						<div class="p-[20px] sm:p-[24px]" style="background:#ffffff">
 							<div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-[16px]">
@@ -236,7 +236,7 @@ useSeoMeta({
 					</section>
 
 					<!-- STEPPER -->
-					<section class="rounded-[16px] overflow-hidden" data-shadow="soft" aria-label="Avanzamento fasi">
+					<section class="rounded-[18px] overflow-hidden" data-shadow="soft" aria-label="Avanzamento fasi">
 						<div class="h-[3px]" data-accent="bar"/>
 						<div class="p-[20px] sm:p-[24px]" style="background:#ffffff">
 							<TrackingStepper
@@ -250,7 +250,7 @@ useSeoMeta({
 					<!-- DUE COLONNE: timeline (2/3) + sidebar (1/3) -->
 					<section class="grid gap-[18px] lg:grid-cols-3">
 						<!-- TIMELINE EVENTI -->
-						<div class="lg:col-span-2 rounded-[16px] overflow-hidden" data-shadow="soft">
+						<div class="lg:col-span-2 rounded-[18px] overflow-hidden" data-shadow="soft">
 							<div class="h-[3px]" data-accent="bar"/>
 							<div class="p-[20px] sm:p-[24px]" style="background:#ffffff">
 								<div class="flex items-center justify-between mb-[14px]">
@@ -277,7 +277,7 @@ useSeoMeta({
 						</div>
 
 						<!-- SIDEBAR DETTAGLI -->
-						<aside class="rounded-[16px] overflow-hidden" data-shadow="soft" aria-label="Dettagli spedizione">
+						<aside class="rounded-[18px] overflow-hidden" data-shadow="soft" aria-label="Dettagli spedizione">
 							<div class="h-[3px]" data-accent="bar"/>
 							<div class="p-[20px] sm:p-[24px] grid gap-[16px]" style="background:#ffffff">
 								<!-- Origine → destinazione -->
@@ -328,7 +328,7 @@ useSeoMeta({
 								</div>
 
 								<!-- Pacco -->
-								<div v-if="data.package" class="rounded-[12px] p-[12px]" data-surface="grey-inset">
+								<div v-if="data.package" class="rounded-control p-[12px]" data-surface="grey-inset">
 									<h3 class="text-[11px] uppercase tracking-[0.4px] text-[#777] mb-[8px] m-0" style="font-weight:700">
 										Pacco
 									</h3>

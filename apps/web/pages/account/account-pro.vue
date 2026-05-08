@@ -12,8 +12,8 @@ useSeoMeta({
 const { user } = useSanctumAuth();
 const sanctum = useSanctumClient();
 const { authCookie } = useAuthUiSnapshotPersistence();
+const { message: pageFlash, showError: showPageError, clear: clearPageFlash } = useFlashMessage();
 const accountProUiReady = ref(false);
-const pageError = ref(null);
 
 const effectiveRole = computed(() => user.value?.role || authCookie.value?.role || null);
 const isPro = computed(() => effectiveRole.value === 'Partner Pro');
@@ -78,9 +78,9 @@ const fetchProRequestStatus = async () => {
 	proRequestStatusLoading.value = true;
 	try {
 		proRequestStatus.value = await sanctum('/api/pro-request/status');
-		pageError.value = null;
-	} catch {
-		pageError.value = 'Non riesco a caricare lo stato Partner Pro. Riprova.';
+		clearPageFlash();
+	} catch (e) {
+		showPageError(e, 'Non riesco a caricare lo stato Partner Pro. Riprova.');
 	} finally {
 		proRequestStatusLoading.value = false;
 	}
@@ -93,7 +93,7 @@ const submitProRequest = async () => {
 	try {
 		await sanctum('/api/pro-request', { method: 'POST', body: proRequestForm.value });
 		proRequestSuccess.value = true;
-		pageError.value = null;
+		clearPageFlash();
 		await fetchProRequestStatus();
 	} catch (e) {
 		const data = e?.response?._data || e?.data;
@@ -119,9 +119,9 @@ const fetchData = async () => {
 		const [refData, earningsData] = await Promise.all([sanctum('/api/referral/my-code'), sanctum('/api/referral/earnings')]);
 		referralData.value = refData;
 		earnings.value = earningsData;
-		pageError.value = null;
-	} catch {
-		pageError.value = 'Non riesco a caricare inviti e commissioni. Riprova.';
+		clearPageFlash();
+	} catch (e) {
+		showPageError(e, 'Non riesco a caricare inviti e commissioni. Riprova.');
 	} finally {
 		isLoading.value = false;
 		hasLoadedPartnerArea.value = true;
@@ -142,11 +142,6 @@ const hydratePartnerArea = async () => {
 	earnings.value = null;
 	hasLoadedPartnerArea.value = false;
 	await fetchProRequestStatus();
-};
-
-const retryPartnerArea = async () => {
-	pageError.value = null;
-	await hydratePartnerArea();
 };
 
 onMounted(async () => {
@@ -204,8 +199,7 @@ const shareWhatsApp = () => {
 </script>
 
 <template>
-	<section v-if="accountProUiReady" class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
-		<div class="my-container space-y-[20px] tablet:space-y-[22px]">
+	<AccountPageSection v-if="accountProUiReady" spacing="space-y-[20px] tablet:space-y-[22px]" max-width="">
 			<AccountPageHeader
 				eyebrow="Account"
 				title="Area Partner Pro"
@@ -219,26 +213,7 @@ const shareWhatsApp = () => {
 				</template>
 			</AccountPageHeader>
 
-			<div v-if="pageError" class="ux-alert ux-alert--warning">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 24 24"
-					class="ux-alert__icon"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					aria-hidden="true">
-					<path d="M12 9v4" />
-					<path d="M12 17h.01" />
-					<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
-				</svg>
-				<div class="flex min-w-0 flex-1 flex-col gap-[4px]">
-					<p class="ux-alert__title">{{ pageError }}</p>
-				</div>
-				<SfButton variant="secondary" size="sm" @click="retryPartnerArea">Riprova</SfButton>
-			</div>
+			<SfActionBanner :message="pageFlash" />
 
 			<AccountProRequestForm
 				v-if="!isPro"
@@ -266,21 +241,18 @@ const shareWhatsApp = () => {
 				@copy-link="copyReferralLink"
 				@copy-account-code="copyAccountCode"
 				@share-whatsapp="shareWhatsApp" />
-		</div>
-	</section>
+	</AccountPageSection>
 
-	<section v-else class="w-full min-h-[600px] py-[18px] tablet:py-6 desktop:py-7">
-		<div class="my-container">
-			<div class="rounded-card border border-brand-border bg-brand-card p-[18px] shadow-sf desktop:p-5">
-				<div class="animate-pulse space-y-[14px]">
-					<div class="h-[18px] w-[200px] rounded-full bg-[var(--color-brand-border)]"/>
-					<div class="h-[14px] w-[320px] rounded-full bg-[#F0F2F4]"/>
-					<div class="grid gap-[12px] desktop:grid-cols-3 mt-[18px]">
-						<div v-for="n in 3" :key="n" class="h-[90px] rounded-[16px] bg-[#F5F7F8]"/>
-					</div>
+	<AccountPageSection v-else max-width="" padding="py-[18px] tablet:py-6 desktop:py-7" spacing="">
+		<div class="rounded-card border border-brand-border bg-brand-card p-[18px] shadow-sf desktop:p-5">
+			<div class="animate-pulse space-y-[14px]">
+				<div class="h-[18px] w-[200px] rounded-full bg-[var(--color-brand-border)]"/>
+				<div class="h-[14px] w-[320px] rounded-full bg-[#F0F2F4]"/>
+				<div class="grid gap-[12px] desktop:grid-cols-3 mt-[18px]">
+					<div v-for="n in 3" :key="n" class="h-[90px] rounded-[18px] bg-[#F5F7F8]"/>
 				</div>
 			</div>
 		</div>
-	</section>
+	</AccountPageSection>
 </template>
 

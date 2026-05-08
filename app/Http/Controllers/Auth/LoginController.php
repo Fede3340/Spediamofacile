@@ -103,9 +103,9 @@ class LoginController extends Controller
             : Hash::check($request->password, $this->timingSafeDummyHash());
 
         if (! $user || ! $passwordValid) {
+            // Una sola chiave per evitare il default Laravel "(and 1 more error)" nel campo message.
             throw ValidationException::withMessages([
                 'email' => ['Le credenziali non sono corrette.'],
-                'password' => ['Le credenziali non sono corrette.'],
             ]);
         }
 

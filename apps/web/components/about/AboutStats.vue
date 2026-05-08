@@ -10,7 +10,11 @@ const stats = [
 <template>
 	<section class="about-stats" aria-labelledby="about-stats-title">
 		<div class="my-container">
-			<h2 id="about-stats-title" class="about-stats__title">I numeri di SpediamoFacile</h2>
+			<header class="about-stats__header">
+				<span class="about-stats__accent" aria-hidden="true" />
+				<p class="about-stats__eyebrow">In numeri</p>
+				<h2 id="about-stats-title" class="about-stats__title">I numeri di SpediamoFacile</h2>
+			</header>
 			<dl class="about-stats__grid">
 				<div v-for="stat in stats" :key="stat.label" class="about-stats__card">
 					<dt class="about-stats__value">
@@ -39,7 +43,7 @@ const stats = [
 	gap: 8px;
 	padding: 24px 16px;
 	background: #ffffff;
-	border-radius: 16px;
+	border-radius: 18px;
 	box-shadow: 0 2px 8px rgba(9, 88, 102, 0.05), 0 0 0 1px rgba(9, 88, 102, 0.06);
 	text-align: center;
 }

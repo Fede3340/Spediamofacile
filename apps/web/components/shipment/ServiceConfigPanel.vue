@@ -96,7 +96,7 @@ const updateAssicurazioneCurrency = (index, rawValue) => {
 					<label class="service-panel__label">Tipo incasso</label>
 					<div class="service-panel__choice-shell service-panel__choice-shell--contrassegno">
 						<div
-							class="sf-shared-segment-strip sf-shared-segment-strip--compact service-panel__contrassegno-strip"
+							class="sf-shared-segment-strip sf-shared-segment-strip--compact sf-shared-segment-strip--two service-panel__contrassegno-strip"
 							role="group"
 							aria-label="Modalita incasso contrassegno">
 							<button
@@ -120,7 +120,7 @@ const updateAssicurazioneCurrency = (index, rawValue) => {
 					<label class="service-panel__label">Tipo rimborso</label>
 					<div class="service-panel__choice-shell service-panel__choice-shell--contrassegno">
 						<div
-							class="sf-shared-segment-strip sf-shared-segment-strip--compact service-panel__contrassegno-strip"
+							class="sf-shared-segment-strip sf-shared-segment-strip--compact sf-shared-segment-strip--three service-panel__contrassegno-strip"
 							role="group"
 							aria-label="Modalita accredito contrassegno">
 							<button

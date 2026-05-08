@@ -61,7 +61,7 @@ const sizeClasses = computed(() => {
 });
 
 const wrapperClasses = computed(() => [
-	'flex items-center gap-2 w-full rounded-control border bg-brand-card transition',
+	'flex items-center gap-2 w-full rounded-control border-[1.5px] bg-brand-card transition',
 	'focus-within:ring-2 focus-within:ring-brand-primary/30 focus-within:border-brand-primary',
 	props.invalid
 		? 'border-brand-error focus-within:ring-brand-error/30 focus-within:border-brand-error'

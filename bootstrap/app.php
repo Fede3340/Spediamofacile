@@ -19,7 +19,10 @@
  *   - Ogni singola richiesta HTTP passa attraverso questo file
  */
 
+use App\Http\Middleware\AdminAuditMiddleware;
+use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\HydrateSanctumFrontendHeaders;
+use App\Http\Middleware\RequireTwoFactor;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SentryContext;
 use App\Support\AuthUiCookie;
@@ -96,6 +99,16 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->alias([
         //     'pro.api' => AuthenticateProApiKey::class,
         // ]);
+
+        // P1.2 (compliance audit) — alias per il middleware che logga ogni
+        // mutation admin (POST/PUT/PATCH/DELETE 2xx) in audit_logs.
+        // P1.1 (security 2FA) — alias 'admin' (CheckAdmin) e '2fa.required'
+        // (RequireTwoFactor) per uso semplificato nelle definizioni route.
+        $middleware->alias([
+            'admin.audit' => AdminAuditMiddleware::class,
+            'admin' => CheckAdmin::class,
+            '2fa.required' => RequireTwoFactor::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (AuthenticationException $e, $request) {

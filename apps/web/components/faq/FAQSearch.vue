@@ -48,7 +48,7 @@ defineExpose({
 	gap: 10px;
 	padding: 10px 14px;
 	background: #ffffff;
-	border-radius: 10px;
+	border-radius: 14px;
 	box-shadow: 0 0 0 1px rgba(9, 88, 102, 0.1);
 	transition: box-shadow 150ms ease;
 }

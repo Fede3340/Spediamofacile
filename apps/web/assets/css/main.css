@@ -134,16 +134,16 @@ input[type="number"] {
 	--color-brand-bg: #ffffff;
 	--color-brand-page-gradient: linear-gradient(180deg, #F8F9FB 0%, #EEF0F3 100%);
 	--color-brand-card: #ffffff;
-	--color-brand-border: #E9EBEC;
+	--color-brand-border: #DFE2E7;
 	--color-brand-bg-alt: #f3f4f6;            /* Sfondo alternativo (disabled, muted) */
 	--color-accent-surface: #fef2eb;          /* Superficie accent leggera (errori, alert) */
 	--color-accent-surface-hover: #fde8da;    /* Superficie accent hover */
 
-	/* RADIUS SCALE */
+	/* RADIUS SCALE — control 18px allineato a card per stondamento percepibile e coerenza. */
 	--sf-radius-button: 100px;
 	--sf-radius-button-compact: 100px;
-	--sf-radius-control: 14px;
-	--sf-radius-card: 16px;
+	--sf-radius-control: 18px;
+	--sf-radius-card: 18px;
 	--sf-radius-pill: 999px;
 
 	/* SHADOW SCALE (Ondata 9 - design tokens cleanup) */
@@ -175,6 +175,12 @@ input[type="number"] {
 	/* SUCCESS / TRUST FG-BG (Ondata 9 — usato da cart-totals coupon-badge) */
 	--color-brand-success-fg: #0f7a56;
 	--color-brand-success-bg: rgba(15, 122, 86, 0.08);
+
+	/* RADIUS Tailwind 4 — `--radius-*` genera utility `rounded-*`. Tutti 18px sitewide. */
+	--radius-button: 100px;
+	--radius-control: 18px;
+	--radius-card: 18px;
+	--radius-pill: 999px;
 }
 
 @layer base {
@@ -1986,9 +1992,10 @@ input[type="number"] {
 
 @layer components {
 	/* ============================================================
-	   STANDARD BORDER-RADIUS - Coerenza su tutto il sito
+	   STANDARD BORDER-RADIUS - 18px sitewide (coerenza numerica costante)
+	   Tutti gli input/select/textarea/card hanno LO STESSO radius
+	   indipendentemente dall'altezza. Coerenza valore assoluto.
 	   ============================================================ */
-	/* Input fields: 12px (stondatura media) */
 	input[type="text"],
 	input[type="email"],
 	input[type="tel"],
@@ -1996,12 +2003,11 @@ input[type="number"] {
 	input[type="password"],
 	select,
 	textarea {
-		border-radius: 12px !important;
+		border-radius: var(--radius-control, 18px);
 	}
 
-	/* Cards: 16px */
 	.card {
-		border-radius: 16px !important;
+		border-radius: var(--radius-card, 18px);
 	}
 
 	.input-preventivo-rapido {

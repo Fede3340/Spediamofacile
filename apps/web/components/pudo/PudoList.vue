@@ -48,7 +48,7 @@ const itemsCount = computed(() => props.items.length);
 				<div
 					v-for="n in 4"
 					:key="n"
-					class="h-[110px] rounded-[14px] bg-[#F2F8F9] border border-[var(--color-brand-border,#E9EBEC)] animate-pulse"/>
+					class="h-[110px] rounded-control bg-[#F2F8F9] border border-brand-border animate-pulse"/>
 			</div>
 		</template>
 
@@ -67,13 +67,13 @@ width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 					Nessun punto trovato
 				</p>
 				<p class="text-[0.8125rem] mt-[6px] max-w-[260px]">
-					Inserisci un CAP, una citta o un indirizzo per cercare i punti BRT piu vicini.
+					Inserisci un CAP, una città o un indirizzo per cercare i punti BRT più vicini.
 				</p>
 			</div>
 		</template>
 
 		<!-- Results list -->
-		<ul v-else class="flex-1 overflow-y-auto divide-y divide-[var(--color-brand-border,#E9EBEC)]">
+		<ul v-else class="flex-1 overflow-y-auto divide-y divide-brand-border">
 			<li
 				v-for="p in items"
 				:key="String(p.ui_key)">

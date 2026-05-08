@@ -11,6 +11,7 @@
         "laravel/socialite": "^5.23",
         "laravel/tinker": "^2.9",
         "moneyphp/money": "^4.7",
+        "pragmarx/google2fa-laravel": "^2.0",
         "stripe/stripe-php": "^18.0"
     },
     "require-dev": {

@@ -63,6 +63,8 @@ const collapsedPrimaryLabel = computed(() => {
 	const service = props.service;
 	if (!service) return '';
 	if (props.canConfigure) {
+		// Quando la card è aperta mostra "Chiudi" (toggle), altrimenti "Configura"/"Apri".
+		if (props.isExpanded) return 'Chiudi';
 		return service.isSelected ? 'Configura' : 'Apri';
 	}
 	return service.isSelected ? 'Rimuovi' : 'Aggiungi';

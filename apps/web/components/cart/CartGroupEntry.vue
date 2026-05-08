@@ -17,7 +17,7 @@ const toEditLocation = (itemId) => buildShipmentFlowEditLocation(itemId)
 </script>
 
 <template>
-  <div class="bg-[#F5F6F9] rounded-[16px] ring-[1.5px] ring-[#DFE2E7] overflow-hidden transition-all duration-300 hover:-translate-y-[4px] hover:ring-[var(--color-brand-primary)] hover:shadow-[0_8px_24px_rgba(9,88,102,0.12)]" style="box-shadow: 0 1px 4px rgba(0,0,0,0.03)">
+  <div class="bg-[#F5F6F9] rounded-card ring-[1.5px] ring-brand-border overflow-hidden transition-all duration-300 hover:-translate-y-[4px] hover:ring-[var(--color-brand-primary)] hover:shadow-[0_8px_24px_rgba(9,88,102,0.12)]" style="box-shadow: 0 1px 4px rgba(0,0,0,0.03)">
 
     <!-- Group header (clickable) -->
     <button
@@ -26,7 +26,7 @@ const toEditLocation = (itemId) => buildShipmentFlowEditLocation(itemId)
       @click="emit('toggle')"
     >
       <!-- Icon box with group color accent -->
-      <div class="w-[48px] h-[48px] rounded-[12px] bg-[#F8F9FB] ring-[1px] ring-[#DFE2E7] flex items-center justify-center shrink-0 relative">
+      <div class="w-[48px] h-[48px] rounded-control bg-[#F8F9FB] ring-[1px] ring-brand-border flex items-center justify-center shrink-0 relative">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" :stroke="entry.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
         <!-- Colli count dot -->
         <span
@@ -44,14 +44,14 @@ class="absolute -top-[4px] -right-[4px] w-[20px] h-[20px] rounded-full flex item
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           <span class="text-[var(--color-brand-text)] text-[15px] sm:text-[16px]" style="font-weight: 700">{{ firstItem?.destination_address?.city || 'Destinazione' }}</span>
           <!-- BRT pill -->
-          <span class="text-[var(--color-brand-text-secondary)] text-[13px] px-[6px] py-[1px] rounded-full ring-[1px] ring-[#DFE2E7] bg-[#FAFBFC] shrink-0 ml-[2px]" style="font-weight: 600">
+          <span class="text-[var(--color-brand-text-secondary)] text-[13px] px-[6px] py-[1px] rounded-full ring-[1px] ring-brand-border bg-[#FAFBFC] shrink-0 ml-[2px]" style="font-weight: 600">
             {{ firstItem?.services?.service_type?.split(',')[0]?.trim() || 'BRT' }}
           </span>
         </div>
 
         <!-- Badges row -->
         <div class="flex items-center gap-[6px] mt-[4px] flex-wrap">
-          <span class="inline-flex items-center px-[8px] py-[2px] rounded-full bg-[#F8F9FB] ring-[1px] ring-[#DFE2E7] text-[12px] text-[var(--color-brand-text-secondary)]" style="font-weight: 600">
+          <span class="inline-flex items-center px-[8px] py-[2px] rounded-full bg-[#F8F9FB] ring-[1px] ring-brand-border text-[12px] text-[var(--color-brand-text-secondary)]" style="font-weight: 600">
             {{ entry.items.length }} colli
           </span>
           <span
@@ -81,7 +81,7 @@ class="inline-flex items-center gap-[3px] px-[8px] py-[2px] rounded-full text-[1
           <p class="text-[var(--color-brand-text)] text-[17px] tracking-tight" style="font-weight: 800">{{ formatPrice(entry.totalCents) }}</p>
           <p class="text-[11px] text-[var(--color-brand-text-muted)]">totale</p>
         </div>
-        <div class="w-[32px] h-[32px] rounded-full bg-[#F8F9FB] ring-[1px] ring-[#DFE2E7] flex items-center justify-center transition-transform" :class="{ 'rotate-180': expanded }">
+        <div class="w-[32px] h-[32px] rounded-full bg-[#F8F9FB] ring-[1px] ring-brand-border flex items-center justify-center transition-transform" :class="{ 'rotate-180': expanded }">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
       </div>
@@ -89,7 +89,7 @@ class="inline-flex items-center gap-[3px] px-[8px] py-[2px] rounded-full text-[1
 
     <!-- Expanded: individual parcels -->
     <div v-if="expanded" class="px-[16px] sm:px-[18px] pb-[16px]">
-      <div class="border-t border-[#DFE2E7] pt-[12px] space-y-[8px]">
+      <div class="border-t border-brand-border pt-[12px] space-y-[8px]">
         <div
           v-for="(item, pIdx) in entry.items"
           :key="item.id"
@@ -97,7 +97,7 @@ class="inline-flex items-center gap-[3px] px-[8px] py-[2px] rounded-full text-[1
           :class="pIdx % 2 === 0 ? 'bg-[#F8F9FB]' : 'bg-white'"
         >
           <!-- Package icon -->
-          <div class="w-[36px] h-[36px] rounded-[10px] bg-white ring-[1px] ring-[#DFE2E7] flex items-center justify-center shrink-0">
+          <div class="w-[36px] h-[36px] rounded-[10px] bg-white ring-[1px] ring-brand-border flex items-center justify-center shrink-0">
             <NuxtImg :src="getPackageIcon(item)" :alt="item.package_type || 'Tipo collo'" width="20" height="20" loading="lazy" decoding="async" class="w-[20px] h-[20px] object-contain" />
           </div>
 
@@ -108,8 +108,8 @@ class="inline-flex items-center gap-[3px] px-[8px] py-[2px] rounded-full text-[1
               <span class="text-[var(--color-brand-text-muted)] ml-[4px]" style="font-weight: 400">{{ item.package_type || 'Pacco' }}</span>
             </p>
             <div class="flex items-center gap-[4px] mt-[3px] flex-wrap">
-              <span class="inline-flex items-center px-[6px] py-[1px] rounded-full bg-white ring-[1px] ring-[#DFE2E7] text-[11px] text-[var(--color-brand-text-secondary)]" style="font-weight: 500">{{ item.weight }} kg</span>
-              <span class="inline-flex items-center px-[6px] py-[1px] rounded-full bg-white ring-[1px] ring-[#DFE2E7] text-[11px] text-[var(--color-brand-text-secondary)]" style="font-weight: 500">{{ item.first_size }}&times;{{ item.second_size }}&times;{{ item.third_size }} cm</span>
+              <span class="inline-flex items-center px-[6px] py-[1px] rounded-full bg-white ring-[1px] ring-brand-border text-[11px] text-[var(--color-brand-text-secondary)]" style="font-weight: 500">{{ item.weight }} kg</span>
+              <span class="inline-flex items-center px-[6px] py-[1px] rounded-full bg-white ring-[1px] ring-brand-border text-[11px] text-[var(--color-brand-text-secondary)]" style="font-weight: 500">{{ item.first_size }}&times;{{ item.second_size }}&times;{{ item.third_size }} cm</span>
             </div>
           </div>
 
@@ -122,7 +122,7 @@ class="inline-flex items-center gap-[3px] px-[8px] py-[2px] rounded-full text-[1
           <!-- Quantity + actions -->
           <div class="flex items-center gap-[6px] shrink-0">
             <!-- Quantity stepper -->
-            <div class="flex items-center gap-[1px] bg-[#F8F9FB] rounded-full ring-[1px] ring-[#DFE2E7]">
+            <div class="flex items-center gap-[1px] bg-[#F8F9FB] rounded-full ring-[1px] ring-brand-border">
               <button
                 type="button"
                 aria-label="Diminuisci quantità"

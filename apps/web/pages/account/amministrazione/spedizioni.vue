@@ -28,9 +28,8 @@ onMounted(() => { fetchShipments(); });
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-6 md:py-8">
-		<div class="max-w-7xl mx-auto px-4 md:px-6 space-y-6 md:space-y-8">
-			<AccountPageHeader
+	<AccountPageSection spacing="space-y-6 md:space-y-8">
+		<AccountPageHeader
 				eyebrow="Area amministrazione"
 				title="Coda BRT"
 				description="Tracking, etichette e stati delle spedizioni in lavorazione."
@@ -44,7 +43,7 @@ onMounted(() => { fetchShipments(); });
 
 			<AdminOrdersViewTabs />
 
-			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
+			<SfActionBanner :message="actionMessage" />
 
 			<SfCard padding="md">
 				<div class="flex flex-col tablet:flex-row tablet:items-start tablet:justify-between gap-4 mb-4">
@@ -133,6 +132,5 @@ onMounted(() => { fetchShipments(); });
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+	</AccountPageSection>
 </template>

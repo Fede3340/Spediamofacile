@@ -91,7 +91,7 @@ class SecurityHeaders
         //   base-uri 'self'              → impedisce di cambiare il base URL della pagina
         // Report-Only pre-cutover: setta CSP_REPORT_ONLY=true in .env per 48h
         // monitoring senza bloccare richieste. Poi passa a enforce.
-        $cspHeader = env('CSP_REPORT_ONLY', false)
+        $cspHeader = config('app.csp_report_only', false)
             ? 'Content-Security-Policy-Report-Only'
             : 'Content-Security-Policy';
 

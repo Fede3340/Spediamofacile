@@ -51,7 +51,7 @@ class WalletOrderLinkService
         $normalized = trim($reference);
 
         if (preg_match('/^order-(\d+)$/', $normalized, $matches)) {
-            return (int) ($matches[1] ?? 0) ?: null;
+            return (int) $matches[1] ?: null;
         }
 
         if (ctype_digit($normalized)) {
@@ -76,7 +76,7 @@ class WalletOrderLinkService
             return null;
         }
 
-        return (int) ($matches[1] ?? 0) ?: null;
+        return (int) $matches[1] ?: null;
     }
 
     public function resolveVerifiedWalletMovement(Order $order, string $externalId): ?WalletMovement

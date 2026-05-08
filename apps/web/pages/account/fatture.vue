@@ -85,47 +85,38 @@ const empty = computed(() => !loading.value && !loadError.value && orders.value.
 </script>
 
 <template>
-	<section class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
-		<div class="my-container max-w-7xl">
-			<AccountPageHeader
-				eyebrow="Fatture"
-				title="Le tue fatture"
-				description="Storico delle fatture emesse per i tuoi ordini, con stato SDI e download PDF."
-				:crumbs="[
-					{ label: 'Account', to: '/account' },
-					{ label: 'Fatture' },
-				]" />
+	<AccountPageSection>
+		<AccountPageHeader
+			eyebrow="Fatture"
+			title="Le tue fatture"
+			description="Storico delle fatture emesse per i tuoi ordini, con stato SDI e download PDF."
+			:crumbs="[
+				{ label: 'Account', to: '/account' },
+				{ label: 'Fatture' },
+			]" />
 
-			<div v-if="loading" class="mt-[18px] flex flex-col gap-2.5" aria-busy="true">
-				<div v-for="n in 4" :key="n" class="h-[62px] animate-pulse rounded-card bg-gradient-to-r from-brand-bg-alt via-brand-border to-brand-bg-alt" />
-			</div>
+		<div v-if="loading" class="flex flex-col gap-2.5" aria-busy="true">
+			<SfSkeleton v-for="n in 4" :key="n" variant="custom" height="62px" rounded="var(--radius-card, 18px)" />
+		</div>
 
-			<div v-else-if="loadError" class="mt-[18px] flex flex-col items-center gap-3 rounded-card border border-status-failed-fg/30 bg-status-failed-bg p-8 text-center text-status-failed-fg" role="alert">
-				<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-					<circle cx="12" cy="12" r="10" />
-					<line x1="12" y1="8" x2="12" y2="12" />
-					<line x1="12" y1="16" x2="12.01" y2="16" />
-				</svg>
-				<p>{{ loadError }}</p>
-				<SfButton variant="secondary" @click="loadInvoices">Riprova</SfButton>
-			</div>
+		<SfAlert v-else-if="loadError" tone="danger" role="alert">
+			{{ loadError }}
+			<template #cta>
+				<SfButton variant="secondary" size="sm" @click="loadInvoices">Riprova</SfButton>
+			</template>
+		</SfAlert>
 
-			<div v-else-if="empty" class="mx-auto mt-[18px] max-w-[560px] rounded-card border border-brand-border bg-brand-card p-12 text-center">
-				<div class="mb-3.5 inline-flex rounded-full bg-brand-primary/10 p-3.5 text-brand-primary" aria-hidden="true">
-					<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-						<polyline points="14 2 14 8 20 8" />
-						<line x1="16" y1="13" x2="8" y2="13" />
-						<line x1="16" y1="17" x2="8" y2="17" />
-						<polyline points="10 9 9 9 8 9" />
-					</svg>
-				</div>
-				<h2 class="mb-2 font-display text-[1.375rem] font-extrabold text-brand-primary">Nessuna fattura ancora</h2>
-				<p class="mb-5 text-[0.9375rem] leading-relaxed text-brand-text-secondary">Le fatture vengono emesse automaticamente dopo il pagamento di un ordine. Effettua la tua prima spedizione per vederle qui.</p>
+		<SfEmptyState
+			v-else-if="empty"
+			icon="mdi:file-document-outline"
+			title="Nessuna fattura ancora"
+			description="Le fatture vengono emesse automaticamente dopo il pagamento di un ordine. Effettua la tua prima spedizione per vederle qui.">
+			<template #cta>
 				<SfButton to="/preventivo" variant="primary">Calcola un preventivo</SfButton>
-			</div>
+			</template>
+		</SfEmptyState>
 
-			<div v-else class="mt-[18px]">
+		<div v-else>
 				<p v-if="downloadError" role="alert" class="mb-3 rounded-[10px] border border-status-failed-fg/30 bg-status-failed-bg px-3 py-2.5 text-sm font-semibold text-status-failed-fg">{{ downloadError }}</p>
 
 				<div class="hidden overflow-hidden rounded-card border border-brand-border bg-brand-card md:block">
@@ -204,6 +195,5 @@ const empty = computed(() => !loading.value && !loadError.value && orders.value.
 					</article>
 				</div>
 			</div>
-		</div>
-	</section>
+	</AccountPageSection>
 </template>

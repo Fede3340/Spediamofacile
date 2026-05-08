@@ -118,7 +118,7 @@ const serviceIcon = iconBySlug[props.service.slug] || 'mdi:truck-outline';
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	border-radius: 12px;
+	border-radius: 14px;
 	background: #fff;
 	border: 1px solid rgba(9, 88, 102, 0.12);
 	box-shadow: 0 2px 6px rgba(9, 88, 102, 0.06);

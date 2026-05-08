@@ -169,11 +169,11 @@ const togglePaymentForm = async () => {
 	}
 };
 
-const feedbackClass = computed(() => ({
-	success: 'bg-[#f0fdf4] text-[#166534] ring-[1px] ring-[#166534]/10',
-	error: 'bg-[#FEF2F2] text-[#B91C1C] ring-[1px] ring-[#B91C1C]/10',
-	info: 'bg-[#eef7f8] text-[var(--color-brand-primary)]',
-}[textMessageType.value]));
+const feedbackTone = computed(() => {
+	if (textMessageType.value === 'error') return 'danger';
+	if (textMessageType.value === 'success') return 'success';
+	return 'info';
+});
 
 const headerAction = computed(() => {
 	if (showFormPayments.value) return null;
@@ -184,8 +184,7 @@ const headerAction = computed(() => {
 </script>
 
 <template>
-	<section class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
-		<div class="my-container">
+	<AccountPageSection max-width="">
 			<AccountPageHeader :title="cardsHeader.title" :description="cardsHeader.description" current="Carte">
 				<template #actions>
 					<div class="flex flex-wrap items-center gap-[8px]">
@@ -206,7 +205,7 @@ const headerAction = computed(() => {
 
 			<!-- Banner duplicato "Pagamenti pronti" rimosso (P13): ripeteva cardsStats già nei chip header.
 			     Tenuto solo "Metodo predefinito" come info utile distinta. -->
-			<div v-if="!showFormPayments" class="mb-[20px] rounded-[16px] bg-[#F8FCFD] px-[16px] py-[14px]" style="box-shadow: 0 1px 3px rgba(9,88,102,0.06);">
+			<div v-if="!showFormPayments" class="mb-[20px] rounded-[18px] bg-[#F8FCFD] px-[16px] py-[14px]" style="box-shadow: 0 1px 3px rgba(9,88,102,0.06);">
 				<p class="text-[0.75rem] font-semibold uppercase tracking-[1px] text-[var(--color-brand-primary)]">Metodo predefinito</p>
 				<p class="mt-[6px] text-[1rem] font-bold text-[var(--color-brand-text)]">{{ defaultPaymentLabel }}</p>
 				<p class="mt-[4px] text-[0.875rem] leading-[1.5] text-[var(--color-brand-text-secondary)]">
@@ -214,15 +213,13 @@ const headerAction = computed(() => {
 				</p>
 			</div>
 
-			<!-- Feedback -->
-			<div v-if="textMessage" :class="['mb-[16px] px-[14px] py-[10px] rounded-[12px] text-[0.8125rem] font-medium transition-all', feedbackClass]">
-				{{ textMessage }}
-			</div>
+			<!-- Feedback (banner unificato pattern canonico, tone derivato da textMessageType) -->
+			<SfActionBanner :message="textMessage" :tone="feedbackTone" class="mb-[16px]" />
 
 			<!-- Stripe not configured banner -->
 			<div
 				v-if="!stripeConfigured && !configLoading && !showFormPayments"
-				class="mb-[20px] p-[16px] bg-amber-50 rounded-[16px] sf-animate-in sf-animate-in-2"
+				class="mb-[20px] p-[16px] bg-amber-50 rounded-[18px] sf-animate-in sf-animate-in-2"
 				style="box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
 				<div class="flex items-start gap-[12px]">
 					<div class="w-[36px] h-[36px] rounded-full bg-amber-100 flex items-center justify-center shrink-0">
@@ -252,6 +249,5 @@ const headerAction = computed(() => {
 
 			<!-- Add card form -->
 			<AccountCarteForm v-if="showFormPayments" v-model:card-holder-name="cardHolderName" :error-message="errorMessage" @save="handleAddCard" @cancel="togglePaymentForm" />
-		</div>
-	</section>
+	</AccountPageSection>
 </template>

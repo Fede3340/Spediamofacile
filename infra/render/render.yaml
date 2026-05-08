@@ -217,10 +217,11 @@ services:
         - Dockerfile
         - docker-entrypoint.sh
     # --tries=3: retry max 3 volte prima di marcare failed
-    # --timeout=60: SIGTERM dopo 60s (job in loop -> killati)
+    # --timeout=90: SIGTERM dopo 90s (BRT API lente — alza margine vs default 60s)
+    # --backoff=10: pausa 10s tra retry (evita martellare API down)
     # --max-jobs=1000: riavvio worker dopo 1000 job (protezione memory leak)
     # --max-time=3600: riavvio dopo 1h (picking up new deploys)
-    dockerCommand: php /var/www/html/artisan queue:work redis --tries=3 --timeout=60 --max-jobs=1000 --max-time=3600 --sleep=3
+    dockerCommand: php /var/www/html/artisan queue:work redis --queue=default --tries=3 --timeout=90 --backoff=10 --max-jobs=1000 --max-time=3600 --sleep=3
     envVars:
       # Stesso set del web service: il worker ha bisogno di DB/Redis/Mail/BRT.
       # Nota: duplicazione intenzionale. Render non supporta "inherit from web"

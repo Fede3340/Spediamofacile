@@ -19,7 +19,7 @@ class UpdateArticleRequest extends FormRequest
 
     public function rules(): array
     {
-        $articleId = $this->route('article')?->id ?? 'NULL';
+        $articleId = $this->route('article')->id ?? 'NULL';
 
         return [
             'title' => ['sometimes', 'required', 'string', 'max:255'],

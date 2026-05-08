@@ -5,6 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $order_id
+ * @property string $document_type
+ * @property string $file_path
+ * @property string $mime_type
+ * @property string $sha256_hash
+ * @property int $size_bytes
+ * @property string|null $invoice_number
+ * @property \Illuminate\Support\Carbon|null $invoice_date
+ * @property string $archive_status
+ * @property string|null $provider
+ * @property string|null $provider_reference
+ * @property \Illuminate\Support\Carbon|null $retain_until
+ * @property array|null $metadata
+ * @property-read Order|null $order
+ */
 class InvoiceArchive extends Model
 {
     protected $table = 'invoice_archive';

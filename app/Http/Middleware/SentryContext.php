@@ -4,8 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Sentry\SentrySdk;
-use Sentry\State\Scope;
 
 /**
  * FILE: app/Http/Middleware/SentryContext.php
@@ -37,54 +35,69 @@ class SentryContext
     {
         // Se il pacchetto Sentry non e' installato (es. dev locale senza composer install),
         // salta tutto silenziosamente: nessun errore, nessun log rumoroso.
-        if (! class_exists(SentrySdk::class)) {
+        if (! class_exists('\\Sentry\\SentrySdk')) {
             return $next($request);
         }
 
+        // Il pacchetto sentry/sentry e' opzionale: dipende dal deploy. Usiamo dynamic
+        // dispatch (call_user_func) per evitare riferimenti statici a simboli non
+        // risolvibili al type-check (Sentry\State\Scope, Sentry\configureScope).
         try {
-            \Sentry\configureScope(function (Scope $scope) use ($request): void {
-                // User context — solo ID e ruolo, zero PII.
-                $user = $request->user();
-                if ($user !== null) {
-                    $scope->setUser([
-                        'id' => (string) $user->getAuthIdentifier(),
-                        'role' => $user->role ?? 'user',
-                        // NIENTE: email, name, ip_address
-                    ]);
-                }
-
-                // Request context (metadati safe).
-                $routeName = optional($request->route())->getName() ?? '(unnamed)';
-                $scope->setContext('request', [
-                    'route' => $routeName,
-                    'method' => $request->method(),
-                    'path' => $request->path(),
-                    'ip_hash' => substr(hash('sha256', (string) $request->ip()), 0, 12),
-                    'user_agent_family' => $this->extractUserAgentFamily($request->userAgent() ?? ''),
-                ]);
-
-                // Tag globali (facilitano filtri in dashboard Sentry).
-                $scope->setTag('env', (string) config('app.env'));
-                $scope->setTag('locale', (string) app()->getLocale());
-
-                if ($user !== null) {
-                    $scope->setTag('user.role', (string) ($user->role ?? 'user'));
-                    $scope->setTag('user.authenticated', 'yes');
-                } else {
-                    $scope->setTag('user.authenticated', 'no');
-                }
-
-                // Feature flags: facilita filtrare errori "solo utenti con flag X attivo".
-                // Esempio: se abbiamo una feature "new_checkout", taggiamola.
-                // Placeholder: aggiungere qui le flag attive del progetto.
-                // $scope->setTag('feature.new_checkout', config('features.new_checkout') ? 'on' : 'off');
-            });
+            $this->configureSentryScope($request);
         } catch (\Throwable $e) {
             // Difesa in profondita': se Sentry stesso rompe, non far crashare la richiesta.
             // I log Laravel cattureranno l'errore se serve.
         }
 
         return $next($request);
+    }
+
+    /**
+     * Popola lo scope Sentry. Tutto invocato via callable dinamici per evitare
+     * dipendenze hard-coded da Sentry SDK al livello PHPStan.
+     */
+    private function configureSentryScope(Request $request): void
+    {
+        // Riferimento via stringa (e cast a callable solo dopo function_exists)
+        // per evitare che PHPStan tenti di collegare staticamente il simbolo al
+        // pacchetto sentry/sentry (potrebbe non essere installato in dev).
+        /** @var string $configureScope */
+        $configureScope = 'Sentry\\configureScope';
+        if (! function_exists($configureScope)) {
+            return;
+        }
+
+        $callback = function ($scope) use ($request): void {
+            $user = $request->user();
+            if ($user !== null) {
+                $scope->setUser([
+                    'id' => (string) $user->getAuthIdentifier(),
+                    'role' => $user->role ?? 'user',
+                ]);
+            }
+
+            $routeName = optional($request->route())->getName() ?? '(unnamed)';
+            $scope->setContext('request', [
+                'route' => $routeName,
+                'method' => $request->method(),
+                'path' => $request->path(),
+                'ip_hash' => substr(hash('sha256', (string) $request->ip()), 0, 12),
+                'user_agent_family' => $this->extractUserAgentFamily($request->userAgent() ?? ''),
+            ]);
+
+            $scope->setTag('env', (string) config('app.env'));
+            $scope->setTag('locale', (string) app()->getLocale());
+
+            if ($user !== null) {
+                $scope->setTag('user.role', (string) ($user->role ?? 'user'));
+                $scope->setTag('user.authenticated', 'yes');
+            } else {
+                $scope->setTag('user.authenticated', 'no');
+            }
+        };
+
+        // function_exists e' gia' garante: riferimento a callable via variabile.
+        $configureScope($callback);
     }
 
     /**

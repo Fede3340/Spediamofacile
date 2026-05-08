@@ -324,7 +324,7 @@ class EuropePriceEngineService
             }
         }
 
-        $result = array_values(array_keys($codes));
+        $result = array_keys($codes);
         sort($result);
 
         return $result;

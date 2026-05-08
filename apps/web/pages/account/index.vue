@@ -4,8 +4,8 @@ import useAccountDashboard from '~/composables/useAccountDashboard';
 useSeoMeta({
 	title: 'Il tuo account',
 	ogTitle: 'Il tuo account',
-	description: 'Dashboard account SpediamoFacile con priorita, spedizioni, pagamenti e supporto.',
-	ogDescription: 'Area account SpediamoFacile con viste di ruolo piu chiare, pulite e coerenti con il prototipo.',
+	description: 'Dashboard account SpediamoFacile con priorità, spedizioni, pagamenti e supporto.',
+	ogDescription: 'Area account SpediamoFacile con viste di ruolo più chiare, pulite e coerenti con il prototipo.',
 	robots: 'noindex, nofollow',
 });
 

@@ -10,7 +10,9 @@
 			<div class="reviews__grid">
 				<figure class="review" data-reveal>
 					<div class="review__stars" aria-label="5 stelle su 5">
-						<span aria-hidden="true">*****</span>
+						<svg v-for="n in 5" :key="n" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+							<path d="M10 1.5l2.6 5.3 5.9.86-4.25 4.14 1 5.86L10 14.9l-5.25 2.76 1-5.86L1.5 7.66l5.9-.86L10 1.5z" fill="currentColor" />
+						</svg>
 					</div>
 					<blockquote class="review__quote">
 						"Prezzi imbattibili e ritiro puntuale. Spedisco ogni settimana per il mio
@@ -27,7 +29,9 @@
 
 				<figure class="review" data-reveal>
 					<div class="review__stars" aria-label="5 stelle su 5">
-						<span aria-hidden="true">*****</span>
+						<svg v-for="n in 5" :key="n" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+							<path d="M10 1.5l2.6 5.3 5.9.86-4.25 4.14 1 5.86L10 14.9l-5.25 2.76 1-5.86L1.5 7.66l5.9-.86L10 1.5z" fill="currentColor" />
+						</svg>
 					</div>
 					<blockquote class="review__quote">
 						"Ho spedito un pacco fragile a Berlino, arrivato in 3 giorni e perfettamente
@@ -44,7 +48,9 @@
 
 				<figure class="review" data-reveal>
 					<div class="review__stars" aria-label="5 stelle su 5">
-						<span aria-hidden="true">*****</span>
+						<svg v-for="n in 5" :key="n" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+							<path d="M10 1.5l2.6 5.3 5.9.86-4.25 4.14 1 5.86L10 14.9l-5.25 2.76 1-5.86L1.5 7.66l5.9-.86L10 1.5z" fill="currentColor" />
+						</svg>
 					</div>
 					<blockquote class="review__quote">
 						"Per la nostra azienda usavamo tre corrieri diversi: ora gestiamo tutto da
@@ -91,10 +97,14 @@
 	box-shadow: 0 14px 28px -16px rgba(9, 88, 102, 0.18);
 }
 .review__stars {
+	display: inline-flex;
+	gap: 3px;
 	color: #E44203;
-	font-size: 18px;
-	letter-spacing: 3px;
-	font-weight: 700;
+}
+.review__stars svg {
+	width: 18px;
+	height: 18px;
+	display: block;
 }
 .review__quote {
 	margin: 12px 0 18px;

@@ -16,6 +16,35 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
+ * @property int $id
+ * @property string $status
+ * @property int|null $user_id
+ * @property int $subtotal
+ * @property string|null $client_submission_id
+ * @property string|null $pricing_signature
+ * @property int|null $pricing_snapshot_version
+ * @property array|null $pricing_snapshot
+ * @property string|null $payment_method
+ * @property string|null $stripe_payment_intent_id
+ * @property string|null $brt_parcel_id
+ * @property string|null $brt_numeric_sender_reference
+ * @property string|null $brt_tracking_url
+ * @property string|null $brt_pudo_id
+ * @property string|null $brt_tracking_number
+ * @property string|null $brt_error
+ * @property string|null $brt_raw_response
+ * @property string|null $refund_status
+ * @property int|null $refund_amount
+ * @property string|null $refund_method
+ * @property string|null $refund_reason
+ * @property \Illuminate\Support\Carbon|null $refunded_at
+ * @property int|null $cancellation_fee
+ * @property array|null $billing_data
+ * @property \Illuminate\Support\Carbon|string|null $pickup_date
+ * @property string|null $public_tracking_token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read User|null $user
  * @property-read Collection<int, Package> $packages
  * @property-read Collection<int, Transaction> $transactions

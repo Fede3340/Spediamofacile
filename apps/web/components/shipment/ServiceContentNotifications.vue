@@ -45,10 +45,10 @@ defineEmits(['update:content-description', 'update:content-error', 'update:sms-e
 						placeholder="Abbigliamento, documenti..."
 						maxlength="255"
 						:class="[
-							'h-[48px] sm:h-[50px] w-full rounded-[16px] px-[14px] bg-white outline-none text-[var(--color-brand-text)] text-[14px] transition-all duration-[250ms] placeholder:text-[#b0b5be]',
+							'h-[48px] sm:h-[50px] w-full rounded-card px-[14px] bg-white outline-none text-[var(--color-brand-text)] text-[14px] transition-all duration-[250ms] placeholder:text-[#b0b5be]',
 							contentError
-								? 'ring-[2px] ring-[#ef4444]'
-								: 'ring-[1.5px] ring-[#DFE2E7] focus:ring-[3px] focus:ring-[var(--color-brand-primary)]/60'
+								? 'ring-[1.5px] ring-[#ef4444]'
+								: 'ring-[1.5px] ring-brand-border focus:ring-[3px] focus:ring-[var(--color-brand-primary)]/60'
 						]"
 						@input="
 							$emit('update:content-description', $event.target.value);
@@ -69,10 +69,10 @@ defineEmits(['update:content-description', 'update:content-error', 'update:sms-e
 				</label>
 				<button
 					type="button"
-					class="w-full h-[48px] sm:h-[50px] rounded-[16px] px-[14px] flex items-center gap-[10px] text-left transition-all duration-[350ms] cursor-pointer bg-white"
+					class="w-full h-[48px] sm:h-[50px] rounded-card px-[14px] flex items-center gap-[10px] text-left transition-all duration-[350ms] cursor-pointer bg-white"
 					:class="smsEmailNotification
 						? 'ring-[2.5px] ring-[var(--color-brand-primary)] shadow-[0_2px_10px_rgba(9,88,102,0.1)]'
-						: 'ring-[1.5px] ring-[#DFE2E7] hover:ring-[2px] hover:ring-[var(--color-brand-primary)]/50 hover:bg-[rgba(9,88,102,0.03)]'"
+						: 'ring-[1.5px] ring-brand-border hover:ring-[2px] hover:ring-[var(--color-brand-primary)]/50 hover:bg-[rgba(9,88,102,0.03)]'"
 					:aria-label="smsEmailNotification ? 'Rimuovi notifiche spedizione' : 'Attiva notifiche spedizione'"
 					:aria-pressed="smsEmailNotification ? 'true' : 'false'"
 					@click="$emit('update:sms-email-notification', !smsEmailNotification)">

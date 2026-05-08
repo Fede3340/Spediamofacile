@@ -169,7 +169,7 @@ class ShipmentExecutionService
     {
         $order->loadMissing(['packages.service']);
         $service = $order->packages->first()?->service;
-        $serviceData = $service?->service_data ?? [];
+        $serviceData = $service->service_data ?? [];
 
         $pickup = is_array($serviceData['pickup_request'] ?? null)
             ? $serviceData['pickup_request']

@@ -161,7 +161,7 @@ useHead(() => {
 				<span class="font-semibold text-[var(--color-brand-primary)] truncate max-w-[28ch]">{{ guide.title }}</span>
 			</nav>
 
-			<section class="guide-hero-card rounded-[16px] ring-[1px] ring-[#DFE2E7] px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[28px] desktop:py-[28px]">
+			<section class="guide-hero-card rounded-[18px] ring-[1px] ring-[#DFE2E7] px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[28px] desktop:py-[28px]">
 				<div class="space-y-[10px]">
 					<span class="inline-flex items-center h-[22px] px-[10px] rounded-full bg-[rgba(228,66,3,0.10)] text-[11px] font-[800] uppercase tracking-[0.08em] text-[var(--color-brand-accent)]">Guida</span>
 					<span class="block w-[24px] h-[2px] rounded-full" style="background: linear-gradient(90deg, var(--color-brand-accent) 0%, var(--color-brand-primary) 100%)" aria-hidden="true" />
@@ -186,7 +186,7 @@ useHead(() => {
 				<article
 					v-for="section in firstSections"
 					:key="section.heading"
-					class="rounded-[16px] ring-[1px] ring-[#DFE2E7] bg-white px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[22px] desktop:py-[22px]">
+					class="rounded-[18px] ring-[1px] ring-[#DFE2E7] bg-white px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[22px] desktop:py-[22px]">
 					<h2 class="font-montserrat text-[1.125rem] font-[800] tracking-[-0.02em] text-[var(--color-brand-text)]">{{ section.heading }}</h2>
 					<p class="mt-[10px] text-[0.875rem] leading-[1.7] text-[var(--color-brand-text-secondary)] desktop:text-[0.9375rem]">
 						{{ section.text }}
@@ -196,7 +196,7 @@ useHead(() => {
 
 			<section
 				v-if="remainingSections.length"
-				class="rounded-[16px] ring-[1px] ring-[#DFE2E7] bg-white px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[24px] desktop:py-[24px]">
+				class="rounded-[18px] ring-[1px] ring-[#DFE2E7] bg-white px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[24px] desktop:py-[24px]">
 				<div class="sf-page-intro">
 					<p class="sf-section-kicker">Approfondimento</p>
 					<h2 class="font-montserrat text-[1.4rem] font-[800] tracking-[-0.03em] text-[var(--color-brand-text)] desktop:text-[2rem]">
@@ -208,7 +208,7 @@ useHead(() => {
 					<article
 						v-for="section in remainingSections"
 						:key="section.heading"
-						class="rounded-[16px] ring-[1px] ring-[#DFE2E7] bg-[var(--color-brand-secondary-soft-bg)] px-[16px] py-[16px]">
+						class="rounded-[18px] ring-[1px] ring-[#DFE2E7] bg-[var(--color-brand-secondary-soft-bg)] px-[16px] py-[16px]">
 						<h3 class="font-montserrat text-[1rem] font-[800] text-[var(--color-brand-text)]">{{ section.heading }}</h3>
 						<p class="mt-[10px] text-[0.875rem] leading-[1.65] text-[var(--color-brand-text-secondary)]">
 							{{ section.text }}
@@ -219,7 +219,7 @@ useHead(() => {
 
 			<section
 				v-if="prevGuide || nextGuide"
-				class="rounded-[16px] ring-[1px] ring-[#DFE2E7] bg-white px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[24px] desktop:py-[24px]">
+				class="rounded-[18px] ring-[1px] ring-[#DFE2E7] bg-white px-[18px] py-[18px] shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[24px] desktop:py-[24px]">
 				<div class="sf-page-intro">
 					<p class="sf-section-kicker">Continua a leggere</p>
 					<h2 class="font-montserrat text-[1.35rem] font-[800] tracking-[-0.03em] text-[var(--color-brand-text)] desktop:text-[1.8rem]">
@@ -231,7 +231,7 @@ useHead(() => {
 					<NuxtLink
 						v-if="prevGuide"
 						:to="`/guide/${prevGuide.slug}`"
-						class="guide-nav-card group rounded-[16px] ring-[1px] ring-[#DFE2E7] bg-[var(--color-brand-secondary-soft-bg)] px-[16px] py-[16px] transition-all duration-300 hover:ring-[var(--color-brand-secondary-soft-border)] hover:bg-white">
+						class="guide-nav-card group rounded-[18px] ring-[1px] ring-[#DFE2E7] bg-[var(--color-brand-secondary-soft-bg)] px-[16px] py-[16px] transition-all duration-300 hover:ring-[var(--color-brand-secondary-soft-border)] hover:bg-white">
 						<p class="text-[0.75rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-brand-primary)]">Guida precedente</p>
 						<h3 class="mt-[8px] font-montserrat text-[1rem] font-[800] text-[var(--color-brand-text)] transition-colors group-hover:text-[var(--color-brand-primary)]">
 							{{ prevGuide.title }}
@@ -240,7 +240,7 @@ useHead(() => {
 					<NuxtLink
 						v-if="nextGuide"
 						:to="`/guide/${nextGuide.slug}`"
-						class="guide-nav-card group rounded-[16px] ring-[1px] ring-[#DFE2E7] bg-[var(--color-brand-secondary-soft-bg)] px-[16px] py-[16px] transition-all duration-300 hover:ring-[var(--color-brand-secondary-soft-border)] hover:bg-white">
+						class="guide-nav-card group rounded-[18px] ring-[1px] ring-[#DFE2E7] bg-[var(--color-brand-secondary-soft-bg)] px-[16px] py-[16px] transition-all duration-300 hover:ring-[var(--color-brand-secondary-soft-border)] hover:bg-white">
 						<p class="text-[0.75rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-brand-primary)]">Guida successiva</p>
 						<h3 class="mt-[8px] font-montserrat text-[1rem] font-[800] text-[var(--color-brand-text)] transition-colors group-hover:text-[var(--color-brand-primary)]">
 							{{ nextGuide.title }}
@@ -250,7 +250,7 @@ useHead(() => {
 			</section>
 
 			<section
-				class="rounded-[16px] ring-[1px] ring-[var(--color-brand-secondary-soft-border)] bg-[linear-gradient(135deg,#0f5f6d_0%,#0c4853_100%)] px-[18px] py-[18px] text-white shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[24px] desktop:py-[24px]">
+				class="rounded-[18px] ring-[1px] ring-[var(--color-brand-secondary-soft-border)] bg-[linear-gradient(135deg,#0f5f6d_0%,#0c4853_100%)] px-[18px] py-[18px] text-white shadow-[0_1px_4px_rgba(0,0,0,0.03)] desktop:px-[24px] desktop:py-[24px]">
 				<div class="flex flex-col gap-[14px] desktop:flex-row desktop:items-center desktop:justify-between">
 					<div class="max-w-[60ch]">
 						<p class="text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-white/70">Passo successivo</p>

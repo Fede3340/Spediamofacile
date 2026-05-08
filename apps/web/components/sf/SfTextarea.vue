@@ -33,7 +33,7 @@ const autoId = useId();
 const inputId = computed(() => props.id || `sf-textarea-${autoId}`);
 
 const wrapperClasses = computed(() => [
-	'w-full rounded-control border bg-brand-card transition px-3.5 py-2.5 text-sm',
+	'w-full rounded-control border-[1.5px] bg-brand-card transition px-3.5 py-2.5 text-sm',
 	'focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary outline-none',
 	'placeholder:text-brand-text-muted text-brand-text',
 	props.invalid

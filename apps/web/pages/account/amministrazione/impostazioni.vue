@@ -52,19 +52,18 @@ onMounted(() => {
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-6 md:py-8">
-		<div class="max-w-7xl mx-auto px-4 md:px-6 space-y-6 md:space-y-8">
-			<AccountPageHeader
+	<AccountPageSection spacing="space-y-6 md:space-y-8">
+		<AccountPageHeader
 				eyebrow="Area amministrazione"
 				title="Impostazioni"
-				description="Configurazione tecnica di Stripe, BRT e parametri generali in una pagina unica, piu ordinata e meno dispersiva."
+				description="Configurazione tecnica di Stripe, BRT e parametri generali in una pagina unica, più ordinata e meno dispersiva."
 				:crumbs="[
 					{ label: 'Account', to: '/account' },
 					{ label: 'Amministrazione', to: '/account/amministrazione' },
 					{ label: 'Impostazioni' },
 				]" />
 
-			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
+			<SfActionBanner :message="actionMessage" />
 
 			<div class="grid grid-cols-1 desktop:grid-cols-2 gap-4 md:gap-6">
 				<SfCard padding="md">
@@ -177,6 +176,5 @@ onMounted(() => {
 					</SfButton>
 				</div>
 			</SfCard>
-		</div>
-	</section>
+	</AccountPageSection>
 </template>

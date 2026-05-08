@@ -95,9 +95,8 @@ const summaryItems = computed(() => {
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-6 md:py-8">
-		<div class="max-w-7xl mx-auto px-4 md:px-6 space-y-6 md:space-y-8">
-			<AccountPageHeader
+	<AccountPageSection spacing="space-y-6 md:space-y-8">
+		<AccountPageHeader
 				eyebrow="Area amministrazione"
 				title="Bonifici in attesa"
 				description="Verifica in banca i bonifici pendenti e conferma la ricezione per far partire la spedizione."
@@ -137,8 +136,8 @@ const summaryItems = computed(() => {
 					</div>
 				</template>
 
-				<div v-if="loading" class="rounded-card bg-brand-bg-alt px-4 py-5 text-center">
-					<p class="text-base font-semibold text-brand-text">Caricamento bonifici pendenti...</p>
+				<div v-if="loading" class="space-y-2.5">
+					<SfSkeleton v-for="n in 3" :key="n" height="64px" />
 				</div>
 
 				<SfEmptyState
@@ -187,13 +186,11 @@ const summaryItems = computed(() => {
 					</article>
 				</div>
 			</SfCard>
-		</div>
-
 		<AdminBankTransferConfirmModal
 			:order="selected"
 			:confirming="confirming"
 			:format-amount="formatAmount"
 			@close="closeConfirm"
 			@confirm="(ref) => confirmWithReference(ref)" />
-	</section>
+	</AccountPageSection>
 </template>

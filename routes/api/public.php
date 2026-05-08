@@ -7,6 +7,7 @@
  * GDPR (cancellazione account, export dati, consenso cookie).
  */
 
+use App\Http\Controllers\Account\UserDataExportController;
 use App\Http\Controllers\Admin\HomepageImageController;
 use App\Http\Controllers\Catalog\PublicArticleController;
 use App\Http\Controllers\Catalog\PublicPriceBandController;
@@ -39,5 +40,11 @@ Route::middleware('auth:sanctum')->prefix('user')->group(function () {
     Route::delete('/account', [GdprController::class, 'deleteAccount']);
     Route::get('/data-export', [GdprController::class, 'dataExport']);
 });
+
+// Alias canonico (P1.3): /api/me/export-data — download streaming + audit log.
+// Il legacy /api/user/data-export resta attivo per back-compat (JSON inline, no audit).
+Route::middleware('auth:sanctum')
+    ->get('/me/export-data', UserDataExportController::class)
+    ->name('me.export-data');
 
 Route::middleware(['throttle:10,1'])->post('/cookie-consent', [GdprController::class, 'cookieConsent']);

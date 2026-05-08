@@ -89,7 +89,7 @@ const iconForCode = (code) => {
 		<!-- Empty -->
 		<div
 			v-else-if="!sortedEvents.length"
-			class="rounded-[14px] p-[18px] text-center"
+			class="rounded-control p-[18px] text-center"
 			data-surface="grey-inset"
 			role="status"
 		>

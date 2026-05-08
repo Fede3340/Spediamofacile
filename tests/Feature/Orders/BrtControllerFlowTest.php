@@ -126,7 +126,11 @@ class BrtControllerFlowTest extends TestCase
         config()->set('services.brt.client_id', 'test-client-id');
 
         $admin = User::factory()->create();
-        $admin->forceFill(['role' => 'Admin'])->save();
+        // P1.1 — admin senza 2FA confermato verrebbe bloccato dal middleware RequireTwoFactor
+        $admin->forceFill([
+            'role' => 'Admin',
+            'two_factor_confirmed_at' => now(),
+        ])->save();
         Sanctum::actingAs($admin);
 
         $order = $this->createOrderForUser($admin, [

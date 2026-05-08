@@ -59,9 +59,9 @@
 	justify-content: center;
 	width: 200px;
 	height: 200px;
-	border-radius: 24px;
+	border-radius: 18px;
 	background: #ffffff;
-	box-shadow: 0 4px 14px rgba(9, 88, 102, 0.08);
+	box-shadow: var(--sf-shadow-md);
 	margin: 0 auto;
 }
 

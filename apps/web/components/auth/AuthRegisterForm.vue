@@ -20,9 +20,9 @@ const turnstileToken = computed({
 	get: () => props.turnstile?.token?.value || '',
 	set: (value) => emit('update:turnstileToken', value),
 });
-const INPUT_CLS = 'w-full h-[46px] rounded-[12px] px-[14px] text-[14px] font-medium text-[var(--color-brand-text)] bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[2.5px] focus:ring-[var(--color-brand-primary)]/50 placeholder:text-[#aaa] outline-none transition-all duration-200';
+const INPUT_CLS = 'w-full h-[46px] rounded-control px-[14px] text-sm font-medium text-brand-text bg-white ring-[1.5px] ring-brand-border focus:ring-[2.5px] focus:ring-[var(--color-brand-primary)]/50 placeholder:text-[#aaa] outline-none transition-all duration-200';
 const LABEL_CLS = 'text-[#777] text-[11px] uppercase tracking-[0.4px] font-bold block';
-const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex items-center justify-center gap-[10px] mt-[4px] cursor-pointer active:scale-[0.985] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-brand-accent)]/25 disabled:cursor-wait';
+const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-sm flex items-center justify-center gap-[10px] mt-[4px] cursor-pointer active:scale-[0.985] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-brand-accent)]/25 disabled:cursor-wait';
 </script>
 
 <template>
@@ -158,7 +158,7 @@ const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex it
     <!-- Password hint -->
     <p class="text-[var(--color-brand-text-muted)] text-[10px] -mt-[2px] font-normal">Min. 8 caratteri, maiuscola, minuscola e numero</p>
 
-    <label class="flex items-start gap-[9px] rounded-[14px] bg-white/70 px-[11px] py-[10px] ring-[1px] ring-[#DFE2E7]">
+    <label class="flex items-start gap-[9px] rounded-control bg-white/70 px-[11px] py-[10px] ring-[1px] ring-brand-border">
       <input
         :checked="Boolean(form.privacy_accepted)"
         type="checkbox"

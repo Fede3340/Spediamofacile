@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\PasswordResetRequestController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Middleware\CheckAdmin;
 use App\Services\AuditLogService;
@@ -82,8 +83,8 @@ Route::middleware([
 
 /* ===== LOGIN ===== */
 
-// Login rate-limit più stretto (anti-bruteforce): 10 tentativi/min per IP
-Route::middleware(['throttle:10,1'])->post('/custom-login', [LoginController::class, 'login']);
+// P0.3 anti brute-force: chiave (email|IP), 5 tentativi/min — vedi RateLimiter "login-by-email" in AppServiceProvider
+Route::middleware(['throttle:login-by-email'])->post('/custom-login', [LoginController::class, 'login']);
 Route::middleware(['throttle:5,1'])->post('/resend-verification-email', [RegisterController::class, 'resendVerificationEmail']);
 Route::middleware(['throttle:5,1'])->post('/verify-code', [RegisterController::class, 'verifyCode']);
 
@@ -95,7 +96,8 @@ Route::get('/verify-email/{id}', [VerificationController::class, 'verify'])
 
 /* ===== RECUPERO PASSWORD ===== */
 
-Route::middleware(['throttle:5,1'])->post('/forgot-password', [PasswordResetRequestController::class, 'sendEmail']);
+// P0.3: chiave (email|IP), 5/h — limita enumeration + flood reset password
+Route::middleware(['throttle:forgot-password-by-email'])->post('/forgot-password', [PasswordResetRequestController::class, 'sendEmail']);
 Route::middleware(['throttle:5,1'])->post('/update-password', [ChangePasswordController::class, 'passwordResetProcess']);
 
 /* ===== UPLOAD FILE (admin) E IMMAGINE ADMIN ===== */
@@ -112,4 +114,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Solo le rotte necessarie — NO apiResource completo che espone GET /api/users
     Route::get('/users/{user}', [UserController::class, 'show']);
     Route::put('/users/{user}', [UserController::class, 'update']);
+});
+
+/* ===== 2FA TOTP (P1.1) ===== */
+
+// Throttle moderato per limitare brute-force su /confirm e /challenge.
+Route::middleware(['auth:sanctum', 'throttle:10,1'])->prefix('2fa')->group(function () {
+    Route::post('/enable', [TwoFactorController::class, 'enable']);
+    Route::post('/confirm', [TwoFactorController::class, 'confirm']);
+    Route::post('/disable', [TwoFactorController::class, 'disable']);
+    Route::post('/challenge', [TwoFactorController::class, 'challenge']);
+    Route::post('/recovery', [TwoFactorController::class, 'recovery']);
 });

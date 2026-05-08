@@ -80,7 +80,7 @@ const handleLogout = () => emit('logout');
 					:to="order.url"
 					class="group flex items-center gap-3.5 rounded-card border border-brand-primary/10 bg-brand-bg-alt/90 px-[18px] py-4 transition-all hover:-translate-y-px hover:border-brand-primary/15 hover:shadow-sf-sm">
 					<div
-						class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px]"
+						class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-control"
 						:style="{ background: order.tone.bg, color: order.tone.color }">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-4 w-4" v-html="accountCardIcons['truck-fast']" />
 					</div>
@@ -99,7 +99,7 @@ const handleLogout = () => emit('logout');
 			</div>
 
 			<div v-else class="flex items-center justify-between gap-3.5 rounded-card border border-dashed border-brand-primary/15 bg-brand-bg-alt/90 p-4.5">
-				<div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-brand-primary/[0.08] text-brand-primary">
+				<div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-control bg-brand-primary/[0.08] text-brand-primary">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-[18px] w-[18px]" v-html="accountCardIcons.package" />
 				</div>
 				<div class="min-w-0 flex-1">
@@ -112,7 +112,7 @@ const handleLogout = () => emit('logout');
 			<div
 				v-for="item in personalHighlights"
 				:key="item.label"
-				class="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2.5 rounded-[14px] border border-brand-primary/12 bg-gradient-to-b from-white to-brand-bg-alt/95 px-4 py-3 shadow-sf-sm">
+				class="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2.5 rounded-control border border-brand-primary/12 bg-gradient-to-b from-white to-brand-bg-alt/95 px-4 py-3 shadow-sf-sm">
 				<div class="inline-flex h-[30px] w-[30px] items-center justify-center rounded-full" :style="{ background: item.iconBg, color: item.iconColor }">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-4 w-4" v-html="accountCardIcons[item.iconKey]" />
 				</div>
@@ -150,7 +150,7 @@ const handleLogout = () => emit('logout');
 					:key="order.id"
 					:to="order.url"
 					class="group flex items-center gap-3.5 rounded-card border border-brand-primary/10 bg-brand-bg-alt/90 px-[18px] py-4 transition-all hover:-translate-y-px hover:border-brand-primary/15 hover:shadow-sf-sm">
-					<div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-brand-success-bg text-brand-success-fg">
+					<div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-control bg-brand-success-bg text-brand-success-fg">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-4 w-4" v-html="accountCardIcons['check-circle']" />
 					</div>
 
@@ -166,7 +166,7 @@ const handleLogout = () => emit('logout');
 			</div>
 
 			<div v-else class="flex items-center gap-3.5 rounded-card border border-dashed border-brand-primary/15 bg-brand-bg-alt/90 p-4.5">
-				<div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-brand-success-bg text-brand-success-fg">
+				<div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-control bg-brand-success-bg text-brand-success-fg">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-[18px] w-[18px]" v-html="accountCardIcons['history']" />
 				</div>
 				<div>

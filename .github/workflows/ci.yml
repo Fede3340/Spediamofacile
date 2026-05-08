@@ -274,7 +274,56 @@ jobs:
           if-no-files-found: ignore
 
   # ─────────────────────────────────────────────────────────────
-  # Job 4: Security audit (composer + npm)
+  # Job 4: Lighthouse CI (perf/a11y/seo guardrail su PR)
+  # ─────────────────────────────────────────────────────────────
+  lighthouse:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: nuxt-build
+
+    defaults:
+      run:
+        working-directory: apps/web
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Download Nuxt build
+        uses: actions/download-artifact@v4
+        with:
+          name: nuxt-output
+          path: apps/web/.output
+
+      - name: Run Lighthouse CI
+        run: npx --no -- lhci autorun
+        env:
+          NUXT_PUBLIC_API_BASE: http://localhost
+          PORT: 3000
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: apps/web/.lighthouseci
+          retention-days: 14
+          if-no-files-found: ignore
+
+  # ─────────────────────────────────────────────────────────────
+  # Job 5: Security audit (composer + npm)
   # ─────────────────────────────────────────────────────────────
   security-audit:
     name: Security audit

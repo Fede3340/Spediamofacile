@@ -36,7 +36,7 @@ onBeforeUnmount(() => stopNowTimer());
 					v-model="searchAddress"
 					type="text"
 					placeholder="es. Via Roma 10"
-					class="w-full bg-white rounded-[16px] h-[44px] px-[10px] text-[1rem] border border-[var(--color-brand-border)] transition-[border-color,box-shadow] duration-200 focus:border-[var(--color-brand-primary)] focus:shadow-[0_0_0_3px_rgba(9,88,102,0.15)]"
+					class="w-full bg-white rounded-card h-[44px] px-[10px] text-[1rem] border border-[var(--color-brand-border)] transition-[border-color,box-shadow] duration-200 focus:border-[var(--color-brand-primary)] focus:shadow-[0_0_0_3px_rgba(9,88,102,0.15)]"
 					@keydown.enter.prevent="searchPudo" >
 			</div>
 
@@ -47,7 +47,7 @@ onBeforeUnmount(() => stopNowTimer());
 					v-model="searchCity"
 					type="text"
 					placeholder="es. Iglesias"
-					class="w-full bg-white rounded-[16px] h-[44px] px-[10px] text-[1rem] border border-[var(--color-brand-border)] transition-[border-color,box-shadow] duration-200 focus:border-[var(--color-brand-primary)] focus:shadow-[0_0_0_3px_rgba(9,88,102,0.15)]"
+					class="w-full bg-white rounded-card h-[44px] px-[10px] text-[1rem] border border-[var(--color-brand-border)] transition-[border-color,box-shadow] duration-200 focus:border-[var(--color-brand-primary)] focus:shadow-[0_0_0_3px_rgba(9,88,102,0.15)]"
 					@keydown.enter.prevent="searchPudo" >
 			</div>
 
@@ -59,7 +59,7 @@ onBeforeUnmount(() => stopNowTimer());
 					type="text"
 					maxlength="5"
 					placeholder="es. 09016"
-					class="w-full bg-white rounded-[16px] h-[44px] px-[10px] text-[1rem] border border-[var(--color-brand-border)] transition-[border-color,box-shadow] duration-200 focus:border-[var(--color-brand-primary)] focus:shadow-[0_0_0_3px_rgba(9,88,102,0.15)]"
+					class="w-full bg-white rounded-card h-[44px] px-[10px] text-[1rem] border border-[var(--color-brand-border)] transition-[border-color,box-shadow] duration-200 focus:border-[var(--color-brand-primary)] focus:shadow-[0_0_0_3px_rgba(9,88,102,0.15)]"
 					@keydown.enter.prevent="searchPudo" >
 			</div>
 
@@ -67,7 +67,7 @@ onBeforeUnmount(() => stopNowTimer());
 				<button
 					type="button"
 					:disabled="loading || !hasSearchInput"
-					class="inline-flex items-center justify-center gap-[6px] h-[44px] px-[16px] bg-[var(--color-brand-primary)] text-white rounded-[16px] text-[0.875rem] font-semibold hover:bg-[var(--color-brand-primary-hover)] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap min-w-0 tablet:min-w-[142px]"
+					class="inline-flex items-center justify-center gap-[6px] h-[44px] px-[16px] bg-[var(--color-brand-primary)] text-white rounded-card text-[0.875rem] font-semibold hover:bg-[var(--color-brand-primary-hover)] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap min-w-0 tablet:min-w-[142px]"
 					@click="searchPudo">
 					<svg v-if="!loading" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
 					<span v-if="loading" class="inline-block w-[16px] h-[16px] border-2 border-white border-t-transparent rounded-full animate-spin"/>
@@ -76,7 +76,7 @@ onBeforeUnmount(() => stopNowTimer());
 				<button
 					type="button"
 					:disabled="geolocating || loading"
-					class="inline-flex items-center justify-center gap-[6px] h-[44px] px-[14px] bg-white text-[var(--color-brand-primary)] border border-[#C6D2D5] rounded-[16px] text-[0.8125rem] font-semibold hover:bg-[#F2F8F9] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap min-w-0 tablet:min-w-[150px]"
+					class="inline-flex items-center justify-center gap-[6px] h-[44px] px-[14px] bg-white text-[var(--color-brand-primary)] border border-[#C6D2D5] rounded-card text-[0.8125rem] font-semibold hover:bg-[#F2F8F9] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap min-w-0 tablet:min-w-[150px]"
 					@click="useCurrentLocation">
 					<span v-if="geolocating" class="inline-block w-[14px] h-[14px] border-2 border-[var(--color-brand-primary)] border-t-transparent rounded-full animate-spin"/>
 					<span v-else class="inline-flex items-center gap-[6px]">
@@ -113,14 +113,14 @@ onBeforeUnmount(() => stopNowTimer());
 
 				<div v-else class="h-full flex flex-col">
 					<p v-if="pudoResults.length === 0 && !searchError" class="text-[0.875rem] text-[var(--color-brand-text-secondary)] px-[10px] text-center flex-1 flex items-center justify-center">
-						Nessun punto di ritiro trovato per questa zona. Prova con un'altra citta o CAP.
+						Nessun punto di ritiro trovato per questa zona. Prova con un'altra città o CAP.
 					</p>
 
 					<div v-else class="grid grid-cols-1 gap-[10px] content-start flex-1 overflow-y-auto pr-[4px]">
 						<div
 							v-for="pudo in pudoResults"
 							:key="pudo.ui_key"
-							class="bg-white rounded-[16px] border-2 p-[14px] transition-[border-color,box-shadow] duration-200 cursor-pointer min-h-[168px]"
+							class="bg-white rounded-card border-2 p-[14px] transition-[border-color,box-shadow] duration-200 cursor-pointer min-h-[168px]"
 							:class="[
 								expandedPudoKey === String(pudo.pudo_id || pudo.ui_key) ? 'h-auto' : 'h-[168px]',
 								selectedPudoKey === pudo.ui_key ? 'border-[var(--color-brand-primary)] shadow-md' : 'border-[var(--color-brand-border)] hover:border-[var(--color-brand-primary)]/50'
@@ -193,10 +193,10 @@ onBeforeUnmount(() => stopNowTimer());
 			</div>
 
 			<div class="order-1 desktop:order-2 h-[360px] tablet:h-[420px] desktop:h-[520px] desktop:sticky desktop:top-[92px]">
-				<div class="h-full bg-white rounded-[16px] border border-[var(--color-brand-border)] p-[8px] flex flex-col">
-					<div class="shrink-0 rounded-[16px] border border-[#D8E6EB] bg-[#F8FCFD] px-[10px] py-[8px]">
+				<div class="h-full bg-white rounded-card border border-[var(--color-brand-border)] p-[8px] flex flex-col">
+					<div class="shrink-0 rounded-card border border-[#D8E6EB] bg-[#F8FCFD] px-[10px] py-[8px]">
 						<p class="text-[0.75rem] text-[var(--color-brand-text-secondary)]">
-							Doppio clic sulla mappa per impostare il punto di riferimento e aggiornare automaticamente via, citta e CAP.
+							Doppio clic sulla mappa per impostare il punto di riferimento e aggiornare automaticamente via, città e CAP.
 						</p>
 						<p v-if="mapClickLoading" class="text-[0.75rem] font-semibold text-[var(--color-brand-primary)] mt-[4px]">Aggiornamento in corso...</p>
 						<p v-else-if="referenceUpdateMessage" class="text-[0.75rem] text-[var(--color-brand-success)] mt-[4px]">{{ referenceUpdateMessage }}</p>

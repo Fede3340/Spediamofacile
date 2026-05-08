@@ -4,6 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property string $pudo_id
+ * @property string|null $name
+ * @property string|null $address
+ * @property string|null $city
+ * @property string|null $zip_code
+ * @property string|null $province
+ * @property string|null $country
+ * @property string|null $latitude
+ * @property string|null $longitude
+ * @property string|null $phone
+ * @property string|null $email
+ * @property array|null $opening_hours
+ * @property bool $is_active
+ * @property float|null $distance
+ */
 class PudoPoint extends Model
 {
     protected $fillable = [
@@ -68,7 +85,9 @@ class PudoPoint extends Model
     {
         $limit = max(1, min((int) $limit, 50));
 
-        $driver = self::query()->getConnection()->getDriverName();
+        /** @var \Illuminate\Database\Connection $connection */
+        $connection = self::query()->getConnection();
+        $driver = $connection->getDriverName();
         if ($driver === 'sqlite') {
             $points = self::where('is_active', true)
                 ->whereNotNull('latitude')

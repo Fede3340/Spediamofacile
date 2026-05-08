@@ -34,11 +34,13 @@ use App\Policies\WalletMovementPolicy;
 use App\Policies\WithdrawalRequestPolicy;
 use App\Services\CartService;
 use App\Services\StripeConfigService;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Sentry\Laravel\Integration;
 use Stripe\StripeClient;
 
 class AppServiceProvider extends ServiceProvider
@@ -70,6 +72,31 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // P0.3: rate limiter nominati anti brute-force / anti-spam.
+        // login-by-email   -> chiave (email|IP), 5/min: blocca password-spray senza penalizzare utenti dietro NAT.
+        // contact-form     -> chiave IP, 10/h:    contact pubblico, anti-spam.
+        // public-tracking  -> chiave IP, 15/min:  tracking pubblico, evita scraping.
+        // forgot-password-by-email -> chiave (email|IP), 5/h: limita enumeration + flood email reset.
+        RateLimiter::for('login-by-email', function (Request $request) {
+            $email = strtolower((string) $request->input('email', ''));
+
+            return Limit::perMinute(5)->by($email.'|'.$request->ip());
+        });
+
+        RateLimiter::for('contact-form', function (Request $request) {
+            return Limit::perHour(10)->by($request->ip());
+        });
+
+        RateLimiter::for('public-tracking', function (Request $request) {
+            return Limit::perMinute(15)->by($request->ip());
+        });
+
+        RateLimiter::for('forgot-password-by-email', function (Request $request) {
+            $email = strtolower((string) $request->input('email', ''));
+
+            return Limit::perHour(5)->by($email.'|'.$request->ip());
+        });
+
         // SEC-01: registrazione esplicita delle Policies (best practice Laravel 11).
         // Evita di affidarsi al solo auto-discovery di AuthServiceProvider e garantisce
         // che Gate::authorize/authorizeResource risolvano correttamente i modelli.
@@ -97,10 +124,13 @@ class AppServiceProvider extends ServiceProvider
         // senza questo hook, un errore in coda passerebbe SILENZIOSO e
         // scomparirebbe nei log. Con Sentry: alert immediato al team.
         // Guard class_exists: se Sentry non e' installato localmente, zero errori.
-        if (class_exists(Integration::class)) {
-            Queue::failing(function (JobFailed $event): void {
+        // Sentry e' opzionale (non hard-required in composer.json). Riferimento via
+        // stringa per evitare che PHPStan tenti di analizzare la classe quando assente.
+        $sentryIntegration = '\\Sentry\\Laravel\\Integration';
+        if (class_exists($sentryIntegration)) {
+            Queue::failing(function (JobFailed $event) use ($sentryIntegration): void {
                 if (app()->bound('sentry')) {
-                    Integration::captureUnhandledException($event->exception);
+                    $sentryIntegration::captureUnhandledException($event->exception);
                 }
             });
         }

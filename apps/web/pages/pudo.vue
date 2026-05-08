@@ -166,7 +166,7 @@ class="absolute left-[14px] top-1/2 -translate-y-1/2 text-[var(--color-brand-tex
 								placeholder="CAP, città o indirizzo (es. 20121, Milano, Via Dante 1)"
 								autocomplete="off"
 								enterkeyhint="search"
-								class="w-full h-[48px] pl-[40px] pr-[14px] rounded-[14px] border border-[var(--color-brand-border,#E9EBEC)] bg-white text-[0.9375rem] text-[var(--color-brand-text,#0f172a)] placeholder:text-[var(--color-brand-text-secondary,#94a3a8)] focus:outline-none focus:border-[var(--color-brand-primary,#095866)] focus:shadow-[0_0_0_3px_rgba(9,88,102,0.15)] transition"
+								class="w-full h-[48px] pl-[40px] pr-[14px] rounded-control border border-[var(--color-brand-border,#E9EBEC)] bg-white text-[0.9375rem] text-[var(--color-brand-text,#0f172a)] placeholder:text-[var(--color-brand-text-secondary,#94a3a8)] focus:outline-none focus:border-[var(--color-brand-primary,#095866)] focus:shadow-[0_0_0_3px_rgba(9,88,102,0.15)] transition"
 								@input="onInput"
 							>
 						</div>
@@ -174,7 +174,7 @@ class="absolute left-[14px] top-1/2 -translate-y-1/2 text-[var(--color-brand-tex
 						<button
 							type="button"
 							:disabled="geolocating || loading"
-							class="inline-flex items-center justify-center gap-[8px] h-[48px] px-[18px] rounded-[14px] border border-[var(--color-brand-border,#E9EBEC)] bg-white text-[var(--color-brand-primary,#095866)] text-[0.875rem] font-semibold hover:bg-[#F2F8F9] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+							class="inline-flex items-center justify-center gap-[8px] h-[48px] px-[18px] rounded-control border border-[var(--color-brand-border,#E9EBEC)] bg-white text-[var(--color-brand-primary,#095866)] text-[0.875rem] font-semibold hover:bg-[#F2F8F9] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
 							@click="useCurrentLocation">
 							<svg
 v-if="!geolocating" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -192,7 +192,7 @@ v-if="!geolocating" width="16" height="16" viewBox="0 0 24 24" fill="none" strok
 						<button
 							type="submit"
 							:disabled="loading"
-							class="inline-flex items-center justify-center gap-[8px] h-[48px] px-[22px] rounded-[14px] bg-[var(--color-brand-primary,#095866)] text-white text-[0.9375rem] font-semibold hover:bg-[var(--color-brand-primary-hover,#074a56)] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+							class="inline-flex items-center justify-center gap-[8px] h-[48px] px-[22px] rounded-control bg-[var(--color-brand-primary,#095866)] text-white text-[0.9375rem] font-semibold hover:bg-[var(--color-brand-primary-hover,#074a56)] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
 							<svg
 v-if="!loading" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 								stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -271,7 +271,7 @@ width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 		<section class="max-w-[1280px] mx-auto px-[16px] tablet:px-[24px] py-[20px] tablet:py-[28px]">
 			<div class="grid grid-cols-1 desktop:grid-cols-[380px_1fr] gap-[20px] desktop:h-[calc(100vh-260px)] desktop:min-h-[560px]">
 				<!-- LISTA -->
-				<aside class="bg-white rounded-[16px] border border-[var(--color-brand-border,#E9EBEC)] overflow-hidden flex flex-col desktop:max-h-full">
+				<aside class="bg-white rounded-[18px] border border-[var(--color-brand-border,#E9EBEC)] overflow-hidden flex flex-col desktop:max-h-full">
 					<header class="px-[16px] py-[12px] border-b border-[var(--color-brand-border,#E9EBEC)] bg-[#FAFCFC]">
 						<h2 class="text-[0.875rem] font-bold text-[var(--color-brand-text,#0f172a)]">
 							Risultati
@@ -295,7 +295,7 @@ width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
 				</aside>
 
 				<!-- MAPPA -->
-				<div class="bg-white rounded-[16px] border border-[var(--color-brand-border,#E9EBEC)] overflow-hidden min-h-[420px] desktop:min-h-0 desktop:h-full">
+				<div class="bg-white rounded-[18px] border border-[var(--color-brand-border,#E9EBEC)] overflow-hidden min-h-[420px] desktop:min-h-0 desktop:h-full">
 					<ClientOnly>
 						<PudoMap
 							:points="mapPoints"

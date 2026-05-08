@@ -55,8 +55,8 @@ class AuditLogService
             $userId = $opts['user_id'] ?? ($user?->id);
             $actorType = $opts['actor_type'] ?? self::resolveActorType($user);
 
-            $ip = $opts['ip'] ?? ($request ? $request->ip() : null);
-            $userAgent = $opts['user_agent'] ?? ($request ? mb_substr((string) $request->userAgent(), 0, 512) : null);
+            $ip = $opts['ip'] ?? $request->ip();
+            $userAgent = $opts['user_agent'] ?? mb_substr((string) $request->userAgent(), 0, 512);
 
             return AuditLog::create([
                 'user_id' => $userId,
@@ -85,7 +85,7 @@ class AuditLogService
         if (! $user) {
             return 'guest';
         }
-        if (method_exists($user, 'isAdmin') && $user->isAdmin()) {
+        if ($user->isAdmin()) {
             return 'admin';
         }
 

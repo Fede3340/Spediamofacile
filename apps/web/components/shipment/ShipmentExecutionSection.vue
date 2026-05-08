@@ -28,8 +28,8 @@ const statusTone = {
 	completed: 'bg-[#f0fdf4] text-[var(--color-brand-success)] border-[#d1fae5]',
 	requested: 'bg-[#eef7f8] text-[var(--color-brand-primary)] border-[#bdd5da]',
 	sent: 'bg-[#f0fdf4] text-[var(--color-brand-success)] border-[#d1fae5]',
-	pending: 'bg-[#EEF0F3] text-[var(--color-brand-text-secondary)] border-[#DFE2E7]',
-	not_requested: 'bg-[#EEF0F3] text-[var(--color-brand-text-secondary)] border-[#DFE2E7]',
+	pending: 'bg-[#EEF0F3] text-[var(--color-brand-text-secondary)] border-brand-border',
+	not_requested: 'bg-[#EEF0F3] text-[var(--color-brand-text-secondary)] border-brand-border',
 	manual_required: 'bg-amber-50 text-amber-700 border-amber-200',
 	skipped: 'bg-amber-50 text-amber-700 border-amber-200',
 	failed: 'bg-red-50 text-red-700 border-red-200',
@@ -39,7 +39,7 @@ const hasShipmentLabel = computed(() => Boolean(props.orderData?.has_label || pr
 const executionReady = computed(() => Boolean(props.executionData));
 
 const labelForStatus = (value) => statusLabels[value] || 'Da verificare';
-const toneForStatus = (value) => statusTone[value] || 'bg-[#EEF0F3] text-[var(--color-brand-text-secondary)] border-[#DFE2E7]';
+const toneForStatus = (value) => statusTone[value] || 'bg-[#EEF0F3] text-[var(--color-brand-text-secondary)] border-brand-border';
 const formatOptionalDate = (value) => (value ? props.formatDate(value) : 'Non ancora');
 const formatPickupDate = (value) => {
 	if (!value) return 'Non ancora';
@@ -144,7 +144,7 @@ const executionCards = computed(() => {
 				? 'Gestione manuale richiesta'
 				: execution.carrier_pickup_ref || 'Richiesta al corriere',
 			meta: execution.pickup_status === 'manual_required'
-				? 'Etichetta e documenti sono pronti, ma il ritiro va confermato da operatore perche l\'endpoint pickup BRT non e configurato.'
+				? 'Etichetta e documenti sono pronti, ma il ritiro va confermato da operatore perché l\'endpoint pickup BRT non e configurato.'
 				: pickupMetaParts.length ? pickupMetaParts.join(' · ') : 'Usa i dati dell\'ordine per prenotare il passaggio del corriere.',
 			actionLabel: pickupActionLabel.value,
 			actionKind: 'pickup',
@@ -238,7 +238,7 @@ const runCardAction = (kind) => {
 
 		<div
 			v-if="!hasShipmentLabel"
-			class="mt-[14px] rounded-[16px] border border-[#F6D7AA] bg-[#FFF8EA] px-[14px] py-[12px] text-[0.8125rem] leading-[1.5] text-[#8A5E2E]">
+			class="mt-[14px] rounded-card border border-[#F6D7AA] bg-[#FFF8EA] px-[14px] py-[12px] text-[0.8125rem] leading-[1.5] text-[#8A5E2E]">
 			Le azioni operative diventano complete dopo la generazione dell'etichetta BRT. Puoi comunque consultare lo stato appena disponibile.
 		</div>
 
@@ -259,7 +259,7 @@ const runCardAction = (kind) => {
 				<p class="text-[0.8125rem] leading-[1.5] text-[var(--color-brand-text-secondary)]">{{ card.meta }}</p>
 
 				<div v-if="card.key === 'pickup'" class="grid gap-[10px]">
-					<label class="flex items-start gap-[10px] rounded-[16px] border border-[#E9EEF2] bg-[#FBFCFD] px-[14px] py-[12px]">
+					<label class="flex items-start gap-[10px] rounded-card border border-[#E9EEF2] bg-[#FBFCFD] px-[14px] py-[12px]">
 						<input
 							v-model="pickupForm.enabled"
 							type="checkbox"
@@ -297,7 +297,7 @@ const runCardAction = (kind) => {
 
 					<p
 						v-else
-						class="rounded-[16px] border border-[#E9EEF2] bg-white px-[14px] py-[12px] text-[0.8125rem] leading-[1.5] text-[var(--color-brand-text-secondary)]">
+						class="rounded-card border border-[#E9EEF2] bg-white px-[14px] py-[12px] text-[0.8125rem] leading-[1.5] text-[var(--color-brand-text-secondary)]">
 						Salvando, l'ordine verra' marcato come non richiesto e i riferimenti di ritiro verranno rimossi.
 					</p>
 				</div>
@@ -332,7 +332,7 @@ const runCardAction = (kind) => {
 			</article>
 		</div>
 
-		<div v-if="executionData?.last_error" class="mt-[16px] rounded-[16px] border border-[#F6D7AA] bg-[#FFF8EA] px-[14px] py-[12px]">
+		<div v-if="executionData?.last_error" class="mt-[16px] rounded-card border border-[#F6D7AA] bg-[#FFF8EA] px-[14px] py-[12px]">
 			<p class="text-[0.75rem] font-semibold uppercase tracking-[0.08em] text-[#8A5E2E]">Ultimo errore operativo</p>
 			<p class="mt-[6px] text-[0.8125rem] leading-[1.5] text-[#8A5E2E]">{{ executionData.last_error }}</p>
 		</div>

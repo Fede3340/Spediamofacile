@@ -52,7 +52,7 @@ onUnmounted(() => { document.removeEventListener('keydown', trapFocus) })
 	<Teleport to="body">
 		<div v-if="show" class="fixed inset-0 z-[9999] flex items-center justify-center">
 			<div class="absolute inset-0 bg-black/50" @click="emit('update:show', false)"/>
-			<div ref="dialogRef" role="dialog" aria-modal="true" aria-labelledby="cancel-modal-title" class="relative bg-white rounded-[16px] shadow-lg max-w-[520px] w-full mx-[16px] p-[20px] z-[1]">
+			<div ref="dialogRef" role="dialog" aria-modal="true" aria-labelledby="cancel-modal-title" class="relative bg-white rounded-card shadow-lg max-w-[520px] w-full mx-[16px] p-[20px] z-[1]">
 				<!-- Header -->
 				<div class="flex items-center gap-[12px] mb-[20px]">
 					<div class="w-[44px] h-[44px] rounded-full bg-red-100 flex items-center justify-center shrink-0" aria-hidden="true">
@@ -79,7 +79,7 @@ onUnmounted(() => { document.removeEventListener('keydown', trapFocus) })
 
 					<!-- Eligible -->
 					<template v-else>
-						<div class="bg-[#F8F9FB] rounded-[16px] p-[16px] mb-[16px]">
+						<div class="bg-[#F8F9FB] rounded-card p-[16px] mb-[16px]">
 							<p class="text-[0.8125rem] text-[var(--color-brand-text-secondary)] mb-[10px]">{{ refundEligibility.reason }}</p>
 							<div v-if="refundEligibility.refund_amount_cents > 0" class="space-y-[8px]">
 								<div class="flex items-center justify-between text-[0.875rem]">
@@ -106,7 +106,7 @@ onUnmounted(() => { document.removeEventListener('keydown', trapFocus) })
 							<label class="block text-[0.75rem] text-[var(--color-brand-text-secondary)] uppercase font-medium mb-[4px]">Motivo (opzionale)</label>
 							<textarea
 :value="cancelReason" placeholder="Perché vuoi annullare questa spedizione?"
-								maxlength="500" rows="2" class="w-full bg-[#F8F9FB] border border-[var(--color-brand-border)] rounded-[16px] p-[10px] text-[0.875rem] resize-none"
+								maxlength="500" rows="2" class="w-full bg-[#F8F9FB] border border-[var(--color-brand-border)] rounded-card p-[10px] text-[0.875rem] resize-none"
 								@input="emit('update:cancelReason', $event.target.value)"/>
 						</div>
 

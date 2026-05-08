@@ -115,32 +115,32 @@ onMounted(() => {
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-6 tablet:py-7 desktop:py-7">
-		<div class="my-container sf-stack-section">
-			<AccountPageHeader
-				eyebrow="Area amministrazione"
-				title="Servizi"
-				description="Catalogo servizi, visibilita e ordine in una lista coerente con il resto della console."
-				:crumbs="[
-					{ label: 'Account', to: '/account' },
-					{ label: 'Amministrazione', to: '/account/amministrazione' },
-					{ label: 'Servizi' },
-				]"
-				back-to="/account/amministrazione"
-				back-label="Torna all'amministrazione" />
+	<AccountPageSection spacing="sf-stack-section" padding="py-6 tablet:py-7 desktop:py-7">
+		<AccountPageHeader
+			eyebrow="Area amministrazione"
+			title="Servizi"
+			description="Catalogo servizi, visibilita e ordine in una lista coerente con il resto della console."
+			:crumbs="[
+				{ label: 'Account', to: '/account' },
+				{ label: 'Amministrazione', to: '/account/amministrazione' },
+				{ label: 'Servizi' },
+			]"
+			back-to="/account/amministrazione"
+			back-label="Torna all'amministrazione" />
 
-			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
+		<SfActionBanner :message="actionMessage" />
 
-			<div class="grid grid-cols-2 tablet:grid-cols-4 gap-3.5">
-				<SfStatCard label="Servizi" :value="articles.length" icon="mdi:cube-outline" tone="primary" :loading="isLoading" />
-				<SfStatCard label="Pubblicati" :value="publishedArticles.length" icon="mdi:check-circle-outline" tone="success" :loading="isLoading" />
-				<SfStatCard label="Bozze" :value="draftArticles.length" icon="mdi:clock-outline" tone="accent" :loading="isLoading" />
-				<SfStatCard label="Ordinati" :value="orderedArticles.length" icon="mdi:sort-numeric-ascending" tone="primary" :loading="isLoading" />
-			</div>
+		<div class="grid grid-cols-2 tablet:grid-cols-4 gap-3.5">
+			<SfStatCard label="Servizi" :value="articles.length" icon="mdi:cube-outline" tone="primary" :loading="isLoading" />
+			<SfStatCard label="Pubblicati" :value="publishedArticles.length" icon="mdi:check-circle-outline" tone="success" :loading="isLoading" />
+			<SfStatCard label="Bozze" :value="draftArticles.length" icon="mdi:clock-outline" tone="accent" :loading="isLoading" />
+			<SfStatCard label="Ordinati" :value="orderedArticles.length" icon="mdi:sort-numeric-ascending" tone="primary" :loading="isLoading" />
+		</div>
 
-			<div v-if="isLoading" class="py-8 flex justify-center">
-				<div class="w-10 h-10 border-3 border-brand-border border-t-brand-primary rounded-full animate-spin" />
-			</div>
+		<div v-if="isLoading" class="space-y-3">
+			<SfSkeleton variant="card" />
+			<SfSkeleton variant="card" />
+		</div>
 
 			<SfCard v-else padding="none" shadow="sf">
 				<template #header>
@@ -224,7 +224,6 @@ onMounted(() => {
 							@delete="deleteArticle(article)" />
 					</div>
 				</div>
-			</SfCard>
-		</div>
-	</section>
+		</SfCard>
+	</AccountPageSection>
 </template>

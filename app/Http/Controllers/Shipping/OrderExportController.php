@@ -116,7 +116,7 @@ class OrderExportController extends Controller
             ? str_replace('.', ',', (string) $firstPackage->weight)
             : '';
 
-        $service = $firstPackage?->service?->service_type ?? '';
+        $service = $firstPackage?->service->service_type ?? '';
 
         // Conversione centesimi -> euro formato italiano (es. 1590 -> "15,90").
         $totalCents = (int) ($order->getRawOriginal('subtotal') ?? 0);

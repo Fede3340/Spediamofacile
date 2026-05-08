@@ -139,7 +139,7 @@ const selectedPudoSummary = computed(() => {
 	justify-content: center;
 	width: 36px;
 	height: 36px;
-	border-radius: 12px;
+	border-radius: 14px;
 	background: rgba(9, 88, 102, 0.08);
 	color: var(--color-brand-primary, #095866);
 }

@@ -215,7 +215,7 @@ onMounted(() => { mounted.value = true; });
 .packages-stage-shell__notice {
 	margin: 0;
 	padding: 12px 14px;
-	border-radius: var(--sf-radius-card, 16px);
+	border-radius: var(--sf-radius-card, 18px);
 	border: 1px solid var(--color-brand-border);
 	background: rgba(9, 88, 102, 0.05);
 	color: var(--color-brand-primary);

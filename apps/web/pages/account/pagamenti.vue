@@ -17,8 +17,7 @@ const tabs = [
 </script>
 
 <template>
-	<section class="w-full min-h-[600px] py-6 sm:py-7 lg:py-8">
-		<div class="my-container space-y-5">
+	<AccountPageSection spacing="space-y-5">
 			<AccountPageHeader
 				eyebrow="Finanze"
 				title="Pagamenti"
@@ -44,6 +43,5 @@ const tabs = [
 					<span class="mt-auto text-[0.8125rem] font-semibold text-brand-primary group-hover:underline">Apri →</span>
 				</NuxtLink>
 			</div>
-		</div>
-	</section>
+	</AccountPageSection>
 </template>

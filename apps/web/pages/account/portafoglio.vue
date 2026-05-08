@@ -226,12 +226,11 @@ onMounted(() => {
 </script>
 
 <template>
-	<section class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
-		<div class="my-container max-w-7xl">
+	<AccountPageSection spacing="space-y-[20px]">
 			<AccountPageHeader
 				eyebrow="Wallet"
 				title="Portafoglio"
-				description="Saldo, ricariche e movimenti in una vista piu ordinata e coerente col resto dell'account."
+				description="Saldo, ricariche e movimenti in una vista più ordinata e coerente col resto dell'account."
 				current="Portafoglio">
 				<template #meta>
 					<div class="flex flex-wrap items-center gap-[8px]">
@@ -246,7 +245,7 @@ onMounted(() => {
 			</AccountPageHeader>
 
 			<div
-class="rounded-[16px] px-[20px] py-[18px] mb-[20px] sf-animate-in sf-animate-in-1 tablet:px-[24px] tablet:py-[20px]"
+class="rounded-[18px] px-[20px] py-[18px] mb-[20px] sf-animate-in sf-animate-in-1 tablet:px-[24px] tablet:py-[20px]"
 				style="background: linear-gradient(135deg, #F3FAFB 0%, #E6F2F4 100%); border: 1px solid rgba(9, 88, 102, 0.12);">
 				<div class="flex flex-col gap-[18px]">
 					<div class="flex flex-col gap-[14px] desktop:flex-row desktop:items-end desktop:justify-between">
@@ -302,13 +301,12 @@ to="/account/carte"
 					@payment-method-updated="onPaymentMethodUpdated" />
 			</div>
 
-			<div class="mt-[20px] sf-animate-in sf-animate-in-3">
+			<div class="sf-animate-in sf-animate-in-3">
 				<AccountWalletMovements
 					:movements="movements"
 					:is-loading-movements="isLoadingMovements"
 					:movements-error="movementsError"
 					@retry-movements="retryMovements" />
 			</div>
-		</div>
-	</section>
+	</AccountPageSection>
 </template>

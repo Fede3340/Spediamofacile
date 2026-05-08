@@ -113,12 +113,17 @@ class HealthController extends Controller
             return ['status' => 'degraded', 'message' => 'stripe not configured'];
         }
 
+        // Cache 60s: i probe esterni pollano /api/health ogni 30-60s.
+        // Senza cache faremmo 1 chiamata Stripe API per ogni probe → quota
+        // sprecata e latenza aggiunta. Cache → max 1 chiamata/min.
         try {
-            $client = new StripeClient($secret);
-            // Chiamata minima: retrieve balance (non modifica stato, non consuma quota)
-            $client->balance->retrieve([], ['timeout' => 3]);
+            return Cache::remember('health:stripe', 60, function () use ($secret) {
+                $client = new StripeClient($secret);
+                // Chiamata minima: retrieve balance (non modifica stato, non consuma quota)
+                $client->balance->retrieve([], ['timeout' => 3]);
 
-            return ['status' => 'ok'];
+                return ['status' => 'ok'];
+            });
         } catch (Throwable $e) {
             Log::warning('Health check Stripe failed', ['exception' => $e->getMessage()]);
 
@@ -128,7 +133,7 @@ class HealthController extends Controller
 
     private function checkBrt(): array
     {
-        $baseUrl = config('services.brt.api_url') ?? env('BRT_API_URL');
+        $baseUrl = config('services.brt.api_url');
         if (empty($baseUrl)) {
             return ['status' => 'degraded', 'message' => 'brt not configured'];
         }

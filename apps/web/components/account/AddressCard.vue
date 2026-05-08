@@ -88,7 +88,7 @@ const recipientName = computed(() => {
 			<template v-if="!confirmDelete">
 				<button
 					type="button"
-					class="inline-flex items-center gap-1 rounded-[10px] border border-brand-primary/15 bg-brand-primary/[0.06] px-2.5 py-1.5 text-xs font-semibold text-brand-primary transition hover:border-brand-primary/25 hover:bg-brand-primary/10 disabled:cursor-not-allowed disabled:opacity-60"
+					class="inline-flex items-center gap-1 rounded-control border border-brand-primary/15 bg-brand-primary/[0.06] px-2.5 py-1.5 text-xs font-semibold text-brand-primary transition hover:border-brand-primary/25 hover:bg-brand-primary/10 disabled:cursor-not-allowed disabled:opacity-60"
 					aria-label="Modifica indirizzo"
 					@click="emit('edit', address)"
 				>
@@ -100,7 +100,7 @@ const recipientName = computed(() => {
 				<button
 					v-if="!address.default"
 					type="button"
-					class="inline-flex items-center gap-1 rounded-[10px] border border-brand-accent/15 bg-brand-accent/[0.06] px-2.5 py-1.5 text-xs font-semibold text-brand-accent-dark transition hover:bg-brand-accent/10 disabled:cursor-not-allowed disabled:opacity-60"
+					class="inline-flex items-center gap-1 rounded-control border border-brand-accent/15 bg-brand-accent/[0.06] px-2.5 py-1.5 text-xs font-semibold text-brand-accent-dark transition hover:bg-brand-accent/10 disabled:cursor-not-allowed disabled:opacity-60"
 					aria-label="Imposta come predefinito"
 					@click="emit('set-default', address)"
 				>
@@ -111,7 +111,7 @@ const recipientName = computed(() => {
 				</button>
 				<button
 					type="button"
-					class="inline-flex items-center gap-1 rounded-[10px] border border-status-failed-fg/20 bg-transparent px-2.5 py-1.5 text-xs font-semibold text-status-failed-fg transition hover:border-status-failed-fg/35 hover:bg-status-failed-fg/[0.08] disabled:cursor-not-allowed disabled:opacity-60"
+					class="inline-flex items-center gap-1 rounded-control border border-status-failed-fg/20 bg-transparent px-2.5 py-1.5 text-xs font-semibold text-status-failed-fg transition hover:border-status-failed-fg/35 hover:bg-status-failed-fg/[0.08] disabled:cursor-not-allowed disabled:opacity-60"
 					aria-label="Elimina indirizzo"
 					@click="emit('request-delete', address.id)"
 				>
@@ -125,7 +125,7 @@ const recipientName = computed(() => {
 				<p class="m-0 mb-1 flex-[1_1_100%] text-[0.8125rem] font-semibold text-status-failed-fg">Eliminare questo indirizzo?</p>
 				<button
 					type="button"
-					class="inline-flex items-center gap-1 rounded-[10px] border border-status-failed-fg bg-status-failed-fg px-2.5 py-1.5 text-xs font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+					class="inline-flex items-center gap-1 rounded-control border border-status-failed-fg bg-status-failed-fg px-2.5 py-1.5 text-xs font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
 					:disabled="deleting"
 					@click="emit('confirm-delete', address.id)"
 				>
@@ -133,7 +133,7 @@ const recipientName = computed(() => {
 				</button>
 				<button
 					type="button"
-					class="inline-flex items-center gap-1 rounded-[10px] border border-black/[0.06] bg-brand-bg-alt px-2.5 py-1.5 text-xs font-semibold text-brand-text-secondary transition hover:bg-brand-border disabled:cursor-not-allowed disabled:opacity-60"
+					class="inline-flex items-center gap-1 rounded-control border border-black/[0.06] bg-brand-bg-alt px-2.5 py-1.5 text-xs font-semibold text-brand-text-secondary transition hover:bg-brand-border disabled:cursor-not-allowed disabled:opacity-60"
 					:disabled="deleting"
 					@click="emit('cancel-delete')"
 				>

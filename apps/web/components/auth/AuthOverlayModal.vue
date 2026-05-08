@@ -212,7 +212,7 @@ const modalUi = {
           <!-- Heading (solo per forgot / verification) -->
           <template v-if="forgotMode || verificationMode">
             <h2
-              class="m-0 pr-[44px] text-[22px] font-extrabold leading-[1.08] text-[var(--color-brand-text)] sm:text-[24px]"
+              class="m-0 pr-[44px] text-[22px] font-extrabold leading-[1.08] text-brand-text sm:text-[24px]"
               style="font-family: var(--font-montserrat, 'Montserrat', sans-serif)"
             >
               <template v-if="forgotMode">Recupera password</template>
@@ -264,7 +264,7 @@ const modalUi = {
           <div
             v-if="socialError"
             :class="[
-              'flex items-center gap-[8px] rounded-[12px] px-[14px] py-[11px] overflow-hidden',
+              'flex items-center gap-[8px] rounded-control px-[14px] py-[11px] overflow-hidden',
               socialErrorTone === 'muted'
                 ? 'bg-[#f7fafb] ring-[1px] ring-[#dfe8ec]'
                 : 'bg-[#FFF5F2] ring-[1px] ring-[var(--color-brand-accent)]/10',
@@ -274,12 +274,12 @@ const modalUi = {
             <span :class="socialErrorTone === 'muted' ? 'text-[#666] text-[13px] font-medium' : 'text-[var(--color-brand-accent)] text-[13px] font-semibold'">{{ socialError }}</span>
           </div>
 
-          <div v-if="authError" class="flex items-center gap-[8px] bg-[#FFF5F2] ring-[1px] ring-[var(--color-brand-accent)]/10 rounded-[12px] px-[14px] py-[11px] overflow-hidden">
+          <div v-if="authError" class="flex items-center gap-[8px] bg-[#FFF5F2] ring-[1px] ring-[var(--color-brand-accent)]/10 rounded-control px-[14px] py-[11px] overflow-hidden">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E44203" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
             <span class="text-[var(--color-brand-accent)] text-[13px] font-semibold">{{ authError }}</span>
           </div>
 
-          <div v-if="authSuccess" class="flex items-center gap-[8px] bg-[#f0fdf4] ring-[1px] ring-[#166534]/10 rounded-[12px] px-[14px] py-[11px] overflow-hidden">
+          <div v-if="authSuccess" class="flex items-center gap-[8px] bg-[#f0fdf4] ring-[1px] ring-[#166534]/10 rounded-control px-[14px] py-[11px] overflow-hidden">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
             <span class="text-[#166534] text-[13px] font-semibold">{{ authSuccess }}</span>
           </div>

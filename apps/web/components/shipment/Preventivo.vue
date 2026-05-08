@@ -242,7 +242,7 @@ const shellShadow = 'shadow-[0_4px_20px_rgba(0,0,0,0.04),0_12px_40px_rgba(0,0,0,
 					</div>
 					<!-- Promo banner -->
 					<div v-if="promoSettings?.active && promoSettings?.label_text" class="flex justify-center mt-[20px] desktop:mt-[16px]">
-						<span :style="{ backgroundColor: promoSettings.label_color || 'var(--color-brand-accent)' }" class="inline-flex items-center gap-[6px] px-[14px] py-[6px] rounded-[16px] text-white text-[0.875rem] font-bold tracking-wide shadow-sm">
+						<span :style="{ backgroundColor: promoSettings.label_color || 'var(--color-brand-accent)' }" class="inline-flex items-center gap-[6px] px-[14px] py-[6px] rounded-card text-white text-[0.875rem] font-bold tracking-wide shadow-sm">
 							<img v-if="promoSettings.label_image" :src="promoSettings.label_image" alt="" loading="lazy" decoding="async" width="40" height="18" class="h-[18px] w-auto" >
 							{{ promoSettings.label_text }}
 						</span>

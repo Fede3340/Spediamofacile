@@ -23,9 +23,8 @@ const {
 </script>
 
 <template>
-	<section class="w-full min-h-[600px] py-5 tablet:py-7 desktop:py-7">
-		<div class="my-container max-w-7xl">
-			<AccountPageHeader
+	<AccountPageSection>
+		<AccountPageHeader
 				eyebrow="Storico"
 				title="Le tue spedizioni"
 				description="Storico, tracking e gestione degli ordini in un'unica vista pulita."
@@ -94,7 +93,7 @@ const {
 
 			<!-- Loading: skeleton allineato alla struttura reale della card (header pill + route + 3 colonne mittente/destinatario/tracking) -->
 			<div v-if="ordersStatus === 'pending'" class="space-y-[14px]" aria-busy="true">
-				<div v-for="n in 3" :key="n" class="bg-white rounded-[16px] border border-[#E2E8EE] shadow-[0_3px_14px_rgba(15,23,42,0.04)] overflow-hidden">
+				<div v-for="n in 3" :key="n" class="bg-white rounded-[18px] border border-[#E2E8EE] shadow-[0_3px_14px_rgba(15,23,42,0.04)] overflow-hidden">
 					<div class="border-b border-[rgba(9,88,102,0.08)] bg-[linear-gradient(180deg,#FBFCFD_0%,#F8FAFB_100%)] px-[22px] py-[16px]">
 						<SfSkeleton variant="text-block" />
 					</div>
@@ -121,31 +120,19 @@ const {
 				/>
 			</div>
 
-			<!-- Empty state — pattern sf-empty-state condiviso sitewide -->
-			<div v-else class="sf-empty-state" role="status">
-				<div class="sf-empty-state__icon" aria-hidden="true">
-					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M21 16.5V7.5a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 7.5v9a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16.5Z"/>
-						<polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-						<line x1="12" y1="22.08" x2="12" y2="12"/>
-					</svg>
-				</div>
-				<h3 class="sf-empty-state__title">Nessuna spedizione trovata</h3>
-				<p class="sf-empty-state__copy">Inizia la tua prima spedizione: ti bastano pochi passaggi per ottenere il preventivo e generare l'etichetta.</p>
-				<div class="sf-empty-state__actions">
-					<NuxtLink to="/preventivo" class="sf-empty-state__cta">
-						<span>Crea nuova spedizione</span>
-						<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-							<path d="M5 12h14"/><path d="m13 5 7 7-7 7"/>
-						</svg>
-					</NuxtLink>
-
-				</div>
-			</div>
-		</div>
+			<!-- Empty state — pattern canonico SfEmptyState -->
+			<SfEmptyState
+				v-else
+				icon="mdi:package-variant-closed"
+				title="Nessuna spedizione trovata"
+				description="Inizia la tua prima spedizione: ti bastano pochi passaggi per ottenere il preventivo e generare l'etichetta.">
+				<template #cta>
+					<SfButton to="/preventivo" variant="primary">Crea nuova spedizione</SfButton>
+				</template>
+			</SfEmptyState>
 
 		<!-- Detail popup -->
 		<ShipmentDetailModal v-model:open="showDetail" :detail-item="detailItem" :format-price="formatPrice" />
-	</section>
+	</AccountPageSection>
 </template>
 

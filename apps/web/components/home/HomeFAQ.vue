@@ -38,12 +38,9 @@ function toggleFaq(i) {
 						eyebrow="Domande frequenti"
 						title="Tutto quello che vuoi sapere"
 						title-id="home-faq-title"
-						subtitle="Le risposte alle domande più comuni dei nostri clienti."
+						subtitle="Tre risposte rapide qui sotto. Per tutte le altre, visita il centro assistenza completo."
 						align="left"
 					/>
-					<p class="text-sm leading-relaxed text-brand-text-secondary md:text-base">
-						Tre risposte rapide qui sotto, oppure consulta il centro assistenza completo con tutte le guide e domande.
-					</p>
 					<div class="flex flex-wrap gap-3">
 						<SfButton to="/faq">Vai a tutte le FAQ</SfButton>
 						<SfButton variant="secondary" to="/contatti">Contatta l'assistenza</SfButton>
@@ -55,7 +52,7 @@ function toggleFaq(i) {
 					<li
 						v-for="(item, i) in faqs"
 						:key="i"
-						class="overflow-hidden rounded-card border border-brand-border bg-brand-card transition-all"
+						class="overflow-hidden rounded-[18px] border border-brand-border bg-brand-card transition-all"
 						:class="isFaqOpen(i)
 							? 'border-brand-primary/30 shadow-[0_8px_24px_-12px_rgba(9,88,102,0.18)]'
 							: 'hover:border-brand-primary/20 hover:shadow-sf-sm'"

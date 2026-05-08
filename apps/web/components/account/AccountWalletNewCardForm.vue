@@ -78,7 +78,7 @@ defineEmits(['update:cardHolderName', 'close']);
 .stripe-field {
 	width: 100%;
 	border: 1px solid var(--color-brand-border);
-	border-radius: 12px;
+	border-radius: 14px;
 	background-color: var(--color-brand-card);
 	padding: 12px 16px;
 	transition: border-color 200ms ease, box-shadow 200ms ease;

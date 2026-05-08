@@ -6,8 +6,8 @@ definePageMeta({
 useSeoMeta({
 	title: 'Console amministrazione',
 	ogTitle: 'Console amministrazione',
-	description: 'Priorita operative, KPI essenziali, andamento ordini e attivita recente in una console amministrativa piu ordinata.',
-	ogDescription: 'Console amministrazione SpediamoFacile con priorita operative, KPI essenziali, andamento ordini e attivita recente.',
+	description: 'Priorita operative, KPI essenziali, andamento ordini e attività recente in una console amministrativa più ordinata.',
+	ogDescription: 'Console amministrazione SpediamoFacile con priorità operative, KPI essenziali, andamento ordini e attività recente.',
 	robots: 'noindex, nofollow',
 });
 
@@ -141,12 +141,11 @@ const statusBadgeStyle = (status) => useStatusBadgeStyle(status);
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-6 sm:py-7 lg:py-8">
-		<div class="my-container space-y-4">
-			<AccountPageHeader
+	<AccountPageSection spacing="space-y-4">
+		<AccountPageHeader
 				:crumbs="[{ label: 'Account', to: '/account' }, { label: 'Amministrazione' }]"
 				title="Console amministrazione"
-				description="Priorita operative, KPI essenziali, andamento ordini e attivita recente in una console piu ordinata.">
+				description="Priorita operative, KPI essenziali, andamento ordini e attività recente in una console più ordinata.">
 				<template #actions>
 					<div class="flex items-center gap-2 shrink-0">
 						<SfButton to="/account/amministrazione/ordini">
@@ -249,13 +248,12 @@ const statusBadgeStyle = (status) => useStatusBadgeStyle(status);
 
 				<div v-else class="py-8">
 					<div class="space-y-3">
-						<AdminActionBanner :message="loadError || 'Impossibile caricare i dati della console.'" tone="error" />
+						<SfActionBanner :message="loadError || 'Impossibile caricare i dati della console.'" tone="danger" />
 						<div class="flex justify-center">
 							<SfButton variant="secondary" @click="reloadDashboard">Riprova</SfButton>
 						</div>
 					</div>
 				</div>
 			</template>
-		</div>
-	</section>
+	</AccountPageSection>
 </template>

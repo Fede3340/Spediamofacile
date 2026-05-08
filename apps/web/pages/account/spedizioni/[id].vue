@@ -51,14 +51,15 @@ const DD_CLASS = 'mt-[2px] text-[0.875rem] font-semibold leading-[1.3] text-[var
 </script>
 
 <template>
-	<section class="w-full min-h-[600px] py-5 tablet:py-6 desktop:py-7">
-		<div class="my-container max-w-7xl">
+	<AccountPageSection>
 			<!-- Loading -->
 			<div v-if="orderStatus === 'pending'" class="space-y-[16px]">
-				<div class="bg-white rounded-[16px] p-[16px] border border-[var(--color-brand-border)] animate-pulse">
-					<div class="h-[24px] bg-gray-200 rounded w-[40%] mb-[16px]"/>
-					<div class="h-[16px] bg-gray-200 rounded w-[60%] mb-[8px]"/>
-					<div class="h-[16px] bg-gray-200 rounded w-[50%]"/>
+				<div class="bg-white rounded-[18px] p-[16px] border border-[var(--color-brand-border)]">
+					<SfSkeleton variant="title" />
+					<div class="mt-[12px] space-y-[8px]">
+						<SfSkeleton width="60%" />
+						<SfSkeleton width="50%" />
+					</div>
 				</div>
 			</div>
 
@@ -104,7 +105,7 @@ const DD_CLASS = 'mt-[2px] text-[0.875rem] font-semibold leading-[1.3] text-[var
 				</SfAlert>
 
 				<!-- P14: Status & Summary - card flat unica, no matryoshka. -->
-				<div class="mb-[16px] rounded-[16px] border border-[var(--color-brand-border)] bg-white p-[16px] tablet:p-[18px]">
+				<div class="mb-[16px] rounded-[18px] border border-[var(--color-brand-border)] bg-white p-[16px] tablet:p-[18px]">
 					<dl class="grid grid-cols-2 gap-x-[16px] gap-y-[10px] tablet:grid-cols-4">
 						<div><dt :class="DT_CLASS">Tratta</dt><dd :class="DD_CLASS">{{ orderRouteLabel }}</dd></div>
 						<div><dt :class="DT_CLASS">Creato</dt><dd :class="DD_CLASS">{{ formatDateTimeIt(orderData.created_at, '—') }}</dd></div>
@@ -216,13 +217,18 @@ const DD_CLASS = 'mt-[2px] text-[0.875rem] font-semibold leading-[1.3] text-[var
 			</template>
 
 			<!-- Not found -->
-			<div v-else class="bg-white rounded-[16px] p-[20px] border border-[var(--color-brand-border)] text-center">
-				<p class="text-[1rem] text-[var(--color-brand-text-secondary)]">Ordine non trovato.</p>
-				<NuxtLink to="/account/spedizioni" class="btn btn-secondary btn-sm mt-[16px] inline-flex items-center gap-[6px]">
-					<UIcon name="mdi:arrow-left" class="w-[18px] h-[18px]" aria-hidden="true" />
-					Torna alle spedizioni
-				</NuxtLink>
-			</div>
+			<SfEmptyState
+				v-else
+				icon="mdi:package-variant-closed-remove"
+				title="Ordine non trovato"
+				description="L'ordine richiesto non esiste o non è più disponibile nel tuo storico.">
+				<template #cta>
+					<SfButton variant="secondary" to="/account/spedizioni">
+						<UIcon name="mdi:arrow-left" class="w-[18px] h-[18px]" aria-hidden="true" />
+						Torna alle spedizioni
+					</SfButton>
+				</template>
+			</SfEmptyState>
 
 			<!-- Cancel Modal -->
 			<ShipmentCancelModal
@@ -248,6 +254,5 @@ const DD_CLASS = 'mt-[2px] text-[0.875rem] font-semibold leading-[1.3] text-[var
 				:current-notes="orderData.pickup_notes"
 				@update:show="showRescheduleModal = $event"
 				@updated="onPickupRescheduled" />
-		</div>
-	</section>
+	</AccountPageSection>
 </template>

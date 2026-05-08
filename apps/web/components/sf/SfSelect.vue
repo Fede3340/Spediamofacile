@@ -42,7 +42,7 @@ const sizeClasses = computed(() => {
 });
 
 const classes = computed(() => [
-	'w-full rounded-control border bg-brand-card transition appearance-none cursor-pointer',
+	'w-full rounded-control border-[1.5px] bg-brand-card transition appearance-none cursor-pointer',
 	'focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary outline-none',
 	'text-brand-text bg-no-repeat bg-[length:1.25em] bg-[right_0.75rem_center]',
 	props.invalid

@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 /* ===== CONTATTACI (pubblico) ===== */
 
-Route::middleware(['throttle:5,1'])->post('/contact', [ContactController::class, 'store']);
+// P0.3 anti-spam: chiave IP, 10/h — vedi RateLimiter "contact-form" in AppServiceProvider
+Route::middleware(['throttle:contact-form'])->post('/contact', [ContactController::class, 'store']);
 
 /* ===== ASSISTENZA UTENTE ===== */
 

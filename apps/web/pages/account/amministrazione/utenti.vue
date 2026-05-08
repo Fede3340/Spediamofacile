@@ -252,9 +252,8 @@ onMounted(() => {
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-6 md:py-8">
-		<div class="max-w-7xl mx-auto px-4 md:px-6 space-y-6 md:space-y-8">
-			<AccountPageHeader
+	<AccountPageSection spacing="space-y-6 md:space-y-8">
+		<AccountPageHeader
 				eyebrow="Area amministrazione"
 				title="Utenti"
 				description="Console di gestione utenti: ruoli, stati, azioni rapide e dettaglio completo."
@@ -266,7 +265,7 @@ onMounted(() => {
 					{ label: 'Utenti' },
 				]" />
 
-			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
+			<SfActionBanner :message="actionMessage" />
 
 			<div class="grid grid-cols-2 desktop:grid-cols-4 gap-3">
 				<SfStatCard
@@ -356,7 +355,6 @@ onMounted(() => {
 					@approve="approveProRequest"
 					@reject="rejectProRequest" />
 			</div>
-		</div>
 
 		<AdminUserDetailDrawer
 			v-model:open="drawerOpen"
@@ -364,5 +362,5 @@ onMounted(() => {
 			:can-master="canMaster"
 			@updated="onUserUpdated"
 			@impersonate="handleImpersonate" />
-	</section>
+	</AccountPageSection>
 </template>

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Package;
 use App\Services\Cart\CartTotalsService;
 use App\Services\Checkout\CheckoutDiscountContextResolver;
 use App\Services\Checkout\SnapshotCompactingHelpers;
@@ -83,12 +84,15 @@ class CheckoutSubmissionContextService
         $collection = $packages instanceof Collection
             ? $packages
             : Collection::make($packages);
+        /** @var Package|null $firstPackage */
         $firstPackage = $collection->first();
         $service = $firstPackage?->service;
         $serviceData = is_array($service?->service_data) ? $service->service_data : [];
         $deliveryMode = (string) ($serviceData['delivery_mode'] ?? 'home');
         $selectedPudo = $deliveryMode === 'pudo' ? ($serviceData['pudo'] ?? null) : null;
-        $groupSnapshots = $this->buildPackageGroupSnapshotsFromModels($collection);
+        /** @var iterable<int, Package> $packagesIterable */
+        $packagesIterable = $collection;
+        $groupSnapshots = $this->buildPackageGroupSnapshotsFromModels($packagesIterable);
 
         return $this->baseSnapshot(
             $collection->map(fn ($package) => $this->packageRow($package))->all(),
@@ -101,8 +105,8 @@ class CheckoutSubmissionContextService
                 ),
             ],
             [
-                'service_type' => (string) ($service?->service_type ?? 'Nessuno'),
-                'selected' => $this->normalizeServiceTypeList((string) ($service?->service_type ?? 'Nessuno')),
+                'service_type' => (string) ($service->service_type ?? 'Nessuno'),
+                'selected' => $this->normalizeServiceTypeList((string) ($service->service_type ?? 'Nessuno')),
                 'service_payload' => $this->compactServiceData($serviceData),
             ],
             (int) $this->cartTotals->subtotalFromModels($collection)->amount(),
@@ -210,6 +214,9 @@ class CheckoutSubmissionContextService
         ]);
     }
 
+    /**
+     * @param  iterable<int, Package>  $packages
+     */
     private function buildPackageGroupSnapshotsFromModels($packages): array
     {
         $servicePricing = app(ShipmentServicePricingService::class);
@@ -221,7 +228,7 @@ class CheckoutSubmissionContextService
             $destination = $package->destinationAddress?->toArray() ?? [];
             $service = $package->service;
             $serviceData = is_array($service?->service_data) ? $service->service_data : [];
-            $serviceType = (string) ($service?->service_type ?? 'Nessuno');
+            $serviceType = (string) ($service->service_type ?? 'Nessuno');
             $serviceSignature = $servicePricing->buildSelectionSignature(
                 $serviceType,
                 $serviceData,

@@ -73,12 +73,11 @@ onMounted(() => {
 </script>
 
 <template>
-	<section class="sf-account-shell min-h-[600px] py-6 tablet:py-7">
-		<div class="my-container space-y-5">
-			<AccountPageHeader
+	<AccountPageSection spacing="space-y-5">
+		<AccountPageHeader
 				eyebrow="Area amministrazione"
 				title="Prezzi"
-				description="Listini nazionali, Europa, servizi e promozione in una regia unica, piu pulita e coerente."
+				description="Listini nazionali, Europa, servizi e promozione in una regia unica, più pulita e coerente."
 				:crumbs="[
 					{ label: 'Account', to: '/account' },
 					{ label: 'Amministrazione', to: '/account/amministrazione' },
@@ -164,7 +163,7 @@ onMounted(() => {
 				</div>
 			</div>
 
-			<AdminActionBanner :message="actionMessage?.text || ''" :tone="actionMessage?.type || ''" />
+			<SfActionBanner :message="actionMessage" />
 
 			<div v-if="isLoading" class="py-8 flex justify-center">
 				<UIcon name="mdi:loading" class="w-10 h-10 text-brand-primary animate-spin" />
@@ -258,6 +257,5 @@ onMounted(() => {
 						@update:promo="promo = $event" />
 				</div>
 			</template>
-		</div>
-	</section>
+	</AccountPageSection>
 </template>

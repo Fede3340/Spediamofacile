@@ -6,9 +6,9 @@ const props = defineProps({
     showPassword: { type: Boolean, default: false },
 });
 const emit = defineEmits(['submit', 'enter-forgot', 'toggle-password', 'update:form']);
-const INPUT_CLS = 'w-full h-[46px] rounded-[12px] px-[14px] text-[14px] font-medium text-[var(--color-brand-text)] bg-white ring-[1.5px] ring-[#DFE2E7] focus:ring-[2.5px] focus:ring-[var(--color-brand-primary)]/50 placeholder:text-[#aaa] outline-none transition-all duration-200';
+const INPUT_CLS = 'w-full h-[46px] rounded-control px-[14px] text-sm font-medium text-brand-text bg-white ring-[1.5px] ring-brand-border focus:ring-[2.5px] focus:ring-[var(--color-brand-primary)]/50 placeholder:text-[#aaa] outline-none transition-all duration-200';
 const LABEL_CLS = 'text-[#777] text-[11px] uppercase tracking-[0.4px] font-bold block';
-const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-[14px] flex items-center justify-center gap-[10px] mt-[4px] cursor-pointer active:scale-[0.985] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-brand-accent)]/25 disabled:cursor-wait';
+const CTA_CLS = 'btn-cta-filled w-full h-[50px] rounded-full text-sm flex items-center justify-center gap-[10px] mt-[4px] cursor-pointer active:scale-[0.985] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-brand-accent)]/25 disabled:cursor-wait';
 const formValue = (field) => props.form?.[field] ?? '';
 const updateFormField = (field, value) => {
   emit('update:form', {

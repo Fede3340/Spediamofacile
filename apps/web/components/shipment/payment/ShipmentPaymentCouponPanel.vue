@@ -40,7 +40,7 @@ const emit = defineEmits(['update:couponPanelOpen', 'update:couponCode']);
 						:value="couponCode"
 						type="text"
 						placeholder="Inserisci il codice"
-						class="flex-1 h-[46px] rounded-[16px] border border-[#D9E1EA] bg-[#F8F9FB] px-[16px] text-[15px] text-[var(--color-brand-text)] outline-none focus:border-[#0b7d92] focus:ring-[3px] focus:ring-[rgba(11,125,146,0.12)]"
+						class="flex-1 h-[46px] rounded-card border border-[#D9E1EA] bg-[#F8F9FB] px-[16px] text-[15px] text-[var(--color-brand-text)] outline-none focus:border-[#0b7d92] focus:ring-[3px] focus:ring-[rgba(11,125,146,0.12)]"
 						@input="emit('update:couponCode', $event.target.value)">
 					<SfButton
 						v-if="!couponApplied"

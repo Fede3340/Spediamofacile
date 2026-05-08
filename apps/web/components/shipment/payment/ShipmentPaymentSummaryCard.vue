@@ -133,7 +133,7 @@ defineExpose({
 	<div class="payment-summary-card">
 		<div class="flex flex-col gap-[10px] lg:flex-row lg:items-start lg:justify-between">
 			<div class="min-w-0 flex items-start gap-[12px]">
-				<span class="inline-flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-[14px] bg-[#F3FAFB] text-[var(--color-brand-primary)] border border-[#D7E4E7]">
+				<span class="inline-flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-control bg-[#F3FAFB] text-[var(--color-brand-primary)] border border-[#D7E4E7]">
 					<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<path d="M3 7l9-4 9 4v10l-9 4-9-4z" />
 						<path d="M3 7l9 4 9-4" />

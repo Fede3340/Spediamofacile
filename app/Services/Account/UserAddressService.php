@@ -35,7 +35,7 @@ class UserAddressService
 
         return $user->addresses()
             ->get(self::SIGNATURE_FIELDS)
-            ->contains(fn (UserAddress $a) => $this->signature($a->toArray()) === $candidate);
+            ->contains(fn ($a) => $this->signature($a->toArray()) === $candidate);
     }
 
     /**

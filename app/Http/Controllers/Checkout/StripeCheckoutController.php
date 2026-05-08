@@ -91,7 +91,7 @@ class StripeCheckoutController extends Controller
                 $lockedOrder->payment_method = $paymentType;
                 $lockedOrder->save();
                 if ($paymentType === 'bonifico') {
-                    $existingTransaction->total = $lockedOrder->payableTotalCents();
+                    $existingTransaction->total = new \App\Cart\MyMoney($lockedOrder->payableTotalCents());
                     $existingTransaction->save();
                 }
                 $transaction = $existingTransaction;
@@ -262,16 +262,22 @@ class StripeCheckoutController extends Controller
     private function loadExistingTransaction(Order $order, string $paymentType, string $externalId): ?Transaction
     {
         if ($paymentType === 'bonifico') {
-            return $order->transactions()
+            /** @var Transaction|null $tx */
+            $tx = $order->transactions()
                 ->where('type', 'bonifico')
                 ->where('status', 'pending')
                 ->latest('id')
                 ->first();
+
+            return $tx;
         }
 
-        return $order->transactions()
+        /** @var Transaction|null $tx */
+        $tx = $order->transactions()
             ->where('ext_id', $externalId)
             ->first();
+
+        return $tx;
     }
 
     private function shouldDispatchExistingPaidOrder(Order $order, string $paymentType): bool

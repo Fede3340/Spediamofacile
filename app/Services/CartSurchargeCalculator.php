@@ -55,11 +55,11 @@ class CartSurchargeCalculator
                 $serviceData,
                 (bool) ($serviceData['sms_email_notification'] ?? false),
                 [
-                    'packages' => $group['packages'] ?? [],
-                    'origin_address' => $group['origin_address'] ?? [],
+                    'packages' => $group['packages'],
+                    'origin_address' => $group['origin_address'],
                     'destination_address' => ($deliveryMode === 'pudo' && ! empty($serviceData['pudo']))
                         ? $serviceData['pudo']
-                        : ($group['destination_address'] ?? []),
+                        : $group['destination_address'],
                     'delivery_mode' => $deliveryMode,
                     'selected_pudo' => $serviceData['pudo'] ?? null,
                     'requires_manual_quote' => (bool) ($serviceData['requires_manual_quote'] ?? false),
@@ -108,19 +108,19 @@ class CartSurchargeCalculator
         }
 
         return array_sum(array_map(function (array $group) use ($pricing) {
-            $serviceData = is_array($group['service_data'] ?? null) ? $group['service_data'] : [];
+            $serviceData = is_array($group['service_data']) ? $group['service_data'] : [];
             $deliveryMode = $serviceData['delivery_mode'] ?? 'home';
 
             return $pricing->calculateSurchargeCents(
-                $group['service_type'] ?? 'Nessuno',
+                (string) ($group['service_type'] ?: 'Nessuno'),
                 $serviceData,
-                (bool) ($group['sms_email_notification'] ?? false),
+                (bool) $group['sms_email_notification'],
                 [
-                    'packages' => $group['packages'] ?? [],
-                    'origin_address' => $group['origin_address'] ?? [],
+                    'packages' => $group['packages'],
+                    'origin_address' => $group['origin_address'],
                     'destination_address' => ($deliveryMode === 'pudo' && ! empty($serviceData['pudo']))
                         ? $serviceData['pudo']
-                        : ($group['destination_address'] ?? []),
+                        : $group['destination_address'],
                     'delivery_mode' => $deliveryMode,
                     'selected_pudo' => $serviceData['pudo'] ?? null,
                     'requires_manual_quote' => (bool) ($serviceData['requires_manual_quote'] ?? false),

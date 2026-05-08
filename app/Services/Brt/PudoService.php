@@ -227,10 +227,8 @@ class PudoService
     private function geocodeInputToCoordinates(string $address, string $city, string $zipCode): ?array
     {
         try {
+            // 'Italia' garantisce sempre almeno un elemento: nessun controllo empty necessario.
             $parts = array_values(array_filter([trim($address), preg_replace('/\D/', '', (string) $zipCode), trim($city), 'Italia'], fn ($v) => (string) $v !== ''));
-            if (empty($parts)) {
-                return null;
-            }
 
             $query = implode(', ', $parts);
             $cacheKey = 'nominatim_'.md5($query);

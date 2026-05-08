@@ -121,7 +121,7 @@ const acceptCustom = () => {
 		<div
 			v-if="visible"
 			ref="bannerRef"
-			class="fixed left-[10px] right-[10px] bottom-[10px] sm:left-[18px] sm:right-auto sm:bottom-[18px] z-[900] sm:w-[min(308px,calc(100vw-36px))] rounded-[16px] bg-white/95 backdrop-blur-md ring-1 ring-[rgba(9,88,102,0.08)] shadow-[0_10px_28px_rgba(15,23,42,0.09),0_2px_6px_rgba(15,23,42,0.04)]"
+			class="fixed left-[10px] right-[10px] bottom-[10px] sm:left-[18px] sm:right-auto sm:bottom-[18px] z-[900] sm:w-[min(308px,calc(100vw-36px))] rounded-card bg-white/95 backdrop-blur-md ring-1 ring-[rgba(9,88,102,0.08)] shadow-[0_10px_28px_rgba(15,23,42,0.09),0_2px_6px_rgba(15,23,42,0.04)]"
 			:role="bannerRole"
 			aria-label="Gestione cookie">
 			<div

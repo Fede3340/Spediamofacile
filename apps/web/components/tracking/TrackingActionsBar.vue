@@ -32,7 +32,7 @@ const emit = defineEmits(['reschedule', 'change-address']);
 </script>
 
 <template>
-	<div class="tracking-actions-bar rounded-[16px] overflow-hidden" data-shadow="soft">
+	<div class="tracking-actions-bar rounded-[18px] overflow-hidden" data-shadow="soft">
 		<div class="h-[3px]" data-accent="bar"/>
 		<div class="p-[16px] sm:p-[18px]" style="background: var(--gradient-page-surface, #ffffff)">
 			<p class="text-[11px] uppercase tracking-[0.4px] text-[#777] mb-[12px]" style="font-weight:700">

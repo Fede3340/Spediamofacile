@@ -12,7 +12,7 @@
 					Ripristiniamo la tua spedizione
 				</p>
 				<p class="mt-[4px] text-[#667085] text-[13px] leading-[1.55]" style="font-weight: 500">
-					Carichiamo i dati salvati prima di mostrare gli step, cosi la pagina non cambia struttura durante l'hydration.
+					Carichiamo i dati salvati prima di mostrare gli step, così la pagina non cambia struttura durante l'hydration.
 				</p>
 			</div>
 		</div>
@@ -30,9 +30,9 @@
 					<div class="h-[18px] w-[66px] rounded-full bg-[#E3EAED] shrink-0" />
 				</div>
 				<div v-if="sectionIndex === 1" class="mt-[16px] grid gap-[10px] sm:grid-cols-3">
-					<div class="h-[54px] rounded-[16px] bg-white" />
-					<div class="h-[54px] rounded-[16px] bg-white" />
-					<div class="h-[54px] rounded-[16px] bg-white" />
+					<div class="h-[54px] rounded-card bg-white" />
+					<div class="h-[54px] rounded-card bg-white" />
+					<div class="h-[54px] rounded-card bg-white" />
 				</div>
 			</div>
 		</div>

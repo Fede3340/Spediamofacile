@@ -152,7 +152,7 @@ const submit = async () => {
 				role="dialog"
 				aria-modal="true"
 				aria-labelledby="reschedule-modal-title"
-				class="relative bg-white rounded-[16px] shadow-lg max-w-[520px] w-full mx-[16px] p-[20px] z-[1]">
+				class="relative bg-white rounded-card shadow-lg max-w-[520px] w-full mx-[16px] p-[20px] z-[1]">
 				<!-- Header -->
 				<div class="flex items-center gap-[12px] mb-[20px]">
 					<div class="w-[44px] h-[44px] rounded-full bg-[#EEF6F8] flex items-center justify-center shrink-0" aria-hidden="true">
@@ -176,7 +176,7 @@ const submit = async () => {
 							type="date"
 							:min="minDate"
 							:max="maxDate"
-							class="w-full bg-[#F8F9FB] border border-[var(--color-brand-border)] rounded-[12px] px-[12px] py-[10px] text-[0.875rem] focus:border-[var(--color-brand-primary)] focus:outline-none" >
+							class="w-full bg-[#F8F9FB] border border-brand-border rounded-control px-[12px] py-[10px] text-[0.875rem] focus:border-[var(--color-brand-primary)] focus:outline-none" >
 						<p class="mt-[4px] text-[0.6875rem] text-[var(--color-brand-text-muted)]">
 							Range consentito: {{ minDate }} → {{ maxDate }} (solo giorni feriali).
 						</p>
@@ -189,7 +189,7 @@ const submit = async () => {
 						<select
 							id="pickup-slot-select"
 							v-model="form.pickup_time_slot"
-							class="w-full bg-[#F8F9FB] border border-[var(--color-brand-border)] rounded-[12px] px-[12px] py-[10px] text-[0.875rem] focus:border-[var(--color-brand-primary)] focus:outline-none">
+							class="w-full bg-[#F8F9FB] border border-brand-border rounded-control px-[12px] py-[10px] text-[0.875rem] focus:border-[var(--color-brand-primary)] focus:outline-none">
 							<option value="09:00-18:00">09:00 — 18:00 (tutto il giorno)</option>
 							<option value="09:00-12:00">09:00 — 12:00 (mattina)</option>
 							<option value="14:00-18:00">14:00 — 18:00 (pomeriggio)</option>
@@ -206,13 +206,13 @@ const submit = async () => {
 							placeholder="Es. citofono interno, orari preferiti..."
 							maxlength="500"
 							rows="2"
-							class="w-full bg-[#F8F9FB] border border-[var(--color-brand-border)] rounded-[12px] px-[12px] py-[10px] text-[0.875rem] resize-none focus:border-[var(--color-brand-primary)] focus:outline-none"/>
+							class="w-full bg-[#F8F9FB] border border-brand-border rounded-control px-[12px] py-[10px] text-[0.875rem] resize-none focus:border-[var(--color-brand-primary)] focus:outline-none"/>
 					</div>
 
-					<div v-if="errorMsg" class="bg-red-50 border border-red-200 rounded-[12px] px-[14px] py-[10px] text-red-600 text-[0.8125rem]" role="alert">
+					<div v-if="errorMsg" class="bg-red-50 border border-red-200 rounded-control px-[14px] py-[10px] text-red-600 text-[0.8125rem]" role="alert">
 						{{ errorMsg }}
 					</div>
-					<div v-if="successMsg" class="bg-[#E9F7EC] border border-[rgba(31,122,58,0.3)] rounded-[12px] px-[14px] py-[10px] text-[#1F7A3A] text-[0.8125rem]" role="status">
+					<div v-if="successMsg" class="bg-[#E9F7EC] border border-[rgba(31,122,58,0.3)] rounded-control px-[14px] py-[10px] text-[#1F7A3A] text-[0.8125rem]" role="status">
 						{{ successMsg }}
 					</div>
 				</div>

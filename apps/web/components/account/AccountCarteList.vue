@@ -111,7 +111,7 @@ const getBrandIcon = (brand) => {
 		</div>
 	</template>
 
-	<div class="mt-3.5 flex items-start gap-2.5 rounded-[14px] bg-brand-bg-alt p-3">
+	<div class="mt-3.5 flex items-start gap-2.5 rounded-control bg-brand-bg-alt p-3">
 		<svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-text-secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-px shrink-0"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
 		<p class="text-xs leading-snug text-brand-text-secondary">
 			I dati delle carte sono gestiti in modo sicuro da Stripe. Non conserviamo mai i numeri completi delle tue carte.

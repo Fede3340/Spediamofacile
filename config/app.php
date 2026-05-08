@@ -15,6 +15,10 @@ return [
 
     'frontend_url' => env('APP_FRONTEND_URL', 'http://127.0.0.1:8787'),
 
+    // Security headers — quando true il middleware SecurityHeaders emette
+    // Content-Security-Policy-Report-Only invece di enforce. Vedi audit P1.
+    'csp_report_only' => env('CSP_REPORT_ONLY', false),
+
     'name' => env('APP_NAME', 'Laravel'),
 
     /*

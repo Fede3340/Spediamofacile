@@ -101,7 +101,7 @@ const infoFields = computed(() => {
 	<section class="mb-6 overflow-hidden rounded-card bg-white shadow-[0_2px_8px_rgba(9,88,102,0.06),0_0_0_1px_rgba(9,88,102,0.04)]" aria-labelledby="sf-profilo-view-dati">
 		<div class="mb-3 flex items-center justify-between px-4 pt-4">
 			<div class="flex items-center gap-3">
-				<div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-[9px] bg-brand-primary/[0.08]">
+				<div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-control bg-brand-primary/[0.08]">
 					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
 				</div>
 				<h2 id="sf-profilo-view-dati" class="text-sm font-bold tracking-tight text-brand-text">Dati personali</h2>
@@ -118,8 +118,8 @@ const infoFields = computed(() => {
 				<div
 					v-for="(field, idx) in infoFields"
 					:key="idx"
-					class="flex items-start gap-2.5 rounded-[14px] p-3 transition-colors hover:bg-brand-primary/[0.03]">
-					<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-brand-primary/[0.07]">
+					class="flex items-start gap-2.5 rounded-control p-3 transition-colors hover:bg-brand-primary/[0.03]">
+					<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-control bg-brand-primary/[0.07]">
 						<svg
 							v-if="field.stroke"
 							aria-hidden="true"
@@ -152,7 +152,7 @@ const infoFields = computed(() => {
 
 	<section class="mb-6 overflow-hidden rounded-card bg-white shadow-[0_2px_8px_rgba(9,88,102,0.06),0_0_0_1px_rgba(9,88,102,0.04)]" aria-labelledby="sf-profilo-view-notifiche">
 		<div class="mb-3 flex items-center gap-3 px-4 pt-4">
-			<div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-[9px] bg-brand-primary/[0.08]">
+			<div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-control bg-brand-primary/[0.08]">
 				<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
 			</div>
 			<h2 id="sf-profilo-view-notifiche" class="text-sm font-bold tracking-tight text-brand-text">Notifiche</h2>
@@ -160,8 +160,8 @@ const infoFields = computed(() => {
 		<div class="space-y-2 px-4 pb-4">
 			<div
 				aria-label="Gestione email tramite assistenza"
-				class="group flex cursor-default items-center gap-2.5 rounded-[12px] p-3 no-underline opacity-70">
-				<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-brand-primary/[0.07]">
+				class="group flex cursor-default items-center gap-2.5 rounded-control p-3 no-underline opacity-70">
+				<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-control bg-brand-primary/[0.07]">
 					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
 				</div>
 				<span class="flex-1 text-[13px] font-semibold text-brand-text">Notifiche email</span>
@@ -172,7 +172,7 @@ const infoFields = computed(() => {
 
 	<section class="mb-6 overflow-hidden rounded-card bg-white shadow-[0_2px_8px_rgba(9,88,102,0.06),0_0_0_1px_rgba(9,88,102,0.04)]" aria-labelledby="sf-profilo-view-privacy">
 		<div class="mb-3 flex items-center gap-3 px-4 pt-4">
-			<div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-[9px] bg-brand-primary/[0.08]">
+			<div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-control bg-brand-primary/[0.08]">
 				<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
 			</div>
 			<h2 id="sf-profilo-view-privacy" class="text-sm font-bold tracking-tight text-brand-text">Privacy e dati personali</h2>
@@ -181,14 +181,14 @@ const infoFields = computed(() => {
 			<p
 				v-if="gdprError"
 				role="alert"
-				class="mb-1 rounded-[10px] border border-brand-error/20 bg-brand-error/[0.08] px-3 py-2 text-xs text-brand-error">
+				class="mb-1 rounded-control border border-brand-error/20 bg-brand-error/[0.08] px-3 py-2 text-xs text-brand-error">
 				{{ gdprError }}
 			</p>
 			<button
 				:disabled="exportingData"
-				class="group flex w-full cursor-pointer items-center gap-2.5 rounded-[12px] p-3 text-left transition-colors hover:bg-brand-primary/[0.03] disabled:cursor-not-allowed disabled:opacity-60"
+				class="group flex w-full cursor-pointer items-center gap-2.5 rounded-control p-3 text-left transition-colors hover:bg-brand-primary/[0.03] disabled:cursor-not-allowed disabled:opacity-60"
 				@click="exportData">
-				<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-brand-primary/[0.07]">
+				<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-control bg-brand-primary/[0.07]">
 					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#095866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
 				</div>
 				<div class="flex-1">
@@ -201,9 +201,9 @@ const infoFields = computed(() => {
 			</button>
 			<button
 				v-if="!showDeleteConfirm"
-				class="group flex w-full cursor-pointer items-center gap-2.5 rounded-[12px] p-3 text-left transition-colors hover:bg-brand-error/[0.06]"
+				class="group flex w-full cursor-pointer items-center gap-2.5 rounded-control p-3 text-left transition-colors hover:bg-brand-error/[0.06]"
 				@click="showDeleteConfirm = true">
-				<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-brand-error/[0.08]">
+				<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-control bg-brand-error/[0.08]">
 					<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
 				</div>
 				<div class="flex-1">
@@ -216,7 +216,7 @@ const infoFields = computed(() => {
 				role="alertdialog"
 				aria-labelledby="sf-profilo-delete-title"
 				aria-describedby="sf-profilo-delete-desc"
-				class="space-y-2.5 rounded-[14px] border border-brand-error/[0.24] bg-brand-error/[0.06] p-3.5">
+				class="space-y-2.5 rounded-control border border-brand-error/[0.24] bg-brand-error/[0.06] p-3.5">
 				<p id="sf-profilo-delete-title" class="text-[13px] font-bold text-brand-error">Sei sicuro di voler eliminare il tuo account?</p>
 				<p id="sf-profilo-delete-desc" class="text-xs leading-snug text-brand-error">Azione irreversibile. Dati personali, indirizzi e spedizioni eliminati. Ordini completati anonimizzati per obblighi fiscali.</p>
 				<div class="flex gap-3">

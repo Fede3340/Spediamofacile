@@ -44,7 +44,7 @@ const emit = defineEmits(['reset']);
 	gap: 16px;
 	padding: 48px 24px;
 	background: #ffffff;
-	border-radius: 14px;
+	border-radius: 18px;
 	box-shadow: 0 2px 8px rgba(9, 88, 102, 0.04);
 	text-align: center;
 }

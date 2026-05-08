@@ -146,7 +146,7 @@ class PricingConfigNormalizer
             $normalized[$item] = true;
         }
 
-        return array_values(array_keys($normalized));
+        return array_keys($normalized);
     }
 
     public function normalizeTiers(array $tiers): array

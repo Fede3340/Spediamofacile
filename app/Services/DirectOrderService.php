@@ -18,7 +18,6 @@ class DirectOrderService
     public function __construct(
         private readonly PriceEngineService $priceEngine,
         private readonly ShipmentServicePricingService $servicePricing,
-        private readonly CheckoutSubmissionContextService $submissionContext,
     ) {}
 
     /**

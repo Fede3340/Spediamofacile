@@ -77,7 +77,7 @@ class PickupService
                 'pickupProvinceAbbreviation' => $normalizedOrigin['province'],
                 'pickupCountryAbbreviationISOAlpha2' => $pickupCountry,
                 'pickupContactPhone' => $origin->telephone_number ?? '',
-                'pickupContactEMail' => $origin->email ?? ($order->user?->email ?? ''),
+                'pickupContactEMail' => $origin->email ?? ($order->user->email ?? ''),
                 'pickupDate' => $pickupDate,
                 'pickupTimeSlotFrom' => $pickupTimeFrom,
                 'pickupTimeSlotTo' => $pickupTimeTo,
