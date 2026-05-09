@@ -193,6 +193,14 @@ const statusBadgeStyle = (status) => useStatusBadgeStyle(status);
 							:trend-label="card.meta" />
 					</section>
 
+					<AdminConsoleKpiInsights
+						:revenue-month="revenueMonth"
+						:revenue-week="dashboardData?.revenue_week ?? 0"
+						:month-orders="monthOrders"
+						:week-orders="weekOrders"
+						:status-distribution="analyticsProps.statusDistribution"
+						:daily-orders="dailyOrders" />
+
 					<LazyAdminConsoleAnalytics v-bind="analyticsProps" />
 
 					<section class="space-y-3">

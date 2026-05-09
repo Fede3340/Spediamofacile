@@ -11,9 +11,25 @@ const props = defineProps({
 	formatCents: { type: Function, required: true },
 	formatDate: { type: Function, required: true },
 	statusConfig: { type: Object, required: true },
+	// Selezione multipla — bulk actions
+	selectedIds: { type: Array, default: () => [] },
+	selectable: { type: Boolean, default: false },
 });
 
-const emit = defineEmits(['sort', 'action']);
+const emit = defineEmits(['sort', 'action', 'toggle-select', 'toggle-select-all']);
+
+const selectedSet = computed(() => new Set(props.selectedIds));
+const isSelected = (id) => selectedSet.value.has(id);
+const allSelected = computed(() => props.orders.length > 0 && props.orders.every(o => selectedSet.value.has(o.id)));
+const someSelected = computed(() => props.orders.some(o => selectedSet.value.has(o.id)) && !allSelected.value);
+
+const onToggleRow = (order, evt) => {
+	evt?.stopPropagation();
+	emit('toggle-select', order.id);
+};
+const onToggleAll = () => {
+	emit('toggle-select-all', !allSelected.value);
+};
 
 const onSort = (key) => {
 	const newDir = props.sort.key === key && props.sort.dir === 'desc' ? 'asc' : 'desc';
@@ -63,6 +79,15 @@ const trackingLabel = (order) => getBrtTrackingLabel(order);
 			<table class="w-full">
 				<thead class="bg-brand-bg-alt border-b border-brand-border">
 					<tr>
+						<th v-if="selectable" scope="col" class="px-3 py-3 text-left w-1">
+							<input
+								type="checkbox"
+								:checked="allSelected"
+								:indeterminate.prop="someSelected"
+								class="h-4 w-4 cursor-pointer rounded border-brand-border text-brand-primary focus:ring-brand-primary/30"
+								aria-label="Seleziona tutti gli ordini visibili"
+								@change="onToggleAll" />
+						</th>
 						<th scope="col" class="px-3 py-3 text-left text-[0.6875rem] font-bold uppercase tracking-wider text-brand-text-muted">
 							<button type="button" class="inline-flex items-center gap-1 hover:text-brand-primary transition" @click="onSort('id')">
 								Codice {{ sortIcon('id') }}
@@ -93,10 +118,22 @@ const trackingLabel = (order) => getBrtTrackingLabel(order);
 					<tr
 						v-for="order in orders"
 						:key="order.id"
-						class="border-b border-brand-border last:border-0 cursor-pointer hover:bg-brand-bg-alt transition focus:outline-none focus-visible:bg-brand-soft-bg"
+						:class="[
+							'border-b border-brand-border last:border-0 cursor-pointer hover:bg-brand-bg-alt transition focus:outline-none focus-visible:bg-brand-soft-bg',
+							isSelected(order.id) ? 'bg-brand-primary/[0.04]' : '',
+						]"
 						tabindex="0"
 						@click="onRowClick(order, $event)"
 						@keydown.enter="onRowClick(order, $event)">
+						<td v-if="selectable" class="px-3 py-3 w-1">
+							<input
+								type="checkbox"
+								:checked="isSelected(order.id)"
+								class="h-4 w-4 cursor-pointer rounded border-brand-border text-brand-primary focus:ring-brand-primary/30"
+								:aria-label="`Seleziona ordine ${order.id}`"
+								@click.stop
+								@change="(e) => onToggleRow(order, e)" />
+						</td>
 						<td class="px-3 py-3 whitespace-nowrap w-1">
 							<span class="text-sm font-bold text-brand-primary tabular-nums">#{{ order.id }}</span>
 						</td>

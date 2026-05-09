@@ -25,6 +25,104 @@ const sort = ref({ key: 'created_at', dir: 'desc' });
 const perPage = ref(25);
 const page = ref(1);
 
+// Bulk actions — selezione multipla ordini
+const selectedIds = ref([]);
+const bulkLoading = ref('');
+
+const selectedOrders = computed(() => ordersData.value.data.filter(o => selectedIds.value.includes(o.id)));
+
+const onToggleSelect = (id) => {
+	const idx = selectedIds.value.indexOf(id);
+	if (idx >= 0) selectedIds.value.splice(idx, 1);
+	else selectedIds.value.push(id);
+};
+const onToggleSelectAll = (selectAll) => {
+	if (selectAll) selectedIds.value = ordersData.value.data.map(o => o.id);
+	else selectedIds.value = [];
+};
+const clearSelection = () => { selectedIds.value = []; };
+
+const bulkMarkPaid = async () => {
+	const eligible = selectedOrders.value.filter(o => o.status === 'pending_transfer' || o.status === 'awaiting_bank_transfer');
+	if (!eligible.length) return;
+	bulkLoading.value = 'mark-paid';
+	let success = 0;
+	let failed = 0;
+	for (const o of eligible) {
+		try {
+			await sanctum(`/api/admin/orders/${o.id}/confirm-bank-transfer`, { method: 'POST', body: { bank_transfer_reference: null } });
+			success++;
+		} catch {
+			failed++;
+		}
+	}
+	bulkLoading.value = '';
+	if (success > 0) showSuccess(`${success} ordini marcati come pagati${failed > 0 ? ` (${failed} falliti)` : ''}.`);
+	if (success === 0 && failed > 0) showError(null, `Nessun ordine marcato come pagato (${failed} falliti).`);
+	clearSelection();
+	await Promise.all([fetchOrders(), fetchKpi()]);
+};
+
+const bulkExportCsv = () => {
+	const rows = [['ID', 'Data', 'Cliente', 'Email', 'Origine', 'Destinazione', 'Stato', 'Totale (EUR)', 'Tracking']];
+	for (const o of selectedOrders.value) {
+		const pkg = o?.packages?.[0] || {};
+		const subAmount = (typeof o.subtotal === 'object' && o.subtotal?.amount) ? o.subtotal.amount : (Number(o.subtotal || 0) * 100);
+		rows.push([
+			o.id,
+			o.created_at,
+			`${o.user?.name || ''} ${o.user?.surname || ''}`.trim(),
+			o.user?.email || '',
+			pkg?.originAddress?.city || pkg?.origin_city || '',
+			pkg?.destinationAddress?.city || pkg?.destination_city || '',
+			o.status,
+			(Number(subAmount) / 100).toFixed(2).replace('.', ','),
+			o.brt_parcel_id || '',
+		]);
+	}
+	const csv = rows.map(r => r.map(field => {
+		const s = String(field ?? '');
+		if (s.includes(',') || s.includes('"') || s.includes('\n')) return `"${s.replace(/"/g, '""')}"`;
+		return s;
+	}).join(',')).join('\n');
+	const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+	const url = window.URL.createObjectURL(blob);
+	const link = document.createElement('a');
+	link.href = url;
+	link.download = `ordini-selezionati-${new Date().toISOString().slice(0, 10)}.csv`;
+	document.body.appendChild(link);
+	link.click();
+	window.URL.revokeObjectURL(url);
+	link.remove();
+	showSuccess(`Esportati ${selectedOrders.value.length} ordini in CSV.`);
+};
+
+const bulkDownloadInvoices = async () => {
+	bulkLoading.value = 'download-invoices';
+	let success = 0;
+	let failed = 0;
+	for (const o of selectedOrders.value) {
+		try {
+			const blob = await sanctum(`/api/orders/${o.id}/invoice.pdf`, { method: 'GET', responseType: 'blob' });
+			const url = window.URL.createObjectURL(blob);
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = `fattura-ord-${o.id}.pdf`;
+			document.body.appendChild(link);
+			link.click();
+			window.URL.revokeObjectURL(url);
+			link.remove();
+			success++;
+			await new Promise(r => setTimeout(r, 200));
+		} catch {
+			failed++;
+		}
+	}
+	bulkLoading.value = '';
+	if (success > 0) showSuccess(`${success} fatture scaricate${failed > 0 ? ` (${failed} non disponibili)` : ''}.`);
+	else if (failed > 0) showError(null, `Nessuna fattura disponibile per la selezione.`);
+};
+
 const filters = ref({
 	search: route.query.search || '',
 	status: [],
@@ -339,15 +437,30 @@ onMounted(async () => {
 					</template>
 				</SfEmptyState>
 
-				<AdminOrderTable
-					v-else
-					:orders="ordersData.data"
-					:sort="sort"
-					:format-cents="formatCents"
-					:format-date="formatDate"
-					:status-config="orderStatusConfig"
-					@sort="onSortChange"
-					@action="onTableAction" />
+				<template v-else>
+					<AdminOrdersBulkBar
+						:selected-count="selectedIds.length"
+						:total-count="ordersData.data.length"
+						:loading-action="bulkLoading"
+						:selected-orders="selectedOrders"
+						@mark-paid="bulkMarkPaid"
+						@export-csv="bulkExportCsv"
+						@download-invoices="bulkDownloadInvoices"
+						@clear-selection="clearSelection" />
+
+					<AdminOrderTable
+						:orders="ordersData.data"
+						:sort="sort"
+						:format-cents="formatCents"
+						:format-date="formatDate"
+						:status-config="orderStatusConfig"
+						:selectable="true"
+						:selected-ids="selectedIds"
+						@sort="onSortChange"
+						@action="onTableAction"
+						@toggle-select="onToggleSelect"
+						@toggle-select-all="onToggleSelectAll" />
+				</template>
 			</div>
 
 			<nav v-if="ordersData.last_page > 1" class="mt-5 flex flex-col tablet:flex-row tablet:items-center tablet:justify-center gap-3" aria-label="Paginazione ordini">
