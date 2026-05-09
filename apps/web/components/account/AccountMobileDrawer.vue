@@ -134,16 +134,16 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 							<span class="text-[10px] font-bold uppercase leading-none tracking-[0.6px] text-brand-text-muted">{{ group.title }}</span>
 						</div>
 
-						<div class="space-y-0.5">
+						<div class="space-y-1">
 							<NuxtLink
 								v-for="item in group.items"
 								:key="`mobile-${item.to}`"
 								:to="item.to"
 								:class="[
-									'group flex items-center gap-2.5 rounded-control px-2.5 py-[9px] text-left transition-colors duration-200',
+									'group flex items-center gap-2.5 rounded-control border px-2.5 py-[9px] text-left transition-colors duration-200',
 									isItemActive(item)
-										? 'bg-brand-primary/[0.06]'
-										: 'hover:bg-brand-primary/[0.04]',
+										? 'border-brand-primary/20 bg-brand-primary/[0.06] shadow-sf-sm'
+										: 'border-brand-border/60 bg-brand-card/40 hover:border-brand-primary/20 hover:bg-brand-primary/[0.04]',
 								]"
 								@click="emit('close')">
 								<span
@@ -174,7 +174,7 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 
 				<button
 					type="button"
-					class="group mt-3.5 flex w-full items-center gap-2.5 rounded-control px-2.5 py-[9px] text-left transition-colors duration-200 hover:bg-brand-error/5"
+					class="group mt-3.5 flex w-full items-center gap-2.5 rounded-control border border-brand-border/60 bg-brand-card/40 px-2.5 py-[9px] text-left transition-colors duration-200 hover:border-brand-error/30 hover:bg-brand-error/5"
 					@click="emit('logout')">
 					<span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-control border border-brand-primary/10 bg-white text-brand-text-muted transition-colors duration-200 group-hover:border-brand-error/20 group-hover:bg-brand-error/5 group-hover:text-brand-error">
 						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[15px] w-[15px]" fill="currentColor">
