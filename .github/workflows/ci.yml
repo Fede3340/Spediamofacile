@@ -93,7 +93,7 @@ jobs:
           APP_ENV=testing
           APP_DEBUG=true
           APP_URL=http://localhost
-          APP_KEY=base64:Y2lFeGFtcGxlS2V5Rm9yVGVzdGluZ09ubHkxMjM0NTY3OD0=
+          APP_KEY=base64:Lr8YIchx6O4N/A4J4xoeXsbY+rGVlXSmR5JezOi/GbY=
           BCRYPT_ROUNDS=4
           DB_CONNECTION=sqlite
           DB_DATABASE=:memory:
