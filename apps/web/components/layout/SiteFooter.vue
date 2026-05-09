@@ -1,6 +1,18 @@
 <script setup>
 const currentYear = 2026;
 
+// I details accordion sono closed by default su mobile (compact),
+// open su desktop. Bind open via ref controllato da matchMedia
+// in onMounted (SSR-safe: server render closed, client opens after mount).
+const isDesktop = ref(false);
+onMounted(() => {
+	const mq = window.matchMedia('(min-width: 768px)');
+	isDesktop.value = mq.matches;
+	const handler = (e) => { isDesktop.value = e.matches; };
+	mq.addEventListener('change', handler);
+	onBeforeUnmount(() => mq.removeEventListener('change', handler));
+});
+
 const appConfig = useAppConfig();
 const legal = computed(() => appConfig?.legal || {});
 const isPlaceholder = (v) => !v || /^\[INSERIRE_/i.test(String(v)) || /^0+$/.test(String(v)) || /^X+$/i.test(String(v));
@@ -79,8 +91,8 @@ const socials = [
 						</ul>
 					</div>
 
-					<!-- Mobile: collassati di default per ridurre scroll. Desktop: aperti via CSS (vedi @media min-width: 48rem) -->
-					<details v-for="column in linkColumns" :key="column.title" class="site-footer__column">
+					<!-- Mobile: collassati di default per ridurre scroll. Desktop: aperti via isDesktop computed -->
+					<details v-for="column in linkColumns" :key="column.title" class="site-footer__column" :open="isDesktop">
 						<summary class="site-footer__column-title">
 							{{ column.title }}
 							<svg class="site-footer__column-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

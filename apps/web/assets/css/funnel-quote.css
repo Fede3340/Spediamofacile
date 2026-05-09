@@ -246,23 +246,14 @@
 	position: relative;
 }
 
+/* Route card: nessun wrapper bianco — header (badge + title + country) +
+   input direttamente sul background grigio del composer, coerente con
+   il pattern delle misure/peso (label + input white-bordered su grigio). */
 .route-card {
 	min-width: 0;
-	padding: 10px 12px;
-	border-radius: 14px;
-	background: var(--color-brand-card, #fff);
-	border: 1px solid rgba(9, 88, 102, 0.08);
-	transition: border-color var(--sf-t1) var(--sf-ease), box-shadow var(--sf-t1) var(--sf-ease);
-}
-
-.route-card:hover {
-	border-color: rgba(9, 88, 102, 0.18);
-	box-shadow: 0 2px 6px rgba(9, 88, 102, 0.06);
-}
-
-.route-card:focus-within {
-	border-color: rgba(9, 88, 102, 0.32);
-	box-shadow: 0 0 0 3px rgba(9, 88, 102, 0.08);
+	padding: 0;
+	background: transparent;
+	border: none;
 }
 
 .route-card__header {
