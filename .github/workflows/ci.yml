@@ -116,7 +116,9 @@ jobs:
         run: composer analyse
 
       - name: Run tests with coverage
-        run: php artisan test --parallel --coverage-clover coverage.xml
+        # --parallel rimosso: richiede paratest 7.x non installato (vedi CLAUDE.md).
+        # Test sequenziali eseguiti normalmente; coverage ancora generato.
+        run: php artisan test --coverage-clover coverage.xml
         env:
           DB_CONNECTION: pgsql
           DB_HOST: 127.0.0.1
