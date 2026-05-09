@@ -190,6 +190,18 @@ jobs:
           NODE_OPTIONS: --max-old-space-size=6144
           NUXT_PUBLIC_API_BASE: http://localhost
 
+      - name: Debug — find .output location
+        run: |
+          echo "=== pwd ==="
+          pwd
+          echo "=== ls apps/web ==="
+          ls -la apps/web/ | head -20
+          echo "=== find .output ==="
+          find . -maxdepth 4 -type d -name '.output' 2>/dev/null
+          echo "=== ls apps/web/.output (if exists) ==="
+          ls -la apps/web/.output 2>/dev/null || echo "NOT FOUND"
+        working-directory: ${{ github.workspace }}
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
@@ -199,6 +211,7 @@ jobs:
           path: ${{ github.workspace }}/apps/web/.output
           retention-days: 3
           if-no-files-found: error
+          include-hidden-files: true
 
   # ─────────────────────────────────────────────────────────────
   # Job 3: Playwright E2E (depends on nuxt-build)
