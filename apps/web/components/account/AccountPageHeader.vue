@@ -41,8 +41,8 @@ const resolvedCrumbs = computed(() => {
 </script>
 
 <template>
-	<div class="mb-5 md:mb-6">
-		<div class="relative overflow-hidden rounded-card border border-brand-border bg-gradient-to-b from-brand-card to-brand-bg-alt shadow-sf p-5 md:p-6">
+	<div class="mb-4 md:mb-6">
+		<div class="relative overflow-hidden rounded-card border border-brand-border bg-gradient-to-b from-brand-card to-brand-bg-alt shadow-sf p-4 md:p-6">
 			<div
 				v-if="resolvedCrumbs.length || backTo"
 				class="relative z-10 flex flex-wrap items-center justify-between gap-2 mb-2.5 pb-2.5 border-b border-brand-primary/10"
@@ -104,12 +104,12 @@ const resolvedCrumbs = computed(() => {
 						>
 							{{ eyebrow }}
 						</p>
-						<h1 class="font-display text-2xl md:text-[1.75rem] font-extrabold text-brand-primary leading-tight tracking-tight">
+						<h1 class="font-display text-xl sm:text-2xl md:text-[1.75rem] font-extrabold text-brand-primary leading-tight tracking-tight">
 							{{ title }}
 						</h1>
 						<p
 							v-if="description"
-							class="text-sm md:text-base text-brand-text-secondary leading-relaxed mt-1.5"
+							class="text-[13px] sm:text-sm md:text-base text-brand-text-secondary leading-relaxed mt-1.5"
 						>
 							{{ description }}
 						</p>

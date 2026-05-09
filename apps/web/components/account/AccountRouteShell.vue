@@ -1,6 +1,7 @@
 <script setup>
 import AccountSidebar from './AccountSidebar.vue';
 import AccountMobileDrawer from './AccountMobileDrawer.vue';
+import AccountMobileTabBar from './AccountMobileTabBar.vue';
 import {
 	adminNavGroups,
 	clientNavGroups,
@@ -155,7 +156,7 @@ watch(isAdmin, (value) => {
 </script>
 
 <template>
-	<div class="mx-auto flex w-full max-w-7xl items-start overflow-x-hidden px-3.5 pt-7 pb-10 md:px-6 lg:gap-7 lg:px-10 lg:pt-12 lg:pb-14">
+	<div class="mx-auto flex w-full max-w-7xl items-start overflow-x-hidden px-3 pt-16 pb-[calc(env(safe-area-inset-bottom)+86px)] sm:px-4 md:px-6 lg:gap-7 lg:px-10 lg:pt-12 lg:pb-14">
 		<AccountSidebar
 			:full-name="fullName"
 			:initials="initials"
@@ -191,4 +192,11 @@ watch(isAdmin, (value) => {
 			<slot />
 		</div>
 	</div>
+
+	<AccountMobileTabBar
+		:is-admin="isAdmin"
+		:is-pro="isPro"
+		:is-item-active="isItemActive"
+		:total-badges="totalBadges"
+		@open-drawer="toggleDrawer" />
 </template>

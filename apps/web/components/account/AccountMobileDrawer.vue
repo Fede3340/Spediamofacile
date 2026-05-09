@@ -77,7 +77,7 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 		<transition name="slide-right">
 			<aside
 				v-if="mobileOpen"
-				class="fixed inset-y-0 left-0 z-[81] w-[280px] max-w-[88vw] overflow-y-auto border-r border-brand-primary/10 bg-white px-4 py-4 shadow-[18px_0_40px_rgba(15,23,42,0.12)] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+				class="fixed inset-y-0 left-0 z-[81] w-[320px] max-w-[92vw] overflow-y-auto border-r border-brand-primary/10 bg-white px-4 pb-[calc(env(safe-area-inset-bottom)+24px)] pt-[calc(env(safe-area-inset-top)+16px)] shadow-[18px_0_40px_rgba(15,23,42,0.12)] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 				<div class="flex items-start justify-between gap-3">
 					<div class="flex min-w-0 items-center gap-2.5">
 						<div class="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-primary to-brand-accent text-xs font-extrabold text-white">
@@ -134,39 +134,52 @@ const emit = defineEmits(['toggle', 'close', 'logout']);
 							<span class="text-[10px] font-bold uppercase leading-none tracking-[0.6px] text-brand-text-muted">{{ group.title }}</span>
 						</div>
 
-						<div class="space-y-1">
+						<div class="space-y-1.5">
 							<NuxtLink
 								v-for="item in group.items"
 								:key="`mobile-${item.to}`"
 								:to="item.to"
 								:class="[
-									'group flex items-center gap-2.5 rounded-control border px-2.5 py-[9px] text-left transition-colors duration-200',
+									'group flex min-h-[48px] items-center gap-3 rounded-control border px-3 py-2.5 text-left transition-colors duration-200',
 									isItemActive(item)
 										? 'border-brand-primary/20 bg-brand-primary/[0.06] shadow-sf-sm'
-										: 'border-brand-border/60 bg-brand-card/40 hover:border-brand-primary/20 hover:bg-brand-primary/[0.04]',
+										: 'border-brand-border/60 bg-brand-card/40 hover:border-brand-primary/20 hover:bg-brand-primary/[0.04] active:bg-brand-primary/[0.04]',
 								]"
 								@click="emit('close')">
 								<span
 									:class="[
-										'inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-control border transition-colors duration-200',
+										'inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-control border transition-colors duration-200',
 										isItemActive(item)
 											? 'border-brand-primary/15 bg-brand-primary/[0.08] text-brand-primary'
 											: 'border-brand-primary/10 bg-white text-brand-text-muted group-hover:border-brand-primary/15 group-hover:bg-brand-primary/[0.04] group-hover:text-brand-primary',
 									]">
-									<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-[18px] w-[18px]" fill="currentColor" v-html="accountCardIcons[item.iconKey]" />
+									<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor" v-html="accountCardIcons[item.iconKey]" />
 								</span>
 								<span
 									:class="[
-										'min-w-0 flex-1 truncate text-[13px]',
+										'min-w-0 flex-1 truncate text-sm',
 										isItemActive(item) ? 'font-bold text-brand-primary' : 'font-medium text-brand-text-secondary group-hover:text-brand-text',
 									]">
 									{{ item.label }}
 								</span>
 								<span
 									v-if="item.badge"
-									class="inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-brand-accent px-1.5 text-[9px] font-extrabold text-white">
+									class="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-accent px-1.5 text-[10px] font-extrabold text-white">
 									{{ item.badge }}
 								</span>
+								<svg
+									v-else
+									aria-hidden="true"
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="0 0 24 24"
+									class="h-4 w-4 shrink-0 text-brand-text-muted/60"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round">
+									<path d="m9 18 6-6-6-6" />
+								</svg>
 							</NuxtLink>
 						</div>
 					</div>
