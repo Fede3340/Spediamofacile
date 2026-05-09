@@ -170,6 +170,13 @@ const activeHero = computed(() => secondaryHeros.find((h) => h.match(route.path)
 	background: linear-gradient(135deg, var(--color-brand-accent) 0%, rgba(228, 66, 3, 0.3) 35%, rgba(9, 88, 102, 0.3) 65%, var(--color-brand-primary) 100%);
 	padding: 2px;
 }
+/* Tablet+ (≥720px): nasconde il banner mobile e il price chip — vincono il box CTA + image desktop. */
+@media (min-width: 45rem) {
+	.hero-mobile-banner,
+	.hero-price-chip {
+		display: none !important;
+	}
+}
 .hero-mobile-banner__image {
 	display: block;
 	width: 100%;

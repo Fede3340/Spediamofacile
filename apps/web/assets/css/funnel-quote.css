@@ -97,8 +97,13 @@
 	justify-content: center;
 	align-items: center;
 	gap: 8px;
-	padding: 0 0 0.25rem;
+	padding: 0 0 18px; /* Era 0.25rem (4px), ora 18px → spazio respiro tra header e prima section title pill */
 	background: transparent;
+}
+@media (min-width: 40rem) {
+	.preventivo-heading {
+		padding-bottom: 22px;
+	}
 }
 
 .preventivo-heading__copy {
@@ -614,6 +619,7 @@
 	margin-bottom: 12px;
 }
 
+/* Mobile (<640px): 3-col grid full width (entrano tutti senza wrap) */
 .preventivo-form .package-type-switcher {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -623,9 +629,33 @@
 	min-width: 0;
 }
 
+/* Tablet+ (≥640px): inline-flex compatto centrato (no spread tutta la larghezza,
+   coerente con il pattern segmented "Privato/Azienda" del modal auth) */
+@media (min-width: 40rem) {
+	.preventivo-form .package-type-switcher {
+		display: inline-flex;
+		grid-template-columns: none;
+		gap: 6px;
+		width: auto;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
 .preventivo-form .package-entry__header .package-type-switcher {
 	flex: 1 1 auto;
 	max-width: 100%;
+}
+
+/* Tablet+: l'header del package-entry centra il switcher (era flex: 1 1 auto che lo stirava) */
+@media (min-width: 40rem) {
+	.preventivo-form .package-entry__header {
+		justify-content: center;
+	}
+	.preventivo-form .package-entry__header .package-type-switcher {
+		flex: 0 0 auto;
+		margin-left: auto;
+	}
 }
 
 .preventivo-form .package-type-switcher__button {
