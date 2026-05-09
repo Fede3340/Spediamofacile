@@ -107,8 +107,11 @@ jobs:
       - name: Generate application key
         run: php artisan key:generate
 
-      - name: Run database migrations
-        run: php artisan migrate --force
+      # Run database migrations: SKIP per SQLite in-memory test
+      # Con :memory: ogni nuova connessione ottiene un DB vuoto.
+      # `RefreshDatabase` trait nei test esegue migrate per ogni test
+      # case, quindi un migrate up-front è ridondante e causa
+      # "There is already an active transaction" su connessioni riusate.
 
       - name: Run Laravel Pint (code style)
         run: composer lint
