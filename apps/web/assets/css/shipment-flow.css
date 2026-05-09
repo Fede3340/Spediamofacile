@@ -162,35 +162,52 @@
 	gap: 12px;
 }
 
+.service-stage-shell--funnel-standard {
+	gap: 26px;
+}
+@media (min-width: 40rem) {
+	.service-stage-shell--funnel-standard {
+		gap: 32px;
+	}
+}
+
 .service-stage-section {
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
+	gap: 14px;
 }
 
 .service-stage-section__header {
 	display: flex;
 	align-items: center;
-	gap: 10px;
-	margin-bottom: 4px;
+	gap: 12px;
+	padding-bottom: 10px;
+	margin-bottom: 6px;
+	border-bottom: 1px solid rgba(9, 88, 102, 0.08);
 }
 
 .service-stage-section__icon {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 28px;
-	height: 28px;
-	border-radius: 8px;
+	width: 32px;
+	height: 32px;
+	border-radius: 10px;
 	background: rgba(9, 88, 102, 0.08);
 	flex-shrink: 0;
 }
 
 .service-stage-section__title {
-	font-size: 0.95rem;
-	font-weight: 700;
-	color: var(--color-brand-text);
+	font-size: 1rem;
+	font-weight: 800;
+	letter-spacing: -0.01em;
+	color: var(--color-brand-primary);
 	margin: 0;
+}
+@media (min-width: 40rem) {
+	.service-stage-section__title {
+		font-size: 1.0625rem;
+	}
 }
 
 .service-surface {
@@ -422,10 +439,18 @@
  *  Layout pulito: label uppercase, input box visibile, note contained
  * ============================================================ */
 
+/* Pannello servizio espanso — subtle gradient bg per staccare dal card outer
+   bianco. Era flat white-on-white che il user lamentava "tutto bianco". */
 .service-panel {
 	display: block;
-	padding: 16px 20px 20px;
-	border-top: 1px solid rgba(9, 88, 102, 0.08);
+	padding: 18px 20px 22px;
+	border-top: 1px solid rgba(9, 88, 102, 0.10);
+	background: linear-gradient(180deg, rgba(9, 88, 102, 0.04) 0%, rgba(9, 88, 102, 0.01) 100%);
+}
+@media (min-width: 40rem) {
+	.service-panel {
+		padding: 22px 24px 26px;
+	}
 }
 
 .service-panel__content,
@@ -481,13 +506,15 @@
 	gap: 6px;
 }
 
+/* Label refined: uppercase 11px letter-spaced, coerente con package-field-card
+   del Preventivo. Da 0.82rem normalcase a 11px uppercase tracked. */
 .service-panel__label {
-	font-size: 0.82rem;
+	font-size: 11px;
 	font-weight: 700;
-	color: var(--color-brand-text, var(--color-brand-text));
-	margin: 0;
-	letter-spacing: normal;
-	text-transform: none;
+	color: var(--color-brand-text-muted);
+	margin: 0 0 4px;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
 }
 
 .service-panel__input-wrap {

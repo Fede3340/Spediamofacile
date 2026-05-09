@@ -32,10 +32,10 @@ const scrollTrack = (direction) => {
 			<p class="text-sm font-semibold text-brand-error">{{ dateError }}</p>
 		</div>
 
-		<!-- Section header -->
-		<div class="flex items-center justify-between mb-3">
-			<div class="flex items-center gap-2.5">
-				<div class="w-8 h-8 rounded-control bg-brand-primary/[0.08] flex items-center justify-center shrink-0">
+		<!-- Section header — coerente con .service-stage-section__header (icon + title + border-bottom) -->
+		<div class="service-stage-section__header flex items-center justify-between">
+			<div class="flex items-center gap-3">
+				<div class="service-stage-section__icon">
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-brand-primary">
 						<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
 						<line x1="16" y1="2" x2="16" y2="6"/>
@@ -43,7 +43,7 @@ const scrollTrack = (direction) => {
 						<line x1="3" y1="10" x2="21" y2="10"/>
 					</svg>
 				</div>
-				<span class="font-display text-lg font-semibold text-brand-text">Data di ritiro</span>
+				<h4 class="service-stage-section__title font-display m-0">Data di ritiro</h4>
 			</div>
 
 			<!-- Scroll arrows -->
