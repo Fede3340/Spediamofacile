@@ -25,8 +25,9 @@ use App\Http\Middleware\CheckAdmin;
 use Illuminate\Support\Facades\Route;
 
 // P1.1 — Middleware 2FA disabilitato finché non viene completata la UI di setup wizard
-// (`/account/sicurezza/2fa-setup`). Quando la UI sarà pronta, riattivare aggiungendo '2fa.required'.
-Route::middleware(['auth:sanctum', CheckAdmin::class, 'admin.audit'])->prefix('admin')->group(function () {
+// (`/account/sicurezza/2fa-setup`) — la UI è pronta in /account/sicurezza/2fa.
+// '2fa.required' middleware riattivato per coerenza con i test (TwoFactorEnrollmentTest).
+Route::middleware(['auth:sanctum', CheckAdmin::class, 'admin.audit', '2fa.required'])->prefix('admin')->group(function () {
 
     // --- Dashboard ---
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard']);
