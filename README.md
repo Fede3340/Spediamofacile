@@ -11,26 +11,12 @@ Intermediario BRT: preventivo, funnel spedizione, carrello, pagamento, account c
 - **Pagamenti**: Stripe + Bonifico + Wallet interno
 - **Test**: PHPUnit backend + Playwright E2E + Vitest unit
 
-## Quickstart (Docker — consigliato)
+## Quickstart
 
 ```bash
 git clone <repo>
 cd spedizionefacile
 
-# 5 servizi (postgres + redis + laravel + nuxt + caddy) in un comando
-make dev      # equivalente a: docker compose up -d
-
-# Apri http://127.0.0.1:8787 quando "caddy: healthy"
-make logs     # tail dei log
-make down     # stop (mantiene volumi)
-make clean    # reset completo (drop DB)
-```
-
-Vedi `make help` per l'elenco completo dei target (`dev`, `test`, `build`, `typecheck`, `lint`, `seed`, …).
-
-## Quickstart (host nativo — alternativa)
-
-```bash
 # Backend
 composer install
 cp .env.example .env && php artisan key:generate
@@ -41,12 +27,16 @@ php artisan migrate:fresh --seed
 cd apps/web && npm install && cd ..
 
 # 3 processi paralleli (vedi .claude/launch.json):
-#   php artisan serve --port=8000           # Laravel API
-#   npm run dev --prefix apps/web           # Nuxt :3001
-#   caddy run --config infra/caddy/Caddyfile # Caddy :8787
+#   php artisan serve --port=8000              # Laravel API
+#   npm run dev --prefix apps/web              # Nuxt :3001
+#   caddy run --config infra/caddy/Caddyfile   # Caddy :8787
 
 # Apri http://127.0.0.1:8787
 ```
+
+> Per setup Docker (Postgres+Redis+Laravel+Nuxt+Caddy con `make dev`),
+> `Dockerfile`/`docker-compose.yml`/`Makefile` sono nell'archivio
+> `~/Desktop/spedizionefacile-archive/docker-setup/`.
 
 ## Routing
 

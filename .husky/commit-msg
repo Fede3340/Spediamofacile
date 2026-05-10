@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-# Valida il messaggio di commit contro commitlint.config.js (Conventional Commits).
-# Nota: Husky v9 non richiede più il sourcing di _/husky.sh.
-npx --no-install -- commitlint --edit "$1"
