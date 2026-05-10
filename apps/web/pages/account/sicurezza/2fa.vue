@@ -251,7 +251,7 @@ const downloadRecoveryCodes = () => {
 							<p class="text-xs text-brand-text-secondary">Inserisci manualmente questo codice nell'app:</p>
 							<div class="flex items-center gap-2 rounded-control border border-brand-border bg-white px-3 py-2.5 font-mono text-sm tracking-wider text-brand-text">
 								<span class="flex-1 break-all">{{ qrSecret }}</span>
-								<button type="button" class="shrink-0 text-brand-primary hover:text-brand-primary-hover" @click="copySecret" :aria-label="'Copia codice'">
+								<button type="button" class="shrink-0 text-brand-primary hover:text-brand-primary-hover" :aria-label="'Copia codice'" @click="copySecret">
 									<UIcon name="mdi:content-copy" class="h-4 w-4" />
 								</button>
 							</div>

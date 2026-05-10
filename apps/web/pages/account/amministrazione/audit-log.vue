@@ -291,7 +291,8 @@ onMounted(() => {
 								<span v-else class="text-brand-text-muted">{{ log.actor_type || 'system' }}</span>
 							</td>
 							<td class="px-4 py-3">
-								<span :class="[
+								<span
+:class="[
 									'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-bold',
 									actionTone(log.action) === 'danger' ? 'bg-brand-error/10 text-brand-error' :
 									actionTone(log.action) === 'success' ? 'bg-brand-success-bg text-brand-success-fg' :

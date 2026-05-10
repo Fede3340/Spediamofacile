@@ -86,7 +86,7 @@ const trackingLabel = (order) => getBrtTrackingLabel(order);
 								:indeterminate.prop="someSelected"
 								class="h-4 w-4 cursor-pointer rounded border-brand-border text-brand-primary focus:ring-brand-primary/30"
 								aria-label="Seleziona tutti gli ordini visibili"
-								@change="onToggleAll" />
+								@change="onToggleAll" >
 						</th>
 						<th scope="col" class="px-3 py-3 text-left text-[0.6875rem] font-bold uppercase tracking-wider text-brand-text-muted">
 							<button type="button" class="inline-flex items-center gap-1 hover:text-brand-primary transition" @click="onSort('id')">
@@ -132,7 +132,7 @@ const trackingLabel = (order) => getBrtTrackingLabel(order);
 								class="h-4 w-4 cursor-pointer rounded border-brand-border text-brand-primary focus:ring-brand-primary/30"
 								:aria-label="`Seleziona ordine ${order.id}`"
 								@click.stop
-								@change="(e) => onToggleRow(order, e)" />
+								@change="(e) => onToggleRow(order, e)" >
 						</td>
 						<td class="px-3 py-3 whitespace-nowrap w-1">
 							<span class="text-sm font-bold text-brand-primary tabular-nums">#{{ order.id }}</span>
