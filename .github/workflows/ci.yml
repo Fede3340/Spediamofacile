@@ -56,7 +56,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
@@ -70,7 +70,7 @@ jobs:
         run: composer validate --strict
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: vendor
           key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
@@ -136,7 +136,7 @@ jobs:
           DB_DATABASE: ':memory:'
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v6
         with:
           files: coverage.xml
           flags: backend
@@ -163,10 +163,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node ${{ matrix.node }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node }}
           cache: 'npm'
@@ -191,7 +191,7 @@ jobs:
           NUXT_PUBLIC_API_BASE: http://localhost
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nuxt-output
           # Path absolute da repo root (working-directory non si applica a actions/upload-artifact).
@@ -225,10 +225,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node 22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: 'npm'
@@ -238,7 +238,7 @@ jobs:
         run: npm ci --prefer-offline --no-audit
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('apps/web/package-lock.json') }}
@@ -247,7 +247,7 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Download Nuxt build
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: nuxt-output
           path: ${{ github.workspace }}/apps/web/.output
@@ -273,7 +273,7 @@ jobs:
 
       - name: Upload Playwright report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report-${{ matrix.project }}
           path: apps/web/playwright-report
@@ -281,7 +281,7 @@ jobs:
 
       - name: Upload visual regression diffs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: visual-regression-diffs-${{ matrix.project }}
           path: |
@@ -310,10 +310,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node 22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: 'npm'
@@ -323,7 +323,7 @@ jobs:
         run: npm ci --prefer-offline --no-audit
 
       - name: Download Nuxt build
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: nuxt-output
           path: ${{ github.workspace }}/apps/web/.output
@@ -337,7 +337,7 @@ jobs:
 
       - name: Upload Lighthouse report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: lighthouse-report
           path: apps/web/.lighthouseci
@@ -354,7 +354,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP 8.4
         uses: shivammathur/setup-php@v2
@@ -363,7 +363,7 @@ jobs:
           tools: composer:v2
 
       - name: Setup Node 22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
 
