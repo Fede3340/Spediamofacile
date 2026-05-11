@@ -28,7 +28,7 @@
     "@nuxtjs/sitemap": "^8.0.11",
     "@nuxtjs/turnstile": "^1.1.2",
     "@pinia/nuxt": "^0.11.3",
-    "@sentry/vue": "^8.55.2",
+    "@sentry/vue": "^10.52.0",
     "@stripe/stripe-js": "^8.1.0",
     "@tailwindcss/vite": "^4.1.10",
     "leaflet": "^1.9.4",
